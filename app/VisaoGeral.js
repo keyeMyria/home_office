@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Thumbnail } from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Badge, Left, Right, Body, Icon, Text, Thumbnail } from 'native-base';
 
 import MOCK from './mock/data';
 
@@ -29,10 +29,14 @@ class BubbleMenu extends Component {
   }
 
   render() {
+
+    console.log(this.props);
+
     return (
       <ScrollView
         horizontal={true}
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+        style={styles.bubbleMenuView}>
         {MOCK.filhos.map((item, index) =>
           <BubbleMenuItem
             key={index}
@@ -71,7 +75,7 @@ export default class VisaoGeral extends Component {
           </Body>
           <Right />
         </Header>
-        <Content>
+        <Content stickyHeaderIndices={[0]}>
           <BubbleMenu />
           {this.state.component}
         </Content>
@@ -81,7 +85,9 @@ export default class VisaoGeral extends Component {
               <Button
                 key={index}
                 active={index === this.state.index}
-                onPress={() => this.switchScreen(index)}>
+                onPress={() => this.switchScreen(index)}
+                badge={index === 2}>
+                {index === 2 && <Badge><Text>2</Text></Badge>}
                 <Icon name={item.icon} />
                 <Text>{item.text}</Text>
               </Button>
@@ -102,7 +108,12 @@ const styles = {
     fontSize: 10
   },
   bubbleMenuItemThumbnailAtivo: {
-    borderColor: '#388E3C',
+    borderColor: '#FF5722',
     borderWidth: 3
+  },
+  bubbleMenuView: {
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#E0E0E0'
   }
 };

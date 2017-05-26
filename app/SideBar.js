@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { Container, Content, Left, Body, Thumbnail, Text, ListItem, List, Separator } from 'native-base';
+import { Container, Content, Left, Body, Thumbnail, Text, ListItem, List, Separator, Icon } from 'native-base';
 
 import MOCK from './mock/data';
 
 export default class SideBar extends Component {
+
+  navigate = (component) => {
+    if (component) {
+      this.props.navigate(component);
+    }
+  }
+
   render() {
     return (
       <Container sideBarContainer>
@@ -21,8 +28,11 @@ export default class SideBar extends Component {
             {MOCK.menus.map((menu) =>
               menu.items.map((item, index) =>
                 index === 0 ?
-                  <Separator><Text>{item}</Text></Separator> :
-                  <ListItem><Text>{item}</Text></ListItem>
+                  <Separator><Text>{item.label}</Text></Separator> :
+                  <ListItem onPress={() => this.props.navigate(item.index)}>
+                    {item.iconName && <Icon name={item.iconName} />}
+                    <Text>{item.label}</Text>
+                  </ListItem>
               )
             )}
           </List>

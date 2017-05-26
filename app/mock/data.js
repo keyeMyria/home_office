@@ -14,20 +14,48 @@ export default {
   menus: [
     {
       items: [
-        'FUNCIONALIDADES',
-        'Visão Geral',
-        'Envio de Mensagens',
-        'Histórico Detalhado',
-        'Análise de Carga de Exercícios Realizada'
+        {
+          label: 'FUNCIONALIDADES'
+        },
+        {
+          index: 0,
+          label: 'Visão Geral',
+          iconName: 'home'
+        },
+        {
+          index: 1,
+          label: 'Mensagens',
+          iconName: 'comments'
+        },
+        {
+          index: 2,
+          label: 'Histórico',
+          iconName: 'history'
+        },
+        {
+          index: 3,
+          label: 'Carga de Exercícios',
+          iconName: 'book'
+        },
       ]
     },
     {
       items: [
-        'OUTROS',
-        'Dúvidas',
-        'Fale Conosco',
-        'Reportar Erros',
-        'Sobre'
+        {
+          label: 'OUTROS'
+        },
+        {
+          label: 'Dúvidas'
+        },
+        {
+          label: 'Fale Conosco'
+        },
+        {
+          label: 'Reportar Erros'
+        },
+        {
+          label: 'Sobre'
+        }
       ]
     }
   ],
@@ -56,7 +84,7 @@ export default {
       {
         index: 4,
         component: <Planejamento />,
-        title: 'Planejamento'
+        title: 'Planejar'
       }
     ],
     footerMenus: [
@@ -78,7 +106,7 @@ export default {
       },
       {
         icon: 'sliders',
-        text: 'Planejamento'
+        text: 'Planejar'
       }
     ]
   },
@@ -175,5 +203,35 @@ export default {
         informacao: 'Exercícios da Escola - Lista de Português (7 exer. /14h30)'
       }
     ]
-  }
+  },
+  alertas: [
+    {
+      title: 'Mensagem 1',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    },
+    {
+      title: 'Mensagem 2',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    },
+    {
+      title: 'Mensagem 3',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    },
+    {
+      title: 'Mensagem 4',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    },
+    {
+      title: 'Mensagem 5',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    },
+    {
+      title: 'Mensagem 6',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    },
+    {
+      title: 'Mensagem 7',
+      message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla'
+    }
+  ]
 };

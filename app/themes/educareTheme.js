@@ -53,6 +53,11 @@ educareTheme['NativeBase.List'] = Object.assign(educareTheme['NativeBase.List'] 
       borderBottomWidth: 0,
       'NativeBase.Text': {
         fontSize: 15
+      },
+      'NativeBase.Icon': {
+        fontSize: 20,
+        marginRight: 10,
+        color: '#424242'
       }
     }
   },
@@ -60,7 +65,8 @@ educareTheme['NativeBase.List'] = Object.assign(educareTheme['NativeBase.List'] 
     'NativeBase.Separator': {
       backgroundColor: PRIMARY_COLOR_LIGHT,
       'NativeBase.Text': {
-        color: INVERSE_TEXT_COLOR
+        color: INVERSE_TEXT_COLOR,
+        fontWeight: 'bold'
       }
     },
     'NativeBase.ListItem': {
@@ -124,5 +130,17 @@ educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Heade
     }
   }
 });
+
+// Card
+// educareTheme['NativeBase.Card'] = Object.assign(educareTheme['NativeBase.Card'] || {}, {
+//   '.mensagemAlerta': {
+//     backgroundColor: PRIMARY_COLOR,
+//     'NativeBase.CardItem': {
+//       'NativeBase.Text': {
+//         fontSize: 10
+//       }
+//     }
+//   }
+// });
 
 export default educareTheme;
