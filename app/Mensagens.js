@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Header, Left, Button, Icon, Body, Title, Right, Content, Text } from 'native-base';
 
+import { observer } from 'mobx-react/native';
+import store from './store';
+
+@observer
 export default class Mensagens extends Component {
 
   render() {
@@ -8,7 +12,7 @@ export default class Mensagens extends Component {
       <Container>
         <Header appHeader>
           <Left>
-            <Button onPress={this.props.openDrawer}>
+            <Button onPress={() => store.openDrawer()}>
               <Icon name='bars' />
             </Button>
           </Left>

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Badge, Left, Right, Body, Icon, Text, Thumbnail } from 'native-base';
 
-import MOCK from './mock/data';
+import { observer } from 'mobx-react/native';
+import store from './store';
 
 const BubbleMenuItem = (props) => {
   return (
@@ -17,32 +18,25 @@ const BubbleMenuItem = (props) => {
   );
 };
 
+@observer
 class BubbleMenu extends Component {
 
   constructor(props) {
     super(props);
-    this.state = MOCK.filhos[0];
-  }
-
-  switchFilho = (index) => {
-    this.setState(MOCK.filhos[index]);
   }
 
   render() {
-
-    console.log(this.props);
-
     return (
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         style={styles.bubbleMenuView}>
-        {MOCK.filhos.map((item, index) =>
+        {store.filhos.map((filho, index) =>
           <BubbleMenuItem
             key={index}
-            nome={item.nome}
-            ativo={index === this.state.index}
-            onPress={() => this.switchFilho(index)}
+            nome={filho.nome}
+            ativo={filho.id === store.filhoSelecionado.id}
+            onPress={() => store.selecionarFilho(filho.id)}
           />
         )}
       </ScrollView>
@@ -50,15 +44,12 @@ class BubbleMenu extends Component {
   }
 }
 
+@observer
 export default class VisaoGeral extends Component {
 
   constructor(props) {
     super(props);
-    this.state = MOCK.visaoGeral.routes[0];
-  }
-
-  switchScreen = (index) => {
-    this.setState(MOCK.visaoGeral.routes[index]);
+    store.navigateVisaoGeralPage(0);
   }
 
   render() {
@@ -66,30 +57,30 @@ export default class VisaoGeral extends Component {
       <Container>
         <Header appHeader>
           <Left>
-            <Button onPress={this.props.openDrawer}>
+            <Button onPress={() => store.openDrawer()}>
               <Icon name='bars' />
             </Button>
           </Left>
           <Body>
-            <Title>{this.state.title}</Title>
+            <Title>{store.currentVisaoGeralPage.props.title}</Title>
           </Body>
           <Right />
         </Header>
         <Content stickyHeaderIndices={[0]}>
           <BubbleMenu />
-          {this.state.component}
+          {store.currentVisaoGeralPage}
         </Content>
         <Footer>
           <FooterTab footerTabNavigation>
-            {MOCK.visaoGeral.footerMenus.map((item, index) =>
+            {store.visaoGeralFooterMenus.map((menu, index) =>
               <Button
                 key={index}
-                active={index === this.state.index}
-                onPress={() => this.switchScreen(index)}
-                badge={index === 2}>
-                {index === 2 && <Badge><Text>2</Text></Badge>}
-                <Icon name={item.icon} />
-                <Text>{item.text}</Text>
+                active={index === store.currentVisaoGeralPage.index}
+                onPress={() => store.navigateVisaoGeralPage(index)}
+                badge={menu.badge && menu.badge > 0}>
+                {menu.badge && menu.badge > 0 && <Badge><Text>{menu.badge}</Text></Badge>}
+                <Icon name={menu.iconName} />
+                <Text>{menu.label}</Text>
               </Button>
             )}
           </FooterTab>
