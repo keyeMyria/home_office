@@ -5,7 +5,7 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Badge, Le
 import { observer } from 'mobx-react/native';
 import store from './store';
 
-const BubbleMenuItem = (props) => {
+const BubbleMenuItem = props => {
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
       <View style={styles.bubbleMenuItemView}>

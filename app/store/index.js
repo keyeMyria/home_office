@@ -41,18 +41,18 @@ class AppStore {
 
   selecionarFilho(id) {
 
-    this.filhoSelecionado = this.filhos.filter((filho) => filho.id === id)[0];
+    this.filhoSelecionado = this.filhos.filter(filho => filho.id === id)[0];
 
-    const agendaSemanaAtual = MOCK.agendaSemanaAtual.filter((item) => item.idFilho === id)[0];
+    const agendaSemanaAtual = MOCK.agendaSemanaAtual.filter(item => item.idFilho === id)[0];
     this.agendaSemanaAtual = agendaSemanaAtual ? agendaSemanaAtual.agenda : {};
 
-    const agendaProximaSemana = MOCK.agendaProximaSemana.filter((item) => item.idFilho === id)[0];
+    const agendaProximaSemana = MOCK.agendaProximaSemana.filter(item => item.idFilho === id)[0];
     this.agendaProximaSemana = agendaProximaSemana ? agendaProximaSemana.agenda : {};
 
-    const alertasFilho = MOCK.alertas.filter((item) => item.idFilho === id)[0];
+    const alertasFilho = MOCK.alertas.filter(item => item.idFilho === id)[0];
     this.alertas = alertasFilho ? alertasFilho.alertas : [];
 
-    const visaoGeralFooterMenus = MOCK.visaoGeralFooterMenus.filter((item) => item.idFilho === id)[0];
+    const visaoGeralFooterMenus = MOCK.visaoGeralFooterMenus.filter(item => item.idFilho === id)[0];
     this.visaoGeralFooterMenus = visaoGeralFooterMenus ? visaoGeralFooterMenus.menus : [];
   }
 

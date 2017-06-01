@@ -6,7 +6,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { observer } from 'mobx-react/native';
 import store from './store';
 
-const AgendaItem = (props) => {
+const AgendaItem = props => {
   const item = props.item;
   return (
     <ListItem>
@@ -29,7 +29,7 @@ const AgendaItem = (props) => {
   );
 };
 
-const AgendaSemana = (props) => {
+const AgendaSemana = props => {
   return (
     props.items ?
     <View>
