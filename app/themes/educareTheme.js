@@ -1,7 +1,7 @@
 import getTheme from './native/components';
 import material from './native/variables/material';
 
-const PRIMARY_COLOR = '#FF7043';
+const PRIMARY_COLOR = '#FF5722';
 // const PRIMARY_COLOR_LIGHT = '#FF8A65';
 
 const educareTheme = getTheme(material);
@@ -59,6 +59,7 @@ educareTheme['NativeBase.FooterTab'] = Object.assign(educareTheme['NativeBase.Fo
   '.footerTabNavigation': {
     'NativeBase.Button': {
       backgroundColor: PRIMARY_COLOR,
+      borderRadius: 0,
       padding: 0,
       '.active': {
         backgroundColor: PRIMARY_COLOR,
@@ -85,6 +86,7 @@ educareTheme['NativeBase.FooterTab'] = Object.assign(educareTheme['NativeBase.Fo
 educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Header'] || {}, {
   '.appHeader': {
     backgroundColor: PRIMARY_COLOR,
+    borderBottomWidth: 0,
     'NativeBase.Left': {
       'NativeBase.Icon': {
         color: '#FFFFFF'
@@ -93,4 +95,63 @@ educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Heade
   }
 });
 
-export default educareTheme;
+// Card
+educareTheme['NativeBase.Card'] = Object.assign(educareTheme['NativeBase.Card'] || {}, {
+  '.alertaCards': {
+    'NativeBase.CardItem': {
+      '.readed': {
+        backgroundColor: '#DCEDC8'
+      },
+      '.unreaded': {
+        backgroundColor: '#ffcdd2'
+      },
+      'NativeBase.Body': {
+        'NativeBase.Text': {
+          '.title': {
+            paddingBottom: 10,
+            fontWeight: 'bold'
+          }
+        }
+      }
+    }
+  }
+});
+
+const styles = {
+  bubbleMenuItemView: {
+    margin: 5,
+    alignItems: 'center'
+  },
+  bubbleMenuItemText: {
+    fontSize: 12
+  },
+  bubbleMenuItemAtivo: {
+    borderColor: PRIMARY_COLOR,
+    borderWidth: 3
+  },
+  bubbleMenuItemInativo: {
+    borderColor: '#E0E0E0',
+    borderWidth: 1
+  },
+  bubbleMenuView: {
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#E0E0E0'
+  },
+  colunaLinha: {
+    height: 55,
+    alignItems: 'center'
+  },
+  colunaLinhaAlignLeft: {
+    height: 55,
+    alignItems: 'flex-start'
+  },
+  textoLinha: {
+    fontSize: 14
+  }
+};
+
+export {
+  educareTheme,
+  styles
+};

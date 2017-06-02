@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Input, Item, Text, Label, Icon } from 'native-base';
+import { Input, Item, Label, Icon } from 'native-base';
 
 export default ({ input, label, meta: { touched, error }}) => {
   var hasError = !!error && touched;
@@ -10,10 +10,10 @@ export default ({ input, label, meta: { touched, error }}) => {
       <Item error={hasError} success={isSuccess} inlineLabel>
         <Label>{label}</Label>
         <Input {...input} />
-        {hasError && <Icon name='close' />}
-        {isSuccess && <Icon name='check' />}
+        {hasError && <Icon name='error' />}
+        {isSuccess && <Icon name='check-circle' />}
       </Item>
-      {hasError && <Text>{error}</Text>}
+      {/*{hasError && <Text>{error}</Text>}*/}
     </View>
   );
 };

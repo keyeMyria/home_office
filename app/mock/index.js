@@ -29,7 +29,7 @@ const menu = {
         },
         {
           label: 'Mensagens',
-          iconName: 'chat'
+          iconName: 'sms'
         },
         {
           label: 'Histórico',
@@ -37,7 +37,7 @@ const menu = {
         },
         {
           label: 'Carga de Exercícios',
-          iconName: 'book'
+          iconName: 'library-books'
         },
       ]
     },
@@ -67,11 +67,11 @@ const visaoGeralFooterMenus = [
     menus: [
       {
         label: 'Agenda',
-        iconName: 'today'
+        iconName: 'event-note'
       },
       {
         label: 'Notas',
-        iconName: 'insert-chart'
+        iconName: 'filter-9-plus'
       },
       {
         label: 'Alertas',
@@ -80,11 +80,11 @@ const visaoGeralFooterMenus = [
       },
       {
         label: 'Exercícios',
-        iconName: 'insert-drive-file'
+        iconName: 'library-books'
       },
       {
         label: 'Planejar',
-        iconName: 'format-list-numbered'
+        iconName: 'tune'
       }
     ]
   },
@@ -93,11 +93,11 @@ const visaoGeralFooterMenus = [
     menus: [
       {
         label: 'Agenda',
-        iconName: 'today'
+        iconName: 'event-note'
       },
       {
         label: 'Notas',
-        iconName: 'insert-chart'
+        iconName: 'filter-9-plus'
       },
       {
         label: 'Alertas',
@@ -106,11 +106,11 @@ const visaoGeralFooterMenus = [
       },
       {
         label: 'Exercícios',
-        iconName: 'insert-drive-file'
+        iconName: 'library-books'
       },
       {
         label: 'Planejar',
-        iconName: 'format-list-numbered'
+        iconName: 'tune'
       }
     ]
   },
@@ -119,11 +119,11 @@ const visaoGeralFooterMenus = [
     menus: [
       {
         label: 'Agenda',
-        iconName: 'today'
+        iconName: 'event-note'
       },
       {
         label: 'Notas',
-        iconName: 'insert-chart'
+        iconName: 'filter-9-plus'
       },
       {
         label: 'Alertas',
@@ -132,11 +132,11 @@ const visaoGeralFooterMenus = [
       },
       {
         label: 'Exercícios',
-        iconName: 'insert-drive-file'
+        iconName: 'library-books'
       },
       {
         label: 'Planejar',
-        iconName: 'format-list-numbered'
+        iconName: 'tune'
       }
     ]
   }
@@ -441,38 +441,38 @@ const alertas = [
     idFilho: 1,
     alertas: [
       {
-        title: 'Mensagem 1',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 1',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: false
       },
       {
-        title: 'Mensagem 2',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 2',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: false
       },
       {
-        title: 'Mensagem 3',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 3',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: false
       },
       {
-        title: 'Mensagem 4',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 4',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 5',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 5',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 6',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 6',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 7',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 7',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       }
     ]
@@ -481,28 +481,28 @@ const alertas = [
     idFilho: 2,
     alertas: [
       {
-        title: 'Mensagem 1',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 1',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: false
       },
       {
-        title: 'Mensagem 2',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 2',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 3',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 3',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 4',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 4',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 5',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 5',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       }
     ]
@@ -511,23 +511,23 @@ const alertas = [
     idFilho: 3,
     alertas: [
       {
-        title: 'Mensagem 1',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 1',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: false
       },
       {
-        title: 'Mensagem 2',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 2',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: false
       },
       {
-        title: 'Mensagem 3',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 3',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       },
       {
-        title: 'Mensagem 4',
-        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla',
+        title: 'Alerta 4',
+        message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
         readed: true
       }
     ]

@@ -11,7 +11,7 @@ const formStore = createStore(allReducers);
 import { observer } from 'mobx-react/native';
 import store from './store';
 
-import educareTheme from './themes/educareTheme';
+import { educareTheme } from './themes/educareTheme';
 import SideBar from './SideBar';
 
 @observer

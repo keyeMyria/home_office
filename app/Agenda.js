@@ -6,6 +6,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { observer } from 'mobx-react/native';
 import store from './store';
 
+import { styles } from './themes/educareTheme';
+
 const AgendaItem = props => {
   const item = props.item;
   return (
@@ -14,14 +16,10 @@ const AgendaItem = props => {
         <Col size={10} style={[styles.colunaLinha, { backgroundColor: item.corTipo }]}>
           <Row><Text style={styles.textoLinha}>{item.tipo}</Text></Row>
         </Col>
-        <Col size={10} style={styles.colunaLinha}>
-          <Row><Text style={styles.textoLinha}>{item.diaSemana}</Text></Row>
+        <Col size={25} style={styles.colunaLinha}>
+          <Row><Text style={styles.textoLinha}>{item.diaSemana} {item.diaMes}</Text></Row>
         </Col>
-        <Col size={20} style={styles.colunaLinha}>
-          <Row><Text style={styles.textoLinha}>{item.diaMes}</Text></Row>
-          {/*{item.horario && <Row><Text style={styles.textoLinha}>{item.horario}</Text></Row>}*/}
-        </Col>
-        <Col size={60} style={styles.colunaLinhaAlignLeft}>
+        <Col size={65} style={styles.colunaLinhaAlignLeft}>
           <Row><Text style={styles.textoLinha}>{item.informacao}</Text></Row>
         </Col>
       </Grid>
@@ -54,17 +52,3 @@ export default class Agenda extends Component {
     );
   }
 }
-
-const styles = {
-  colunaLinha: {
-    height: 55,
-    alignItems: 'center'
-  },
-  colunaLinhaAlignLeft: {
-    height: 55,
-    alignItems: 'flex-start'
-  },
-  textoLinha: {
-    fontSize: 14
-  }
-};

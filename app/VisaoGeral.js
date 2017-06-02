@@ -5,13 +5,15 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Badge, Le
 import { observer } from 'mobx-react/native';
 import store from './store';
 
+import { styles } from './themes/educareTheme';
+
 const BubbleMenuItem = props => {
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
       <View style={styles.bubbleMenuItemView}>
         <Thumbnail
           source={require('./img/user.png')}
-          style={props.ativo ? styles.bubbleMenuItemThumbnailAtivo : {}} />
+          style={props.ativo ? styles.bubbleMenuItemAtivo : styles.bubbleMenuItemInativo} />
         <Text style={styles.bubbleMenuItemText}>{props.nome}</Text>
       </View>
     </TouchableWithoutFeedback>
@@ -90,22 +92,3 @@ export default class VisaoGeral extends Component {
     );
   }
 }
-
-const styles = {
-  bubbleMenuItemView: {
-    margin: 5,
-    alignItems: 'center'
-  },
-  bubbleMenuItemText: {
-    fontSize: 12
-  },
-  bubbleMenuItemThumbnailAtivo: {
-    borderColor: '#FF5722',
-    borderWidth: 3
-  },
-  bubbleMenuView: {
-    backgroundColor: '#FAFAFA',
-    borderWidth: 1,
-    borderColor: '#E0E0E0'
-  }
-};

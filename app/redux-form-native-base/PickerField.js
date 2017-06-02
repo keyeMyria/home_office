@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Picker, Item, Text, Label, Icon } from 'native-base';
+import { Picker, Item, Label, Icon } from 'native-base';
 
 export default ({ input, label, meta: { touched, error }, children, ...custom }) => {
   var hasError = !!error && touched;
@@ -12,16 +12,16 @@ export default ({ input, label, meta: { touched, error }, children, ...custom })
         <Picker
           supportedOrientations={['portrait', 'landscape']}
           iosHeader="Selecione"
-          mode="dropdown" 
+          mode="dropdown"
           selectedValue={input.value}
           onValueChange={value => input.onChange(value)}
           {...custom}>
           {children}
         </Picker>
-        {hasError && <Icon name='close' />}
-        {isSuccess && <Icon name='check' />}
+        {hasError && <Icon name='error' style={{ flex: 1, alignSelf: 'flex-end' }}/>}
+        {isSuccess && <Icon name='check-circle' />}
       </Item>
-      {hasError && <Text>{error}</Text>}
+      {/*{hasError && <Text>{error}</Text>}*/}
     </View>
   );
 };
