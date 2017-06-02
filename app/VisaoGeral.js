@@ -57,9 +57,9 @@ export default class VisaoGeral extends Component {
       <Container>
         <Header appHeader>
           <Left>
-            <Button onPress={() => store.openDrawer()}>
-              <Icon name='bars' />
-            </Button>
+            <TouchableWithoutFeedback onPress={() => store.openDrawer()}>
+              <Icon name='menu' />
+            </TouchableWithoutFeedback>
           </Left>
           <Body>
             <Title>{store.currentVisaoGeralPage.props.title}</Title>
@@ -75,6 +75,7 @@ export default class VisaoGeral extends Component {
             {store.visaoGeralFooterMenus.map((menu, index) =>
               <Button
                 key={index}
+                activeOpacity={1}
                 active={index === store.currentVisaoGeralPage.index}
                 onPress={() => store.navigateVisaoGeralPage(index)}
                 badge={menu.badge && menu.badge > 0}>
@@ -96,7 +97,7 @@ const styles = {
     alignItems: 'center'
   },
   bubbleMenuItemText: {
-    fontSize: 10
+    fontSize: 12
   },
   bubbleMenuItemThumbnailAtivo: {
     borderColor: '#FF5722',

@@ -1,21 +1,15 @@
 import getTheme from './native/components';
-import platform from './native/variables/platform';
+import material from './native/variables/material';
 
 const PRIMARY_COLOR = '#FF7043';
-const PRIMARY_COLOR_LIGHT = '#FF8A65';
+// const PRIMARY_COLOR_LIGHT = '#FF8A65';
 
-// const PRIMARY_COLOR = '#00897B';
-// const PRIMARY_COLOR_LIGHT = '#4DB6AC';
-
-const DEFAULT_TEXT_COLOR = '#000000';
-const INVERSE_TEXT_COLOR = '#FFFFFF';
-
-const educareTheme = getTheme(platform);
+const educareTheme = getTheme(material);
 
 // Container
 educareTheme['NativeBase.Container'] = Object.assign(educareTheme['NativeBase.Container'] || {}, {
   '.sideBarContainer': {
-    backgroundColor: INVERSE_TEXT_COLOR,
+    backgroundColor: '#FFFFFF',
     'NativeBase.ListItem': {
       backgroundColor: PRIMARY_COLOR,
       paddingTop: 50,
@@ -29,10 +23,9 @@ educareTheme['NativeBase.Container'] = Object.assign(educareTheme['NativeBase.Co
         borderBottomWidth: 0,
         flex: 1,
         'NativeBase.Text': {
-          color: INVERSE_TEXT_COLOR,
+          color: '#FFFFFF',
           '.profileInfo': {
-            fontSize: 11,
-            fontStyle: 'italic'
+            fontSize: 12
           }
         }
       }
@@ -43,40 +36,20 @@ educareTheme['NativeBase.Container'] = Object.assign(educareTheme['NativeBase.Co
 // List
 educareTheme['NativeBase.List'] = Object.assign(educareTheme['NativeBase.List'] || {}, {
   '.sideBarMenuList': {
-    'NativeBase.Separator': {
-      backgroundColor: PRIMARY_COLOR_LIGHT,
-      'NativeBase.Text': {
-        color: INVERSE_TEXT_COLOR
-      }
-    },
     'NativeBase.ListItem': {
       borderBottomWidth: 0,
-      'NativeBase.Text': {
-        fontSize: 15
-      },
       'NativeBase.Icon': {
         fontSize: 20,
-        marginRight: 10,
-        color: '#424242'
+        marginRight: 10
       }
     }
   },
   '.agendaList': {
-    'NativeBase.Separator': {
-      backgroundColor: PRIMARY_COLOR_LIGHT,
-      'NativeBase.Text': {
-        color: INVERSE_TEXT_COLOR,
-        fontWeight: 'bold'
-      }
-    },
     'NativeBase.ListItem': {
       marginLeft: 0,
-      paddingRight: 0,
+      paddingRight: 10,
       paddingTop: 0,
-      paddingBottom: 0,
-      'NativeBase.Text': {
-        fontSize: 13
-      }
+      paddingBottom: 0
     }
   }
 });
@@ -85,26 +58,24 @@ educareTheme['NativeBase.List'] = Object.assign(educareTheme['NativeBase.List'] 
 educareTheme['NativeBase.FooterTab'] = Object.assign(educareTheme['NativeBase.FooterTab'] || {}, {
   '.footerTabNavigation': {
     'NativeBase.Button': {
-      borderRadius: 0,
+      backgroundColor: PRIMARY_COLOR,
       padding: 0,
       '.active': {
         backgroundColor: PRIMARY_COLOR,
         'NativeBase.Icon': {
-          color: INVERSE_TEXT_COLOR,
-          fontSize: 20
+          color: '#FFFFFF'
         },
         'NativeBase.Text': {
-          color: INVERSE_TEXT_COLOR,
-          fontSize: 10
+          color: '#FFFFFF',
+          fontSize: 12
         }
       },
-      'NativeBase.Icon': {
-        color: PRIMARY_COLOR,
-        fontSize: 20
-      },
       'NativeBase.Text': {
-        color: DEFAULT_TEXT_COLOR,
-        fontSize: 10
+        color: '#FFCCBC',
+        fontSize: 11
+      },
+      'NativeBase.Icon': {
+        color: '#FFCCBC'
       }
     }
   }
@@ -115,32 +86,11 @@ educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Heade
   '.appHeader': {
     backgroundColor: PRIMARY_COLOR,
     'NativeBase.Left': {
-      'NativeBase.Button': {
-        backgroundColor: 'transparent',
-        'NativeBase.Icon': {
-          fontSize: 20,
-          color: INVERSE_TEXT_COLOR
-        }
-      }
-    },
-    'NativeBase.Body': {
-      'NativeBase.Title': {
-        color: INVERSE_TEXT_COLOR
+      'NativeBase.Icon': {
+        color: '#FFFFFF'
       }
     }
   }
 });
-
-// Card
-// educareTheme['NativeBase.Card'] = Object.assign(educareTheme['NativeBase.Card'] || {}, {
-//   '.mensagemAlerta': {
-//     backgroundColor: PRIMARY_COLOR,
-//     'NativeBase.CardItem': {
-//       'NativeBase.Text': {
-//         fontSize: 10
-//       }
-//     }
-//   }
-// });
 
 export default educareTheme;

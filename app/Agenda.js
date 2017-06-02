@@ -17,11 +17,11 @@ const AgendaItem = props => {
         <Col size={10} style={styles.colunaLinha}>
           <Row><Text style={styles.textoLinha}>{item.diaSemana}</Text></Row>
         </Col>
-        <Col size={15} style={styles.colunaLinha}>
-          <Row ><Text style={styles.textoLinha}>{item.diaMes}</Text></Row>
-          {item.horario && <Row><Text style={styles.textoLinha}>{item.horario}</Text></Row>}
+        <Col size={20} style={styles.colunaLinha}>
+          <Row><Text style={styles.textoLinha}>{item.diaMes}</Text></Row>
+          {/*{item.horario && <Row><Text style={styles.textoLinha}>{item.horario}</Text></Row>}*/}
         </Col>
-        <Col size={65} style={styles.colunaLinhaAlignLeft}>
+        <Col size={60} style={styles.colunaLinhaAlignLeft}>
           <Row><Text style={styles.textoLinha}>{item.informacao}</Text></Row>
         </Col>
       </Grid>
@@ -57,14 +57,14 @@ export default class Agenda extends Component {
 
 const styles = {
   colunaLinha: {
-    height: 50,
+    height: 55,
     alignItems: 'center'
   },
   colunaLinhaAlignLeft: {
-    height: 50,
+    height: 55,
     alignItems: 'flex-start'
   },
   textoLinha: {
-    fontSize: 12
+    fontSize: 14
   }
 };

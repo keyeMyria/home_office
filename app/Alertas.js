@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Card, CardItem, Icon, Body, Text } from 'native-base';
+import { Card, CardItem, Body, Text } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import store from './store';
@@ -13,10 +13,6 @@ export default class Alertas extends Component {
         {store.alertas.map((item, index) =>
           <Card key={index} style={styles.card}>
             <CardItem header style={item.readed ? styles.cardHeaderReaded : styles.cardHeaderUnreaded}>
-              {item.readed ?
-                <Icon name="check" style={styles.iconCheck} /> :
-                <Icon name="exclamation" style={styles.iconAlert} />
-              }
               <Text style={styles.cardHeaderText}>{item.title}</Text>
             </CardItem>
             <CardItem style={item.readed ? styles.cardBodyReaded : styles.cardBodyUnreaded }>
@@ -49,17 +45,9 @@ const styles = {
     backgroundColor: '#ffebee'
   },
   cardHeaderText: {
-    fontSize: 14
+    fontSize: 15
   },
   cardBodyText: {
-    fontSize: 12
-  },
-  iconAlert: {
-    fontSize: 14,
-    color: '#b71c1c'
-  },
-  iconCheck: {
-    fontSize: 14,
-    color: '#1B5E20'
+    fontSize: 14
   }
 };

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Header, Left, Button, Icon, Body, Title, Right, Content, Text } from 'native-base';
+import { TouchableWithoutFeedback } from 'react-native';
+import { Container, Header, Left, Icon, Body, Title, Right, Content, Text } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import store from './store';
@@ -12,9 +13,9 @@ export default class CargaExercicios extends Component {
       <Container>
         <Header appHeader>
           <Left>
-            <Button onPress={() => store.openDrawer()}>
-              <Icon name='bars' />
-            </Button>
+            <TouchableWithoutFeedback onPress={() => store.openDrawer()}>
+              <Icon name='menu' />
+            </TouchableWithoutFeedback>
           </Left>
           <Body>
             <Title>{this.props.title}</Title>

@@ -29,7 +29,7 @@ const menu = {
         },
         {
           label: 'Mensagens',
-          iconName: 'comments'
+          iconName: 'chat'
         },
         {
           label: 'Histórico',
@@ -67,24 +67,24 @@ const visaoGeralFooterMenus = [
     menus: [
       {
         label: 'Agenda',
-        iconName: 'calendar-o'
+        iconName: 'today'
       },
       {
         label: 'Notas',
-        iconName: 'bar-chart-o'
+        iconName: 'insert-chart'
       },
       {
         label: 'Alertas',
-        iconName: 'bell-o',
+        iconName: 'notifications',
         badge: 3
       },
       {
         label: 'Exercícios',
-        iconName: 'file-text-o'
+        iconName: 'insert-drive-file'
       },
       {
         label: 'Planejar',
-        iconName: 'sliders'
+        iconName: 'format-list-numbered'
       }
     ]
   },
@@ -93,24 +93,24 @@ const visaoGeralFooterMenus = [
     menus: [
       {
         label: 'Agenda',
-        iconName: 'calendar-o'
+        iconName: 'today'
       },
       {
         label: 'Notas',
-        iconName: 'bar-chart-o'
+        iconName: 'insert-chart'
       },
       {
         label: 'Alertas',
-        iconName: 'bell-o',
+        iconName: 'notifications',
         badge: 1
       },
       {
         label: 'Exercícios',
-        iconName: 'file-text-o'
+        iconName: 'insert-drive-file'
       },
       {
         label: 'Planejar',
-        iconName: 'sliders'
+        iconName: 'format-list-numbered'
       }
     ]
   },
@@ -119,24 +119,24 @@ const visaoGeralFooterMenus = [
     menus: [
       {
         label: 'Agenda',
-        iconName: 'calendar-o'
+        iconName: 'today'
       },
       {
         label: 'Notas',
-        iconName: 'bar-chart-o'
+        iconName: 'insert-chart'
       },
       {
         label: 'Alertas',
-        iconName: 'bell-o',
+        iconName: 'notifications',
         badge: 2
       },
       {
         label: 'Exercícios',
-        iconName: 'file-text-o'
+        iconName: 'insert-drive-file'
       },
       {
         label: 'Planejar',
-        iconName: 'sliders'
+        iconName: 'format-list-numbered'
       }
     ]
   }
