@@ -7,7 +7,12 @@ var deviceWidth = _reactNative.Dimensions.get('window').width;
 var platform = _reactNative.Platform.OS;
 var platformStyle = 'material';
 
+const PRIMARY_COLOR = '#FF5722';
+
 exports.default = {
+
+  PRIMARY_COLOR,
+
   platformStyle: platformStyle,
   platform: platform,
 
@@ -40,12 +45,12 @@ exports.default = {
   checkboxTickColor: '#fff',
 
 
-  segmentBackgroundColor: '#3F51B5',
+  segmentBackgroundColor: PRIMARY_COLOR,
   segmentActiveBackgroundColor: '#fff',
   segmentTextColor: '#fff',
-  segmentActiveTextColor: '#3F51B5',
+  segmentActiveTextColor: PRIMARY_COLOR,
   segmentBorderColor: '#fff',
-  segmentBorderColorMain: '#3F51B5',
+  segmentBorderColorMain: PRIMARY_COLOR,
 
 
   get defaultTextColor() {
@@ -112,7 +117,7 @@ exports.default = {
 
 
 
-  brandPrimary: '#3F51B5',
+  brandPrimary: PRIMARY_COLOR,
   brandInfo: '#3F57D3',
   brandSuccess: '#5cb85c',
   brandDanger: '#d9534f',
@@ -137,7 +142,7 @@ exports.default = {
 
 
   footerHeight: 55,
-  footerDefaultBg: '#3F51B5',
+  footerDefaultBg: PRIMARY_COLOR,
 
 
 
@@ -149,7 +154,7 @@ exports.default = {
   tabActiveBgColor: undefined,
 
 
-  tabDefaultBg: '#3F51B5',
+  tabDefaultBg: PRIMARY_COLOR,
   topTabBarTextColor: '#b3c7f9',
   topTabBarActiveTextColor: '#fff',
   topTabActiveBgColor: undefined,
@@ -159,7 +164,7 @@ exports.default = {
 
 
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#3F51B5',
+  toolbarDefaultBg: PRIMARY_COLOR,
   toolbarHeight: platform === 'ios' ? 76 : 56,
   toolbarIconSize: platform === 'ios' ? 20 : 22,
   toolbarSearchIconSize: platform === 'ios' ? 20 : 23,
@@ -167,7 +172,7 @@ exports.default = {
   searchBarHeight: platform === 'ios' ? 30 : 40,
   toolbarInverseBg: '#222',
   toolbarTextColor: '#fff',
-  toolbarDefaultBorder: '#3F51B5',
+  toolbarDefaultBorder: PRIMARY_COLOR,
   iosStatusbar: 'light-content',
   get statusBarColor() {
     return (0, _color2.default)(this.toolbarDefaultBg).darken(0.2).hexString();

@@ -7,9 +7,10 @@ import store from './store';
 @observer
 export default class Alertas extends Component {
   render() {
+    const alertas = store.filhoAlertas.items;
     return (
       <Content padder>
-        {store.alertas.map((item, index) =>
+        {alertas.map((item, index) =>
           <Card key={index} alertaCards>
             <CardItem readed={item.readed} unreaded={!item.readed}>
               <Body>

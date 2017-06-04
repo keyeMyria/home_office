@@ -74,7 +74,7 @@ export default class VisaoGeral extends Component {
         </Content>
         <Footer>
           <FooterTab footerTabNavigation>
-            {store.visaoGeralFooterMenus.map((menu, index) =>
+            {store.filhoVisaoGeralMenus.items.map((menu, index) =>
               <Button
                 key={index}
                 activeOpacity={1}

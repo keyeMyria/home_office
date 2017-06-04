@@ -44,10 +44,12 @@ const AgendaSemana = props => {
 @observer
 export default class Agenda extends Component {
   render() {
+    const agendaSemanaAtual = store.filhoAgendaSemanaAtual.agenda;
+    const agendaProximaSemana = store.filhoAgendaProximaSemana.agenda;
     return (
       <List agendaList>
-        <AgendaSemana label={store.agendaSemanaAtual.label} items={store.agendaSemanaAtual.items} />
-        <AgendaSemana label={store.agendaProximaSemana.label} items={store.agendaProximaSemana.items} />
+        <AgendaSemana label={agendaSemanaAtual.label} items={agendaSemanaAtual.items} />
+        <AgendaSemana label={agendaProximaSemana.label} items={agendaProximaSemana.items} />
       </List>
     );
   }

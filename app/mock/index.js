@@ -1,8 +1,15 @@
+
+/**
+ * USUARIOS
+ */
 const usuarioPai = {
   name: 'Maycon Sousa',
   email: 'mayconfsousa@gmail.com'
 };
 
+/**
+ * FILHOS
+ */
 const filhos = [
   {
     id: 1,
@@ -18,6 +25,9 @@ const filhos = [
   }
 ];
 
+/**
+ * MENU
+ */
 const menu = {
   secoes: [
     {
@@ -61,10 +71,13 @@ const menu = {
   ]
 };
 
+/**
+ * VISAO GERAL
+ */
 const visaoGeralFooterMenus = [
   {
     idFilho: 1,
-    menus: [
+    items: [
       {
         label: 'Agenda',
         iconName: 'event-note'
@@ -90,7 +103,7 @@ const visaoGeralFooterMenus = [
   },
   {
     idFilho: 2,
-    menus: [
+    items: [
       {
         label: 'Agenda',
         iconName: 'event-note'
@@ -116,7 +129,7 @@ const visaoGeralFooterMenus = [
   },
   {
     idFilho: 3,
-    menus: [
+    items: [
       {
         label: 'Agenda',
         iconName: 'event-note'
@@ -142,6 +155,9 @@ const visaoGeralFooterMenus = [
   }
 ];
 
+/**
+ * AGENDA SEMANA ATUAL
+ */
 const agendaSemanaAtual = [
   {
     idFilho: 1,
@@ -289,6 +305,9 @@ const agendaSemanaAtual = [
   }
 ];
 
+/**
+ * AGENDA PROXIMA SEMANA
+ */
 const agendaProximaSemana = [
   {
     idFilho: 1,
@@ -436,10 +455,13 @@ const agendaProximaSemana = [
   }
 ];
 
+/**
+ * ALERTAS
+ */
 const alertas = [
   {
     idFilho: 1,
-    alertas: [
+    items: [
       {
         title: 'Alerta 1',
         message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
@@ -479,7 +501,7 @@ const alertas = [
   },
   {
     idFilho: 2,
-    alertas: [
+    items: [
       {
         title: 'Alerta 1',
         message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
@@ -509,7 +531,7 @@ const alertas = [
   },
   {
     idFilho: 3,
-    alertas: [
+    items: [
       {
         title: 'Alerta 1',
         message: 'Nam quis nulla. Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus. ',
@@ -534,6 +556,153 @@ const alertas = [
   }
 ];
 
+/**
+ * TEMPO CARGA EXERCICIOS
+ */
+const temposCargaExercicio = [
+  {
+    id: 0,
+    label: '0min'
+  },
+  {
+    id: 15,
+    label: '15min'
+  },
+  {
+    id: 30,
+    label: '30min'
+  },
+  {
+    id: 45,
+    label: '45min'
+  },
+  {
+    id: 60,
+    label: '1h'
+  },
+  {
+    id: 75,
+    label: '1h15min'
+  },
+  {
+    id: 90,
+    label: '1h30min'
+  },
+  {
+    id: 105,
+    label: '1h45min'
+  },
+  {
+    id: 120,
+    label: '2h'
+  },
+];
+
+/**
+ * MATERIAS
+ */
+const materias = [
+  {
+    idFilho: 1,
+    items: [
+      {
+        id: 'portugues',
+        nome: 'Português'
+      },
+      {
+        id: 'matematica',
+        nome: 'Matemática'
+      },
+      {
+        id: 'historia',
+        nome: 'História'
+      },
+      {
+        id: 'biologia',
+        nome: 'Biologia'
+      },
+      {
+        id: 'geografia',
+        nome: 'Geografia'
+      },
+      {
+        id: 'fisica',
+        nome: 'Física'
+      },
+      {
+        id: 'quimica',
+        nome: 'Química'
+      },
+    ]
+  },
+  {
+    idFilho: 2,
+    items: [
+      {
+        id: 'portugues',
+        nome: 'Português'
+      },
+      {
+        id: 'matematica',
+        nome: 'Matemática'
+      },
+      {
+        id: 'historia',
+        nome: 'História'
+      },
+      {
+        id: 'biologia',
+        nome: 'Biologia'
+      },
+      {
+        id: 'geografia',
+        nome: 'Geografia'
+      },
+      {
+        id: 'fisica',
+        nome: 'Física'
+      },
+      {
+        id: 'quimica',
+        nome: 'Química'
+      },
+    ]
+  },
+  {
+    idFilho: 3,
+    items: [
+      {
+        id: 'portugues',
+        nome: 'Português'
+      },
+      {
+        id: 'matematica',
+        nome: 'Matemática'
+      },
+      {
+        id: 'historia',
+        nome: 'História'
+      },
+      {
+        id: 'biologia',
+        nome: 'Biologia'
+      },
+      {
+        id: 'geografia',
+        nome: 'Geografia'
+      },
+      {
+        id: 'fisica',
+        nome: 'Física'
+      },
+      {
+        id: 'quimica',
+        nome: 'Química'
+      },
+    ]
+  }
+];
+
 export {
   usuarioPai,
   filhos,
@@ -542,4 +711,6 @@ export {
   agendaSemanaAtual,
   agendaProximaSemana,
   alertas,
+  materias,
+  temposCargaExercicio
 };
