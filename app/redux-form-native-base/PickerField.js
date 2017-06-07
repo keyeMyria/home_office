@@ -12,16 +12,17 @@ export default (field) => {
   return (
     <View>
       <Item error={hasError} success={isSuccess} inlineLabel>
-        <Label>{label}</Label>
+        <Label style={{ flex: 0.4 }}>{label}</Label>
         <Picker
           iosHeader="Selecione"
           mode="dropdown"
           selectedValue={input.value || initialValue}
           onValueChange={value => input.onChange(value)}
+          style={{ flex: 0.6 }}
           {...custom}>
           {children}
         </Picker>
-        {hasError && <Icon name='error' style={{ flex: 1, alignSelf: 'flex-end' }} />}
+        {hasError && <Icon name='error' />}
         {isSuccess && <Icon name='check-circle' />}
       </Item>
       {/*{hasError && <Text>{error}</Text>}*/}
