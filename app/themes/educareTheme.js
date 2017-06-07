@@ -67,11 +67,18 @@ educareTheme['NativeBase.FooterTab'] = Object.assign(educareTheme['NativeBase.Fo
         }
       },
       'NativeBase.Text': {
-        color: '#FFCCBC',
         fontSize: 11
-      },
-      'NativeBase.Icon': {
-        color: '#FFCCBC'
+      }
+    }
+  }
+});
+
+// Tab
+educareTheme['NativeBase.Tab'] = Object.assign(educareTheme['NativeBase.Tab'] || {}, {
+  'NativeBase.TabHeading': {
+    '.active': {
+      'NativeBase.Text': {
+        color: '#FFFFFF'
       }
     }
   }
@@ -82,6 +89,11 @@ educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Heade
   '.appHeader': {
     borderBottomWidth: 0,
     'NativeBase.Left': {
+      'NativeBase.Icon': {
+        color: '#FFFFFF'
+      }
+    },
+    'NativeBase.Right': {
       'NativeBase.Icon': {
         color: '#FFFFFF'
       }

@@ -49,6 +49,10 @@ const menu = {
           label: 'Carga de Exercícios',
           iconName: 'library-books'
         },
+        {
+          label: 'Faltas e Ocorrências',
+          iconName: 'highlight-off'
+        },
       ]
     },
     {
@@ -703,6 +707,145 @@ const materias = [
   }
 ];
 
+/**
+ * ALUNOS
+ */
+const alunos = [
+  {
+    id: 1,
+    nome: 'Afonso Vilarim'
+  },
+  {
+    id: 2,
+    nome: 'Aluísio Barbosa'
+  },
+  {
+    id: 3,
+    nome: 'Belchior Guedelha'
+  },
+  {
+    id: 4,
+    nome: 'Carminda Bonilha'
+  },
+  {
+    id: 5,
+    nome: 'Conceição Torquato'
+  },
+  {
+    id: 6,
+    nome: 'Cristiana Bahía'
+  },
+  {
+    id: 7,
+    nome: 'Damião Varella'
+  },
+  {
+    id: 8,
+    nome: 'Denise Macena'
+  },
+  {
+    id: 9,
+    nome: 'Délio Bocaiúva'
+  },
+  {
+    id: 10,
+    nome: 'Délio Valadares'
+  },
+  {
+    id: 11,
+    nome: 'Ester Vaz'
+  },
+  {
+    id: 12,
+    nome: 'Frederico Lousã'
+  },
+  {
+    id: 13,
+    nome: 'Geraldo Miranda'
+  },
+  {
+    id: 14,
+    nome: 'Godinho ou Godim Melo'
+  },
+  {
+    id: 15,
+    nome: 'Horácio Fogaça'
+  },
+  {
+    id: 16,
+    nome: 'Ilma Vellozo'
+  },
+  {
+    id: 17,
+    nome: 'Isabel Avelar'
+  },
+  {
+    id: 18,
+    nome: 'Judite Zarco'
+  },
+  {
+    id: 19,
+    nome: 'Julieta Pasos'
+  },
+  {
+    id: 20,
+    nome: 'Lucília Carlos'
+  },
+  {
+    id: 21,
+    nome: 'Luzia Zalazar'
+  },
+  {
+    id: 22,
+    nome: 'Miriam Villégas'
+  },
+  {
+    id: 23,
+    nome: 'Noêmia Azeredo'
+  },
+  {
+    id: 24,
+    nome: 'Quintino Gorjão'
+  },
+  {
+    id: 25,
+    nome: 'Roberta Pedrozo'
+  },
+  {
+    id: 26,
+    nome: 'Rosália Silva'
+  },
+  {
+    id: 27,
+    nome: 'Rúben Pastana'
+  },
+  {
+    id: 28,
+    nome: 'Siquenique Portella'
+  },
+  {
+    id: 29,
+    nome: 'Uriel Acevedo'
+  },
+  {
+    id: 30,
+    nome: 'Zita Varela'
+  },
+];
+
+/**
+ * TURMAS
+ */
+
+const turmas = [
+  '6 Ano - Turma A',
+  '6 Ano - Turma B',
+  '6 Ano - Turma C',
+  '7 Ano - Turma A',
+  '7 Ano - Turma B',
+  '7 Ano - Turma C'
+];
+
 export {
   usuarioPai,
   filhos,
@@ -712,5 +855,7 @@ export {
   agendaProximaSemana,
   alertas,
   materias,
-  temposCargaExercicio
+  temposCargaExercicio,
+  alunos,
+  turmas
 };

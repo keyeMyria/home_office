@@ -5,6 +5,7 @@ import VisaoGeral from '../VisaoGeral';
 import Mensagens from '../Mensagens';
 import Historico from '../Historico';
 import CargaExercicios from '../CargaExercicios';
+import FaltasOcorrencias from '../FaltasOcorrencias';
 
 import Agenda from '../Agenda';
 import Notas from '../Notas';
@@ -31,6 +32,8 @@ class AppStore {
   @observable agendaSemanaAtual = MOCK.agendaSemanaAtual;
   @observable agendaProximaSemana = MOCK.agendaProximaSemana;
   @observable visaoGeralFooterMenus = MOCK.visaoGeralFooterMenus;
+  @observable alunos = MOCK.alunos;
+  @observable turmas = MOCK.turmas;
 
   // Dinamicos
   @observable filhoSelecionado = {};
@@ -44,10 +47,7 @@ class AppStore {
 
   @observable formChanged = false;
 
-  // @observable agendas = [];
-  // @observable agendaSemanaAtual = [];
-  // @observable agendaProximaSemana = [];
-  // @observable alertas = [];
+  @observable faltas = [];
 
   // TODO: Colcar para selecionar pais diferentes por Id
   selecionarUsuarioPai() {
@@ -73,6 +73,7 @@ class AppStore {
   /**
    * Carga minima de exercicios
    */
+
   salvarCargaMinimaFilho(values) {
     values.idFilho = this.filhoSelecionado.id;
     this.filhoCargaExercicio = values;
@@ -80,6 +81,22 @@ class AppStore {
       this.cargaExercicios = this.cargaExercicios.filter(item => item.idFilho !== this.filhoSelecionado.id);
     }
     this.cargaExercicios.push(this.filhoCargaExercicio);
+  }
+
+  /**
+   * Faltas
+   */
+
+  marcarFaltaAluno(idAluno) {
+    this.faltas.push(idAluno);
+  }
+
+  removerFaltaAluno(idAluno) {
+    this.faltas = this.faltas.filter(id => id !== idAluno);
+  }
+
+  removerFaltaTodosAlunos() {
+    this.faltas = [];
   }
 
   /**
@@ -115,6 +132,9 @@ class AppStore {
         break;
       case 3:
         this.currentPage = <CargaExercicios title="Exercícios" />;
+        break;
+      case 4:
+        this.currentPage = <FaltasOcorrencias />;
         break;
     }
     this.closeDrawer();

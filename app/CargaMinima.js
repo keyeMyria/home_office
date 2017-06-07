@@ -45,7 +45,7 @@ class CargaMinima extends Component {
     }
   }
 
-  submit = values => {
+  salvar = values => {
     store.salvarCargaMinimaFilho(values);
 
     Toast.show({
@@ -77,7 +77,7 @@ class CargaMinima extends Component {
             </Field>
           );
         })}
-        <Button block info onPress={this.props.handleSubmit(this.submit)} style={{ marginTop: 20 }}>
+        <Button block info onPress={this.props.handleSubmit(this.salvar)} style={{ marginTop: 20 }}>
           <Text>Salvar</Text>
         </Button>
       </Content>
