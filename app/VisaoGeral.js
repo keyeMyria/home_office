@@ -51,15 +51,19 @@ export default class VisaoGeral extends Component {
 
   constructor(props) {
     super(props);
+    store.selecionarUsuarioPai();
     store.navigateVisaoGeralPage(0);
   }
 
   render() {
+
+    const { navigate } = this.props.navigation;
+
     return (
       <Container>
         <Header appHeader>
           <Left>
-            <TouchableWithoutFeedback onPress={() => store.openDrawer()}>
+            <TouchableWithoutFeedback onPress={() => navigate('DrawerOpen')}>
               <Icon name='menu' />
             </TouchableWithoutFeedback>
           </Left>

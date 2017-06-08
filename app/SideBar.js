@@ -9,6 +9,9 @@ import store from './store';
 export default class SideBar extends Component {
 
   render() {
+
+    const { navigate } = this.props.navigation;
+
     return (
       <Container sideBarContainer>
         <ListItem>
@@ -26,7 +29,7 @@ export default class SideBar extends Component {
               <View key={index}>
                 <Separator><Text>{secao.label}</Text></Separator>
                 {secao.items.map((item, index) =>
-                  <ListItem key={index} onPress={() => store.navigate(index)}>
+                  <ListItem key={index} onPress={() => navigate(item.componentName, { title: item.componentTitle })}>
                     {item.iconName && <Icon name={item.iconName} />}
                     <Text>{item.label}</Text>
                   </ListItem>

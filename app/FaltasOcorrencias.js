@@ -49,11 +49,14 @@ export default class FaltasOcorrencias extends Component {
   }
 
   render() {
+
+    const { navigate } = this.props.navigation;
+
     return (
       <Container>
         <Header appHeader>
           <Left>
-            <TouchableWithoutFeedback onPress={() => store.openDrawer()}>
+            <TouchableWithoutFeedback onPress={() => navigate('DrawerOpen')}>
               <Icon name='menu' />
             </TouchableWithoutFeedback>
           </Left>

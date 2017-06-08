@@ -35,23 +35,33 @@ const menu = {
       items: [
         {
           label: 'Visão Geral',
-          iconName: 'home'
+          iconName: 'home',
+          componentName: 'VisaoGeral',
+          componentTitle: 'Visão Geral',
         },
         {
           label: 'Mensagens',
-          iconName: 'sms'
+          iconName: 'sms',
+          componentName: 'Mensagens',
+          componentTitle: 'Mensagens',
         },
         {
           label: 'Histórico',
-          iconName: 'history'
+          iconName: 'history',
+          componentName: 'Historico',
+          componentTitle: 'Histórico',
         },
         {
           label: 'Carga de Exercícios',
-          iconName: 'library-books'
+          iconName: 'library-books',
+          componentName: 'CargaExercicios',
+          componentTitle: 'Exercícios',
         },
         {
           label: 'Faltas e Ocorrências',
-          iconName: 'highlight-off'
+          iconName: 'highlight-off',
+          componentName: 'FaltasOcorrencias',
+          componentTitle: 'Lançamentos',
         },
       ]
     },

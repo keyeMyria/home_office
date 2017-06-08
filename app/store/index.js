@@ -1,12 +1,6 @@
 import React from 'react';
 import { observable } from 'mobx';
 
-import VisaoGeral from '../VisaoGeral';
-import Mensagens from '../Mensagens';
-import Historico from '../Historico';
-import CargaExercicios from '../CargaExercicios';
-import FaltasOcorrencias from '../FaltasOcorrencias';
-
 import Agenda from '../Agenda';
 import Notas from '../Notas';
 import Alertas from '../Alertas';
@@ -18,8 +12,6 @@ import * as MOCK from '../mock';
 class AppStore {
 
   // Naviagation
-  @observable drawer = {};
-  @observable currentPage = {};
   @observable currentVisaoGeralPage = {};
 
   // Estaticos
@@ -97,47 +89,6 @@ class AppStore {
 
   removerFaltaTodosAlunos() {
     this.faltas = [];
-  }
-
-  /**
-   * Navigation
-   */
-
-  setDrawer(drawer) {
-    this.drawer = drawer;
-  }
-
-  openDrawer() {
-    if (this.drawer && this.drawer._root) {
-      this.drawer._root.open();
-    }
-  }
-
-  closeDrawer() {
-    if (this.drawer && this.drawer._root) {
-      this.drawer._root.close();
-    }
-  }
-
-  navigate(index) {
-    switch (index) {
-      case 0:
-        this.currentPage = <VisaoGeral />;
-        break;
-      case 1:
-        this.currentPage = <Mensagens title="Mensagens" />;
-        break;
-      case 2:
-        this.currentPage = <Historico title="Histórico" />;
-        break;
-      case 3:
-        this.currentPage = <CargaExercicios title="Exercícios" />;
-        break;
-      case 4:
-        this.currentPage = <FaltasOcorrencias />;
-        break;
-    }
-    this.closeDrawer();
   }
 
   navigateVisaoGeralPage(index) {
