@@ -1,3 +1,4 @@
+import { Dimensions } from 'react-native';
 import {
   DrawerNavigator,
   TabNavigator,
@@ -42,6 +43,7 @@ export default DrawerNavigator(
   },
   {
     headerMode: 'none',
+    drawerWidth: Dimensions.get('window').width * 0.85,
     contentComponent: AppNavigator
   }
 );

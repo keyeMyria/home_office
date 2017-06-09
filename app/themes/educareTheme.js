@@ -39,7 +39,7 @@ educareTheme['NativeBase.List'] = Object.assign(educareTheme['NativeBase.List'] 
       },
       borderBottomWidth: 0,
       'NativeBase.Icon': {
-        fontSize: 20,
+        fontSize: 21,
         marginRight: 10,
         color: '#424242'
       },
