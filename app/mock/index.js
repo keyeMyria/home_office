@@ -1,480 +1,256 @@
 
 /**
- * USUARIOS
+ * USERS
  */
-const usuarioPai = {
-  name: 'Maycon Sousa',
-  email: 'mayconfsousa@gmail.com'
-};
+const users = [
+  {
+    name: 'Maycon Sousa',
+    email: 'mayconfsousa@gmail.com'
+  }
+];
 
 /**
- * FILHOS
+ * CHILD STUDENTS
  */
-const filhos = [
+const childStudents = [
   {
     id: 1,
-    nome: 'Caio'
+    name: 'Caio'
   },
   {
     id: 2,
-    nome: 'Filipe'
+    name: 'Filipe'
   },
   {
     id: 3,
-    nome: 'Maria'
+    name: 'Maria'
   }
 ];
 
 /**
- * MENU
+ * CALENDARS
  */
-const menu = {
-  secoes: [
-    {
-      label: 'FUNCIONALIDADES',
-      items: [
-        {
-          label: 'Visão Geral',
-          iconName: 'home',
-          componentName: 'VisaoGeral',
-          componentTitle: 'Visão Geral',
-        },
-        {
-          label: 'Mensagens',
-          iconName: 'sms',
-          componentName: 'Mensagens',
-          componentTitle: 'Mensagens',
-        },
-        {
-          label: 'Histórico',
-          iconName: 'history',
-          componentName: 'Historico',
-          componentTitle: 'Histórico',
-        },
-        {
-          label: 'Carga de Exercícios',
-          iconName: 'library-books',
-          componentName: 'CargaExercicios',
-          componentTitle: 'Exercícios',
-        },
-        {
-          label: 'Faltas e Ocorrências',
-          iconName: 'highlight-off',
-          componentName: 'FaltasOcorrencias',
-          componentTitle: 'Lançamentos',
-        },
-      ]
-    },
-    {
-      label: 'OUTROS',
-      items: [
-        {
-          label: 'Dúvidas'
-        },
-        {
-          label: 'Fale Conosco'
-        },
-        {
-          label: 'Reportar Erros'
-        },
-        {
-          label: 'Sobre'
-        }
-      ]
-    }
-  ]
-};
-
-/**
- * VISAO GERAL
- */
-const visaoGeralFooterMenus = [
+const calendars = [
   {
-    idFilho: 1,
-    items: [
+    studentId: 1,
+    currentWeekItems: [
       {
-        label: 'Agenda',
-        iconName: 'event-note'
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Seg.',
+        date: '7/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
       },
       {
-        label: 'Notas',
-        iconName: 'filter-9-plus'
+        type: 'E.P.',
+        colorType: '#FFF176',
+        dayOfWeek: 'Ter.',
+        date: '8/ago',
+        time: undefined,
+        information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
       },
       {
-        label: 'Alertas',
-        iconName: 'notifications',
-        badge: 3
+        type: 'E.P.',
+        colorType: '#FFF176',
+        dayOfWeek: 'Ter.',
+        date: '8/ago',
+        time: undefined,
+        information: 'Exercícios Preparatórios - Matemática (7 exer. /14h30)'
       },
       {
-        label: 'Exercícios',
-        iconName: 'library-books'
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Qua.',
+        date: '9/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
       },
       {
-        label: 'Planejar',
-        iconName: 'tune'
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Qui.',
+        date: '10/ago',
+        time: '14:40',
+        information: 'Prova de Geografia (10 pontos)'
+      },
+      {
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Sex.',
+        date: '11/ago',
+        time: '16:40',
+        information: 'Prova de Matemática (10 pontos)'
       }
-    ]
-  },
-  {
-    idFilho: 2,
-    items: [
+    ],
+    nextWeekItems: [
       {
-        label: 'Agenda',
-        iconName: 'event-note'
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Seg.',
+        date: '14/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
       },
       {
-        label: 'Notas',
-        iconName: 'filter-9-plus'
+        type: 'E.P.',
+        colorType: '#FFF176',
+        dayOfWeek: 'Ter.',
+        date: '15/ago',
+        time: undefined,
+        information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
       },
       {
-        label: 'Alertas',
-        iconName: 'notifications',
-        badge: 1
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Qua.',
+        date: '16/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
       },
       {
-        label: 'Exercícios',
-        iconName: 'library-books'
-      },
-      {
-        label: 'Planejar',
-        iconName: 'tune'
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Qui.',
+        date: '17/ago',
+        time: '14:40',
+        information: 'Prova de Geografia (10 pontos)'
       }
-    ]
+    ],
   },
   {
-    idFilho: 3,
-    items: [
+    studentId: 2,
+    currentWeekItems: [
       {
-        label: 'Agenda',
-        iconName: 'event-note'
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Seg.',
+        date: '7/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
       },
       {
-        label: 'Notas',
-        iconName: 'filter-9-plus'
+        type: 'E.P.',
+        colorType: '#FFF176',
+        dayOfWeek: 'Ter.',
+        date: '8/ago',
+        time: undefined,
+        information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
       },
       {
-        label: 'Alertas',
-        iconName: 'notifications',
-        badge: 2
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Qua.',
+        date: '9/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
       },
       {
-        label: 'Exercícios',
-        iconName: 'library-books'
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Qui.',
+        date: '10/ago',
+        time: '14:40',
+        information: 'Prova de Geografia (10 pontos)'
       },
       {
-        label: 'Planejar',
-        iconName: 'tune'
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Sex.',
+        date: '11/ago',
+        time: '16:40',
+        information: 'Prova de Matemática (10 pontos)'
       }
-    ]
+    ],
+    nextWeekItems: [
+      {
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Seg.',
+        date: '14/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
+      },
+      {
+        type: 'E.P.',
+        colorType: '#FFF176',
+        dayOfWeek: 'Ter.',
+        date: '15/ago',
+        time: undefined,
+        information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
+      },
+      {
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Qua.',
+        date: '16/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
+      },
+      {
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Qui.',
+        date: '17/ago',
+        time: '14:40',
+        information: 'Prova de Geografia (10 pontos)'
+      },
+      {
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Sex.',
+        date: '18/ago',
+        time: '16:40',
+        information: 'Prova de Matemática (10 pontos)'
+      }
+    ],
+  },
+  {
+    studentId: 3,
+    currentWeekItems: [
+      {
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Seg.',
+        date: '7/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
+      },
+      {
+        type: 'E.P.',
+        colorType: '#FFF176',
+        dayOfWeek: 'Ter.',
+        date: '8/ago',
+        time: undefined,
+        information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
+      },
+      {
+        type: 'E.E.',
+        colorType: '#64B5F6',
+        dayOfWeek: 'Qua.',
+        date: '9/ago',
+        time: '13:00',
+        information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
+      },
+      {
+        type: 'P.',
+        colorType: '#E57373',
+        dayOfWeek: 'Qui.',
+        date: '10/ago',
+        time: '14:40',
+        information: 'Prova de Geografia (10 pontos)'
+      }
+    ],
+    nextWeekItems: [],
   }
 ];
 
 /**
- * AGENDA SEMANA ATUAL
+ * ALERTS
  */
-const agendaSemanaAtual = [
+const alerts = [
   {
-    idFilho: 1,
-    agenda: {
-      label: 'Semana Atual',
-      items: [
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Seg.',
-          diaMes: '7/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '8/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '8/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Matemática (7 exer. /14h30)'
-        },
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Qua.',
-          diaMes: '9/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Qui.',
-          diaMes: '10/ago',
-          horario: '14:40',
-          informacao: 'Prova de Geografia (10 pontos)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Sex.',
-          diaMes: '11/ago',
-          horario: '16:40',
-          informacao: 'Prova de Matemática (10 pontos)'
-        }
-      ]
-    }
-  },
-  {
-    idFilho: 2,
-    agenda: {
-      label: 'Semana Atual',
-      items: [
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Seg.',
-          diaMes: '7/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '8/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-        },
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Qua.',
-          diaMes: '9/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Qui.',
-          diaMes: '10/ago',
-          horario: '14:40',
-          informacao: 'Prova de Geografia (10 pontos)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Sex.',
-          diaMes: '11/ago',
-          horario: '16:40',
-          informacao: 'Prova de Matemática (10 pontos)'
-        }
-      ]
-    }
-  },
-  {
-    idFilho: 3,
-    agenda: {
-      label: 'Semana Atual',
-      items: [
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Seg.',
-          diaMes: '7/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '8/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-        },
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Qua.',
-          diaMes: '9/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Qui.',
-          diaMes: '10/ago',
-          horario: '14:40',
-          informacao: 'Prova de Geografia (10 pontos)'
-        }
-      ]
-    }
-  }
-];
-
-/**
- * AGENDA PROXIMA SEMANA
- */
-const agendaProximaSemana = [
-  {
-    idFilho: 1,
-    agenda: {
-      label: 'Próxima Semana',
-      items: [
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Seg.',
-          diaMes: '14/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '15/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '15/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Matemática (7 exer. /14h30)'
-        },
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Qua.',
-          diaMes: '16/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Qui.',
-          diaMes: '17/ago',
-          horario: '14:40',
-          informacao: 'Prova de Geografia (10 pontos)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Sex.',
-          diaMes: '18/ago',
-          horario: '16:40',
-          informacao: 'Prova de Matemática (10 pontos)'
-        }
-      ]
-    }
-  },
-  {
-    idFilho: 2,
-    agenda: {
-      label: 'Próxima Semana',
-      items: [
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Seg.',
-          diaMes: '14/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '15/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-        },
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Qua.',
-          diaMes: '16/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Qui.',
-          diaMes: '17/ago',
-          horario: '14:40',
-          informacao: 'Prova de Geografia (10 pontos)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Sex.',
-          diaMes: '18/ago',
-          horario: '16:40',
-          informacao: 'Prova de Matemática (10 pontos)'
-        }
-      ]
-    }
-  },
-  {
-    idFilho: 3,
-    agenda: {
-      label: 'Próxima Semana',
-      items: [
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Seg.',
-          diaMes: '14/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-        },
-        {
-          tipo: 'E.P.',
-          corTipo: '#FFF176',
-          diaSemana: 'Ter.',
-          diaMes: '15/ago',
-          horario: undefined,
-          informacao: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-        },
-        {
-          tipo: 'E.E.',
-          corTipo: '#64B5F6',
-          diaSemana: 'Qua.',
-          diaMes: '16/ago',
-          horario: '13:00',
-          informacao: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
-        },
-        {
-          tipo: 'P.',
-          corTipo: '#E57373',
-          diaSemana: 'Qui.',
-          diaMes: '17/ago',
-          horario: '14:40',
-          informacao: 'Prova de Geografia (10 pontos)'
-        }
-      ]
-    }
-  }
-];
-
-/**
- * ALERTAS
- */
-const alertas = [
-  {
-    idFilho: 1,
+    studentId: 1,
     items: [
       {
         title: 'Alerta 1',
@@ -514,7 +290,7 @@ const alertas = [
     ]
   },
   {
-    idFilho: 2,
+    studentId: 2,
     items: [
       {
         title: 'Alerta 1',
@@ -544,7 +320,7 @@ const alertas = [
     ]
   },
   {
-    idFilho: 3,
+    studentId: 3,
     items: [
       {
         title: 'Alerta 1',
@@ -571,9 +347,9 @@ const alertas = [
 ];
 
 /**
- * TEMPO CARGA EXERCICIOS
+ * PLANNING TIMES
  */
-const temposCargaExercicio = [
+const planningTimes = [
   {
     id: 0,
     label: '0min'
@@ -613,241 +389,240 @@ const temposCargaExercicio = [
 ];
 
 /**
- * MATERIAS
+ * SUBJECT AREAS
  */
-const materias = [
+const subjectAreas = [
   {
-    idFilho: 1,
+    studentId: 1,
     items: [
       {
-        id: 'portugues',
-        nome: 'Português'
+        key: 'portugues',
+        name: 'Português'
       },
       {
-        id: 'matematica',
-        nome: 'Matemática'
+        key: 'matematica',
+        name: 'Matemática'
       },
       {
-        id: 'historia',
-        nome: 'História'
+        key: 'historia',
+        name: 'História'
       },
       {
-        id: 'biologia',
-        nome: 'Biologia'
+        key: 'biologia',
+        name: 'Biologia'
       },
       {
-        id: 'geografia',
-        nome: 'Geografia'
+        key: 'geografia',
+        name: 'Geografia'
       },
       {
-        id: 'fisica',
-        nome: 'Física'
+        key: 'fisica',
+        name: 'Física'
       },
       {
-        id: 'quimica',
-        nome: 'Química'
+        key: 'quimica',
+        name: 'Química'
       },
     ]
   },
   {
-    idFilho: 2,
+    studentId: 2,
     items: [
       {
-        id: 'portugues',
-        nome: 'Português'
+        key: 'portugues',
+        name: 'Português'
       },
       {
-        id: 'matematica',
-        nome: 'Matemática'
+        key: 'matematica',
+        name: 'Matemática'
       },
       {
-        id: 'historia',
-        nome: 'História'
+        key: 'historia',
+        name: 'História'
       },
       {
-        id: 'biologia',
-        nome: 'Biologia'
+        key: 'biologia',
+        name: 'Biologia'
       },
       {
-        id: 'geografia',
-        nome: 'Geografia'
+        key: 'geografia',
+        name: 'Geografia'
       },
       {
-        id: 'fisica',
-        nome: 'Física'
+        key: 'fisica',
+        name: 'Física'
       },
       {
-        id: 'quimica',
-        nome: 'Química'
+        key: 'quimica',
+        name: 'Química'
       },
     ]
   },
   {
-    idFilho: 3,
+    studentId: 3,
     items: [
       {
-        id: 'portugues',
-        nome: 'Português'
+        key: 'portugues',
+        name: 'Português'
       },
       {
-        id: 'matematica',
-        nome: 'Matemática'
+        key: 'matematica',
+        name: 'Matemática'
       },
       {
-        id: 'historia',
-        nome: 'História'
+        key: 'historia',
+        name: 'História'
       },
       {
-        id: 'biologia',
-        nome: 'Biologia'
+        key: 'biologia',
+        name: 'Biologia'
       },
       {
-        id: 'geografia',
-        nome: 'Geografia'
+        key: 'geografia',
+        name: 'Geografia'
       },
       {
-        id: 'fisica',
-        nome: 'Física'
+        key: 'fisica',
+        name: 'Física'
       },
       {
-        id: 'quimica',
-        nome: 'Química'
+        key: 'quimica',
+        name: 'Química'
       },
     ]
   }
 ];
 
 /**
- * ALUNOS
+ * STUDENTS
  */
-const alunos = [
+const students = [
   {
     id: 1,
-    nome: 'Afonso Vilarim'
+    name: 'Afonso Vilarim'
   },
   {
     id: 2,
-    nome: 'Aluísio Barbosa'
+    name: 'Aluísio Barbosa'
   },
   {
     id: 3,
-    nome: 'Belchior Guedelha'
+    name: 'Belchior Guedelha'
   },
   {
     id: 4,
-    nome: 'Carminda Bonilha'
+    name: 'Carminda Bonilha'
   },
   {
     id: 5,
-    nome: 'Conceição Torquato'
+    name: 'Conceição Torquato'
   },
   {
     id: 6,
-    nome: 'Cristiana Bahía'
+    name: 'Cristiana Bahía'
   },
   {
     id: 7,
-    nome: 'Damião Varella'
+    name: 'Damião Varella'
   },
   {
     id: 8,
-    nome: 'Denise Macena'
+    name: 'Denise Macena'
   },
   {
     id: 9,
-    nome: 'Délio Bocaiúva'
+    name: 'Délio Bocaiúva'
   },
   {
     id: 10,
-    nome: 'Délio Valadares'
+    name: 'Délio Valadares'
   },
   {
     id: 11,
-    nome: 'Ester Vaz'
+    name: 'Ester Vaz'
   },
   {
     id: 12,
-    nome: 'Frederico Lousã'
+    name: 'Frederico Lousã'
   },
   {
     id: 13,
-    nome: 'Geraldo Miranda'
+    name: 'Geraldo Miranda'
   },
   {
     id: 14,
-    nome: 'Godinho ou Godim Melo'
+    name: 'Godinho ou Godim Melo'
   },
   {
     id: 15,
-    nome: 'Horácio Fogaça'
+    name: 'Horácio Fogaça'
   },
   {
     id: 16,
-    nome: 'Ilma Vellozo'
+    name: 'Ilma Vellozo'
   },
   {
     id: 17,
-    nome: 'Isabel Avelar'
+    name: 'Isabel Avelar'
   },
   {
     id: 18,
-    nome: 'Judite Zarco'
+    name: 'Judite Zarco'
   },
   {
     id: 19,
-    nome: 'Julieta Pasos'
+    name: 'Julieta Pasos'
   },
   {
     id: 20,
-    nome: 'Lucília Carlos'
+    name: 'Lucília Carlos'
   },
   {
     id: 21,
-    nome: 'Luzia Zalazar'
+    name: 'Luzia Zalazar'
   },
   {
     id: 22,
-    nome: 'Miriam Villégas'
+    name: 'Miriam Villégas'
   },
   {
     id: 23,
-    nome: 'Noêmia Azeredo'
+    name: 'Noêmia Azeredo'
   },
   {
     id: 24,
-    nome: 'Quintino Gorjão'
+    name: 'Quintino Gorjão'
   },
   {
     id: 25,
-    nome: 'Roberta Pedrozo'
+    name: 'Roberta Pedrozo'
   },
   {
     id: 26,
-    nome: 'Rosália Silva'
+    name: 'Rosália Silva'
   },
   {
     id: 27,
-    nome: 'Rúben Pastana'
+    name: 'Rúben Pastana'
   },
   {
     id: 28,
-    nome: 'Siquenique Portella'
+    name: 'Siquenique Portella'
   },
   {
     id: 29,
-    nome: 'Uriel Acevedo'
+    name: 'Uriel Acevedo'
   },
   {
     id: 30,
-    nome: 'Zita Varela'
+    name: 'Zita Varela'
   },
 ];
 
 /**
- * TURMAS
+ * CLASSES
  */
-
-const turmas = [
+const classes = [
   '6 Ano - Turma A',
   '6 Ano - Turma B',
   '6 Ano - Turma C',
@@ -857,15 +632,12 @@ const turmas = [
 ];
 
 export {
-  usuarioPai,
-  filhos,
-  menu,
-  visaoGeralFooterMenus,
-  agendaSemanaAtual,
-  agendaProximaSemana,
-  alertas,
-  materias,
-  temposCargaExercicio,
-  alunos,
-  turmas
+  users,
+  childStudents,
+  calendars,
+  alerts,
+  subjectAreas,
+  planningTimes,
+  students,
+  classes,
 };

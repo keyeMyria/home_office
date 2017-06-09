@@ -1,115 +1,77 @@
-import React from 'react';
 import { observable } from 'mobx';
-
-import Agenda from '../Agenda';
-import Notas from '../Notas';
-import Alertas from '../Alertas';
-import Exercicios from '../Exercicios';
-import CargaMinima from '../CargaMinima';
 
 import * as MOCK from '../mock';
 
 class AppStore {
 
-  // Naviagation
-  @observable currentVisaoGeralPage = {};
+  // Statics
+  @observable users = MOCK.users;
+  @observable childStudents = MOCK.childStudents;
+  @observable calendars = MOCK.calendars;
+  @observable alerts = MOCK.alerts;
+  @observable subjectAreas = MOCK.subjectAreas;
+  @observable planningTimes = MOCK.planningTimes;
+  @observable students = MOCK.students;
+  @observable classes = MOCK.classes;
 
-  // Estaticos
-  @observable menu = MOCK.menu;
-  @observable usuario = MOCK.usuarioPai;
-  @observable filhos = MOCK.filhos;
-  @observable materias = MOCK.materias;
-  @observable temposCargaExercicio = MOCK.temposCargaExercicio;
-  @observable alertas = MOCK.alertas;
-  @observable agendaSemanaAtual = MOCK.agendaSemanaAtual;
-  @observable agendaProximaSemana = MOCK.agendaProximaSemana;
-  @observable visaoGeralFooterMenus = MOCK.visaoGeralFooterMenus;
-  @observable alunos = MOCK.alunos;
-  @observable turmas = MOCK.turmas;
+  // Dynamics
+  @observable userSelected = this.users[0];
+  @observable studentSelected = {};
+  @observable studentCalendar = {};
+  @observable studentAlerts = [];
+  @observable studentSubjectAreas = [];
+  @observable studentPlanning = {};
+  @observable plannings = [];
+  @observable alertBadgeCount = 0;
 
-  // Dinamicos
-  @observable filhoSelecionado = {};
-  @observable filhoVisaoGeralMenus = [];
-  @observable filhoAgendaSemanaAtual = [];
-  @observable filhoAgendaProximaSemana = [];
-  @observable filhoAlertas = [];
-  @observable filhoMaterias = [];
-  @observable filhoCargaExercicio = {};
-  @observable cargaExercicios = [];
-
+  // Controller
   @observable formChanged = false;
+  @observable absenses = [];
 
-  @observable faltas = [];
+  // Navigation (Using BubbleMenu)
 
-  // TODO: Colcar para selecionar pais diferentes por Id
-  selecionarUsuarioPai() {
-    this.selecionarFilho(1);
-  }
+  selectStudent(id) {
 
-  selecionarFilho(id) {
-    this.filhoSelecionado = this.filhos.filter(filho => filho.id === id)[0];
-    this.filhoAgendaSemanaAtual = this.agendaSemanaAtual.filter(item => item.idFilho === id)[0];
-    this.filhoAgendaProximaSemana = this.agendaProximaSemana.filter(item => item.idFilho === id)[0];
-    this.filhoAlertas = this.alertas.filter(item => item.idFilho === id)[0];
-    this.filhoVisaoGeralMenus = this.visaoGeralFooterMenus.filter(item => item.idFilho === id)[0];
-    this.filhoMaterias = this.materias.filter(item => item.idFilho === id)[0];
+    this.studentSelected = this.childStudents.filter(o => o.id === id)[0];
+    this.studentCalendar = this.calendars.filter(o => o.studentId === id)[0];
+    this.studentSubjectAreas = this.subjectAreas.filter(o => o.studentId === id)[0];
 
-    this.filhoCargaExercicio = this.cargaExercicios.length > 0 ? this.cargaExercicios.filter(item => item.idFilho === id)[0] || {} : {};
+    this.studentAlerts = this.alerts.filter(o => o.studentId === id)[0];
+    this.alertBadgeCount = this.studentAlerts != null ? this.studentAlerts.items.filter(o => !o.readed).length : 0;
+
+    this.studentPlanning = this.plannings.length > 0 ? this.plannings.filter(o => o.studentId === id)[0] || {} : {};
     this.formChanged = true;
   }
+
+  // Form
 
   toogleFormChanged() {
     this.formChanged = !this.formChanged;
   }
 
-  /**
-   * Carga minima de exercicios
-   */
+  // Planning
 
-  salvarCargaMinimaFilho(values) {
-    values.idFilho = this.filhoSelecionado.id;
-    this.filhoCargaExercicio = values;
-    if (this.cargaExercicios.length > 0) {
-      this.cargaExercicios = this.cargaExercicios.filter(item => item.idFilho !== this.filhoSelecionado.id);
+  saveStudentPlanning(values) {
+    values.studentId = this.studentSelected.id;
+    this.studentPlanning = values;
+    if (this.plannings.length > 0) {
+      this.plannings = this.plannings.filter(o => o.studentId !== this.studentSelected.id);
     }
-    this.cargaExercicios.push(this.filhoCargaExercicio);
+    this.plannings.push(this.studentPlanning);
   }
 
-  /**
-   * Faltas
-   */
+  // ABSENSE
 
-  marcarFaltaAluno(idAluno) {
-    this.faltas.push(idAluno);
+  checkStudentAbsense(studentId) {
+    this.absenses.push(studentId);
   }
 
-  removerFaltaAluno(idAluno) {
-    this.faltas = this.faltas.filter(id => id !== idAluno);
+  uncheckStudentAbsense(studentId) {
+    this.absenses = this.absenses.filter(id => id !== studentId);
   }
 
   removerFaltaTodosAlunos() {
-    this.faltas = [];
-  }
-
-  navigateVisaoGeralPage(index) {
-    switch (index) {
-      case 0:
-        this.currentVisaoGeralPage = <Agenda title="Agenda" />;
-        break;
-      case 1:
-        this.currentVisaoGeralPage = <Notas title="Notas" />;
-        break;
-      case 2:
-        this.currentVisaoGeralPage = <Alertas title="Alertas" />;
-        break;
-      case 3:
-        this.currentVisaoGeralPage = <Exercicios title="Exercícios" />;
-        break;
-      case 4:
-        this.currentVisaoGeralPage = <CargaMinima title="Planejar" />;
-        break;
-    }
-    this.currentVisaoGeralPage.index = index;
+    this.absenses = [];
   }
 }
 

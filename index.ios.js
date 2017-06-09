@@ -11,7 +11,7 @@ import { createStore } from 'redux';
 import allReducers from './app/reducers';
 const formStore = createStore(allReducers);
 
-import App from './app/App';
+import AppRouter from './app/modules/parent/AppRouter';
 
 export class EducareApp extends Component {
 
@@ -19,7 +19,7 @@ export class EducareApp extends Component {
     return (
       <Provider store={formStore}>
         <StyleProvider style={educareTheme}>
-          <App />
+          <AppRouter />
         </StyleProvider>
       </Provider>
     );

@@ -34,11 +34,18 @@ educareTheme['NativeBase.Container'] = Object.assign(educareTheme['NativeBase.Co
 educareTheme['NativeBase.List'] = Object.assign(educareTheme['NativeBase.List'] || {}, {
   '.sideBarMenuList': {
     'NativeBase.ListItem': {
+      '.last': {
+        borderBottomWidth: 1,
+      },
       borderBottomWidth: 0,
       'NativeBase.Icon': {
         fontSize: 20,
-        marginRight: 10
-      }
+        marginRight: 10,
+        color: '#424242'
+      },
+      'NativeBase.Text': {
+        color: '#424242'
+      },
     }
   },
   '.agendaList': {
@@ -103,7 +110,7 @@ educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Heade
 
 // Card
 educareTheme['NativeBase.Card'] = Object.assign(educareTheme['NativeBase.Card'] || {}, {
-  '.alertaCards': {
+  '.cardAlert': {
     'NativeBase.CardItem': {
       '.readed': {
         backgroundColor: '#DCEDC8'
@@ -131,11 +138,11 @@ const styles = {
   bubbleMenuItemText: {
     fontSize: 12
   },
-  bubbleMenuItemAtivo: {
+  bubbleMenuItemActive: {
     borderColor: material.PRIMARY_COLOR,
     borderWidth: 3
   },
-  bubbleMenuItemInativo: {
+  bubbleMenuItemInactive: {
     borderColor: '#E0E0E0',
     borderWidth: 1
   },
@@ -144,15 +151,15 @@ const styles = {
     borderWidth: 1,
     borderColor: '#E0E0E0'
   },
-  colunaLinha: {
+  gridColumn: {
     height: 55,
     alignItems: 'center'
   },
-  colunaLinhaAlignLeft: {
+  gridColumnAlignLeft: {
     height: 55,
     alignItems: 'flex-start'
   },
-  textoLinha: {
+  gridRowText: {
     fontSize: 14
   }
 };
