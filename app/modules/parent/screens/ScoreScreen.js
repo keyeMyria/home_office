@@ -19,6 +19,7 @@ import BubbleMenu from '../components/BubbleMenu';
 
 // @observer
 export default class AlertScreen extends Component {
+  
   render() {
 
     const { navigate } = this.props.navigation;
