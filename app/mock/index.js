@@ -631,6 +631,19 @@ const classes = [
   { id: 6, name: '7 Ano - Turma C' },
 ];
 
+/**
+ * OCCURRENCE REASONS
+ */
+
+const occurrenceReasons = [
+  { id: 0, name: 'Selecione' },
+  { id: 1, name: 'Conversa constante' },
+  { id: 2, name: 'Demora a retornar do recreio' },
+  { id: 3, name: 'Desrespeito a colegas' },
+  { id: 4, name: 'Desrespeito a funcionários' },
+  { id: 5, name: 'Outros motivos' },
+];
+
 export {
   users,
   childStudents,
@@ -640,4 +653,5 @@ export {
   planningTimes,
   students,
   classes,
+  occurrenceReasons,
 };

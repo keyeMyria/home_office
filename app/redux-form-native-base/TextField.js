@@ -1,21 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Input, Item, Label, Icon } from 'native-base';
+import { Input, Item, Label } from 'native-base';
 
-// TODO: Implementar o campo Text para os formulários
-
-export default ({ input, label, meta: { touched, error }}) => {
-  var hasError = !!error && touched;
-  var isSuccess = !hasError && touched;
+export default ({ input, label, ...custom }) => {
   return (
     <View>
-      <Item error={hasError} success={isSuccess} inlineLabel>
+      <Item floatingLabel>
         <Label>{label}</Label>
-        <Input {...input} />
-        {hasError && <Icon name='error' />}
-        {isSuccess && <Icon name='check-circle' />}
+        <Input {...input} {...custom} />
       </Item>
-      {/*{hasError && <Text>{error}</Text>}*/}
     </View>
   );
 };

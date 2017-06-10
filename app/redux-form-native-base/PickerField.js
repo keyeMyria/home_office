@@ -1,17 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Picker, Item, Label, Icon } from 'native-base';
+import { Picker, Item, Label } from 'native-base';
 
-export default (field) => {
-
-  const { input, label, initialValue, meta: { touched, error }, children, ...custom } = field;
-
-  var hasError = !!error && touched;
-  var isSuccess = !hasError && touched;
-
+export default ({ input, label, initialValue, children, ...custom }) => {
   return (
     <View>
-      <Item error={hasError} success={isSuccess} inlineLabel>
+      <Item inlineLabel>
         <Label style={{ flex: 0.4 }}>{label}</Label>
         <Picker
           iosHeader="Selecione"
@@ -22,10 +16,7 @@ export default (field) => {
           {...custom}>
           {children}
         </Picker>
-        {hasError && <Icon name='error' />}
-        {isSuccess && <Icon name='check-circle' />}
       </Item>
-      {/*{hasError && <Text>{error}</Text>}*/}
     </View>
   );
 };

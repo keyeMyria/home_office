@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  Alert,
+} from 'react-native';
 import {
   Container,
   Header,
   Title,
   Content,
-  Left,
   Right,
+  Left,
   Icon,
   Body,
   Text,
-  Button,
   Picker,
-  Toast,
+  Form,
 } from 'native-base';
 import {
   Field,
@@ -66,13 +68,7 @@ class PlanningScreen extends Component {
 
   save = values => {
     store.saveStudentPlanning(values);
-
-    Toast.show({
-      text: 'Dados salvos com sucesso!',
-      type: 'success',
-      position: 'bottom',
-      buttonText: 'OK'
-    });
+    Alert.alert('Sucesso', 'Dados salvos com sucesso!');
   }
 
   render() {
@@ -94,26 +90,29 @@ class PlanningScreen extends Component {
           <Body>
             <Title>Planejar</Title>
           </Body>
-          <Right />
+          <Right>
+            <TouchableWithoutFeedback onPress={this.props.handleSubmit(this.save)}>
+              <Text>Salvar</Text>
+            </TouchableWithoutFeedback>
+          </Right>
         </Header>
         <Content stickyHeaderIndices={[0]}>
           <BubbleMenu />
-          <Content padder>
-            {subjectAreas.map((subjectArea, index) => {
-              const currentValue = store.studentPlanning[subjectArea.key] || 0;
-              return (
-                <Field key={index}
-                  name={subjectArea.key}
-                  label={subjectArea.name}
-                  component={PickerField}
-                  props={{ initialValue: currentValue }}>
-                  {pickerItems}
-                </Field>
-              );
-            })}
-            <Button block info onPress={this.props.handleSubmit(this.save)} style={{ marginTop: 20 }}>
-              <Text>Salvar</Text>
-            </Button>
+          <Content>
+            <Form>
+              {subjectAreas.map((subjectArea, index) => {
+                const currentValue = store.studentPlanning[subjectArea.key] || 0;
+                return (
+                  <Field key={index}
+                    name={subjectArea.key}
+                    label={subjectArea.name}
+                    component={PickerField}
+                    props={{ initialValue: currentValue }}>
+                    {pickerItems}
+                  </Field>
+                );
+              })}
+            </Form>
           </Content>
         </Content>
       </Container>

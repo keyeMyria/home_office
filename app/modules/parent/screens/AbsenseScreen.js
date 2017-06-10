@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  Alert,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -14,7 +17,6 @@ import {
   CheckBox,
   List,
   ListItem,
-  Toast,
 } from 'native-base';
 
 import { observer } from 'mobx-react/native';
@@ -24,24 +26,26 @@ import store from '../../../store';
 export default class AbsenseScreen extends Component {
 
   save = () => {
-    Toast.show({
-      text: 'Dados salvos com sucesso!',
-      type: 'success',
-      position: 'bottom',
-      buttonText: 'OK'
-    });
+    Alert.alert('Sucesso', 'Dados salvos com sucesso!');
+    this.props.navigation.goBack();
+  }
+
+  checkUncheckStudentAbsense = (checked, studentId) => {
+    checked ?
+      store.uncheckStudentAbsense(studentId) :
+      store.checkStudentAbsense(studentId);
   }
 
   render() {
 
-    const { navigate } = this.props.navigation;
+    const { goBack } = this.props.navigation;
 
     return (
       <Container>
         <Header appHeader>
           <Left>
-            <TouchableWithoutFeedback onPress={() => navigate('DrawerOpen')}>
-              <Icon name='menu' />
+            <TouchableWithoutFeedback onPress={() => goBack()}>
+              <Icon name='arrow-back' />
             </TouchableWithoutFeedback>
           </Left>
           <Body>
@@ -49,7 +53,7 @@ export default class AbsenseScreen extends Component {
           </Body>
           <Right>
             <TouchableWithoutFeedback onPress={this.save}>
-              <Icon name="save" />
+              <Text>Salvar</Text>
             </TouchableWithoutFeedback>
           </Right>
         </Header>
@@ -59,7 +63,7 @@ export default class AbsenseScreen extends Component {
               const checked = store.absenses.filter(studentId => studentId === student.id).length > 0;
               return (
                 <ListItem key={index} icon
-                  onPress={() => checked ? store.uncheckStudentAbsense(student.id) : store.checkStudentAbsense(student.id)}>
+                  onPress={() => this.checkUncheckStudentAbsense(checked, student.id)}>
                   <Left>
                     <Thumbnail small source={require('../../../img/user.png')} />
                   </Left>

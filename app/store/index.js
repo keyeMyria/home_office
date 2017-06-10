@@ -13,6 +13,7 @@ class AppStore {
   @observable planningTimes = MOCK.planningTimes;
   @observable students = MOCK.students;
   @observable classes = MOCK.classes;
+  @observable occurrenceReasons = MOCK.occurrenceReasons;
 
   // Dynamics
   @observable userSelected = this.users[0];
@@ -27,6 +28,7 @@ class AppStore {
   // Controller
   @observable formChanged = false;
   @observable absenses = [];
+  @observable occurrences = [];
 
   // Navigation (Using BubbleMenu)
 
@@ -70,9 +72,16 @@ class AppStore {
     this.absenses = this.absenses.filter(id => id !== studentId);
   }
 
-  removerFaltaTodosAlunos() {
-    this.absenses = [];
+  // OCCURRENCE
+
+  checkStudentOccurrence(studentId) {
+    this.occurrences.push(studentId);
   }
+
+  uncheckStudentOccurrence(studentId) {
+    this.occurrences = this.occurrences.filter(id => id !== studentId);
+  }
+
 }
 
 export default new AppStore();
