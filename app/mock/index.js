@@ -634,7 +634,6 @@ const classes = [
 /**
  * OCCURRENCE REASONS
  */
-
 const occurrenceReasons = [
   { id: 0, name: 'Selecione' },
   { id: 1, name: 'Conversa constante' },
