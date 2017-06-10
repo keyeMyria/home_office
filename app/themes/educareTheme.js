@@ -5,8 +5,8 @@ const educareTheme = getTheme(material);
 
 // Container
 educareTheme['NativeBase.Container'] = Object.assign(educareTheme['NativeBase.Container'] || {}, {
+  backgroundColor: '#FFFFFF',
   '.sideBarContainer': {
-    backgroundColor: '#FFFFFF',
     'NativeBase.ListItem': {
       backgroundColor: material.PRIMARY_COLOR,
       paddingTop: 50,
@@ -103,6 +103,10 @@ educareTheme['NativeBase.Header'] = Object.assign(educareTheme['NativeBase.Heade
     'NativeBase.Right': {
       'NativeBase.Icon': {
         color: '#FFFFFF'
+      },
+      'NativeBase.Text': {
+        color: '#FFFFFF',
+        fontWeight: 'bold'
       }
     }
   }
