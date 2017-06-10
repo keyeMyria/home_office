@@ -623,12 +623,12 @@ const students = [
  * CLASSES
  */
 const classes = [
-  '6 Ano - Turma A',
-  '6 Ano - Turma B',
-  '6 Ano - Turma C',
-  '7 Ano - Turma A',
-  '7 Ano - Turma B',
-  '7 Ano - Turma C'
+  { id: 1, name: '6 Ano - Turma A' },
+  { id: 2, name: '6 Ano - Turma B' },
+  { id: 3, name: '6 Ano - Turma C' },
+  { id: 4, name: '7 Ano - Turma A' },
+  { id: 5, name: '7 Ano - Turma B' },
+  { id: 6, name: '7 Ano - Turma C' },
 ];
 
 export {
