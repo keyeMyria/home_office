@@ -23,7 +23,7 @@ const childStudents = [
   },
   {
     id: 3,
-    name: 'Maria'
+    name: 'Arwen'
   }
 ];
 
@@ -499,15 +499,15 @@ const subjectAreas = [
 const students = [
   {
     id: 1,
-    name: 'Afonso Vilarim'
+    name: 'Caio Gazola'
   },
   {
     id: 2,
-    name: 'Aluísio Barbosa'
+    name: 'Filipe Mendes'
   },
   {
     id: 3,
-    name: 'Belchior Guedelha'
+    name: 'Arwen Undómiel'
   },
   {
     id: 4,
@@ -632,6 +632,48 @@ const classes = [
 ];
 
 /**
+ * SCHOOL YEARS
+ */
+const schoolYears = [
+  {
+    id: 1,
+    name: '6º',
+    classes: [
+      { id: 1, name: 'Turma A' },
+      { id: 2, name: 'Turma B' },
+      { id: 3, name: 'Turma C' },
+    ]
+  },
+  {
+    id: 2,
+    name: '7º',
+    classes: [
+      { id: 1, name: 'Turma A' },
+      { id: 2, name: 'Turma B' },
+      { id: 3, name: 'Turma C' },
+    ]
+  },
+  {
+    id: 3,
+    name: '8º',
+    classes: [
+      { id: 1, name: 'Turma A' },
+      { id: 2, name: 'Turma B' },
+      { id: 3, name: 'Turma C' },
+    ]
+  },
+  {
+    id: 4,
+    name: '9º',
+    classes: [
+      { id: 1, name: 'Turma A' },
+      { id: 2, name: 'Turma B' },
+      { id: 3, name: 'Turma C' },
+    ]
+  }
+];
+
+/**
  * OCCURRENCE REASONS
  */
 const occurrenceReasons = [
@@ -653,4 +695,5 @@ export {
   students,
   classes,
   occurrenceReasons,
+  schoolYears,
 };

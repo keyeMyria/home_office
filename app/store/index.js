@@ -14,6 +14,7 @@ class AppStore {
   @observable students = MOCK.students;
   @observable classes = MOCK.classes;
   @observable occurrenceReasons = MOCK.occurrenceReasons;
+  @observable schoolYears = MOCK.schoolYears;
 
   // Dynamics
   @observable userSelected = this.users[0];
@@ -24,16 +25,16 @@ class AppStore {
   @observable studentPlanning = {};
   @observable plannings = [];
   @observable alertBadgeCount = 0;
+  @observable schoolYearSelected = this.schoolYears[0];
 
   // Controller
   @observable formChanged = false;
   @observable absenses = [];
   @observable occurrences = [];
 
-  // Navigation (Using BubbleMenu)
+  // Navigation (Using BubbleMenu - Student)
 
   selectStudent(id) {
-
     this.studentSelected = this.childStudents.filter(o => o.id === id)[0];
     this.studentCalendar = this.calendars.filter(o => o.studentId === id)[0];
     this.studentSubjectAreas = this.subjectAreas.filter(o => o.studentId === id)[0];
@@ -43,6 +44,12 @@ class AppStore {
 
     this.studentPlanning = this.plannings.length > 0 ? this.plannings.filter(o => o.studentId === id)[0] || {} : {};
     this.formChanged = true;
+  }
+
+   // Navigation (Using BubbleMenu - School Year)
+
+  selectSchoolYear(id) {
+    this.schoolYearSelected = this.schoolYears.filter(o => o.id === id)[0];
   }
 
   // Form
@@ -80,6 +87,21 @@ class AppStore {
 
   uncheckStudentOccurrence(studentId) {
     this.occurrences = this.occurrences.filter(id => id !== studentId);
+  }
+
+  // IMAGES
+
+  getStudentImagebyId(studentId) {
+    switch (studentId) {
+      case 1:
+        return require('../img/caio.png');
+      case 2:
+        return require('../img/filipe.png');
+      case 3:
+        return require('../img/arwen.png');
+      default:
+        return require('../img/user.png');
+    }
   }
 
 }

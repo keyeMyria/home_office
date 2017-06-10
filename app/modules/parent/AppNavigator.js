@@ -25,7 +25,7 @@ export default class AppNavigator extends Component {
       <Container sideBarContainer>
         <ListItem>
           <Left>
-            <Thumbnail source={require('../../img/user.png')} />
+            <Thumbnail source={require('../../img/maycon.png')} />
           </Left>
           <Body>
             <Text>{store.userSelected.name}</Text>

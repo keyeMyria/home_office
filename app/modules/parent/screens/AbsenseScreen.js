@@ -65,7 +65,7 @@ export default class AbsenseScreen extends Component {
                 <ListItem key={index} icon
                   onPress={() => this.checkUncheckStudentAbsense(checked, student.id)}>
                   <Left>
-                    <Thumbnail small source={require('../../../img/user.png')} />
+                    <Thumbnail small source={store.getStudentImagebyId(student.id)} />
                   </Left>
                   <Body>
                     <Text>{student.name}</Text>

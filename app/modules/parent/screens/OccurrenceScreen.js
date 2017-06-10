@@ -69,7 +69,7 @@ export default class OccurrenceScreen extends Component {
                 <ListItem key={index} icon
                   onPress={() => this.checkUncheckStudentOccurrence(checked, student.id, navigate)}>
                   <Left>
-                    <Thumbnail small source={require('../../../img/user.png')} />
+                    <Thumbnail small source={store.getStudentImagebyId(student.id)} />
                   </Left>
                   <Body>
                     <Text>{student.name}</Text>

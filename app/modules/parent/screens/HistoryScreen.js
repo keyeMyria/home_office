@@ -33,13 +33,13 @@ export default class ExerciseScreen extends Component {
             </TouchableWithoutFeedback>
           </Left>
           <Body>
-            <Title>History</Title>
+            <Title>Histórico</Title>
           </Body>
           <Right />
         </Header>
         <Content stickyHeaderIndices={[0]}>
           <BubbleMenu />
-          <Text>History</Text>
+          <Text>Histórico</Text>
         </Content>
       </Container>
     );

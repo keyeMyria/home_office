@@ -165,7 +165,13 @@ const styles = {
   },
   gridRowText: {
     fontSize: 14
-  }
+  },
+  bubbleMenuButtonActive: {
+    backgroundColor: '#26C6DA'
+  },
+  bubbleMenuButtonInactive: {
+    
+  },
 };
 
 export {
