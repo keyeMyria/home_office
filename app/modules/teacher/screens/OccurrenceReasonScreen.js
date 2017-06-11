@@ -1,30 +1,12 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Left,
-  Right,
-  Icon,
-  Body,
-  Text,
-  Picker,
-  Form,
-} from 'native-base';
-import {
-  Field,
-  reduxForm,
-} from 'redux-form';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Text, Picker, Form } from 'native-base';
+import { Field, reduxForm } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
 
-import {
-  PickerField,
-  TextField,
-} from '../../../redux-form-native-base';
+import { PickerField, TextField } from '../../../components/fields';
 
 @observer
 class OccurrenceReasonScreen extends Component {
@@ -45,7 +27,7 @@ class OccurrenceReasonScreen extends Component {
             </TouchableWithoutFeedback>
           </Left>
           <Body>
-            <Title>Sel. Motivo</Title>
+            <Title>Ocorrência</Title>
           </Body>
           <Right>
             <TouchableWithoutFeedback onPress={() => goBack()}>
@@ -59,7 +41,7 @@ class OccurrenceReasonScreen extends Component {
               name="motivo"
               label="Motivo"
               component={PickerField}
-              props={{ initialValue: 0 }}>
+              props={{ initialValue: 1 }}>
               {pickerItems}
             </Field>
             <Field

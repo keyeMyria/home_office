@@ -1,9 +1,5 @@
 import { Dimensions } from 'react-native';
-import {
-  DrawerNavigator,
-  TabNavigator,
-  StackNavigator,
-} from 'react-navigation';
+import { DrawerNavigator, TabNavigator } from 'react-navigation';
 
 // Components
 import AppNavigator from './AppNavigator';
@@ -16,10 +12,6 @@ import {
   ScoreScreen,
   MessageScreen,
   HistoryScreen,
-  AbsenseScreen,
-  OccurrenceScreen,
-  SelectClassScreen,
-  OccurrenceReasonScreen,
 } from './screens';
 
 const HomeRouter = TabNavigator(
@@ -36,24 +28,11 @@ const HomeRouter = TabNavigator(
   }
 );
 
-const AbsenseOccurrenceRouter = StackNavigator(
-  {
-    SelectClassScreen: { screen: SelectClassScreen },
-    AbsenseScreen: { screen: AbsenseScreen },
-    OccurrenceScreen: { screen: OccurrenceScreen },
-    OccurrenceReasonScreen: { screen: OccurrenceReasonScreen },
-  },
-  {
-    headerMode: 'none',
-  }
-);
-
 export default DrawerNavigator(
   {
     HomeRouter: { screen: HomeRouter },
     MessageScreen: { screen: MessageScreen },
     HistoryScreen: { screen: HistoryScreen },
-    AbsenseOccurrenceRouter: { screen: AbsenseOccurrenceRouter },
   },
   {
     headerMode: 'none',

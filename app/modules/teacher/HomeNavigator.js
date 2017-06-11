@@ -9,23 +9,23 @@ export default class HomeTabNavigator extends Component {
 
   render() {
 
-    const { navigate, state: { index }} = this.props.navigation;
-    const alertBadgeCount = store.studentAlerts != null ? store.studentAlerts.items.filter(o => !o.readed).length : 0;
+    const { navigate, state: { index } } = this.props.navigation;
+    const alertBadgeCount = store.teacherAlerts != null ? store.teacherAlerts.items.filter(o => !o.readed).length : 0;
 
     return (
       <Footer>
         <FooterTab footerTabNavigation>
           <Button
             active={index === 0}
-            onPress={() => navigate('CalendarScreen')}>
-            <Icon name="event-note" />
-            <Text>Agenda</Text>
+            onPress={() => navigate('ExerciseScreen')}>
+            <Icon name="tune" />
+            <Text>Exercícios</Text>
           </Button>
           <Button
             active={index === 1}
-            onPress={() => navigate('ScoreScreen')}>
-            <Icon name="filter-9-plus" />
-            <Text>Notas</Text>
+            onPress={() => navigate('ExamScreen')}>
+            <Icon name="assignment-turned-in" />
+            <Text>Provas</Text>
           </Button>
           <Button
             active={index === 2}
@@ -37,15 +37,15 @@ export default class HomeTabNavigator extends Component {
           </Button>
           <Button
             active={index === 3}
-            onPress={() => navigate('ExerciseScreen')}>
+            onPress={() => navigate('HomeworkScreen')}>
             <Icon name="library-books" />
-            <Text>Exercícios</Text>
+            <Text>Trabalhos</Text>
           </Button>
           <Button
             active={index === 4}
-            onPress={() => navigate('PlanningScreen')}>
-            <Icon name="tune" />
-            <Text>Planejar</Text>
+            onPress={() => navigate('AnalysisScreen')}>
+            <Icon name="insert-chart" />
+            <Text>Análises</Text>
           </Button>
         </FooterTab>
       </Footer>

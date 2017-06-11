@@ -5,15 +5,13 @@ import { Container, Header, Title, Content, Left, Right, Icon, Card, CardItem, B
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
 
-import BubbleMenu from '../../../components/BubbleMenu';
-
 @observer
 export default class AlertScreen extends Component {
 
   render() {
 
     const { navigate } = this.props.navigation;
-    const alerts = store.studentAlerts.items;
+    const alerts = store.teacherAlerts.items;
 
     return (
       <Container>
@@ -28,8 +26,7 @@ export default class AlertScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content stickyHeaderIndices={[0]}>
-          <BubbleMenu />
+        <Content>
           <Content padder>
             {alerts.map((alert, index) =>
               <Card key={index} cardAlert>

@@ -11,9 +11,9 @@ import {
 } from 'native-base';
 
 import { observer } from 'mobx-react/native';
-import store from '../../../store';
+import store from '../store';
 
-import { styles } from '../../../themes/educareTheme';
+import { styles } from '../themes/educareTheme';
 
 const StudentItem = props => {
   return (

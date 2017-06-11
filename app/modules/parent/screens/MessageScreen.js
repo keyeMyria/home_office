@@ -15,7 +15,7 @@ import {
 // import { observer } from 'mobx-react/native';
 // import store from '../../../store';
 
-import BubbleMenu from '../components/BubbleMenu';
+import BubbleMenu from '../../../components/BubbleMenu';
 
 // @observer
 export default class MessageScreen extends Component {

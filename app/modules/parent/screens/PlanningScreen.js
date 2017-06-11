@@ -1,32 +1,14 @@
 import React, { Component } from 'react';
-import {
-  TouchableWithoutFeedback,
-  Alert,
-} from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Right,
-  Left,
-  Icon,
-  Body,
-  Text,
-  Picker,
-  Form,
-} from 'native-base';
-import {
-  Field,
-  reduxForm,
-} from 'redux-form';
+import { TouchableWithoutFeedback, Alert } from 'react-native';
+import { Container, Header, Title, Content, Right, Left, Icon, Body, Text, Picker, Form } from 'native-base';
+import { Field, reduxForm } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
 
-import BubbleMenu from '../components/BubbleMenu';
+import BubbleMenu from '../../../components/BubbleMenu';
 
-import { PickerField } from '../../../redux-form-native-base';
+import { PickerField } from '../../../components/fields';
 
 // const validate = values => {
 //   const error = {};

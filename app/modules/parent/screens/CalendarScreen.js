@@ -1,22 +1,6 @@
 import React, { Component } from 'react';
-import {
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Left,
-  Right,
-  Icon,
-  List,
-  ListItem,
-  Separator,
-  Body,
-  Text,
-} from 'native-base';
+import { TouchableWithoutFeedback, View } from 'react-native';
+import { Container, Header, Title, Content, Left, Right, Icon, List, ListItem, Separator, Body, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 import { observer } from 'mobx-react/native';
@@ -24,7 +8,7 @@ import store from '../../../store';
 
 import { styles } from '../../../themes/educareTheme';
 
-import BubbleMenu from '../components/BubbleMenu';
+import BubbleMenu from '../../../components/BubbleMenu';
 
 const CalendarItem = props => {
   const item = props.item;

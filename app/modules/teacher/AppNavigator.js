@@ -32,9 +32,17 @@ export default class AppNavigator extends Component {
               <Icon name="question-answer" />
               <Text>Mensagens</Text>
             </ListItem>
-            <ListItem onPress={() => navigate('HistoryScreen')} last>
+            <ListItem onPress={() => navigate('HistoryScreen')}>
               <Icon name="history" />
               <Text>Histórico</Text>
+            </ListItem>
+            <ListItem onPress={() => navigate('SelectClassScreen', { nextScreen: 'AbsenseScreen' })}>
+              <Icon name="assignment-turned-in" />
+              <Text>Faltas</Text>
+            </ListItem>
+            <ListItem onPress={() => navigate('SelectClassScreen', { nextScreen: 'OccurrenceScreen' })} last>
+              <Icon name="highlight-off" />
+              <Text>Ocorrências</Text>
             </ListItem>
             <ListItem>
               <Icon name="announcement" />

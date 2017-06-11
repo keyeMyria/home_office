@@ -396,30 +396,37 @@ const subjectAreas = [
     studentId: 1,
     items: [
       {
+        id: 1,
         key: 'portugues',
         name: 'Português'
       },
       {
+        id: 2,
         key: 'matematica',
         name: 'Matemática'
       },
       {
+        id: 3,
         key: 'historia',
         name: 'História'
       },
       {
+        id: 4,
         key: 'biologia',
         name: 'Biologia'
       },
       {
+        id: 5,
         key: 'geografia',
         name: 'Geografia'
       },
       {
+        id: 6,
         key: 'fisica',
         name: 'Física'
       },
       {
+        id: 7,
         key: 'quimica',
         name: 'Química'
       },
@@ -429,30 +436,37 @@ const subjectAreas = [
     studentId: 2,
     items: [
       {
+        id: 1,
         key: 'portugues',
         name: 'Português'
       },
       {
+        id: 2,
         key: 'matematica',
         name: 'Matemática'
       },
       {
+        id: 3,
         key: 'historia',
         name: 'História'
       },
       {
+        id: 4,
         key: 'biologia',
         name: 'Biologia'
       },
       {
+        id: 5,
         key: 'geografia',
         name: 'Geografia'
       },
       {
+        id: 6,
         key: 'fisica',
         name: 'Física'
       },
       {
+        id: 7,
         key: 'quimica',
         name: 'Química'
       },
@@ -462,30 +476,37 @@ const subjectAreas = [
     studentId: 3,
     items: [
       {
+        id: 1,
         key: 'portugues',
         name: 'Português'
       },
       {
+        id: 2,
         key: 'matematica',
         name: 'Matemática'
       },
       {
+        id: 3,
         key: 'historia',
         name: 'História'
       },
       {
+        id: 4,
         key: 'biologia',
         name: 'Biologia'
       },
       {
+        id: 5,
         key: 'geografia',
         name: 'Geografia'
       },
       {
+        id: 6,
         key: 'fisica',
         name: 'Física'
       },
       {
+        id: 7,
         key: 'quimica',
         name: 'Química'
       },
@@ -639,27 +660,28 @@ const schoolYears = [
     id: 1,
     name: '6º',
     classes: [
-      { id: 1, name: 'Turma A' },
-      { id: 2, name: 'Turma B' },
-      { id: 3, name: 'Turma C' },
+      { id: 1, key: 'turmaA', name: 'Turma A' },
+      { id: 2, key: 'turmaB', name: 'Turma B' },
+      { id: 3, key: 'turmaC', name: 'Turma C' },
+      { id: 4, key: 'turmaD', name: 'Turma D' },
     ]
   },
   {
     id: 2,
     name: '7º',
     classes: [
-      { id: 1, name: 'Turma A' },
-      { id: 2, name: 'Turma B' },
-      { id: 3, name: 'Turma C' },
+      { id: 1, key: 'turmaA', name: 'Turma A' },
+      { id: 2, key: 'turmaB', name: 'Turma B' },
+      { id: 3, key: 'turmaC', name: 'Turma C' },
     ]
   },
   {
     id: 3,
     name: '8º',
     classes: [
-      { id: 1, name: 'Turma A' },
-      { id: 2, name: 'Turma B' },
-      { id: 3, name: 'Turma C' },
+      { id: 1, key: 'turmaA', name: 'Turma A' },
+      { id: 2, key: 'turmaB', name: 'Turma B' },
+      { id: 3, key: 'turmaC', name: 'Turma C' },
     ]
   },
   {
@@ -677,7 +699,6 @@ const schoolYears = [
  * OCCURRENCE REASONS
  */
 const occurrenceReasons = [
-  { id: 0, name: 'Selecione' },
   { id: 1, name: 'Conversa constante' },
   { id: 2, name: 'Demora a retornar do recreio' },
   { id: 3, name: 'Desrespeito a colegas' },

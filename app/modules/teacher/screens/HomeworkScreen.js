@@ -8,7 +8,7 @@ import { Container, Header, Title, Content, Left, Right, Icon, Body, Text } from
 import BubbleMenu from '../../../components/BubbleMenu';
 
 // @observer
-export default class AlertScreen extends Component {
+export default class HomeworkScreen extends Component {
   
   render() {
 
@@ -23,13 +23,13 @@ export default class AlertScreen extends Component {
             </TouchableWithoutFeedback>
           </Left>
           <Body>
-            <Title>Notas</Title>
+            <Title>Trabalhos</Title>
           </Body>
           <Right />
         </Header>
         <Content stickyHeaderIndices={[0]}>
-          <BubbleMenu />
-          <Text>Notas</Text>
+          <BubbleMenu mode="schoolYear" />
+          <Text>Trabalhos</Text>
         </Content>
       </Container>
     );

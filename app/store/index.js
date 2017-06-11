@@ -24,8 +24,9 @@ class AppStore {
   @observable studentSubjectAreas = [];
   @observable studentPlanning = {};
   @observable plannings = [];
-  @observable alertBadgeCount = 0;
   @observable schoolYearSelected = this.schoolYears[0];
+  @observable teacherAlerts = this.alerts[0];
+  @observable teacherSubjectAreas = this.subjectAreas[0].items;
 
   // Controller
   @observable formChanged = false;
@@ -38,10 +39,7 @@ class AppStore {
     this.studentSelected = this.childStudents.filter(o => o.id === id)[0];
     this.studentCalendar = this.calendars.filter(o => o.studentId === id)[0];
     this.studentSubjectAreas = this.subjectAreas.filter(o => o.studentId === id)[0];
-
     this.studentAlerts = this.alerts.filter(o => o.studentId === id)[0];
-    this.alertBadgeCount = this.studentAlerts != null ? this.studentAlerts.items.filter(o => !o.readed).length : 0;
-
     this.studentPlanning = this.plannings.length > 0 ? this.plannings.filter(o => o.studentId === id)[0] || {} : {};
     this.formChanged = true;
   }

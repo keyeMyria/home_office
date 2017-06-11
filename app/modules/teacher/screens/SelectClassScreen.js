@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Left,
-  Right,
-  Icon,
-  List,
-  ListItem,
-  Body,
-  Text,
-} from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, List, ListItem, Body, Text } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';

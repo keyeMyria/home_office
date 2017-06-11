@@ -11,7 +11,8 @@ import { createStore } from 'redux';
 import allReducers from './app/reducers';
 const formStore = createStore(allReducers);
 
-import AppRouter from './app/modules/parent/AppRouter';
+// import AppRouter from './app/modules/parent/AppRouter';
+import AppRouter from './app/modules/teacher/AppRouter';
 
 export class EducareApp extends Component {
 
