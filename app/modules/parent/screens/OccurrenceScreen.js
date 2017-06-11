@@ -27,7 +27,6 @@ export default class OccurrenceScreen extends Component {
 
   save = () => {
     Alert.alert('Sucesso', 'Dados salvos com sucesso!');
-    this.props.navigation.goBack();
   }
 
   checkUncheckStudentOccurrence = (checked, studentId, navigate) => {

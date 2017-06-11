@@ -17,7 +17,7 @@ import { styles } from '../../../themes/educareTheme';
 
 const StudentItem = props => {
   return (
-    <View>
+    <View style={styles.bubbleMenuItemView}>
       <Thumbnail
         source={props.source}
         style={props.active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive} />
@@ -28,8 +28,8 @@ const StudentItem = props => {
 
 const SchoolYearItem = props => {
   return (
-    <View>
-      <Button rounded
+    <View style={styles.bubbleMenuItemView}>
+      <Button
         disabled={!props.active}
         style={props.active ? styles.bubbleMenuButtonActive : styles.bubbleMenuButtonInactive}>
         <Text>{props.name}</Text>
@@ -41,7 +41,7 @@ const SchoolYearItem = props => {
 const BubbleMenuItem = props => {
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
-      <View style={styles.bubbleMenuItemView}>
+      <View>
         {props.item}
       </View>
     </TouchableWithoutFeedback>

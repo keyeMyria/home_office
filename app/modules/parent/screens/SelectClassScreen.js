@@ -19,7 +19,16 @@ import store from '../../../store';
 
 @observer
 export default class SelectClassScreen extends Component {
-  
+
+  getTitle = (nextScreen) => {
+    switch (nextScreen) {
+      case 'AbsenseScreen':
+        return 'Faltas';
+      case 'OccurrenceScreen':
+        return 'Ocorrências';
+    }
+  }
+
   render() {
 
     const { params } = this.props.navigation.state;
@@ -35,7 +44,7 @@ export default class SelectClassScreen extends Component {
             </TouchableWithoutFeedback>
           </Left>
           <Body>
-            <Title>Sel. Turma</Title>
+            <Title>{this.getTitle(params && params.nextScreen)}</Title>
           </Body>
           <Right />
         </Header>

@@ -87,7 +87,7 @@ export default class CalendarScreen extends Component {
           <Right />
         </Header>
         <Content stickyHeaderIndices={[0]}>
-          <BubbleMenu />
+          <BubbleMenu  mode="schoolYear"/>
           <List agendaList>
             <CalendarWeek label="Semana Atual" items={currentWeekItems} />
             <CalendarWeek label="Próxima Semana" items={nextWeekItems} />

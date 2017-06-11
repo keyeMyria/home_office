@@ -27,7 +27,6 @@ export default class AbsenseScreen extends Component {
 
   save = () => {
     Alert.alert('Sucesso', 'Dados salvos com sucesso!');
-    this.props.navigation.goBack();
   }
 
   checkUncheckStudentAbsense = (checked, studentId) => {

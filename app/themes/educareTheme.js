@@ -167,10 +167,13 @@ const styles = {
     fontSize: 14
   },
   bubbleMenuButtonActive: {
-    backgroundColor: '#26C6DA'
+    backgroundColor: '#26C6DA',
+    paddingHorizontal: material.buttonPadding + 9,
+    borderRadius: material.borderRadiusLarge
   },
   bubbleMenuButtonInactive: {
-    
+    paddingHorizontal: material.buttonPadding + 9,
+    borderRadius: material.borderRadiusLarge
   },
 };
 
