@@ -397,44 +397,98 @@ const subjectAreas = [
     key: 'portugues',
     name: 'Português',
     topics: [
-      { id: 1, name: 'Tópico 1'},
-      { id: 2, name: 'Tópico 2'},
-      { id: 3, name: 'Tópico 3'},
-      { id: 4, name: 'Tópico 4'},
-      { id: 5, name: 'Tópico 5'},
-      { id: 6, name: 'Tópico 6'},
-      { id: 7, name: 'Tópico 7'},
+      { id: 10, name: 'Português - Tópico 1' },
+      { id: 11, name: 'Português - Tópico 2' },
+      { id: 12, name: 'Português - Tópico 3' },
+      { id: 13, name: 'Português - Tópico 4' },
+      { id: 14, name: 'Português - Tópico 5' },
+      { id: 15, name: 'Português - Tópico 6' },
+      { id: 16, name: 'Português - Tópico 7' },
     ]
   },
   {
     id: 2,
     key: 'matematica',
-    name: 'Matemática'
+    name: 'Matemática',
+    topics: [
+      { id: 20, name: 'Matemática - Tópico 1' },
+      { id: 21, name: 'Matemática - Tópico 2' },
+      { id: 22, name: 'Matemática - Tópico 3' },
+      { id: 23, name: 'Matemática - Tópico 4' },
+      { id: 24, name: 'Matemática - Tópico 5' },
+      { id: 25, name: 'Matemática - Tópico 6' },
+      { id: 26, name: 'Matemática - Tópico 7' },
+    ]
   },
   {
     id: 3,
     key: 'historia',
-    name: 'História'
+    name: 'História',
+    topics: [
+      { id: 30, name: 'História - Tópico 1' },
+      { id: 31, name: 'História - Tópico 2' },
+      { id: 32, name: 'História - Tópico 3' },
+      { id: 33, name: 'História - Tópico 4' },
+      { id: 34, name: 'História - Tópico 5' },
+      { id: 35, name: 'História - Tópico 6' },
+      { id: 36, name: 'História - Tópico 7' },
+    ]
   },
   {
     id: 4,
     key: 'biologia',
-    name: 'Biologia'
+    name: 'Biologia',
+    topics: [
+      { id: 40, name: 'Biologia - Tópico 1' },
+      { id: 41, name: 'Biologia - Tópico 2' },
+      { id: 42, name: 'Biologia - Tópico 3' },
+      { id: 43, name: 'Biologia - Tópico 4' },
+      { id: 44, name: 'Biologia - Tópico 5' },
+      { id: 45, name: 'Biologia - Tópico 6' },
+      { id: 46, name: 'Biologia - Tópico 7' },
+    ]
   },
   {
     id: 5,
     key: 'geografia',
-    name: 'Geografia'
+    name: 'Geografia',
+    topics: [
+      { id: 50, name: 'Geografia - Tópico 1' },
+      { id: 51, name: 'Geografia - Tópico 2' },
+      { id: 52, name: 'Geografia - Tópico 3' },
+      { id: 53, name: 'Geografia - Tópico 4' },
+      { id: 54, name: 'Geografia - Tópico 5' },
+      { id: 55, name: 'Geografia - Tópico 6' },
+      { id: 56, name: 'Geografia - Tópico 7' },
+    ]
   },
   {
     id: 6,
     key: 'fisica',
-    name: 'Física'
+    name: 'Física',
+    topics: [
+      { id: 60, name: 'Física - Tópico 1' },
+      { id: 61, name: 'Física - Tópico 2' },
+      { id: 62, name: 'Física - Tópico 3' },
+      { id: 63, name: 'Física - Tópico 4' },
+      { id: 64, name: 'Física - Tópico 5' },
+      { id: 65, name: 'Física - Tópico 6' },
+      { id: 66, name: 'Física - Tópico 7' },
+    ]
   },
   {
     id: 7,
     key: 'quimica',
-    name: 'Química'
+    name: 'Química',
+    topics: [
+      { id: 70, name: 'Química - Tópico 1' },
+      { id: 71, name: 'Química - Tópico 2' },
+      { id: 72, name: 'Química - Tópico 3' },
+      { id: 73, name: 'Química - Tópico 4' },
+      { id: 74, name: 'Química - Tópico 5' },
+      { id: 75, name: 'Química - Tópico 6' },
+      { id: 76, name: 'Química - Tópico 7' },
+    ]
   },
 ];
 

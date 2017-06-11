@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text, Item, ListItem, CheckBox } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
@@ -27,6 +28,9 @@ class ExamScreen extends Component {
       <Picker.Item key={index} label={subject.name} value={subject.id} />
     );
 
+    let subjectAreas = store.teacher.subjectAreas.filter(subject => subject.id === this.props.subjectAreaId);
+    const topics = subjectAreas.length > 0 ? subjectAreas[0].topics : store.teacher.subjectAreas[0].topics;
+    
     return (
       <Container>
         <Header appHeader>
@@ -58,7 +62,7 @@ class ExamScreen extends Component {
               <Text>Selecione o(s) assunto(s)</Text>
             </Item>
           </Form>
-          {store.teacher.subjectAreas[0].topics.map((topic, index) => {
+          {topics.map((topic, index) => {
             const checked = store.examTopics.filter(topicId => topicId === topic.id).length > 0;
             return (
               <ListItem key={index}
@@ -81,4 +85,12 @@ class ExamScreen extends Component {
   }
 }
 
-export default reduxForm({ form: 'formExamScreen' })(ExamScreen);
+const form = reduxForm({ form: 'formExamScreen' })(ExamScreen);
+const selector = formValueSelector('formExamScreen');
+export default connect(
+  state => {
+    return {
+      subjectAreaId: selector(state, 'disciplina')
+    };
+  }
+)(form);
