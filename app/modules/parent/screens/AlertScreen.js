@@ -13,7 +13,7 @@ export default class AlertScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation;
-    const alerts = store.studentAlerts.items;
+    const alerts = store.studentSelected.alerts.items;
 
     return (
       <Container>

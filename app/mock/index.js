@@ -393,124 +393,63 @@ const planningTimes = [
  */
 const subjectAreas = [
   {
-    studentId: 1,
-    items: [
-      {
-        id: 1,
-        key: 'portugues',
-        name: 'Português'
-      },
-      {
-        id: 2,
-        key: 'matematica',
-        name: 'Matemática'
-      },
-      {
-        id: 3,
-        key: 'historia',
-        name: 'História'
-      },
-      {
-        id: 4,
-        key: 'biologia',
-        name: 'Biologia'
-      },
-      {
-        id: 5,
-        key: 'geografia',
-        name: 'Geografia'
-      },
-      {
-        id: 6,
-        key: 'fisica',
-        name: 'Física'
-      },
-      {
-        id: 7,
-        key: 'quimica',
-        name: 'Química'
-      },
+    id: 1,
+    key: 'portugues',
+    name: 'Português',
+    topics: [
+      { id: 1, name: 'Tópico 1'},
+      { id: 2, name: 'Tópico 2'},
+      { id: 3, name: 'Tópico 3'},
+      { id: 4, name: 'Tópico 4'},
+      { id: 5, name: 'Tópico 5'},
+      { id: 6, name: 'Tópico 6'},
+      { id: 7, name: 'Tópico 7'},
     ]
+  },
+  {
+    id: 2,
+    key: 'matematica',
+    name: 'Matemática'
+  },
+  {
+    id: 3,
+    key: 'historia',
+    name: 'História'
+  },
+  {
+    id: 4,
+    key: 'biologia',
+    name: 'Biologia'
+  },
+  {
+    id: 5,
+    key: 'geografia',
+    name: 'Geografia'
+  },
+  {
+    id: 6,
+    key: 'fisica',
+    name: 'Física'
+  },
+  {
+    id: 7,
+    key: 'quimica',
+    name: 'Química'
+  },
+];
+
+const studentSubjectAreas = [
+  {
+    studentId: 1,
+    items: subjectAreas
   },
   {
     studentId: 2,
-    items: [
-      {
-        id: 1,
-        key: 'portugues',
-        name: 'Português'
-      },
-      {
-        id: 2,
-        key: 'matematica',
-        name: 'Matemática'
-      },
-      {
-        id: 3,
-        key: 'historia',
-        name: 'História'
-      },
-      {
-        id: 4,
-        key: 'biologia',
-        name: 'Biologia'
-      },
-      {
-        id: 5,
-        key: 'geografia',
-        name: 'Geografia'
-      },
-      {
-        id: 6,
-        key: 'fisica',
-        name: 'Física'
-      },
-      {
-        id: 7,
-        key: 'quimica',
-        name: 'Química'
-      },
-    ]
+    items: subjectAreas
   },
   {
     studentId: 3,
-    items: [
-      {
-        id: 1,
-        key: 'portugues',
-        name: 'Português'
-      },
-      {
-        id: 2,
-        key: 'matematica',
-        name: 'Matemática'
-      },
-      {
-        id: 3,
-        key: 'historia',
-        name: 'História'
-      },
-      {
-        id: 4,
-        key: 'biologia',
-        name: 'Biologia'
-      },
-      {
-        id: 5,
-        key: 'geografia',
-        name: 'Geografia'
-      },
-      {
-        id: 6,
-        key: 'fisica',
-        name: 'Física'
-      },
-      {
-        id: 7,
-        key: 'quimica',
-        name: 'Química'
-      },
-    ]
+    items: subjectAreas
   }
 ];
 
@@ -711,6 +650,7 @@ export {
   childStudents,
   calendars,
   alerts,
+  studentSubjectAreas,
   subjectAreas,
   planningTimes,
   students,

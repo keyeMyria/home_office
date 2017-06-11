@@ -16,11 +16,12 @@ class ExerciseScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation;
-    const subjectAreaPickerItems = store.teacherSubjectAreas.map((subject, index) =>
+    
+    const subjectAreaItems = store.teacher.subjectAreas.map((subject, index) =>
       <Picker.Item key={index} label={subject.name} value={subject.id} />
     );
 
-    const timePickerItems = store.planningTimes.map((time, index) =>
+    const timeItems = store.planningTimes.map((time, index) =>
       <Picker.Item key={index} label={time.label} value={time.id} />
     );
 
@@ -49,14 +50,14 @@ class ExerciseScreen extends Component {
               label="Disciplina"
               component={PickerField}
               props={{ initialValue: 1 }}>
-              {subjectAreaPickerItems}
+              {subjectAreaItems}
             </Field>
             <Field
               name="tempoAproximado"
               label="Tempo Aproximado"
               component={PickerField}
               props={{ initialValue: 0 }}>
-              {timePickerItems}
+              {timeItems}
             </Field>
             <Field
               style={{ height: 150 }}

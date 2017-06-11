@@ -10,6 +10,7 @@ class AppStore {
   @observable calendars = MOCK.calendars;
   @observable alerts = MOCK.alerts;
   @observable subjectAreas = MOCK.subjectAreas;
+  @observable studentSubjectAreas = MOCK.studentSubjectAreas;
   @observable planningTimes = MOCK.planningTimes;
   @observable students = MOCK.students;
   @observable classes = MOCK.classes;
@@ -19,28 +20,27 @@ class AppStore {
   // Dynamics
   @observable userSelected = this.users[0];
   @observable studentSelected = {};
-  @observable studentCalendar = {};
-  @observable studentAlerts = [];
-  @observable studentSubjectAreas = [];
-  @observable studentPlanning = {};
   @observable plannings = [];
   @observable schoolYearSelected = this.schoolYears[0];
-  @observable teacherAlerts = this.alerts[0];
-  @observable teacherSubjectAreas = this.subjectAreas[0].items;
+  @observable teacher = {
+    alerts: this.alerts[0],
+    subjectAreas: this.subjectAreas
+  }
 
   // Controller
   @observable formChanged = false;
   @observable absenses = [];
   @observable occurrences = [];
+  @observable examTopics = [];
 
   // Navigation (Using BubbleMenu - Student)
 
   selectStudent(id) {
     this.studentSelected = this.childStudents.filter(o => o.id === id)[0];
-    this.studentCalendar = this.calendars.filter(o => o.studentId === id)[0];
-    this.studentSubjectAreas = this.subjectAreas.filter(o => o.studentId === id)[0];
-    this.studentAlerts = this.alerts.filter(o => o.studentId === id)[0];
-    this.studentPlanning = this.plannings.length > 0 ? this.plannings.filter(o => o.studentId === id)[0] || {} : {};
+    this.studentSelected.calendar = this.calendars.filter(o => o.studentId === id)[0];
+    this.studentSelected.subjectAreas = this.studentSubjectAreas.filter(o => o.studentId === id)[0];
+    this.studentSelected.alerts = this.alerts.filter(o => o.studentId === id)[0];
+    this.studentSelected.planning = this.plannings.length > 0 ? this.plannings.filter(o => o.studentId === id)[0] || {} : {};
     this.formChanged = true;
   }
 
@@ -60,11 +60,11 @@ class AppStore {
 
   saveStudentPlanning(values) {
     values.studentId = this.studentSelected.id;
-    this.studentPlanning = values;
+    this.studentSelected.planning = values;
     if (this.plannings.length > 0) {
       this.plannings = this.plannings.filter(o => o.studentId !== this.studentSelected.id);
     }
-    this.plannings.push(this.studentPlanning);
+    this.plannings.push(this.studentSelected.planning);
   }
 
   // ABSENSE
@@ -85,6 +85,16 @@ class AppStore {
 
   uncheckStudentOccurrence(studentId) {
     this.occurrences = this.occurrences.filter(id => id !== studentId);
+  }
+
+  // EXAM TOPICS
+
+  checkExamTopic(topicId) {
+    this.examTopics.push(topicId);
+  }
+
+  uncheckExamTopic(topicId) {
+    this.examTopics = this.examTopics.filter(id => id !== topicId);
   }
 
   // IMAGES

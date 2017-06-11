@@ -10,7 +10,7 @@ export default class HomeTabNavigator extends Component {
   render() {
 
     const { navigate, state: { index }} = this.props.navigation;
-    const alertBadgeCount = store.studentAlerts != null ? store.studentAlerts.items.filter(o => !o.readed).length : 0;
+    const alertBadgeCount = store.studentSelected.alerts != null ? store.studentSelected.alerts.items.filter(o => !o.readed).length : 0;
 
     return (
       <Footer>

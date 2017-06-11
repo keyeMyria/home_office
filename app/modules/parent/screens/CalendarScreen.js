@@ -54,8 +54,8 @@ export default class CalendarScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation;
-    const currentWeekItems = store.studentCalendar.currentWeekItems;
-    const nextWeekItems = store.studentCalendar.nextWeekItems;
+    const currentWeekItems = store.studentSelected.calendar.currentWeekItems;
+    const nextWeekItems = store.studentSelected.calendar.nextWeekItems;
 
     return (
       <Container>

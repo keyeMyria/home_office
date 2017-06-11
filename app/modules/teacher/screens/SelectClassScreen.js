@@ -19,8 +19,7 @@ export default class SelectClassScreen extends Component {
 
   render() {
 
-    const { params } = this.props.navigation.state;
-    const { navigate } = this.props.navigation;
+    const { navigate, state: { params} } = this.props.navigation;
     const classes = store.classes;
 
     return (

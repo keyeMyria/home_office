@@ -28,7 +28,7 @@ export default class DatePickerField extends Component {
       <View>
         <Item inlineLabel
           onPress={this.toogle}
-          style={{ height: 60 }}>
+          style={{ height: 46 }}>
           <Label style={{ flex: 0.4 }}>{label}</Label>
           <Text style={{ flex: 0.6 }}>{moment(value).format('DD MMM YYYY - HH:mm')}</Text>
         </Item>

@@ -56,7 +56,8 @@ class PlanningScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation;
-    const subjectAreas = store.studentSubjectAreas.items;
+    const subjectAreas = store.studentSelected.subjectAreas.items;
+    
     const pickerItems = store.planningTimes.map((time, index) =>
       <Picker.Item key={index} label={time.label} value={time.id} />
     );
@@ -83,7 +84,7 @@ class PlanningScreen extends Component {
           <Content>
             <Form>
               {subjectAreas.map((subjectArea, index) => {
-                const currentValue = store.studentPlanning[subjectArea.key] || 0;
+                const currentValue = store.studentSelected.planning[subjectArea.key] || 0;
                 return (
                   <Field key={index}
                     name={subjectArea.key}

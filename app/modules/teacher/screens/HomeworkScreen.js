@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Text } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text } from 'native-base';
+import { Field, reduxForm } from 'redux-form';
 
-// import { observer } from 'mobx-react/native';
-// import store from '../../../store';
+import { observer } from 'mobx-react/native';
+import store from '../../../store';
+
+import { PickerField, TextField } from '../../../components/fields';
 
 import BubbleMenu from '../../../components/BubbleMenu';
 
-// @observer
-export default class HomeworkScreen extends Component {
-  
+@observer
+class HomeworkScreen extends Component {
+
   render() {
 
     const { navigate } = this.props.navigation;
+    
+    const subjectAreaItems = store.teacher.subjectAreas.map((subject, index) =>
+      <Picker.Item key={index} label={subject.name} value={subject.id} />
+    );
 
     return (
       <Container>
@@ -25,13 +32,34 @@ export default class HomeworkScreen extends Component {
           <Body>
             <Title>Trabalhos</Title>
           </Body>
-          <Right />
+          <Right>
+            <TouchableWithoutFeedback onPress={() => navigate('SetDateForClassScreen')}>
+              <Text>Próximo</Text>
+            </TouchableWithoutFeedback>
+          </Right>
         </Header>
         <Content stickyHeaderIndices={[0]}>
           <BubbleMenu mode="schoolYear" />
-          <Text>Trabalhos</Text>
+          <Form>
+            <Field
+              name="disciplina"
+              label="Disciplina"
+              component={PickerField}
+              props={{ initialValue: 1 }}>
+              {subjectAreaItems}
+            </Field>
+            <Field
+              style={{ height: 150 }}
+              name="information"
+              label="Informação"
+              component={TextField}
+              multiline={true}>
+            </Field>
+          </Form>
         </Content>
       </Container>
     );
   }
 }
+
+export default reduxForm({ form: 'formHomeworkScreen' })(HomeworkScreen);

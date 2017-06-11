@@ -14,6 +14,7 @@ class OccurrenceReasonScreen extends Component {
   render() {
 
     const { goBack } = this.props.navigation;
+    
     const pickerItems = store.occurrenceReasons.map((reason, index) =>
       <Picker.Item key={index} label={reason.name} value={reason.id} />
     );
