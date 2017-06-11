@@ -17,14 +17,48 @@ import {
   HomeworkScreen,
   AnalysisScreen,
   SetDateForClassScreen,
+  ExerciseConfigurationScreen,
+  SelectQuestionScreen,
 } from './screens';
+
+const ExerciceRouter = StackNavigator(
+  {
+    ExerciseScreen: { screen: ExerciseScreen },
+    ExerciseConfigurationScreen: { screen: ExerciseConfigurationScreen },
+    SelectQuestionScreen: { screen: SelectQuestionScreen },
+    SetDateForClassScreen: { screen: SetDateForClassScreen },
+  },
+  {
+    headerMode: 'none',
+  }
+);
+
+const ExamRouter = StackNavigator(
+  {
+    ExamScreen: { screen: ExamScreen },
+    SetDateForClassScreen: { screen: SetDateForClassScreen },
+  },
+  {
+    headerMode: 'none',
+  }
+);
+
+const HomeworkRouter = StackNavigator(
+  {
+    HomeworkScreen: { screen: HomeworkScreen },
+    SetDateForClassScreen: { screen: SetDateForClassScreen },
+  },
+  {
+    headerMode: 'none',
+  }
+);
 
 const HomeRouter = TabNavigator(
   {
-    ExerciseScreen: { screen: ExerciseScreen },
-    ExamScreen: { screen: ExamScreen },
+    ExerciceRouter: { screen: ExerciceRouter },
+    ExamRouter: { screen: ExamRouter },
     AlertScreen: { screen: AlertScreen },
-    HomeworkScreen: { screen: HomeworkScreen },
+    HomeworkRouter: { screen: HomeworkRouter },
     AnalysisScreen: { screen: AnalysisScreen },
   },
   {
@@ -51,7 +85,6 @@ export default DrawerNavigator(
     MessageScreen: { screen: MessageScreen },
     HistoryScreen: { screen: HistoryScreen },
     AbsenseOccurrenceRouter: { screen: AbsenseOccurrenceRouter },
-    SetDateForClassScreen: { screen: SetDateForClassScreen },
   },
   {
     headerMode: 'none',

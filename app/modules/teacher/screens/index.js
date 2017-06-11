@@ -10,6 +10,8 @@ import ExamScreen from './ExamScreen';
 import HomeworkScreen from './HomeworkScreen';
 import AnalysisScreen from './AnalysisScreen';
 import SetDateForClassScreen from './SetDateForClassScreen';
+import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
+import SelectQuestionScreen from './SelectQuestionScreen';
 
 export {
   AlertScreen,
@@ -24,4 +26,6 @@ export {
   HomeworkScreen,
   AnalysisScreen,
   SetDateForClassScreen,
+  ExerciseConfigurationScreen,
+  SelectQuestionScreen,
 };

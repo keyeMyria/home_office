@@ -492,6 +492,9 @@ const subjectAreas = [
   },
 ];
 
+/**
+ * STUDENT SUBJECT AREAS
+ */
 const studentSubjectAreas = [
   {
     studentId: 1,
@@ -699,6 +702,52 @@ const occurrenceReasons = [
   { id: 5, name: 'Outros motivos' },
 ];
 
+/**
+ * EXERCICE TYPES
+ */
+const exerciceTypes = [
+  { id: 1, name: 'Lista Física' },
+  { id: 2, name: 'Lista no Sistema' },
+];
+
+/**
+ * QUESTION DATABASE TYPES 
+ */
+const quetionDatabaseTypes = [
+  { id: 1, name: 'Da Escola' },
+  { id: 2, name: 'De Provas Anteriores' },
+  { id: 3, name: 'Do Sistema' },
+];
+
+/**
+ * QUESTION GENERATION TYPES
+ */
+const questionGenerationTypes = [
+  { id: 1, name: 'Diferente por Aluno' },
+  { id: 2, name: 'Única para Todos' },
+  { id: 3, name: 'Selecionar Questões' },
+];
+
+/**
+ * QUESTIONS
+ */
+const questions = [
+  { id: 1, name: 'Question 1' },
+  { id: 2, name: 'Question 2' },
+  { id: 3, name: 'Question 3' },
+  { id: 4, name: 'Question 4' },
+  { id: 5, name: 'Question 5' },
+  { id: 6, name: 'Question 6' },
+  { id: 7, name: 'Question 7' },
+  { id: 8, name: 'Question 8' },
+  { id: 9, name: 'Question 9' },
+  { id: 10, name: 'Question 10' },
+  { id: 11, name: 'Question 11' },
+  { id: 12, name: 'Question 12' },
+  { id: 13, name: 'Question 13' },
+  { id: 14, name: 'Question 14' },
+];
+
 export {
   users,
   childStudents,
@@ -711,4 +760,8 @@ export {
   classes,
   occurrenceReasons,
   schoolYears,
+  exerciceTypes,
+  quetionDatabaseTypes,
+  questionGenerationTypes,
+  questions,
 };

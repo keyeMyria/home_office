@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
@@ -16,7 +17,11 @@ class ExerciseScreen extends Component {
   render() {
 
     const { navigate } = this.props.navigation;
-    
+
+    const exerciceTypeItems = store.exerciceTypes.map((type, index) =>
+      <Picker.Item key={index} label={type.name} value={type.id} />
+    );
+
     const subjectAreaItems = store.teacher.subjectAreas.map((subject, index) =>
       <Picker.Item key={index} label={subject.name} value={subject.id} />
     );
@@ -24,6 +29,8 @@ class ExerciseScreen extends Component {
     const timeItems = store.planningTimes.map((time, index) =>
       <Picker.Item key={index} label={time.label} value={time.id} />
     );
+
+    const exerciseTypeId = this.props.exerciseTypeId || store.exerciceTypes[0].id;
 
     return (
       <Container>
@@ -37,7 +44,11 @@ class ExerciseScreen extends Component {
             <Title>Exercícios</Title>
           </Body>
           <Right>
-            <TouchableWithoutFeedback onPress={() => navigate('SetDateForClassScreen')}>
+            <TouchableWithoutFeedback onPress={() =>
+              exerciseTypeId === 1 ?
+                navigate('SetDateForClassScreen') :
+                navigate('ExerciseConfigurationScreen')
+            }>
               <Text>Próximo</Text>
             </TouchableWithoutFeedback>
           </Right>
@@ -45,6 +56,13 @@ class ExerciseScreen extends Component {
         <Content stickyHeaderIndices={[0]}>
           <BubbleMenu mode="schoolYear" />
           <Form>
+            <Field
+              name="tipo"
+              label="Tipo"
+              component={PickerField}
+              props={{ initialValue: 1 }}>
+              {exerciceTypeItems}
+            </Field>
             <Field
               name="disciplina"
               label="Disciplina"
@@ -73,4 +91,12 @@ class ExerciseScreen extends Component {
   }
 }
 
-export default reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
+const form = reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
+const selector = formValueSelector('formExerciseScreen');
+export default connect(
+  state => {
+    return {
+      exerciseTypeId: selector(state, 'tipo')
+    };
+  }
+)(form);

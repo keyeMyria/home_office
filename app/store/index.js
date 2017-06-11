@@ -16,6 +16,10 @@ class AppStore {
   @observable classes = MOCK.classes;
   @observable occurrenceReasons = MOCK.occurrenceReasons;
   @observable schoolYears = MOCK.schoolYears;
+  @observable exerciceTypes = MOCK.exerciceTypes;
+  @observable quetionDatabaseTypes = MOCK.quetionDatabaseTypes;
+  @observable questionGenerationTypes = MOCK.questionGenerationTypes;
+  @observable questions = MOCK.questions;
 
   // Dynamics
   @observable userSelected = this.users[0];
@@ -32,6 +36,7 @@ class AppStore {
   @observable absenses = [];
   @observable occurrences = [];
   @observable examTopics = [];
+  @observable exerciceQuestions = [];
 
   // Navigation (Using BubbleMenu - Student)
 
@@ -95,6 +100,16 @@ class AppStore {
 
   uncheckExamTopic(topicId) {
     this.examTopics = this.examTopics.filter(id => id !== topicId);
+  }
+
+  // EXERCICE QUESTIONS
+
+  checkExerciceQuestion(questionId) {
+    this.exerciceQuestions.push(questionId);
+  }
+
+  uncheckExerciceQuestion(questionId) {
+    this.exerciceQuestions = this.exerciceQuestions.filter(id => id !== questionId);
   }
 
   // IMAGES
