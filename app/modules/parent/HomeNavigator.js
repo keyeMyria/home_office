@@ -49,7 +49,7 @@ export default class HomeTabNavigator extends Component {
           </Button>
           <Button
             active={index === 4}
-            onPress={() => this.navigate(4, 'PlanningScreen')}>
+            onPress={() => navigate('PlanningScreen')}>
             <Icon name="tune" />
             <Text>Planejar</Text>
           </Button>

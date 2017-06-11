@@ -144,11 +144,11 @@ const styles = {
   },
   bubbleMenuItemActive: {
     borderColor: material.PRIMARY_COLOR,
-    borderWidth: 3
+    borderWidth: 4
   },
   bubbleMenuItemInactive: {
     borderColor: '#E0E0E0',
-    borderWidth: 1
+    borderWidth: 2
   },
   bubbleMenuView: {
     backgroundColor: '#FAFAFA',
