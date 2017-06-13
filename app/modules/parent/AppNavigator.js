@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
+import { NavigationActions } from 'react-navigation';
 import { Container, Content, Left, Body, Thumbnail, Text, ListItem, List, Icon } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import store from '../../store';
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'LoginScreen' })
+  ]
+});
 
 @observer
 export default class AppNavigator extends Component {
 
   render() {
 
-    const { navigate } = this.props.navigation;
+    const { navigate, dispatch } = this.props.navigation;
 
     return (
       <Container sideBarContainer>
@@ -40,9 +48,13 @@ export default class AppNavigator extends Component {
               <Icon name="announcement" />
               <Text>Enviar feedback</Text>
             </ListItem>
-            <ListItem>
+            <ListItem last>
               <Icon name="help" />
               <Text>Ajuda</Text>
+            </ListItem>
+            <ListItem onPress={() => dispatch(resetAction)}>
+              <Icon name="launch" />
+              <Text>Sair</Text>
             </ListItem>
           </List>
         </Content>
