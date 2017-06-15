@@ -27,8 +27,8 @@ export default class ExerciseScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content stickyHeaderIndices={[0]}>
-          <BubbleMenu />
+        <Content>
+          <BubbleMenu mode="schoolYear" />
           <Text>Histórico</Text>
         </Content>
       </Container>

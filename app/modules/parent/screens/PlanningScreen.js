@@ -79,7 +79,7 @@ class PlanningScreen extends Component {
             </TouchableWithoutFeedback>
           </Right>
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu />
           <Content>
             <Form>

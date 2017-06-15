@@ -44,10 +44,10 @@ export default class LoginScreen extends Component {
           <Thumbnail source={require('../img/icon.png')} style={styles.loginImage} />
           <Title style={styles.loginTitle}>EducareBox</Title>
           <Form style={styles.loginForm}>
-            <Item regular style={styles.loginInput}>
+            <Item rounded style={styles.loginInput}>
               <Input placeholder='Email' />
             </Item>
-            <Item regular style={styles.loginInput}>
+            <Item rounded style={styles.loginInput}>
               <Input placeholder='Senha' secureTextEntry={true} />
             </Item>
           </Form>

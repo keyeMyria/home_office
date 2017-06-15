@@ -168,10 +168,14 @@ const styles = {
   },
   bubbleMenuButtonActive: {
     backgroundColor: '#26C6DA',
-    borderRadius: material.borderRadiusLarge
+    borderRadius: 25,
+    width: 50,
+    height: 50
   },
   bubbleMenuButtonInactive: {
-    borderRadius: material.borderRadiusLarge
+    borderRadius: 25,
+    width: 50,
+    height: 50
   },
 };
 

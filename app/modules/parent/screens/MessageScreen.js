@@ -37,7 +37,7 @@ export default class MessageScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu />
           <Text>Mensagens</Text>
         </Content>

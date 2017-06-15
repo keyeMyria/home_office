@@ -9,14 +9,23 @@ import store from '../../../store';
 import { PickerField, TextField } from '../../../components/fields';
 
 import BubbleMenu from '../../../components/BubbleMenu';
+import SetDateForClassScreen from './SetDateForClassScreen';
 
 @observer
 class HomeworkScreen extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = { setDateForClassScreenVisible: false };
+  }
+
+  showSetDateForClassScreen = () => this.setState({ setDateForClassScreenVisible: true });
+  hideSetDateForClassScreen = () => this.setState({ setDateForClassScreenVisible: false });
+
   render() {
 
     const { navigate } = this.props.navigation;
-    
+
     const subjectAreaItems = store.teacher.subjectAreas.map((subject, index) =>
       <Picker.Item key={index} label={subject.name} value={subject.id} />
     );
@@ -33,12 +42,12 @@ class HomeworkScreen extends Component {
             <Title>Trabalhos</Title>
           </Body>
           <Right>
-            <TouchableWithoutFeedback onPress={() => navigate('SetDateForClassScreen')}>
+            <TouchableWithoutFeedback onPress={this.showSetDateForClassScreen}>
               <Text>Próximo</Text>
             </TouchableWithoutFeedback>
           </Right>
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu mode="schoolYear" />
           <Form>
             <Field
@@ -57,6 +66,9 @@ class HomeworkScreen extends Component {
             </Field>
           </Form>
         </Content>
+        <SetDateForClassScreen
+          visible={this.state.setDateForClassScreenVisible}
+          hideModal={this.hideSetDateForClassScreen} />
       </Container>
     );
   }

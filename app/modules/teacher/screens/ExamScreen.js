@@ -10,9 +10,18 @@ import store from '../../../store';
 import { PickerField } from '../../../components/fields';
 
 import BubbleMenu from '../../../components/BubbleMenu';
+import SetDateForClassScreen from './SetDateForClassScreen';
 
 @observer
 class ExamScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { setDateForClassScreenVisible: false };
+  }
+  
+  showSetDateForClassScreen = () => this.setState({ setDateForClassScreenVisible: true });
+  hideSetDateForClassScreen = () => this.setState({ setDateForClassScreenVisible: false });
 
   checkUncheckTopic = (checked, topicId) => {
     checked ?
@@ -30,7 +39,7 @@ class ExamScreen extends Component {
 
     let subjectAreas = store.teacher.subjectAreas.filter(subject => subject.id === this.props.subjectAreaId);
     const topics = subjectAreas.length > 0 ? subjectAreas[0].topics : store.teacher.subjectAreas[0].topics;
-    
+
     return (
       <Container>
         <Header appHeader>
@@ -43,12 +52,12 @@ class ExamScreen extends Component {
             <Title>Provas</Title>
           </Body>
           <Right>
-            <TouchableWithoutFeedback onPress={() => navigate('SetDateForClassScreen')}>
+            <TouchableWithoutFeedback onPress={this.showSetDateForClassScreen}>
               <Text>Próximo</Text>
             </TouchableWithoutFeedback>
           </Right>
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu mode="schoolYear" />
           <Form>
             <Field
@@ -80,6 +89,9 @@ class ExamScreen extends Component {
             );
           })}
         </Content>
+        <SetDateForClassScreen
+          visible={this.state.setDateForClassScreenVisible}
+          hideModal={this.hideSetDateForClassScreen} />
       </Container>
     );
   }

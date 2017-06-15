@@ -27,7 +27,7 @@ export default class AlertScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu />
           <Text>Notas</Text>
         </Content>

@@ -70,7 +70,7 @@ export default class CalendarScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu />
           <List agendaList>
             <CalendarWeek label="Semana Atual" items={currentWeekItems} />

@@ -27,7 +27,7 @@ export default class AnalysisScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu mode="schoolYear" />
           <Text>Análises</Text>
         </Content>

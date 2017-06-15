@@ -10,9 +10,24 @@ import store from '../../../store';
 import { PickerField, TextField } from '../../../components/fields';
 
 import BubbleMenu from '../../../components/BubbleMenu';
+import SetDateForClassScreen from './SetDateForClassScreen';
+import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 
 @observer
 class ExerciseScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      setDateForClassScreenVisible: false,
+      exerciseConfigurationScreenVisible: false,
+    };
+  }
+
+  showSetDateForClassScreen = () => this.setState({ setDateForClassScreenVisible: true });
+  showExerciseConfigurationScreen = () => this.setState({ exerciseConfigurationScreenVisible: true });
+  hideSetDateForClassScreen = () => this.setState({ setDateForClassScreenVisible: false });
+  hideExerciseConfigurationScreen = () => this.setState({ exerciseConfigurationScreenVisible: false });
 
   render() {
 
@@ -31,6 +46,7 @@ class ExerciseScreen extends Component {
     );
 
     const exerciseTypeId = this.props.exerciseTypeId || store.exerciceTypes[0].id;
+    const showNextScreen = exerciseTypeId === 1 ? this.showSetDateForClassScreen : this.showExerciseConfigurationScreen;
 
     return (
       <Container>
@@ -44,16 +60,12 @@ class ExerciseScreen extends Component {
             <Title>Exercícios</Title>
           </Body>
           <Right>
-            <TouchableWithoutFeedback onPress={() =>
-              exerciseTypeId === 1 ?
-                navigate('SetDateForClassScreen') :
-                navigate('ExerciseConfigurationScreen')
-            }>
+            <TouchableWithoutFeedback onPress={showNextScreen}>
               <Text>Próximo</Text>
             </TouchableWithoutFeedback>
           </Right>
         </Header>
-        <Content stickyHeaderIndices={[0]}>
+        <Content>
           <BubbleMenu mode="schoolYear" />
           <Form>
             <Field
@@ -86,6 +98,12 @@ class ExerciseScreen extends Component {
             </Field>
           </Form>
         </Content>
+        <SetDateForClassScreen
+          visible={this.state.setDateForClassScreenVisible}
+          hideModal={this.hideSetDateForClassScreen} />
+        <ExerciseConfigurationScreen
+          visible={this.state.exerciseConfigurationScreenVisible}
+          hideModal={this.hideExerciseConfigurationScreen} />
       </Container>
     );
   }
