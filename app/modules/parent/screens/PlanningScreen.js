@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Alert } from 'react-native';
-import { Container, Header, Title, Content, Right, Left, Icon, Body, Text, Picker } from 'native-base';
+import { Container, Header, Title, Content, Right, Left, Icon, Body, Text, Picker, Item, Label } from 'native-base';
 import { Field, reduxForm } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
@@ -9,21 +9,6 @@ import store from '../../../store';
 import BubbleMenu from '../../../components/BubbleMenu';
 
 import { PickerField } from '../../../components/fields';
-
-// const validate = values => {
-//   const error = {};
-//   // TODO: Implementar validações
-//   // if (!values.email) {
-//   //   error.email = 'required field';
-//   // }
-//   // if (!values.name) {
-//   //   error.name = 'required field';
-//   // }
-//   // if (!values.selectVehicle) {
-//   //   error.selectVehicle = 'required field';
-//   // }
-//   return error;
-// };
 
 @observer
 class PlanningScreen extends Component {
@@ -82,6 +67,10 @@ class PlanningScreen extends Component {
         <Content>
           <BubbleMenu />
           <Content padder>
+            <Item stackedLabel style={{ borderBottomWidth: 0, marginBottom: 10 }}>
+              <Label>A carga mínima de exercícios permite que você determine um mínimo que deseja que seu filho faça de exercícios por semana. Dessa maneira, se o professor de determinada disciplina não ter exercícios para casa, o EducareBox irá automaticamente gerar uma lista para o seu filho.</Label>
+              <Label>Escolha a carga que deseja em cada disciplina:</Label>
+            </Item>
             {subjectAreas.map((subjectArea, index) => {
               const currentValue = store.studentSelected.planning[subjectArea.key] || 0;
               return (
@@ -101,7 +90,4 @@ class PlanningScreen extends Component {
   }
 }
 
-export default reduxForm({
-  form: 'formPlanningScreen',
-  // validate
-})(PlanningScreen);
+export default reduxForm({ form: 'formPlanningScreen' })(PlanningScreen);
