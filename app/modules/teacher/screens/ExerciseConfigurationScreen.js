@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Modal, View } from 'react-native';
 import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text, Button, Item, Label } from 'native-base';
-import { connect } from 'react-redux';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import _ from 'underscore';
 
 import { observer } from 'mobx-react/native';
