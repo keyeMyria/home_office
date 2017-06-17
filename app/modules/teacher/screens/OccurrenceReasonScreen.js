@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Alert, Modal } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Text, Picker, Form } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Text, Picker } from 'native-base';
 import { Field, reduxForm } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
@@ -50,23 +50,21 @@ class OccurrenceReasonScreen extends Component {
               </TouchableWithoutFeedback>
             </Right>
           </Header>
-          <Content>
-            <Form>
-              <Field
-                name="motivo"
-                label="Motivo"
-                component={PickerField}
-                props={{ initialValue: 1 }}>
-                {pickerItems}
-              </Field>
-              <Field
-                style={{ height: 150 }}
-                name="observacao"
-                label="Observação"
-                component={TextField}
-                multiline={true}>
-              </Field>
-            </Form>
+          <Content padder>
+            <Field
+              name="motivo"
+              label="Motivo"
+              component={PickerField}
+              props={{ initialValue: 1 }}>
+              {pickerItems}
+            </Field>
+            <Field
+              style={{ height: 150 }}
+              name="observacao"
+              label="Observação"
+              component={TextField}
+              multiline={true}>
+            </Field>
           </Content>
         </Container>
       </Modal>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Alert, Modal } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Form, Text } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Text } from 'native-base';
+import { connect } from 'react-redux';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
@@ -28,6 +29,8 @@ class ExerciseScreen extends Component {
 
   render() {
 
+    // console.log('allSchoolYear', this.props.allSchoolYear);
+    
     return (
       <Modal animationType={'slide'} transparent={false} visible={this.state.visible}>
         <Container>
@@ -46,21 +49,19 @@ class ExerciseScreen extends Component {
               </TouchableWithoutFeedback>
             </Right>
           </Header>
-          <Content>
-            <Form>
-              <Field
-                name="todasTurmas"
-                label="Todas Turmas"
+          <Content padder>
+            <Field
+              name="todasTurmas"
+              label="Todas Turmas"
+              component={DatePickerField}
+              props={{ initialValue: '-' }} />
+            {store.schoolYearSelected.classes.map((schoolYear, index) =>
+              <Field key={index}
+                name={schoolYear.key}
+                label={schoolYear.name}
                 component={DatePickerField}
-                props={{ initialValue: new Date() }} />
-              {store.schoolYearSelected.classes.map((schoolYear, index) =>
-                <Field key={index}
-                  name={schoolYear.key}
-                  label={schoolYear.name}
-                  component={DatePickerField}
-                  props={{ initialValue: new Date() }} />
-              )}
-            </Form>
+                props={{ initialValue: '-' }} />
+            )}
           </Content>
         </Container>
       </Modal>
@@ -68,4 +69,12 @@ class ExerciseScreen extends Component {
   }
 }
 
-export default reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
+const form = reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
+const selector = formValueSelector('formExerciseScreen');
+export default connect(
+  state => {
+    return {
+      allSchoolYear: selector(state, 'todasTurmas'),
+    };
+  }
+)(form);

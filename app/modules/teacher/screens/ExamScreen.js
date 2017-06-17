@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text, Item, ListItem, CheckBox } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text, Item, ListItem, CheckBox } from 'native-base';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
@@ -59,7 +59,7 @@ class ExamScreen extends Component {
         </Header>
         <Content>
           <BubbleMenu mode="schoolYear" />
-          <Form>
+          <Content padder>
             <Field
               name="disciplina"
               label="Disciplina"
@@ -70,7 +70,7 @@ class ExamScreen extends Component {
             <Item style={{ height: 46, borderWidth: 0 }}>
               <Text>Selecione o(s) assunto(s)</Text>
             </Item>
-          </Form>
+          </Content>
           {topics.map((topic, index) => {
             const checked = store.examTopics.filter(topicId => topicId === topic.id).length > 0;
             return (

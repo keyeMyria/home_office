@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, Modal } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text } from 'native-base';
+import { TouchableWithoutFeedback, Modal, View } from 'react-native';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text } from 'native-base';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
+import _ from 'underscore';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
 
-import { PickerField, NumericField } from '../../../components/fields';
+import { PickerField } from '../../../components/fields';
 import SetDateForClassScreen from './SetDateForClassScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
 
@@ -42,6 +43,13 @@ class ExerciseConfigurationScreen extends Component {
       <Picker.Item key={index} label={type.name} value={type.id} />
     );
 
+    const questionCountItems = _.range(0, 51, 1).map((val, index) => {
+      const label = val === 0 ? 'Nenhuma' : val + (val === 1 ? ' Questão' : ' Questões');
+      return (
+        <Picker.Item key={index} label={label} value={val + 1} />
+      );
+    });
+
     const questionGenerationTypeId = this.props.questionGenerationTypeId || store.questionGenerationTypes[0].id;
     const showNextScreen = questionGenerationTypeId === 3 ? this.showSelectQuestionScreen : this.showSetDateForClassScreen;
 
@@ -63,38 +71,46 @@ class ExerciseConfigurationScreen extends Component {
               </TouchableWithoutFeedback>
             </Right>
           </Header>
-          <Content>
-            <Form>
-              <Field
-                name="bancoQuestoes"
-                label="Banco de Questões"
-                component={PickerField}
-                props={{ initialValue: 1 }}>
-                {quetionDatabaseTypeItems}
-              </Field>
-              <Field
-                name="modoGeracao"
-                label="Modo Geração"
-                component={PickerField}
-                props={{ initialValue: 1 }}>
-                {questionGenerationTypeItems}
-              </Field>
-              <Field
-                name="numQuestoesFaceis"
-                label="Fáceis"
-                component={NumericField}>
-              </Field>
-              <Field
-                name="numQuestoesMedias"
-                label="Médios"
-                component={NumericField}>
-              </Field>
-              <Field
-                name="numQuestoesDificeis"
-                label="Difíceis"
-                component={NumericField}>
-              </Field>
-            </Form>
+          <Content padder>
+            <Field
+              name="bancoQuestoes"
+              label="Banco de Questões"
+              component={PickerField}
+              props={{ initialValue: 1 }}>
+              {quetionDatabaseTypeItems}
+            </Field>
+            <Field
+              name="modoGeracao"
+              label="Modo de Geração"
+              component={PickerField}
+              props={{ initialValue: 1 }}>
+              {questionGenerationTypeItems}
+            </Field>
+            {questionGenerationTypeId !== 3 &&
+              <View>
+                <Field
+                  name="numQuestoesFaceis"
+                  label="Fáceis"
+                  component={PickerField}
+                  props={{ initialValue: 1 }}>
+                  {questionCountItems}
+                </Field>
+                <Field
+                  name="numQuestoesMedias"
+                  label="Médios"
+                  component={PickerField}
+                  props={{ initialValue: 1 }}>
+                  {questionCountItems}
+                </Field>
+                <Field
+                  name="numQuestoesDificeis"
+                  label="Difíceis"
+                  component={PickerField}
+                  props={{ initialValue: 1 }}>
+                  {questionCountItems}
+                </Field>
+              </View>
+            }
           </Content>
         </Container>
         <SetDateForClassScreen
@@ -103,7 +119,7 @@ class ExerciseConfigurationScreen extends Component {
         <SelectQuestionScreen
           visible={this.state.selectQuestionScreenVisible}
           hideModal={this.hideSelectQuestionScreen} />
-      </Modal>
+      </Modal >
     );
   }
 }

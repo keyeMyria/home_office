@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text } from 'native-base';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
@@ -67,7 +67,7 @@ class ExerciseScreen extends Component {
         </Header>
         <Content>
           <BubbleMenu mode="schoolYear" />
-          <Form>
+          <Content padder>
             <Field
               name="tipo"
               label="Tipo"
@@ -92,11 +92,11 @@ class ExerciseScreen extends Component {
             <Field
               style={{ height: 150 }}
               name="information"
-              label="Informação"
+              label="Descrição da Atividade"
               component={TextField}
               multiline={true}>
             </Field>
-          </Form>
+          </Content>
         </Content>
         <SetDateForClassScreen
           visible={this.state.setDateForClassScreenVisible}

@@ -5,7 +5,7 @@ const educareTheme = getTheme(material);
 
 // Container
 educareTheme['NativeBase.Container'] = Object.assign(educareTheme['NativeBase.Container'] || {}, {
-  backgroundColor: '#FFFFFF',
+  backgroundColor: '#FAFAFA',
   '.sideBarContainer': {
     'NativeBase.ListItem': {
       backgroundColor: material.PRIMARY_COLOR,

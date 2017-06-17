@@ -16,6 +16,11 @@ const LOGIN_OPTIONS = [
 // @observer
 export default class LoginScreen extends Component {
 
+  constructor(props) {
+    super(props);
+    // this.props.navigation.navigate('TeacherHomeRouter');
+  }
+
   handleSubmit = () => {
     this.actionSheet._root.showActionSheet(
       {

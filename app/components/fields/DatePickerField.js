@@ -26,20 +26,39 @@ export default class DatePickerField extends Component {
 
     return (
       <View>
-        <Item inlineLabel
-          onPress={this.toogle}
-          style={{ height: 46 }}>
-          <Label style={{ flex: 0.4 }}>{label}</Label>
-          <Text style={{ flex: 0.6 }}>{moment(value).format('DD MMM YYYY - HH:mm')}</Text>
+        <Item stackedLabel style={styles.itemLabel}>
+          <Label>{label}</Label>
+        </Item>
+        <Item style={styles.item} onPress={this.toogle}>
+          <Text>{value instanceof Date ? moment(value).format('DD MMM YYYY') : value}</Text>
         </Item>
         {this.state.visible && <Item>
           <DatePickerIOS
-            date={value}
+            mode="date"
+            date={value instanceof Date ? value : new Date() }
             onDateChange={value => input.onChange(value)}
-            style={{ flex: 0.6 }}
+            style={{ flex: 1 }}
             {...custom} />
         </Item>}
       </View>
     );
   }
 }
+
+const styles = {
+  item: {
+    marginTop: 5,
+    paddingLeft: 15,
+    height: 46,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#E0E0E0',
+    borderRadius: 2,
+  },
+  itemLabel: {
+    borderBottomWidth: 0,
+  }
+};

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Alert } from 'react-native';
-import { Container, Header, Title, Content, Right, Left, Icon, Body, Text, Picker, Form } from 'native-base';
+import { Container, Header, Title, Content, Right, Left, Icon, Body, Text, Picker } from 'native-base';
 import { Field, reduxForm } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
@@ -57,7 +57,7 @@ class PlanningScreen extends Component {
 
     const { navigate } = this.props.navigation;
     const subjectAreas = store.studentSelected.subjectAreas.items;
-    
+
     const pickerItems = store.planningTimes.map((time, index) =>
       <Picker.Item key={index} label={time.label} value={time.id} />
     );
@@ -81,21 +81,19 @@ class PlanningScreen extends Component {
         </Header>
         <Content>
           <BubbleMenu />
-          <Content>
-            <Form>
-              {subjectAreas.map((subjectArea, index) => {
-                const currentValue = store.studentSelected.planning[subjectArea.key] || 0;
-                return (
-                  <Field key={index}
-                    name={subjectArea.key}
-                    label={subjectArea.name}
-                    component={PickerField}
-                    props={{ initialValue: currentValue }}>
-                    {pickerItems}
-                  </Field>
-                );
-              })}
-            </Form>
+          <Content padder>
+            {subjectAreas.map((subjectArea, index) => {
+              const currentValue = store.studentSelected.planning[subjectArea.key] || 0;
+              return (
+                <Field key={index}
+                  name={subjectArea.key}
+                  label={subjectArea.name}
+                  component={PickerField}
+                  props={{ initialValue: currentValue }}>
+                  {pickerItems}
+                </Field>
+              );
+            })}
           </Content>
         </Content>
       </Container>

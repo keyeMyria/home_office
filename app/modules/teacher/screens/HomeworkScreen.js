@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Form, Text } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text } from 'native-base';
 import { Field, reduxForm } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
@@ -49,7 +49,7 @@ class HomeworkScreen extends Component {
         </Header>
         <Content>
           <BubbleMenu mode="schoolYear" />
-          <Form>
+          <Content padder>
             <Field
               name="disciplina"
               label="Disciplina"
@@ -64,7 +64,7 @@ class HomeworkScreen extends Component {
               component={TextField}
               multiline={true}>
             </Field>
-          </Form>
+          </Content>
         </Content>
         <SetDateForClassScreen
           visible={this.state.setDateForClassScreenVisible}
