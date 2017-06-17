@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import {
-  ScrollView,
-  View,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import {
-  Text,
-  Thumbnail,
-  Button,
-} from 'native-base';
+import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
+import { Text, Thumbnail, Button } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import store from '../store';

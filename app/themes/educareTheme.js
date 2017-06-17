@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native';
+
 import getTheme from './native/components';
 import material from './native/variables/material';
 
@@ -177,6 +179,24 @@ const styles = {
     width: 50,
     height: 50
   },
+  buttonView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  buttonActive: {
+    backgroundColor: '#26C6DA',
+    width: Dimensions.get('window').width / 2 - 15,
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  buttonInactive: {
+    backgroundColor: '#b5b5b5',
+    width: Dimensions.get('window').width / 2 - 15,
+    justifyContent: 'center',
+    marginBottom: 10,
+  }
 };
 
 export {

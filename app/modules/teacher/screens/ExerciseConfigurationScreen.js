@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Modal, View } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text, Button, Item, Label } from 'native-base';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import _ from 'underscore';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+
+import { styles } from '../../../themes/educareTheme';
 
 import { PickerField } from '../../../components/fields';
 import SetDateForClassScreen from './SetDateForClassScreen';
@@ -20,7 +22,9 @@ class ExerciseConfigurationScreen extends Component {
     this.state = {
       visible: props.visible,
       setDateForClassScreenVisible: false,
-      selectQuestionScreenVisible: false
+      selectQuestionScreenVisible: false,
+      questionGenerationTypeId: 1,
+      questionDatabaseTypeId: 1,
     };
   }
 
@@ -35,14 +39,6 @@ class ExerciseConfigurationScreen extends Component {
 
   render() {
 
-    const quetionDatabaseTypeItems = store.quetionDatabaseTypes.map((type, index) =>
-      <Picker.Item key={index} label={type.name} value={type.id} />
-    );
-
-    const questionGenerationTypeItems = store.questionGenerationTypes.map((type, index) =>
-      <Picker.Item key={index} label={type.name} value={type.id} />
-    );
-
     const questionCountItems = _.range(0, 51, 1).map((val, index) => {
       const label = val === 0 ? 'Nenhuma' : val + (val === 1 ? ' Questão' : ' Questões');
       return (
@@ -50,7 +46,7 @@ class ExerciseConfigurationScreen extends Component {
       );
     });
 
-    const questionGenerationTypeId = this.props.questionGenerationTypeId || store.questionGenerationTypes[0].id;
+    const questionGenerationTypeId = this.state.questionGenerationTypeId || store.questionGenerationTypes[0].id;
     const showNextScreen = questionGenerationTypeId === 3 ? this.showSelectQuestionScreen : this.showSetDateForClassScreen;
 
     return (
@@ -72,20 +68,30 @@ class ExerciseConfigurationScreen extends Component {
             </Right>
           </Header>
           <Content padder>
-            <Field
-              name="bancoQuestoes"
-              label="Banco de Questões"
-              component={PickerField}
-              props={{ initialValue: 1 }}>
-              {quetionDatabaseTypeItems}
-            </Field>
-            <Field
-              name="modoGeracao"
-              label="Modo de Geração"
-              component={PickerField}
-              props={{ initialValue: 1 }}>
-              {questionGenerationTypeItems}
-            </Field>
+            <Item stackedLabel style={{ borderBottomWidth: 0, marginBottom: 10 }}>
+              <Label>Banco de Questões</Label>
+            </Item>
+            <View style={styles.buttonView}>
+              {store.questionDatabaseTypes.map((type, index) =>
+                <Button key={index} rounded
+                  onPress={() => this.setState({ questionDatabaseTypeId: type.id })}
+                  style={type.id === this.state.questionDatabaseTypeId ? styles.buttonActive : styles.buttonInactive}>
+                  <Text>{type.name}</Text>
+                </Button>
+              )}
+            </View>
+            <Item stackedLabel style={{ borderBottomWidth: 0, marginBottom: 10 }}>
+              <Label>Modo de Geração</Label>
+            </Item>
+            <View style={styles.buttonView}>
+              {store.questionGenerationTypes.map((type, index) =>
+                <Button key={index} rounded
+                  onPress={() => this.setState({ questionGenerationTypeId: type.id })}
+                  style={type.id === this.state.questionGenerationTypeId ? styles.buttonActive : styles.buttonInactive}>
+                  <Text>{type.name}</Text>
+                </Button>
+              )}
+            </View>
             {questionGenerationTypeId !== 3 &&
               <View>
                 <Field

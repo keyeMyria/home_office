@@ -707,13 +707,13 @@ const occurrenceReasons = [
  */
 const exerciceTypes = [
   { id: 1, name: 'Lista Física' },
-  { id: 2, name: 'Lista no Sistema' },
+  { id: 2, name: 'Lista Sistema' },
 ];
 
 /**
  * QUESTION DATABASE TYPES 
  */
-const quetionDatabaseTypes = [
+const questionDatabaseTypes = [
   { id: 1, name: 'Da Escola' },
   { id: 2, name: 'De Provas Anteriores' },
   { id: 3, name: 'Do Sistema' },
@@ -761,7 +761,7 @@ export {
   occurrenceReasons,
   schoolYears,
   exerciceTypes,
-  quetionDatabaseTypes,
+  questionDatabaseTypes,
   questionGenerationTypes,
   questions,
 };

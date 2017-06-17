@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Alert, Modal } from 'react-native';
 import { Container, Header, Title, Content, Left, Right, Icon, Body, Text } from 'native-base';
 import { connect } from 'react-redux';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, reduxForm, formValueSelector, change } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
@@ -18,7 +18,41 @@ class ExerciseScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
+    let allSchoolYearsChanged = nextProps.formValues.allSchoolYears !== '-' &&
+      nextProps.formValues.allSchoolYears !== this.props.formValues.allSchoolYears;
+
+    let otherSchoolYearsChanged = false;
+
+    for (var i = 0; i < store.schoolYearSelected.classes.length; i++) {
+
+      var schoolYear = store.schoolYearSelected.classes[i].key;
+
+      let currVal = this.props.formValues[schoolYear];
+      let nextVal = nextProps.formValues[schoolYear];
+
+      if (nextVal !== '-' && nextVal !== currVal &&
+        nextVal !== this.props.formValues.allSchoolYears &&
+        nextVal !== nextProps.formValues.allSchoolYears) {
+        otherSchoolYearsChanged = true;
+        break;
+      }
+    }
+
     this.setState({ visible: nextProps.visible });
+
+    const { dispatch } = this.props;
+
+    if (allSchoolYearsChanged) {
+      store.schoolYearSelected.classes.map(schoolYear =>
+        dispatch(change('formExerciseScreen', schoolYear.key, nextProps.formValues.allSchoolYears || '-'))
+      );
+    }
+
+    if (otherSchoolYearsChanged) {
+      dispatch(change('formExerciseScreen', 'allSchoolYears', '-'));
+    }
+
   }
 
   save = () => {
@@ -29,8 +63,6 @@ class ExerciseScreen extends Component {
 
   render() {
 
-    // console.log('allSchoolYear', this.props.allSchoolYear);
-    
     return (
       <Modal animationType={'slide'} transparent={false} visible={this.state.visible}>
         <Container>
@@ -51,7 +83,7 @@ class ExerciseScreen extends Component {
           </Header>
           <Content padder>
             <Field
-              name="todasTurmas"
+              name="allSchoolYears"
               label="Todas Turmas"
               component={DatePickerField}
               props={{ initialValue: '-' }} />
@@ -73,8 +105,9 @@ const form = reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
 const selector = formValueSelector('formExerciseScreen');
 export default connect(
   state => {
+    var formValues = store.schoolYearSelected.classes.map(schoolYear => schoolYear.key);
     return {
-      allSchoolYear: selector(state, 'todasTurmas'),
+      formValues: selector(state, 'allSchoolYears', ...formValues),
     };
   }
 )(form);

@@ -17,7 +17,7 @@ class AppStore {
   @observable occurrenceReasons = MOCK.occurrenceReasons;
   @observable schoolYears = MOCK.schoolYears;
   @observable exerciceTypes = MOCK.exerciceTypes;
-  @observable quetionDatabaseTypes = MOCK.quetionDatabaseTypes;
+  @observable questionDatabaseTypes = MOCK.questionDatabaseTypes;
   @observable questionGenerationTypes = MOCK.questionGenerationTypes;
   @observable questions = MOCK.questions;
 
