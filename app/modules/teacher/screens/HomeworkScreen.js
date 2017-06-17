@@ -60,7 +60,7 @@ class HomeworkScreen extends Component {
             <Field
               style={{ height: 150 }}
               name="information"
-              label="Informação"
+              label="Descrição da Atividade"
               component={TextField}
               multiline={true}>
             </Field>

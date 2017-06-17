@@ -57,6 +57,10 @@ export default class SelectQuestionScreen extends Component {
                 const checked = store.exerciceQuestions.filter(questionId => questionId === question.id).length > 0;
                 return (
                   <ListItem key={index}
+                    style={{
+                      backgroundColor: question.colorLevel,
+                      marginLeft: 0
+                    }}
                     onPress={() => this.checkUncheckExerciceQuestion(checked, question.id)}>
                     <Body>
                       <Text>{question.name}</Text>
@@ -64,7 +68,7 @@ export default class SelectQuestionScreen extends Component {
                     <Right>
                       <CheckBox
                         checked={checked}
-                        style={{ marginRight: 20 }}
+                        style={{ marginRight: 20, ... !checked ? { backgroundColor: '#FFFFFF' } : null }}
                       />
                     </Right>
                   </ListItem>

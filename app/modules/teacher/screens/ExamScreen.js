@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
-import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text, Item, ListItem, CheckBox } from 'native-base';
+import { Container, Header, Title, Content, Left, Right, Icon, Body, Picker, Text, Item, ListItem, CheckBox, Label } from 'native-base';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
@@ -67,8 +67,8 @@ class ExamScreen extends Component {
               props={{ initialValue: 1 }}>
               {subjectAreaItems}
             </Field>
-            <Item style={{ height: 46, borderWidth: 0 }}>
-              <Text>Selecione o(s) assunto(s)</Text>
+            <Item stackedLabel style={{ borderBottomWidth: 0 }}>
+              <Label>Selecione os Tópicos</Label>
             </Item>
           </Content>
           {topics.map((topic, index) => {

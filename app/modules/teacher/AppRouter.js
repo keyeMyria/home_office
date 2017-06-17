@@ -13,15 +13,16 @@ import {
   ExamScreen,
   HomeworkScreen,
   AnalysisScreen,
+  CalendarScreen,
 } from './screens';
 
 const HomeRouter = TabNavigator(
   {
+    CalendarScreen: { screen: CalendarScreen },
     ExerciseScreen: { screen: ExerciseScreen },
-    ExamScreen: { screen: ExamScreen },
     AlertScreen: { screen: AlertScreen },
+    ExamScreen: { screen: ExamScreen },
     HomeworkScreen: { screen: HomeworkScreen },
-    AnalysisScreen: { screen: AnalysisScreen },
   },
   {
     tabBarComponent: HomeNavigator,
@@ -34,6 +35,7 @@ export default DrawerNavigator(
     HomeRouter: { screen: HomeRouter },
     MessageScreen: { screen: MessageScreen },
     HistoryScreen: { screen: HistoryScreen },
+    AnalysisScreen: { screen: AnalysisScreen },
     SelectClassScreen: { screen: SelectClassScreen },
   },
   {

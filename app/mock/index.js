@@ -1,3 +1,13 @@
+/**
+ * COLORS
+ */
+const EXAM_COLOR = '#E57373';
+const SCHOOL_EXERCICE_COLOR = '#64B5F6';
+const PREPARATORY_EXERCICE_COLOR = '#FFF176';
+
+const QUESTION_HARD_COLOR = '#ffcdd2';
+const QUESTION_MEDIUM_COLOR = '#FFF9C4';
+const QUESTION_EASY_COLOR = '#C8E6C9';
 
 /**
  * USERS
@@ -28,7 +38,7 @@ const childStudents = [
 ];
 
 /**
- * CALENDARS
+ * CALENDARS (STUDENT)
  */
 const calendars = [
   {
@@ -36,7 +46,7 @@ const calendars = [
     currentWeekItems: [
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Seg.',
         date: '7/ago',
         time: '13:00',
@@ -44,7 +54,7 @@ const calendars = [
       },
       {
         type: 'E.P.',
-        colorType: '#FFF176',
+        colorType: PREPARATORY_EXERCICE_COLOR,
         dayOfWeek: 'Ter.',
         date: '8/ago',
         time: undefined,
@@ -52,7 +62,7 @@ const calendars = [
       },
       {
         type: 'E.P.',
-        colorType: '#FFF176',
+        colorType: PREPARATORY_EXERCICE_COLOR,
         dayOfWeek: 'Ter.',
         date: '8/ago',
         time: undefined,
@@ -60,7 +70,7 @@ const calendars = [
       },
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Qua.',
         date: '9/ago',
         time: '13:00',
@@ -68,7 +78,7 @@ const calendars = [
       },
       {
         type: 'P.',
-        colorType: '#E57373',
+        colorType: EXAM_COLOR,
         dayOfWeek: 'Qui.',
         date: '10/ago',
         time: '14:40',
@@ -76,7 +86,7 @@ const calendars = [
       },
       {
         type: 'P.',
-        colorType: '#E57373',
+        colorType: EXAM_COLOR,
         dayOfWeek: 'Sex.',
         date: '11/ago',
         time: '16:40',
@@ -86,7 +96,7 @@ const calendars = [
     nextWeekItems: [
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Seg.',
         date: '14/ago',
         time: '13:00',
@@ -94,7 +104,7 @@ const calendars = [
       },
       {
         type: 'E.P.',
-        colorType: '#FFF176',
+        colorType: PREPARATORY_EXERCICE_COLOR,
         dayOfWeek: 'Ter.',
         date: '15/ago',
         time: undefined,
@@ -102,7 +112,7 @@ const calendars = [
       },
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Qua.',
         date: '16/ago',
         time: '13:00',
@@ -110,7 +120,7 @@ const calendars = [
       },
       {
         type: 'P.',
-        colorType: '#E57373',
+        colorType: EXAM_COLOR,
         dayOfWeek: 'Qui.',
         date: '17/ago',
         time: '14:40',
@@ -123,7 +133,7 @@ const calendars = [
     currentWeekItems: [
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Seg.',
         date: '7/ago',
         time: '13:00',
@@ -131,7 +141,7 @@ const calendars = [
       },
       {
         type: 'E.P.',
-        colorType: '#FFF176',
+        colorType: PREPARATORY_EXERCICE_COLOR,
         dayOfWeek: 'Ter.',
         date: '8/ago',
         time: undefined,
@@ -139,7 +149,7 @@ const calendars = [
       },
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Qua.',
         date: '9/ago',
         time: '13:00',
@@ -147,15 +157,7 @@ const calendars = [
       },
       {
         type: 'P.',
-        colorType: '#E57373',
-        dayOfWeek: 'Qui.',
-        date: '10/ago',
-        time: '14:40',
-        information: 'Prova de Geografia (10 pontos)'
-      },
-      {
-        type: 'P.',
-        colorType: '#E57373',
+        colorType: EXAM_COLOR,
         dayOfWeek: 'Sex.',
         date: '11/ago',
         time: '16:40',
@@ -165,23 +167,7 @@ const calendars = [
     nextWeekItems: [
       {
         type: 'E.E.',
-        colorType: '#64B5F6',
-        dayOfWeek: 'Seg.',
-        date: '14/ago',
-        time: '13:00',
-        information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
-      },
-      {
-        type: 'E.P.',
-        colorType: '#FFF176',
-        dayOfWeek: 'Ter.',
-        date: '15/ago',
-        time: undefined,
-        information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
-      },
-      {
-        type: 'E.E.',
-        colorType: '#64B5F6',
+        colorType: SCHOOL_EXERCICE_COLOR,
         dayOfWeek: 'Qua.',
         date: '16/ago',
         time: '13:00',
@@ -218,7 +204,7 @@ const calendars = [
       },
       {
         type: 'E.P.',
-        colorType: '#FFF176',
+        colorType: PREPARATORY_EXERCICE_COLOR,
         dayOfWeek: 'Ter.',
         date: '8/ago',
         time: undefined,
@@ -244,6 +230,96 @@ const calendars = [
     nextWeekItems: [],
   }
 ];
+
+/**
+ * CALENDAR (TEACHER)
+ */
+const teacherCalendar = {
+  currentWeekItems: [
+    {
+      type: 'P.',
+      colorType: '#E57373',
+      dayOfWeek: 'Qui.',
+      date: '17/ago',
+      time: '14:40',
+      information: 'Prova de Geografia (10 pontos)'
+    },
+    {
+      type: 'E.E.',
+      colorType: '#64B5F6',
+      dayOfWeek: 'Qua.',
+      date: '16/ago',
+      time: '13:00',
+      information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
+    },
+    {
+      type: 'E.P.',
+      colorType: PREPARATORY_EXERCICE_COLOR,
+      dayOfWeek: 'Ter.',
+      date: '15/ago',
+      time: undefined,
+      information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
+    },
+    {
+      type: 'E.E.',
+      colorType: '#64B5F6',
+      dayOfWeek: 'Seg.',
+      date: '14/ago',
+      time: '13:00',
+      information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
+    },
+  ],
+  lastWeekItems: [
+    {
+      type: 'P.',
+      colorType: '#E57373',
+      dayOfWeek: 'Sex.',
+      date: '11/ago',
+      time: '16:40',
+      information: 'Prova de Matemática (10 pontos)'
+    },
+    {
+      type: 'P.',
+      colorType: '#E57373',
+      dayOfWeek: 'Qui.',
+      date: '10/ago',
+      time: '14:40',
+      information: 'Prova de Geografia (10 pontos)'
+    },
+    {
+      type: 'E.E.',
+      colorType: '#64B5F6',
+      dayOfWeek: 'Qua.',
+      date: '9/ago',
+      time: '13:00',
+      information: 'Exercícios da Escola - Lista de Biologia (8 exer. / 0h50)'
+    },
+    {
+      type: 'E.P.',
+      colorType: PREPARATORY_EXERCICE_COLOR,
+      dayOfWeek: 'Ter.',
+      date: '8/ago',
+      time: undefined,
+      information: 'Exercícios Preparatórios - Matemática (7 exer. /14h30)'
+    },
+    {
+      type: 'E.P.',
+      colorType: PREPARATORY_EXERCICE_COLOR,
+      dayOfWeek: 'Ter.',
+      date: '8/ago',
+      time: undefined,
+      information: 'Exercícios Preparatórios - Geografia (10 exer. /1h00)'
+    },
+    {
+      type: 'E.E.',
+      colorType: '#64B5F6',
+      dayOfWeek: 'Seg.',
+      date: '7/ago',
+      time: '13:00',
+      information: 'Exercícios da Escola - Lista de Português (7 exer. / 1h15)'
+    },
+  ],
+};
 
 /**
  * ALERTS
@@ -684,9 +760,9 @@ const schoolYears = [
     id: 4,
     name: '9º',
     classes: [
-      { id: 1, name: 'Turma A' },
-      { id: 2, name: 'Turma B' },
-      { id: 3, name: 'Turma C' },
+      { id: 1, key: 'turmaA', name: 'Turma A' },
+      { id: 2, key: 'turmaB', name: 'Turma B' },
+      { id: 3, key: 'turmaC', name: 'Turma C' },
     ]
   }
 ];
@@ -732,20 +808,21 @@ const questionGenerationTypes = [
  * QUESTIONS
  */
 const questions = [
-  { id: 1, name: 'Question 1' },
-  { id: 2, name: 'Question 2' },
-  { id: 3, name: 'Question 3' },
-  { id: 4, name: 'Question 4' },
-  { id: 5, name: 'Question 5' },
-  { id: 6, name: 'Question 6' },
-  { id: 7, name: 'Question 7' },
-  { id: 8, name: 'Question 8' },
-  { id: 9, name: 'Question 9' },
-  { id: 10, name: 'Question 10' },
-  { id: 11, name: 'Question 11' },
-  { id: 12, name: 'Question 12' },
-  { id: 13, name: 'Question 13' },
-  { id: 14, name: 'Question 14' },
+  { id: 1, name: '[Fácil] Question 1 ...', colorLevel: QUESTION_EASY_COLOR },
+  { id: 2, name: '[Fácil] Question 2 ...', colorLevel: QUESTION_EASY_COLOR },
+  { id: 3, name: '[Fácil] Question 3 ...', colorLevel: QUESTION_EASY_COLOR },
+  { id: 4, name: '[Fácil] Question 4 ...', colorLevel: QUESTION_EASY_COLOR },
+  { id: 5, name: '[Fácil] Question 5 ...', colorLevel: QUESTION_EASY_COLOR },
+  { id: 6, name: '[Médio] Question 6 ...', colorLevel: QUESTION_MEDIUM_COLOR },
+  { id: 7, name: '[Médio] Question 7 ...', colorLevel: QUESTION_MEDIUM_COLOR },
+  { id: 8, name: '[Médio] Question 8 ...', colorLevel: QUESTION_MEDIUM_COLOR },
+  { id: 9, name: '[Médio] Question 9 ...', colorLevel: QUESTION_MEDIUM_COLOR },
+  { id: 10, name: '[Médio] Question 10 ...', colorLevel: QUESTION_MEDIUM_COLOR },
+  { id: 11, name: '[Difícil] Question 11 ...', colorLevel: QUESTION_HARD_COLOR },
+  { id: 12, name: '[Difícil] Question 12 ...', colorLevel: QUESTION_HARD_COLOR },
+  { id: 13, name: '[Difícil] Question 13 ...', colorLevel: QUESTION_HARD_COLOR },
+  { id: 14, name: '[Difícil] Question 14 ...', colorLevel: QUESTION_HARD_COLOR },
+  { id: 15, name: '[Difícil] Question 15 ...', colorLevel: QUESTION_HARD_COLOR },
 ];
 
 export {
@@ -764,4 +841,5 @@ export {
   questionDatabaseTypes,
   questionGenerationTypes,
   questions,
+  teacherCalendar,
 };

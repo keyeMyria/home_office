@@ -12,6 +12,7 @@ import AnalysisScreen from './AnalysisScreen';
 import SetDateForClassScreen from './SetDateForClassScreen';
 import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
+import CalendarScreen from './CalendarScreen';
 
 export {
   AlertScreen,
@@ -28,4 +29,5 @@ export {
   SetDateForClassScreen,
   ExerciseConfigurationScreen,
   SelectQuestionScreen,
+  CalendarScreen,
 };

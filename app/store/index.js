@@ -20,6 +20,7 @@ class AppStore {
   @observable questionDatabaseTypes = MOCK.questionDatabaseTypes;
   @observable questionGenerationTypes = MOCK.questionGenerationTypes;
   @observable questions = MOCK.questions;
+  @observable teacherCalendar = MOCK.teacherCalendar;
 
   // Dynamics
   @observable userSelected = this.users[0];

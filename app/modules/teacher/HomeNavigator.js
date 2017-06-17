@@ -17,15 +17,15 @@ export default class HomeTabNavigator extends Component {
         <FooterTab footerTabNavigation>
           <Button
             active={index === 0}
-            onPress={() => navigate('ExerciseScreen')}>
-            <Icon name="tune" />
-            <Text>Exercícios</Text>
+            onPress={() => navigate('CalendarScreen')}>
+            <Icon name="event-note" />
+            <Text>Agenda</Text>
           </Button>
           <Button
             active={index === 1}
-            onPress={() => navigate('ExamScreen')}>
-            <Icon name="assignment-turned-in" />
-            <Text>Provas</Text>
+            onPress={() => navigate('ExerciseScreen')}>
+            <Icon name="tune" />
+            <Text>Exercícios</Text>
           </Button>
           <Button
             active={index === 2}
@@ -37,16 +37,22 @@ export default class HomeTabNavigator extends Component {
           </Button>
           <Button
             active={index === 3}
+            onPress={() => navigate('ExamScreen')}>
+            <Icon name="assignment-turned-in" />
+            <Text>Provas</Text>
+          </Button>
+          <Button
+            active={index === 4}
             onPress={() => navigate('HomeworkScreen')}>
             <Icon name="library-books" />
             <Text>Trabalhos</Text>
           </Button>
-          <Button
+          {/*<Button
             active={index === 4}
             onPress={() => navigate('AnalysisScreen')}>
             <Icon name="insert-chart" />
             <Text>Análises</Text>
-          </Button>
+          </Button>*/}
         </FooterTab>
       </Footer>
     );

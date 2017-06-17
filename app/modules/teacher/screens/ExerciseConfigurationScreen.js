@@ -130,12 +130,4 @@ class ExerciseConfigurationScreen extends Component {
   }
 }
 
-const form = reduxForm({ form: 'formExerciseConfigurationScreen' })(ExerciseConfigurationScreen);
-const selector = formValueSelector('formExerciseConfigurationScreen');
-export default connect(
-  state => {
-    return {
-      questionGenerationTypeId: selector(state, 'modoGeracao')
-    };
-  }
-)(form);
+export default reduxForm({ form: 'formExerciseConfigurationScreen' })(ExerciseConfigurationScreen);

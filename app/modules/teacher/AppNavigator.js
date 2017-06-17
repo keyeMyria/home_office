@@ -48,9 +48,13 @@ export default class AppNavigator extends Component {
               <Icon name="assignment-turned-in" />
               <Text>Faltas</Text>
             </ListItem>
-            <ListItem onPress={() => navigate('SelectClassScreen', { nextScreen: 'OccurrenceScreen' })} last>
+            <ListItem onPress={() => navigate('SelectClassScreen', { nextScreen: 'OccurrenceScreen' })}>
               <Icon name="highlight-off" />
               <Text>Ocorrências</Text>
+            </ListItem>
+            <ListItem onPress={() => navigate('AnalysisScreen')} last>
+              <Icon name="insert-chart" />
+              <Text>Análises</Text>
             </ListItem>
             <ListItem>
               <Icon name="announcement" />
