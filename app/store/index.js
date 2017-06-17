@@ -21,6 +21,7 @@ class AppStore {
   @observable questionGenerationTypes = MOCK.questionGenerationTypes;
   @observable questions = MOCK.questions;
   @observable teacherCalendar = MOCK.teacherCalendar;
+  @observable periods = MOCK.periods;
 
   // Dynamics
   @observable userSelected = this.users[0];

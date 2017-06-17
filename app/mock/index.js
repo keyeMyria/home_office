@@ -825,6 +825,18 @@ const questions = [
   { id: 15, name: '[Difícil] Question 15 ...', colorLevel: QUESTION_HARD_COLOR },
 ];
 
+/**
+ * PERIODS
+ */
+const periods = [
+  { id: 1, name: '1º Bimestre' },
+  { id: 2, name: '2º Bimestre' },
+  { id: 3, name: '3º Bimestre' },
+  { id: 4, name: '4º Bimestre' },
+  { id: 5, name: '5º Bimestre' },
+  { id: 6, name: '6º Bimestre' },
+];
+
 export {
   users,
   childStudents,
@@ -842,4 +854,5 @@ export {
   questionGenerationTypes,
   questions,
   teacherCalendar,
+  periods,
 };

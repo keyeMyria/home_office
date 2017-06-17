@@ -37,6 +37,10 @@ class ExamScreen extends Component {
       <Picker.Item key={index} label={subject.name} value={subject.id} />
     );
 
+    const periodItems = store.periods.map((period, index) =>
+      <Picker.Item key={index} label={period.name} value={period.id} />
+    );
+
     let subjectAreas = store.teacher.subjectAreas.filter(subject => subject.id === this.props.subjectAreaId);
     const topics = subjectAreas.length > 0 ? subjectAreas[0].topics : store.teacher.subjectAreas[0].topics;
 
@@ -66,6 +70,13 @@ class ExamScreen extends Component {
               component={PickerField}
               props={{ initialValue: 1 }}>
               {subjectAreaItems}
+            </Field>
+            <Field
+              name="periodo"
+              label="Bimestre"
+              component={PickerField}
+              props={{ initialValue: 1 }}>
+              {periodItems}
             </Field>
             <Item stackedLabel style={{ borderBottomWidth: 0 }}>
               <Label>Selecione os Tópicos</Label>
