@@ -44,6 +44,7 @@ class ExerciseScreen extends Component {
     );
 
     const exerciseTypeId = this.state.exerciseTypeId || store.exerciceTypes[0].id;
+    const hasTempoAproximado = exerciseTypeId === 1;
     const showNextScreen = exerciseTypeId === 1 ? this.showSetDateForClassScreen : this.showExerciseConfigurationScreen;
 
     return (
@@ -85,13 +86,15 @@ class ExerciseScreen extends Component {
               props={{ initialValue: 1 }}>
               {subjectAreaItems}
             </Field>
-            <Field
-              name="tempoAproximado"
-              label="Tempo Aproximado"
-              component={PickerField}
-              props={{ initialValue: 0 }}>
-              {timeItems}
-            </Field>
+            { hasTempoAproximado &&
+              <Field
+                name="tempoAproximado"
+                label="Tempo Aproximado"
+                component={PickerField}
+                props={{ initialValue: 0 }}>
+                {timeItems}
+              </Field>
+            }
             <Field
               style={{ height: 150 }}
               name="information"
