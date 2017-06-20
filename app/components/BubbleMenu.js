@@ -7,86 +7,86 @@ import store from '../store';
 
 import { styles } from '../themes/educareTheme';
 
-const StudentItem = props => {
-  return (
-    <View style={styles.bubbleMenuItemView}>
-      <Thumbnail
-        source={props.source}
-        style={props.active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive} />
-      <Text style={styles.bubbleMenuItemText}>{props.name}</Text>
-    </View>
-  );
-};
+function StudentItem(props) {
+    const { active, source } = props;
+    const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
 
-const SchoolYearItem = props => {
-  return (
-    <View style={styles.bubbleMenuItemView}>
-      <Button
-        disabled={!props.active}
-        style={props.active ? styles.bubbleMenuButtonActive : styles.bubbleMenuButtonInactive}>
-        <Text>{props.name}</Text>
-      </Button>
-    </View>
-  );
-};
-
-const BubbleMenuItem = props => {
-  return (
-    <TouchableWithoutFeedback onPress={props.onPress}>
-      <View>
-        {props.item}
+    return (
+      <View style={styles.bubbleMenuItemView}>
+        <Thumbnail source={source} style={activeStyle} />
+        <Text style={styles.bubbleMenuItemText}>{props.name}</Text>
       </View>
-    </TouchableWithoutFeedback>
-  );
-};
+    );
+}
+
+function SchoolYearItem(props) {
+    const { active, name } = props;
+    const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
+
+    return (
+      <View style={styles.bubbleMenuItemView}>
+        <Button disabled={!active} style={activeStyle}>
+          <Text>{name}</Text>
+        </Button>
+      </View>
+    );
+}
+
+function BubbleMenuItem(props) {
+    const { item, onPress } = props;
+    return (
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View>
+          {item}
+        </View>
+      </TouchableWithoutFeedback>
+    );
+}
 
 @observer
 export default class BubbleMenu extends Component {
+    renderSchoolYear() {
+        const mapFunc = (year, index) => {
+            const active = year.id === store.schoolYearSelected.id;
+            const item = <SchoolYearItem name={year.name} active={active} />;
+            const onPress = () => store.selectSchoolYear(year.id);
+            return <BubbleMenuItem key={index} item={item} onPress={onPress} />;
+        };
 
-  render() {
-
-    let items = <View />;
-
-    switch (this.props.mode) {
-      case 'schoolYear':
-        items = store.schoolYears.map((year, index) =>
-          <BubbleMenuItem
-            key={index}
-            onPress={() => store.selectSchoolYear(year.id)}
-            item={
-              <SchoolYearItem
-                name={year.name}
-                active={year.id === store.schoolYearSelected.id}
-              />
-            }
-          />
-        );
-        break;
-      case 'student':
-      default:
-        items = store.childStudents.map((student, index) =>
-          <BubbleMenuItem
-            key={index}
-            onPress={() => store.selectStudent(student.id)}
-            item={
-              <StudentItem
-                name={student.name}
-                active={student.id === store.studentSelected.id}
-                source={store.getStudentImagebyId(student.id)}
-              />
-            }
-          />
-        );
-        break;
+        return store.schoolYears.map(mapFunc);
     }
 
-    return (
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.bubbleMenuView}>
-        {items}
-      </ScrollView>
-    );
-  }
+    renderStudent() {
+        const mapFunc = (student, index) => {
+            const { name, id } = student;
+            const active = id === store.studentSelected.id;
+            const imageSource = store.getStudentImagebyId(id);
+            const item = <StudentItem name={name} active={active} source={imageSource} />;
+            const onPress = () => store.selectStudent(student.id);
+
+            return <BubbleMenuItem key={index} item={item} onPress={onPress} />;
+        };
+
+        return store.childStudents.map(mapFunc);
+    }
+
+    render() {
+        const { mode } = this.props;
+        const modeMap = {
+            schoolYear: this.renderSchoolYear,
+            student: this.renderStudent,
+        };
+
+        const renderItens = modeMap[mode] || modeMap.student;
+
+        return (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.bubbleMenuView}
+          >
+            {renderItens()}
+          </ScrollView>
+        );
+    }
 }
