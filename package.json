@@ -4,6 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:install": "cd android && ./gradlew installDebug",
+    "android:devices": "$ANDROID_HOME/platform-tools/adb devices",
+    "android:logcat": "$ANDROID_HOME/platform-tools/adb logcat *:S ReactNative:V ReactNativeJS:V",
     "test": "jest"
   },
   "dependencies": {

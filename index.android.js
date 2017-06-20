@@ -1,5 +1,29 @@
+import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
+import { StyleProvider } from 'native-base';
 
-import App from './app/App';
+// Redux Form Store
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-AppRegistry.registerComponent('educare', () => App);
+// Theme
+import { educareTheme } from './app/themes/educareTheme';
+
+import allReducers from './app/reducers';
+import AppRouter from './app/AppRouter';
+
+const formStore = createStore(allReducers);
+
+class EducareApp extends Component {
+    render() {
+        return (
+          <Provider store={formStore}>
+            <StyleProvider style={educareTheme}>
+              <AppRouter />
+            </StyleProvider>
+          </Provider>
+        );
+    }
+}
+
+AppRegistry.registerComponent('educare', () => EducareApp);
