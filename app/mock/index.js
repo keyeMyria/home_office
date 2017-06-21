@@ -1026,7 +1026,7 @@ const subjectAreas = [
  */
 const studentSubjectAreas = [
     {
-        stu7entId: 1,
+        studentId: 1,
         items: subjectAreas,
     },
     {
