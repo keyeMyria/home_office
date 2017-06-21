@@ -19,7 +19,7 @@ import { Field, reduxForm } from 'redux-form';
 import { observer } from 'mobx-react/native';
 
 import store from '../../../store';
-import { PickerField } from '../../../components/fields';
+import { PickerField, TimePickerField } from '../../../components/fields';
 
 import { styles } from '../../../themes/educareTheme';
 
@@ -28,19 +28,21 @@ import BubbleMenu from '../../../components/BubbleMenu';
 const ACTIVE_STYLE_MAP = {
     true: {
         ...styles.buttonActive,
-        width: (Dimensions.get('window').width / 3) - 15,
+        width: Dimensions.get('window').width / 3 - 15,
     },
     false: {
         ...styles.buttonInactive,
-        width: (Dimensions.get('window').width / 3) - 15,
+        width: Dimensions.get('window').width / 3 - 15,
     },
 };
+
+const DAYS_OF_WEEK = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
 @observer
 class ExerciseScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = { subjectAreaIds: [] };
+        this.state = { subjectAreaIds: [], daysOfWeek: [] };
     }
 
     toogleSelectSubjectArea(id) {
@@ -55,8 +57,24 @@ class ExerciseScreen extends Component {
         this.setState({ subjectAreaIds });
     }
 
+    toogleDaysOfWeek(id) {
+        const daysOfWeek = this.state.daysOfWeek.slice();
+        const index = daysOfWeek.indexOf(id);
+        if (index === -1) {
+            daysOfWeek.push(id);
+        } else {
+            daysOfWeek.splice(index, 1);
+        }
+        this.setState({ daysOfWeek });
+    }
+
     subjectAreaIsSelected(id) {
         return this.state.subjectAreaIds.indexOf(id) !== -1;
+    }
+
+    dayOfWeekIsSelected(index) {
+        return this.state.daysOfWeek.indexOf(index) !== -1;
+        // return !!this.state.daysOfWeek;
     }
 
     rendersubjectAreas() {
@@ -82,6 +100,39 @@ class ExerciseScreen extends Component {
             </View>
           </View>
         );
+    }
+
+    renderTimeFields() {
+        const mapFunc = (day, index) => {
+            const onPress = () => this.toogleDaysOfWeek(index);
+            const active = this.dayOfWeekIsSelected(index);
+            const styleActive = ACTIVE_STYLE_MAP[active];
+
+            const fieldProps = {
+                component: TimePickerField,
+                props: {
+                    initialValue: '00:00',
+                },
+            };
+            const startProps = Object.assign({ name: `start_time_day_${index}` }, fieldProps);
+            const endProps = Object.assign({ name: `end_time_day_${index}` }, fieldProps);
+
+            return (
+              <View key={index} style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                <Button rounded onPress={onPress} style={styleActive}>
+                  <Text style={{ fontSize: 12 }}>{day}</Text>
+                </Button>
+                {active &&
+                <View style={localStyle.timePickerWrapper}>
+                  <Field {...startProps} />
+                  <Text style={{ marginHorizontal: 5 }}>às</Text>
+                  <Field {...endProps} />
+                </View>}
+              </View>
+            );
+        };
+
+        return DAYS_OF_WEEK.map(mapFunc);
     }
 
     renderLoadExerciceField() {
@@ -130,10 +181,23 @@ class ExerciseScreen extends Component {
                 <Item stackedLabel style={{ borderBottomWidth: 0, marginBottom: 10 }}>
                   <Label>Horários para realização das listas</Label>
                 </Item>
+                <View>
+                  {this.renderTimeFields()}
+                </View>
               </Content>
             </Content>
           </Container>
         );
     }
 }
+
+const localStyle = {
+    timePickerWrapper: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 10,
+    },
+};
+
 export default reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
