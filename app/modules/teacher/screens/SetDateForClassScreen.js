@@ -64,7 +64,7 @@ class ExerciseScreen extends Component {
   render() {
 
     return (
-      <Modal animationType={'slide'} transparent={false} visible={this.state.visible}>
+      <Modal animationType={'slide'} transparent={false} visible={this.state.visible} onRequestClose={() => null}>
         <Container>
           <Header appHeader>
             <Left>
