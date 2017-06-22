@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
 import {
     Container,
     Header,
@@ -31,10 +31,14 @@ import SetDateForClassScreen from './SetDateForClassScreen';
 class ExamScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = { setDateForClassScreenVisible: false };
+        this.state = {
+            setDateForClassScreenVisible: false,
+            openTopics: [],
+        };
         this.showSetDateForClassScreen = this.showSetDateForClassScreen.bind(this);
         this.hideSetDateForClassScreen = this.hideSetDateForClassScreen.bind(this);
         this.checkUncheckTopic = this.checkUncheckTopic.bind(this);
+        this.toogleTopic = this.toogleTopic.bind(this);
     }
 
     showSetDateForClassScreen() {
@@ -54,7 +58,8 @@ class ExamScreen extends Component {
     }
 
     getGradesItems() {
-        const mapFunc = (grade, index) => <Picker.Item key={index} label={`${grade} Pontos`} value={grade} />;
+        const mapFunc = (grade, index) =>
+          <Picker.Item key={index} label={`${grade} Pontos`} value={grade} />;
         return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(mapFunc);
     }
 
@@ -80,15 +85,88 @@ class ExamScreen extends Component {
         if (subjectAreas.length) {
             return subjectAreas[0].topics;
         }
-
         return store.teacher.subjectAreas[0].topics;
+    }
+
+    toogleTopic(id) {
+        const openTopics = this.state.openTopics.slice();
+        const index = openTopics.indexOf(id);
+        if (index === -1) {
+            openTopics.push(id);
+        } else {
+            openTopics.splice(index, 1);
+        }
+        this.setState({ openTopics });
+    }
+
+    renderSubTopics(mainTopic) {
+        const topics = mainTopic.subtopics;
+
+        const mapFunc = (topic, index) => {
+            const checked = store.examTopics.indexOf(topic.id) !== -1;
+            const checkBoxPress = () => this.checkUncheckTopic(checked, topic.id);
+            const checkBoxProps = {
+                checked,
+                style: { marginRight: 20 },
+                onPress: checkBoxPress,
+            };
+
+            return (
+              <ListItem key={index} onPress={checkBoxPress} icon style={{ marginLeft: 60 }}>
+                <Body><Text>{topic.name}</Text></Body>
+                <Right><CheckBox {...checkBoxProps} /></Right>
+              </ListItem>
+            );
+        };
+
+        return topics.map(mapFunc);
+    }
+
+    renderTopicsSelection() {
+        const topics = this.getTopics();
+        const mapFunc = (topic, index) => {
+            const checked = store.examTopics.indexOf(topic.id) !== -1;
+            const checkBoxPress = () => {
+                topic.subtopics.forEach(sub => this.checkUncheckTopic(checked, sub.id));
+                this.checkUncheckTopic(checked, topic.id);
+            };
+            const isOpen = this.state.openTopics.indexOf(topic.id) !== -1;
+            const checkBoxProps = {
+                checked,
+                style: { marginRight: 20 },
+                onPress: checkBoxPress,
+            };
+
+            const iconName = isOpen ? 'keyboard-arrow-down' : 'keyboard-arrow-right';
+            const onPress = () => this.toogleTopic(topic.id);
+            if (isOpen) {
+                return (
+                  <View key={index}>
+                    <ListItem onPress={onPress} icon>
+                      <Left><Icon name={iconName} /></Left>
+                      <Body><Text>{topic.name}</Text></Body>
+                      <Right><CheckBox {...checkBoxProps} /></Right>
+                    </ListItem>
+                    {this.renderSubTopics(topic)}
+                  </View>
+                );
+            }
+            return (
+              <ListItem key={index} onPress={onPress} icon>
+                <Left><Icon name={iconName} /></Left>
+                <Body><Text>{topic.name}</Text></Body>
+                <Right><CheckBox {...checkBoxProps} /></Right>
+              </ListItem>
+            );
+        };
+
+        return topics.map(mapFunc);
     }
 
     render() {
         const { navigate } = this.props.navigation;
         const subjectAreaItems = this.getSubjectAreaItems();
         const periodItems = this.getPeriodItems();
-        const topics = this.getTopics();
         const gradesItems = this.getGradesItems();
 
         return (
@@ -139,23 +217,7 @@ class ExamScreen extends Component {
                   <Label>Selecione os Tópicos</Label>
                 </Item>
               </Content>
-              {topics.map((topic, index) => {
-                  const checked =
-                            store.examTopics.filter(topicId => topicId === topic.id).length > 0;
-                  return (
-                    <ListItem
-                      key={index}
-                      onPress={() => this.checkUncheckTopic(checked, topic.id)}
-                    >
-                      <Body>
-                        <Text>{topic.name}</Text>
-                      </Body>
-                      <Right>
-                        <CheckBox checked={checked} style={{ marginRight: 20 }} />
-                      </Right>
-                    </ListItem>
-                  );
-              })}
+              {this.renderTopicsSelection()}
             </Content>
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
