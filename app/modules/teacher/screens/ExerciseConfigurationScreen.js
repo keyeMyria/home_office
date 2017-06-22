@@ -14,6 +14,8 @@ import {
     Button,
     Item,
     Label,
+    ListItem,
+    CheckBox,
 } from 'native-base';
 import { Field, reduxForm } from 'redux-form';
 import _ from 'underscore';
@@ -35,11 +37,11 @@ const QUESTION_QTDE_PICKER = _.range(0, 51, 1).map((val, index) => {
 const ACTIVE_STYLE_MAP = {
     true: {
         ...styles.buttonActive,
-        width: Dimensions.get('window').width / 3 - 15,
+        width: (Dimensions.get('window').width / 3) - 15,
     },
     false: {
         ...styles.buttonInactive,
-        width: Dimensions.get('window').width / 3 - 15,
+        width: (Dimensions.get('window').width / 3) - 15,
     },
 };
 
@@ -49,6 +51,7 @@ class ExerciseConfigurationScreen extends Component {
         super(props);
         this.state = {
             visible: props.visible,
+            openTopics: [],
             setDateForClassScreenVisible: false,
             selectQuestionScreenVisible: false,
             questionGenerationTypeId: 1,
@@ -155,6 +158,103 @@ class ExerciseConfigurationScreen extends Component {
         );
     }
 
+    getSubjectAreas() {
+        const { subjectAreaId } = this.props;
+        return store.teacher.subjectAreas.filter(subject => subject.id === subjectAreaId);
+    }
+
+    getTopics() {
+        const subjectAreas = this.getSubjectAreas();
+        if (subjectAreas.length) {
+            return subjectAreas[0].topics;
+        }
+        // return store.teacher.subjectAreas[0].topics;
+        return [];
+    }
+
+    checkUncheckTopic(checked, topicId) {
+        if (checked) {
+            store.uncheckExerciseTopic(topicId);
+        } else {
+            store.checkExerciseTopic(topicId);
+        }
+    }
+
+    toogleTopic(id) {
+        const openTopics = this.state.openTopics.slice();
+        const index = openTopics.indexOf(id);
+        if (index === -1) {
+            openTopics.push(id);
+        } else {
+            openTopics.splice(index, 1);
+        }
+        this.setState({ openTopics });
+    }
+
+    renderSubTopics(mainTopic) {
+        const topics = mainTopic.subtopics;
+
+        const mapFunc = (topic, index) => {
+            const checked = store.exerciseTopics.indexOf(topic.id) !== -1;
+            const checkBoxPress = () => this.checkUncheckTopic(checked, topic.id);
+            const checkBoxProps = {
+                checked,
+                style: { marginRight: 20 },
+                onPress: checkBoxPress,
+            };
+
+            return (
+              <ListItem key={index} onPress={checkBoxPress} icon style={{ marginLeft: 60 }}>
+                <Body><Text>{topic.name}</Text></Body>
+                <Right><CheckBox {...checkBoxProps} /></Right>
+              </ListItem>
+            );
+        };
+
+        return topics.map(mapFunc);
+    }
+
+    renderTopicsSelection() {
+        const topics = this.getTopics();
+        const mapFunc = (topic, index) => {
+            const checked = store.exerciseTopics.indexOf(topic.id) !== -1;
+            const checkBoxPress = () => {
+                topic.subtopics.forEach(sub => this.checkUncheckTopic(checked, sub.id));
+                this.checkUncheckTopic(checked, topic.id);
+            };
+            const isOpen = this.state.openTopics.indexOf(topic.id) !== -1;
+            const checkBoxProps = {
+                checked,
+                style: { marginRight: 20 },
+                onPress: checkBoxPress,
+            };
+
+            const iconName = isOpen ? 'keyboard-arrow-down' : 'keyboard-arrow-right';
+            const onPress = () => this.toogleTopic(topic.id);
+            if (isOpen) {
+                return (
+                  <View key={index}>
+                    <ListItem onPress={onPress} icon>
+                      <Left><Icon name={iconName} /></Left>
+                      <Body><Text>{topic.name}</Text></Body>
+                      <Right><CheckBox {...checkBoxProps} /></Right>
+                    </ListItem>
+                    {this.renderSubTopics(topic)}
+                  </View>
+                );
+            }
+            return (
+              <ListItem key={index} onPress={onPress} icon>
+                <Left><Icon name={iconName} /></Left>
+                <Body><Text>{topic.name}</Text></Body>
+                <Right><CheckBox {...checkBoxProps} /></Right>
+              </ListItem>
+            );
+        };
+
+        return topics.map(mapFunc);
+    }
+
     render() {
         const { questionGenerationTypeId, visible } = this.state;
         const showNextScreen = () => {
@@ -197,6 +297,10 @@ class ExerciseConfigurationScreen extends Component {
                   {this.renderQuestionGenerationTypes()}
                 </View>
                 {this.renderQuestionDificultPicker()}
+                <Item stackedLabel style={{ borderBottomWidth: 0, marginBottom: 10 }}>
+                  <Label>Selecione os tópicos</Label>
+                </Item>
+                {this.renderTopicsSelection()}
               </Content>
             </Container>
             <SetDateForClassScreen

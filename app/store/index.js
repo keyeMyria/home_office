@@ -39,6 +39,7 @@ class AppStore {
     @observable absenses = [];
     @observable occurrences = [];
     @observable examTopics = [];
+    @observable exerciseTopics = [];
     @observable exerciceQuestions = [];
 
     // Navigation (Using BubbleMenu - Student)
@@ -107,6 +108,15 @@ class AppStore {
 
     uncheckExamTopic(topicId) {
         this.examTopics = this.examTopics.filter(id => id !== topicId);
+    }
+
+    // EXERCISE TOPICS
+    checkExerciseTopic(topicId) {
+        this.exerciseTopics.push(topicId);
+    }
+
+    uncheckExerciseTopic(topicId) {
+        this.exerciseTopics = this.exerciseTopics.filter(id => id !== topicId);
     }
 
     // EXERCICE QUESTIONS
