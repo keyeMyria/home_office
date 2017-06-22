@@ -5,42 +5,42 @@ import { DrawerNavigator, TabNavigator } from 'react-navigation';
 import AppNavigator from './AppNavigator';
 import HomeNavigator from './HomeNavigator';
 import {
-  AlertScreen,
-  ExerciseScreen,
-  MessageScreen,
-  HistoryScreen,
-  SelectClassScreen,
-  ExamScreen,
-  HomeworkScreen,
-  AnalysisScreen,
-  CalendarScreen,
+    AlertScreen,
+    ExerciseScreen,
+    MessageScreen,
+    HistoryScreen,
+    SelectClassScreen,
+    ExamScreen,
+    HomeworkScreen,
+    AnalysisScreen,
+    CalendarScreen,
 } from './screens';
 
 const HomeRouter = TabNavigator(
-  {
-    CalendarScreen: { screen: CalendarScreen },
-    ExerciseScreen: { screen: ExerciseScreen },
-    AlertScreen: { screen: AlertScreen },
-    ExamScreen: { screen: ExamScreen },
-    HomeworkScreen: { screen: HomeworkScreen },
-  },
-  {
-    tabBarComponent: HomeNavigator,
-    tabBarPosition: 'bottom',
-  }
+    {
+        CalendarScreen: { screen: CalendarScreen },
+        ExerciseScreen: { screen: ExerciseScreen },
+        AlertScreen: { screen: AlertScreen },
+        ExamScreen: { screen: ExamScreen },
+        HomeworkScreen: { screen: HomeworkScreen },
+    },
+    {
+        tabBarComponent: HomeNavigator,
+        tabBarPosition: 'bottom',
+    },
 );
 
 export default DrawerNavigator(
-  {
-    HomeRouter: { screen: HomeRouter },
-    MessageScreen: { screen: MessageScreen },
-    HistoryScreen: { screen: HistoryScreen },
-    AnalysisScreen: { screen: AnalysisScreen },
-    SelectClassScreen: { screen: SelectClassScreen },
-  },
-  {
-    headerMode: 'none',
-    drawerWidth: Dimensions.get('window').width * 0.85,
-    contentComponent: AppNavigator
-  }
+    {
+        HomeRouter: { screen: HomeRouter },
+        MessageScreen: { screen: MessageScreen },
+        HistoryScreen: { screen: HistoryScreen },
+        AnalysisScreen: { screen: AnalysisScreen },
+        SelectClassScreen: { screen: SelectClassScreen },
+    },
+    {
+        headerMode: 'none',
+        drawerWidth: Dimensions.get('window').width * 0.85,
+        contentComponent: AppNavigator,
+    },
 );
