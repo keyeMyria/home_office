@@ -1146,126 +1146,36 @@ const studentSubjectAreas = [
  * STUDENTS
  */
 const students = [
-    {
-        id: 1,
-        name: 'Caio Gazola',
-    },
-    {
-        id: 2,
-        name: 'Filipe Mendes',
-    },
-    {
-        id: 3,
-        name: 'Arwen Undómiel',
-    },
-    {
-        id: 4,
-        name: 'Carminda Bonilha',
-    },
-    {
-        id: 5,
-        name: 'Conceição Torquato',
-    },
-    {
-        id: 6,
-        name: 'Cristiana Bahía',
-    },
-    {
-        id: 7,
-        name: 'Damião Varella',
-    },
-    {
-        id: 8,
-        name: 'Denise Macena',
-    },
-    {
-        id: 9,
-        name: 'Délio Bocaiúva',
-    },
-    {
-        id: 10,
-        name: 'Délio Valadares',
-    },
-    {
-        id: 11,
-        name: 'Ester Vaz',
-    },
-    {
-        id: 12,
-        name: 'Frederico Lousã',
-    },
-    {
-        id: 13,
-        name: 'Geraldo Miranda',
-    },
-    {
-        id: 14,
-        name: 'Godinho ou Godim Melo',
-    },
-    {
-        id: 15,
-        name: 'Horácio Fogaça',
-    },
-    {
-        id: 16,
-        name: 'Ilma Vellozo',
-    },
-    {
-        id: 17,
-        name: 'Isabel Avelar',
-    },
-    {
-        id: 18,
-        name: 'Judite Zarco',
-    },
-    {
-        id: 19,
-        name: 'Julieta Pasos',
-    },
-    {
-        id: 20,
-        name: 'Lucília Carlos',
-    },
-    {
-        id: 21,
-        name: 'Luzia Zalazar',
-    },
-    {
-        id: 22,
-        name: 'Miriam Villégas',
-    },
-    {
-        id: 23,
-        name: 'Noêmia Azeredo',
-    },
-    {
-        id: 24,
-        name: 'Quintino Gorjão',
-    },
-    {
-        id: 25,
-        name: 'Roberta Pedrozo',
-    },
-    {
-        id: 26,
-        name: 'Rosália Silva',
-    },
-    {
-        id: 27,
-        name: 'Rúben Pastana',
-    },
-    {
-        id: 28,
-        name: 'Siquenique Portella',
-    },
-    {
-        id: 29,
-        name: 'Uriel Acevedo',
-    },
-    {
-        id: 30,
-        name: 'Zita Varela',
-    },
+    { id: 1, name: 'Caio Gazola' },
+    { id: 2, name: 'Filipe Mendes' },
+    { id: 3, name: 'Arwen Undómiel' },
+    { id: 4, name: 'Carminda Bonilha' },
+    { id: 5, name: 'Conceição Torquato' },
+    { id: 6, name: 'Cristiana Bahía' },
+    { id: 7, name: 'Damião Varella' },
+    { id: 8, name: 'Denise Macena' },
+    { id: 9, name: 'Délio Bocaiúva' },
+    { id: 10, name: 'Délio Valadares' },
+    { id: 11, name: 'Ester Vaz' },
+    { id: 12, name: 'Frederico Lousã' },
+    { id: 13, name: 'Geraldo Miranda' },
+    { id: 14, name: 'Godinho ou Godim Melo' },
+    { id: 15, name: 'Horácio Fogaça' },
+    { id: 16, name: 'Ilma Vellozo' },
+    { id: 17, name: 'Isabel Avelar' },
+    { id: 18, name: 'Judite Zarco' },
+    { id: 19, name: 'Julieta Pasos' },
+    { id: 20, name: 'Lucília Carlos' },
+    { id: 21, name: 'Luzia Zalazar' },
+    { id: 22, name: 'Miriam Villégas' },
+    { id: 23, name: 'Noêmia Azeredo' },
+    { id: 24, name: 'Quintino Gorjão' },
+    { id: 25, name: 'Roberta Pedrozo' },
+    { id: 26, name: 'Rosália Silva' },
+    { id: 27, name: 'Rúben Pastana' },
+    { id: 28, name: 'Siquenique Portella' },
+    { id: 29, name: 'Uriel Acevedo' },
+    { id: 30, name: 'Zita Varela' },
 ];
 
 /**

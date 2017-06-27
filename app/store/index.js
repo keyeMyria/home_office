@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, extendObservable, action } from 'mobx';
 
 import * as MOCK from '../mock';
 
@@ -144,5 +144,60 @@ class AppStore {
         }
     }
 }
+
+class StudentStore {
+    @observable students = [];
+    @observable isLoading = false;
+
+    @action
+    async fetchStudents({ limit = null, filter = null } = {}) {
+        if (limit) {
+            // Limit the Data Results
+        }
+
+        if (filter) {
+            // Pass the filter params
+        }
+
+        this.isLoading = true;
+        const data = await Promise.resolve(MOCK.students);
+        const list = Student.init(data);
+        this.students.replace(list);
+        this.isLoading = false;
+    }
+}
+
+class Student {
+
+    static init(data) {
+        if (Array.isArray(data)) {
+            return data.map(o => new this(o));
+        }
+        return this(data);
+    }
+
+
+    constructor(rawData) {
+        this.id = rawData.id;
+        extendObservable(this, {
+            name: rawData.name,
+        });
+    }
+
+    get avatar() {
+        switch (this.id) {
+        case 1:
+            return require('../img/caio.png');
+        case 2:
+            return require('../img/filipe.png');
+        case 3:
+            return require('../img/arwen.png');
+        default:
+            return require('../img/user.png');
+        }
+    }
+}
+
+export const studentStore = new StudentStore();
 
 export default new AppStore();

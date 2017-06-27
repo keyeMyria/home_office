@@ -24,8 +24,9 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { observer } from 'mobx-react/native';
 
 import { PickerField, DatePickerField } from '../../../components/fields';
-import store from '../../../store';
+import store, { studentStore } from '../../../store';
 import OccurrenceReasonScreen from './OccurrenceReasonScreen';
+import StudentPicker from './../../../components/StudentPicker';
 
 @observer
 class SelectClassScreen extends Component {
@@ -119,31 +120,35 @@ class SelectClassScreen extends Component {
     }
 
     renderStudentList() {
-        const mapFunc = (student, index) => {
-            const checked = this.getStore().indexOf(student.id) !== -1;
-            const onPress = () => this.checkUncheckStudent(checked, student.id);
-            return (
-              <ListItem key={index} icon onPress={onPress}>
-                <Left>
-                  <Thumbnail small source={store.getStudentImagebyId(student.id)} />
-                </Left>
-                <Body><Text>{student.name}</Text></Body>
-                <Right>
-                  <CheckBox checked={checked} style={{ marginRight: 20 }} onPress={onPress} />
-                </Right>
-              </ListItem>
-            );
-        };
+        // const mapFunc = (student, index) => {
+        //     const checked = this.getStore().indexOf(student.id) !== -1;
+        //     const onPress = () => this.checkUncheckStudent(checked, student.id);
+        //     return (
+        //       <ListItem key={index} icon onPress={onPress}>
+        //         <Left>
+        //           <Thumbnail small source={store.getStudentImagebyId(student.id)} />
+        //         </Left>
+        //         <Body><Text>{student.name}</Text></Body>
+        //         <Right>
+        //           <CheckBox checked={checked} style={{ marginRight: 20 }} onPress={onPress} />
+        //         </Right>
+        //       </ListItem>
+        //     );
+        // };
 
+        // return (
+        //   <View>
+        //     <Item stackedLabel>
+        //       <Label>Selecione os Alunos</Label>
+        //     </Item>
+        //     <List>
+        //       {store.students.map(mapFunc)}
+        //     </List>
+        //   </View>
+        // );
+        studentStore.fetchStudents();
         return (
-          <View>
-            <Item stackedLabel>
-              <Label>Selecione os Alunos</Label>
-            </Item>
-            <List>
-              {store.students.map(mapFunc)}
-            </List>
-          </View>
+          <StudentPicker students={studentStore.students} />
         );
     }
 
@@ -219,7 +224,7 @@ class SelectClassScreen extends Component {
             </Header>
             <Content>
               {this.renderFilters()}
-              {classe && turma && date && this.renderStudentList()}
+              {this.renderStudentList()}
             </Content>
             <OccurrenceReasonScreen
               navigate={navigate}
