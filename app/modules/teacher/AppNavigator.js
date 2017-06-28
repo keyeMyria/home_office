@@ -40,10 +40,10 @@ export default class AppNavigator extends Component {
               <Icon name="question-answer" />
               <Text>Mensagens</Text>
             </ListItem>
-            <ListItem onPress={() => navigate('HistoryScreen')}>
+            {/* <ListItem onPress={() => navigate('HistoryScreen')}>
               <Icon name="history" />
               <Text>Histórico</Text>
-            </ListItem>
+            </ListItem>*/}
             <ListItem onPress={() => navigate('SelectClassScreen', { nextScreen: 'AbsenseScreen' })}>
               <Icon name="assignment-turned-in" />
               <Text>Faltas</Text>
@@ -56,11 +56,11 @@ export default class AppNavigator extends Component {
               <Icon name="insert-chart" />
               <Text>Análises</Text>
             </ListItem>
-            <ListItem>
+            <ListItem onPress={() => navigate('FeedBackScreen')} >
               <Icon name="announcement" />
               <Text>Enviar feedback</Text>
             </ListItem>
-            <ListItem last>
+            <ListItem onPress={() => navigate('HelpScreen')} last>
               <Icon name="help" />
               <Text>Ajuda</Text>
             </ListItem>

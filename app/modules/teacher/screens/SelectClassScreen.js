@@ -22,6 +22,7 @@ import _ from 'underscore';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 import { PickerField, DatePickerField } from '../../../components/fields';
 import store, { studentStore } from '../../../store';
@@ -30,6 +31,9 @@ import StudentPicker from './../../../components/StudentPicker';
 
 @observer
 class SelectClassScreen extends Component {
+
+    @observable selected = [];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -88,9 +92,10 @@ class SelectClassScreen extends Component {
     }
 
     getStore() {
-        const map = { AbsenseScreen: 'absenses', OccurrenceScreen: 'occurrences' };
-        const { state: { params } } = this.props.navigation;
-        return store[map[params.nextScreen]];
+        // const map = { AbsenseScreen: 'absenses', OccurrenceScreen: 'occurrences' };
+        // const { state: { params } } = this.props.navigation;
+        // return store[map[params.nextScreen]];
+        return this.selected;
     }
 
     save() {
@@ -120,35 +125,9 @@ class SelectClassScreen extends Component {
     }
 
     renderStudentList() {
-        // const mapFunc = (student, index) => {
-        //     const checked = this.getStore().indexOf(student.id) !== -1;
-        //     const onPress = () => this.checkUncheckStudent(checked, student.id);
-        //     return (
-        //       <ListItem key={index} icon onPress={onPress}>
-        //         <Left>
-        //           <Thumbnail small source={store.getStudentImagebyId(student.id)} />
-        //         </Left>
-        //         <Body><Text>{student.name}</Text></Body>
-        //         <Right>
-        //           <CheckBox checked={checked} style={{ marginRight: 20 }} onPress={onPress} />
-        //         </Right>
-        //       </ListItem>
-        //     );
-        // };
-
-        // return (
-        //   <View>
-        //     <Item stackedLabel>
-        //       <Label>Selecione os Alunos</Label>
-        //     </Item>
-        //     <List>
-        //       {store.students.map(mapFunc)}
-        //     </List>
-        //   </View>
-        // );
         studentStore.fetchStudents();
         return (
-          <StudentPicker students={studentStore.students} />
+          <StudentPicker students={studentStore.students} selected={this.selected} />
         );
     }
 
@@ -176,6 +155,12 @@ class SelectClassScreen extends Component {
         return (
           <View>
             <Field
+              name="date"
+              label="Data"
+              component={DatePickerField}
+              props={{ initialValue: '-' }}
+            />
+            <Field
               name="classe"
               label="Ano"
               component={PickerField}
@@ -191,12 +176,6 @@ class SelectClassScreen extends Component {
             >
               {this.getTurmasItems()}
             </Field>
-            <Field
-              name="date"
-              label="Data"
-              component={DatePickerField}
-              props={{ initialValue: '-' }}
-            />
           </View>
         );
     }
@@ -224,7 +203,7 @@ class SelectClassScreen extends Component {
             </Header>
             <Content>
               {this.renderFilters()}
-              {this.renderStudentList()}
+              {classe && date && turma && this.renderStudentList()}
             </Content>
             <OccurrenceReasonScreen
               navigate={navigate}

@@ -11,103 +11,114 @@ import { DatePickerField } from '../../../components/fields';
 
 @observer
 class ExerciseScreen extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { visible: props.visible };
-  }
-
-  componentWillReceiveProps(nextProps) {
-
-    let allSchoolYearsChanged = nextProps.formValues.allSchoolYears !== '-' &&
-      nextProps.formValues.allSchoolYears !== this.props.formValues.allSchoolYears;
-
-    let otherSchoolYearsChanged = false;
-
-    for (var i = 0; i < store.schoolYearSelected.classes.length; i++) {
-
-      var schoolYear = store.schoolYearSelected.classes[i].key;
-
-      let currVal = this.props.formValues[schoolYear];
-      let nextVal = nextProps.formValues[schoolYear];
-
-      if (nextVal !== '-' && nextVal !== currVal &&
-        nextVal !== this.props.formValues.allSchoolYears &&
-        nextVal !== nextProps.formValues.allSchoolYears) {
-        otherSchoolYearsChanged = true;
-        break;
-      }
+    constructor(props) {
+        super(props);
+        this.state = { visible: props.visible };
     }
 
-    this.setState({ visible: nextProps.visible });
+    componentWillReceiveProps(nextProps) {
+        const allSchoolYearsChanged =
+            nextProps.formValues.allSchoolYears !== '-' &&
+            nextProps.formValues.allSchoolYears !== this.props.formValues.allSchoolYears;
 
-    const { dispatch } = this.props;
+        let otherSchoolYearsChanged = false;
 
-    if (allSchoolYearsChanged) {
-      store.schoolYearSelected.classes.map(schoolYear =>
-        dispatch(change('formExerciseScreen', schoolYear.key, nextProps.formValues.allSchoolYears || '-'))
-      );
+        for (let i = 0; i < store.schoolYearSelected.classes.length; i++) {
+            const schoolYear = store.schoolYearSelected.classes[i].key;
+
+            const currVal = this.props.formValues[schoolYear];
+            const nextVal = nextProps.formValues[schoolYear];
+
+            if (
+                nextVal !== '-' &&
+                nextVal !== currVal &&
+                nextVal !== this.props.formValues.allSchoolYears &&
+                nextVal !== nextProps.formValues.allSchoolYears
+            ) {
+                otherSchoolYearsChanged = true;
+                break;
+            }
+        }
+
+        this.setState({ visible: nextProps.visible });
+
+        const { dispatch } = this.props;
+
+        if (allSchoolYearsChanged) {
+            store.schoolYearSelected.classes.map(schoolYear =>
+                dispatch(
+                    change(
+                        'formExerciseScreen',
+                        schoolYear.key,
+                        nextProps.formValues.allSchoolYears || '-',
+                    ),
+                ),
+            );
+        }
+
+        if (otherSchoolYearsChanged) {
+            dispatch(change('formExerciseScreen', 'allSchoolYears', '-'));
+        }
     }
 
-    if (otherSchoolYearsChanged) {
-      dispatch(change('formExerciseScreen', 'allSchoolYears', '-'));
+    save = () => {
+        Alert.alert('Sucesso', 'Dados salvos com sucesso!', [
+            { text: 'OK', onPress: this.props.hideModal },
+        ]);
+    };
+
+    render() {
+        return (
+          <Modal
+            animationType={'slide'}
+            transparent={false}
+            visible={this.state.visible}
+            onRequestClose={() => null}
+          >
+            <Container>
+              <Header appHeader>
+                <Left>
+                  <TouchableWithoutFeedback onPress={this.props.hideModal}>
+                    <Icon name="arrow-back" />
+                  </TouchableWithoutFeedback>
+                </Left>
+                <Body>
+                  <Title>Marcação</Title>
+                </Body>
+                <Right>
+                  <TouchableWithoutFeedback onPress={this.save}>
+                    <Text>Salvar</Text>
+                  </TouchableWithoutFeedback>
+                </Right>
+              </Header>
+              <Content padder>
+                <Field
+                  name="allSchoolYears"
+                  label="Todas Turmas"
+                  component={DatePickerField}
+                  props={{ initialValue: '-' }}
+                />
+                {store.schoolYearSelected.classes.map((schoolYear, index) =>
+                  <Field
+                    key={index}
+                    name={schoolYear.key}
+                    label={schoolYear.name}
+                    component={DatePickerField}
+                    props={{ initialValue: '-' }}
+                  />,
+                        )}
+              </Content>
+            </Container>
+          </Modal>
+        );
     }
-
-  }
-
-  save = () => {
-    Alert.alert('Sucesso', 'Dados salvos com sucesso!', [
-      { text: 'OK', onPress: this.props.hideModal }
-    ]);
-  }
-
-  render() {
-
-    return (
-      <Modal animationType={'slide'} transparent={false} visible={this.state.visible} onRequestClose={() => null}>
-        <Container>
-          <Header appHeader>
-            <Left>
-              <TouchableWithoutFeedback onPress={this.props.hideModal}>
-                <Icon name='arrow-back' />
-              </TouchableWithoutFeedback>
-            </Left>
-            <Body>
-              <Title>Marcação</Title>
-            </Body>
-            <Right>
-              <TouchableWithoutFeedback onPress={this.save}>
-                <Text>Salvar</Text>
-              </TouchableWithoutFeedback>
-            </Right>
-          </Header>
-          <Content padder>
-            <Field
-              name="allSchoolYears"
-              label="Todas Turmas"
-              component={DatePickerField}
-              props={{ initialValue: '-' }} />
-            {store.schoolYearSelected.classes.map((schoolYear, index) =>
-              <Field key={index}
-                name={schoolYear.key}
-                label={schoolYear.name}
-                component={DatePickerField}
-                props={{ initialValue: '-' }} />
-            )}
-          </Content>
-        </Container>
-      </Modal>
-    );
-  }
 }
 
 const form = reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
 const selector = formValueSelector('formExerciseScreen');
-export default connect(
-  state => {
-    var formValues = store.schoolYearSelected.classes.map(schoolYear => schoolYear.key);
+export default connect((state) => {
+    const formValues = store.schoolYearSelected.classes.map(schoolYear => schoolYear.key);
     return {
-      formValues: selector(state, 'allSchoolYears', ...formValues),
+        formValues: selector(state, 'allSchoolYears', ...formValues),
     };
-  }
-)(form);
+})(form);

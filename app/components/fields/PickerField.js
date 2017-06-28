@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
-import { Picker, Item, Label } from 'native-base';
+import { Picker, Item, Label, Text } from 'native-base';
 
 export default (props) => {
     const { input, label, initialValue, children, ...custom } = props;
@@ -8,12 +8,15 @@ export default (props) => {
     return (
       <View>
         <Item stackedLabel style={styles.itemLabel}>
-          <Label>{label}</Label>
+
         </Item>
-        <Item style={styles.item}>
+        <Item inlineLabel style={styles.item}>
+          {/*<Text>{label}</Text>*/}
+          <Label>{label}</Label>
+          <View style={{ flex: 1 }} />
           <Picker
             iosHeader="Selecione"
-            mode="dropdown"
+            mode="dialog"
             selectedValue={input.value || initialValue}
             onValueChange={value => input.onChange(value)}
             style={styles.picker}

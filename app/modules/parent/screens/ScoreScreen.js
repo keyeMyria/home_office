@@ -8,17 +8,17 @@ import store from '../../../store';
 import BubbleMenu from '../../../components/BubbleMenu';
 
 const COLOR_INTERPOLATION = [
-    '#ff0000',
-    '#e40f00',
-    '#c91e00',
-    '#af2d00',
-    '#943c00',
-    '#794b00',
-    '#5e5a00',
-    '#446900',
-    '#297800',
-    '#0e8700',
-    '#0e8700',
+    'orange',
+    'mediumturquoise',
+    'gray',
+    'brown',
+    'fuchsia',
+    'green',
+    'red',
+    'blue',
+    // '#297800',
+    // '#0e8700',
+    // '#0e8700',
 ];
 
 function getWidth(percent) {
@@ -27,8 +27,8 @@ function getWidth(percent) {
     return width < 10 ? 10 : width;
 }
 
-function getColor(percent) {
-    const index = Math.floor(percent * 10);
+function getColor(percent, index) {
+    // const index = Math.floor(percent * 10);
 
     return COLOR_INTERPOLATION[index] || 'gray';
 }
@@ -42,7 +42,7 @@ export default class AlertScreen extends Component {
             const percent = Math.floor(item.pointsReceived / item.pointsGiven * 100);
             const points = `${item.pointsGiven}/${item.pointsReceived}`;
             const width = { width: getWidth(item.pointsReceived / item.pointsGiven) };
-            const color = { backgroundColor: getColor(item.pointsReceived / item.pointsGiven) };
+            const color = { backgroundColor: getColor(item.pointsReceived / item.pointsGiven, index) };
 
             return (
               <View key={index} style={styles.gradeContainer}>

@@ -182,7 +182,7 @@ class ExamScreen extends Component {
               </Body>
               <Right>
                 <TouchableWithoutFeedback onPress={this.showSetDateForClassScreen}>
-                  <Text>Próximo</Text>
+                  <Text>{'> Datas'}</Text>
                 </TouchableWithoutFeedback>
               </Right>
             </Header>

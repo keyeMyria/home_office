@@ -14,6 +14,8 @@ import {
     HomeworkScreen,
     AnalysisScreen,
     CalendarScreen,
+    FeedBackScreen,
+    HelpScreen,
 } from './screens';
 
 const HomeRouter = TabNavigator(
@@ -37,6 +39,8 @@ export default DrawerNavigator(
         HistoryScreen: { screen: HistoryScreen },
         AnalysisScreen: { screen: AnalysisScreen },
         SelectClassScreen: { screen: SelectClassScreen },
+        FeedBackScreen: { screen: FeedBackScreen },
+        HelpScreen: { screen: HelpScreen },
     },
     {
         headerMode: 'none',

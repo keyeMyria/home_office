@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
-import { Form, Item, Input, Button, Text, Thumbnail, Title, ActionSheet } from 'native-base';
+import { View, Image, Dimensions } from 'react-native';
+import { Form, Item, Input, Button, Text, Thumbnail, Title, ActionSheet, Icon } from 'native-base';
 
 const LOGIN_OPTIONS = ['Pai ou Responsável', 'Professor', 'Aluno', 'Coordenador', 'Cancelar'];
 const ROUTER_OPTIONS = ['ParentHomeRouter', 'TeacherHomeRouter'];
 
-const BG_IMG = require('../img/login.jpg');
-const ICON_IMG = require('../img/icon.png');
+// const BG_IMG = require('../img/login.jpg');
+const BG_IMG = require('../img/bg.jpg');
+const ICON_IMG = require('../img/logo.png');
 
 export default class LoginScreen extends Component {
 
@@ -33,29 +34,34 @@ export default class LoginScreen extends Component {
 
     render() {
         const handleSubmit = () => this.handleSubmit();
-
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <View style={styles.loginView}>
               <Thumbnail source={ICON_IMG} style={styles.loginImage} />
-              <Title style={styles.loginTitle}>EducareBox</Title>
               <Form style={styles.loginForm}>
-                <Item rounded style={styles.loginInput}>
+                <Item style={styles.loginInput}>
+                  <Icon active name="mail-outline" />
                   <Input placeholder="Email" />
                 </Item>
-                <Item rounded style={styles.loginInput}>
+                <Item style={styles.loginInput}>
+                  <Icon active name="lock-outline" />
                   <Input placeholder="Senha" secureTextEntry />
                 </Item>
               </Form>
-              <Button rounded block onPress={handleSubmit}>
+              <Button block onPress={handleSubmit}>
                 <Text>Entrar</Text>
               </Button>
-            </View>
+              <Text style={styles.forgotPassword}>Esqueceu a Senha?</Text>
+              <View style={{ flex: 1 }} />
+              <Button block style={styles.facebook}>
+                <Text>Entrar com Facebook</Text>
+              </Button>
             <ActionSheet
               ref={(c) => {
                   this.actionSheet = c;
               }}
             />
+            </View>
           </Image>
         );
     }
@@ -69,12 +75,10 @@ const styles = {
         alignItems: 'center',
         width: null,
         height: null,
-        backgroundColor: 'transparent',
     },
     loginView: {
         flex: 1,
-        paddingHorizontal: 10,
-        paddingVertical: 10,
+        padding: 20,
     },
     loginForm: {
         marginTop: 20,
@@ -82,16 +86,22 @@ const styles = {
     },
     loginInput: {
         backgroundColor: '#FFFFFF',
-        marginTop: 2,
+        paddingHorizontal: 10,
+        marginLeft: 0,
     },
     loginImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 240,
+        height: 195,
         alignSelf: 'center',
+        marginBottom: 30,
     },
-    loginTitle: {
-        fontSize: 25,
-        color: '#000000',
+    facebook: {
+        marginBottom: 15,
+        backgroundColor: '#3b5998',
+    },
+    forgotPassword: {
+        color: '#fff',
+        alignSelf: 'flex-end',
+        marginTop: 10,
     },
 };

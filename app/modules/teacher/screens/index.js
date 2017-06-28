@@ -13,21 +13,25 @@ import SetDateForClassScreen from './SetDateForClassScreen';
 import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
 import CalendarScreen from './CalendarScreen';
+import FeedBackScreen from './FeedBackScreen';
+import HelpScreen from './HelpScreen';
 
 export {
-  AlertScreen,
-  ExerciseScreen,
-  MessageScreen,
-  HistoryScreen,
-  AbsenseScreen,
-  OccurrenceScreen,
-  SelectClassScreen,
-  OccurrenceReasonScreen,
-  ExamScreen,
-  HomeworkScreen,
-  AnalysisScreen,
-  SetDateForClassScreen,
-  ExerciseConfigurationScreen,
-  SelectQuestionScreen,
-  CalendarScreen,
+    AlertScreen,
+    ExerciseScreen,
+    MessageScreen,
+    HistoryScreen,
+    AbsenseScreen,
+    OccurrenceScreen,
+    SelectClassScreen,
+    OccurrenceReasonScreen,
+    ExamScreen,
+    HomeworkScreen,
+    AnalysisScreen,
+    SetDateForClassScreen,
+    ExerciseConfigurationScreen,
+    SelectQuestionScreen,
+    CalendarScreen,
+    FeedBackScreen,
+    HelpScreen,
 };

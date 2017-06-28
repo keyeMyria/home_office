@@ -114,7 +114,16 @@ export default class CalendarScreen extends Component {
                   </View>}
                 </View>
                 <View style={localStyles.modalFooter}>
-                  <Button onPress={this.hideModal} style={{ alignSelf: 'auto' }}>
+                  <Button danger style={localStyles.button}>
+                    <Text>Cancelar</Text>
+                  </Button>
+                  <Button warning style={localStyles.button}>
+                    <Text>Editar</Text>
+                  </Button>
+                  <Button info style={localStyles.button}>
+                    <Text>Lançar</Text>
+                  </Button>
+                  <Button onPress={this.hideModal} style={localStyles.button}>
                     <Text>OK</Text>
                   </Button>
                 </View>
@@ -163,7 +172,7 @@ export default class CalendarScreen extends Component {
     }
 }
 
-const localStyles = StyleSheet.create({
+const localStyles = {
     modalBackdrop: {
         backgroundColor: 'rgba(0,0,0,0.5)',
         flex: 1,
@@ -172,7 +181,7 @@ const localStyles = StyleSheet.create({
     },
     modalContainer: {
         padding: 20,
-        minHeight: 200,
+        minHeight: 250,
         backgroundColor: 'white',
         width: Dimensions.get('window').width - 80,
     },
@@ -196,9 +205,14 @@ const localStyles = StyleSheet.create({
         // borderTopWidth: 1,
         borderColor: '#E0E0E0',
         alignItems: 'flex-end',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     modalItens: {
         flexDirection: 'row',
         alignItems: 'flex-end',
     },
-});
+    button: {
+        alignSelf: 'auto',
+    },
+};

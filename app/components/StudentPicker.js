@@ -32,14 +32,12 @@ const StudentItem = (props) => {
 
 @observer
 export default class StudentPicker extends Component {
-    @observable selected = [];
-
     selectStudent = (student) => {
-        const index = this.selected.indexOf(student.id);
+        const index = this.props.selected.indexOf(student.id);
         if (index === -1) {
-            this.selected.push(student.id);
+            this.props.selected.push(student.id);
         } else {
-            this.selected.splice(index, 1);
+            this.props.selected.splice(index, 1);
         }
     };
 
@@ -50,7 +48,7 @@ export default class StudentPicker extends Component {
             key={student.id}
             student={student}
             onPress={this.selectStudent}
-            active={this.selected.indexOf(student.id) !== -1}
+            active={this.props.selected.indexOf(student.id) !== -1}
           />;
 
         return (

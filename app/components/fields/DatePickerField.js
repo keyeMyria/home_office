@@ -63,7 +63,8 @@ export default class DatePickerField extends Component {
 
     render() {
         const { input, label, initialValue, ...custom } = this.props;
-        const value = input.value || initialValue;
+        const _initialValue = initialValue instanceof Date ? initialValue : new Date();
+        const value = input.value || _initialValue;
 
         return (
           <View>
@@ -72,7 +73,7 @@ export default class DatePickerField extends Component {
             </Item>
             <Item style={styles.item} onPress={this.toogle}>
               <Text>
-                {value instanceof Date ? moment(value).format('DD MMM YYYY') : value}
+                {value instanceof Date ? moment(value).format('DD/MM/YYYY') : value}
               </Text>
             </Item>
             {this.renderDatePicker()}

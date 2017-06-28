@@ -37,11 +37,15 @@ const QUESTION_QTDE_PICKER = _.range(0, 51, 1).map((val, index) => {
 const ACTIVE_STYLE_MAP = {
     true: {
         ...styles.buttonActive,
-        width: (Dimensions.get('window').width / 3) - 15,
+        // width: (Dimensions.get('window').width / 3) - 15,
+        width: 320 / 3 - 10,
+        minWidth: 110,
     },
     false: {
         ...styles.buttonInactive,
-        width: (Dimensions.get('window').width / 3) - 15,
+        // width: (Dimensions.get('window').width / 3) - 15,
+        width: 320 / 3 - 10,
+        minWidth: 110,
     },
 };
 
@@ -214,10 +218,24 @@ class ExerciseConfigurationScreen extends Component {
         return topics.map(mapFunc);
     }
 
+    isTopicSelected(topic) {
+        const allSubtopicSelected = topic.subtopics
+            .map(o => o.id)
+            .every(id => store.exerciseTopics.indexOf(id) !== -1);
+        return allSubtopicSelected;
+    }
+
+    isTopicSemiSelected(topic) {
+        const someSubtopicSelected = topic.subtopics
+            .map(o => o.id)
+            .some(id => store.exerciseTopics.indexOf(id) !== -1);
+        return !this.isTopicSelected(topic) && someSubtopicSelected;
+    }
+
     renderTopicsSelection() {
         const topics = this.getTopics();
         const mapFunc = (topic, index) => {
-            const checked = store.exerciseTopics.indexOf(topic.id) !== -1;
+            const checked = this.isTopicSelected(topic) || this.isTopicSemiSelected(topic);
             const checkBoxPress = () => {
                 topic.subtopics.forEach(sub => this.checkUncheckTopic(checked, sub.id));
                 this.checkUncheckTopic(checked, topic.id);
@@ -228,6 +246,9 @@ class ExerciseConfigurationScreen extends Component {
                 style: { marginRight: 20 },
                 onPress: checkBoxPress,
             };
+            if (this.isTopicSemiSelected(topic)) {
+                checkBoxProps.color = 'darkgray';
+            }
 
             const iconName = isOpen ? 'keyboard-arrow-down' : 'keyboard-arrow-right';
             const onPress = () => this.toogleTopic(topic.id);
@@ -266,7 +287,12 @@ class ExerciseConfigurationScreen extends Component {
         };
 
         return (
-          <Modal animationType={'slide'} transparent={false} visible={visible}>
+          <Modal
+            animationType={'slide'}
+            transparent={false}
+            visible={visible}
+            onRequestClose={() => {}}
+          >
             <Container>
               <Header appHeader>
                 <Left>

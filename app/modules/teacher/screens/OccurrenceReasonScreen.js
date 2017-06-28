@@ -44,9 +44,11 @@ class OccurrenceReasonScreen extends Component {
     };
 
     render() {
-        const pickerItems = store.occurrenceReasons.map((reason, index) =>
+        const emptyReason = <Picker.Item key={0} label="-- Selecione --" value={0} />;
+
+        const pickerItems = [emptyReason].concat(store.occurrenceReasons.map((reason, index) =>
           <Picker.Item key={index} label={reason.name} value={reason.id} />,
-        );
+        ));
 
         return (
           <Modal animationType={'slide'} transparent={false} visible={this.state.visible}>
@@ -71,7 +73,7 @@ class OccurrenceReasonScreen extends Component {
                   name="motivo"
                   label="Motivo"
                   component={PickerField}
-                  props={{ initialValue: 1 }}
+                  props={{ initialValue: 0 }}
                 >
                   {pickerItems}
                 </Field>

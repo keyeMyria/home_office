@@ -145,7 +145,7 @@ class ExerciseScreen extends Component {
                   name="tempoAproximado"
                   label="Tempo Aproximado"
                   component={PickerField}
-                  props={{ initialValue: 0 }}
+                  props={{ initialValue: 60 }}
                 >
                   {timeItems}
                 </Field>}
