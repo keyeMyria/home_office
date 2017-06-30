@@ -13,12 +13,17 @@ const Touchable = (props) => {
 
     if (Platform.OS === 'android') {
         return (
-          <TouchableNativeFeedback onPress={onPress}>{props.children}</TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={onPress}>
+            {props.children}
+          </TouchableNativeFeedback>
         );
     }
-    return <TouchableOpacity onPress={onPress}>{props.children}</TouchableOpacity>;
+    return (
+      <TouchableOpacity onPress={onPress}>
+        {props.children}
+      </TouchableOpacity>
+    );
 };
-
 
 /**
  * Render the `Outter Shell` for a screen
@@ -72,7 +77,9 @@ export default class ScreenShell extends Component {
         return (
           <Right>
             <Touchable onPress={onPress}>
-              <Text>{rightText}</Text>
+              <Text>
+                {rightText}
+              </Text>
             </Touchable>
           </Right>
         );
@@ -89,7 +96,9 @@ export default class ScreenShell extends Component {
                 </Touchable>
               </Left>
               <Body>
-                <Title>{title}</Title>
+                <Title>
+                  {title}
+                </Title>
               </Body>
             </Header>
             <Content padder={padder}>
