@@ -1,7 +1,10 @@
 [ignore]
 ; We fork some components by platform
 .*/*[.]android.js
-
+<PROJECT_ROOT>/node_modules/native-base/src/.*
+<PROJECT_ROOT>/node_modules/react-native-easy-grid/.*
+<PROJECT_ROOT>/node_modules/react-native-keyboard-aware-scroll-view/.*
+.*/__tests__/.*
 ; Ignore "BUCK" generated dirs
 <PROJECT_ROOT>/\.buckd/
 
@@ -23,6 +26,7 @@ flow/
 
 [options]
 emoji=true
+esproposal.decorators=ignore
 
 module.system=haste
 
