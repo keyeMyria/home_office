@@ -1,15 +1,19 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import { View, Image, Dimensions } from 'react-native';
-import { Form, Item, Input, Button, Text, Thumbnail, Title, ActionSheet, Icon } from 'native-base';
+import { View, Image } from 'react-native';
+import { Form, Item, Input, Button, Text, Thumbnail, ActionSheet, Icon } from 'native-base';
 
 const LOGIN_OPTIONS = ['Pai ou Responsável', 'Professor', 'Aluno', 'Coordenador', 'Cancelar'];
-const ROUTER_OPTIONS = ['ParentHomeRouter', 'TeacherHomeRouter'];
+const ROUTER_OPTIONS = ['ParentHomeRouter', 'TeacherHomeRouter', 'StudentHomeRouter'];
 
 // const BG_IMG = require('../img/login.jpg');
 const BG_IMG = require('../img/bg.jpg');
 const ICON_IMG = require('../img/logo.png');
 
 export default class LoginScreen extends Component {
+
+    actionSheet: any;
 
     /**
      * Handle the Login submission and redirects the user to the apropriate route
@@ -21,7 +25,7 @@ export default class LoginScreen extends Component {
             title: 'Entrar como...',
         };
 
-        const callbackFunc = (buttonIndex) => {
+        const callbackFunc = (buttonIndex: string) => {
             const index = parseInt(buttonIndex, 10);
             const routeName = ROUTER_OPTIONS[index];
             if (routeName) {
@@ -56,11 +60,11 @@ export default class LoginScreen extends Component {
               <Button block style={styles.facebook}>
                 <Text>Entrar com Facebook</Text>
               </Button>
-            <ActionSheet
-              ref={(c) => {
-                  this.actionSheet = c;
-              }}
-            />
+              <ActionSheet
+                ref={(c) => {
+                    this.actionSheet = c;
+                }}
+              />
             </View>
           </Image>
         );
