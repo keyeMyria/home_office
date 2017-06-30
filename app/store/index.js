@@ -2,6 +2,11 @@ import { observable, extendObservable, action } from 'mobx';
 
 import * as MOCK from '../mock';
 
+// Collections
+import QuestionsCollection from './collections/QuestionsCollection';
+import ExercisesCollection from './collections/ExercisesCollection';
+
+
 class AppStore {
     // Statics
     @observable users = MOCK.users;
@@ -44,7 +49,7 @@ class AppStore {
 
     // Navigation (Using BubbleMenu - Student)
 
-    selectStudent(id) {
+    selectStudent(id: number): void {
         this.studentSelected = this.childStudents.filter(o => o.id === id)[0];
         // this.studentSelected.grades = this.grades.filter(o => o.studentId === id)[0];
         this.studentSelected.calendar = this.calendars.filter(o => o.studentId === id)[0];
@@ -52,14 +57,15 @@ class AppStore {
             o => o.studentId === id,
         )[0];
         this.studentSelected.alerts = this.alerts.filter(o => o.studentId === id)[0];
-        this.studentSelected.planning = this.plannings.length > 0
-            ? this.plannings.filter(o => o.studentId === id)[0] || {}
-            : {};
+        this.studentSelected.planning =
+            this.plannings.length > 0
+                ? this.plannings.filter(o => o.studentId === id)[0] || {}
+                : {};
         this.formChanged = true;
     }
 
     // Navigation (Using BubbleMenu - School Year)
-    selectSchoolYear(id) {
+    selectSchoolYear(id: number) {
         this.schoolYearSelected = this.schoolYears.filter(o => o.id === id)[0];
     }
 
@@ -71,7 +77,7 @@ class AppStore {
 
     // Planning
 
-    saveStudentPlanning(values) {
+    saveStudentPlanning(values: any) {
         values.studentId = this.studentSelected.id;
         this.studentSelected.planning = values;
         if (this.plannings.length > 0) {
@@ -82,56 +88,56 @@ class AppStore {
 
     // ABSENSE
 
-    checkStudentAbsense(studentId) {
+    checkStudentAbsense(studentId: number) {
         this.absenses.push(studentId);
     }
 
-    uncheckStudentAbsense(studentId) {
+    uncheckStudentAbsense(studentId: number) {
         this.absenses = this.absenses.filter(id => id !== studentId);
     }
 
     // OCCURRENCE
 
-    checkStudentOccurrence(studentId) {
+    checkStudentOccurrence(studentId: number) {
         this.occurrences.push(studentId);
     }
 
-    uncheckStudentOccurrence(studentId) {
+    uncheckStudentOccurrence(studentId: number) {
         this.occurrences = this.occurrences.filter(id => id !== studentId);
     }
 
     // EXAM TOPICS
 
-    checkExamTopic(topicId) {
+    checkExamTopic(topicId: number) {
         this.examTopics.push(topicId);
     }
 
-    uncheckExamTopic(topicId) {
+    uncheckExamTopic(topicId: number) {
         this.examTopics = this.examTopics.filter(id => id !== topicId);
     }
 
     // EXERCISE TOPICS
-    checkExerciseTopic(topicId) {
+    checkExerciseTopic(topicId: number) {
         this.exerciseTopics.push(topicId);
     }
 
-    uncheckExerciseTopic(topicId) {
+    uncheckExerciseTopic(topicId: number) {
         this.exerciseTopics = this.exerciseTopics.filter(id => id !== topicId);
     }
 
     // EXERCICE QUESTIONS
 
-    checkExerciceQuestion(questionId) {
+    checkExerciceQuestion(questionId: number) {
         this.exerciceQuestions.push(questionId);
     }
 
-    uncheckExerciceQuestion(questionId) {
+    uncheckExerciceQuestion(questionId: number) {
         this.exerciceQuestions = this.exerciceQuestions.filter(id => id !== questionId);
     }
 
     // IMAGES
 
-    getStudentImagebyId(studentId) {
+    getStudentImagebyId(studentId: number): any {
         switch (studentId) {
         case 1:
             return require('../img/caio.png');
@@ -146,7 +152,7 @@ class AppStore {
 }
 
 class StudentStore {
-    @observable students = [];
+    students = observable([]);
     @observable isLoading = false;
 
     @action
@@ -168,14 +174,12 @@ class StudentStore {
 }
 
 class Student {
-
     static init(data) {
         if (Array.isArray(data)) {
             return data.map(o => new this(o));
         }
         return this(data);
     }
-
 
     constructor(rawData) {
         this.id = rawData.id;
@@ -197,6 +201,14 @@ class Student {
         }
     }
 }
+
+class RootStore {
+    questions = new QuestionsCollection(this);
+    exercices = new ExercisesCollection(this);
+}
+
+
+export const rootStore = new RootStore();
 
 export const studentStore = new StudentStore();
 
