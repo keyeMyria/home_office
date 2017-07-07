@@ -1,11 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { Text, Card, CardItem, Body, Icon, Col, Row, Grid } from 'native-base';
 
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-import store, { rootStore } from '../../../store';
+// Store
+import { rootStore } from '../../../store';
+
+// Types
+import type Exercise from '../../../store/models/Exercise';
+
+//Components
 import ScreenShell from '../../../components/ScreenShell';
 import ExerciseCard from '../../../components/ExerciseCard';
 
@@ -20,7 +25,7 @@ export default class ExerciseScreen extends Component {
     };
 
     @action.bound
-    showModal(item) {
+    showModal(item: Exercise) {
         if (!item) return;
         this.store.item = item;
         this.store.visible = true;
@@ -32,7 +37,7 @@ export default class ExerciseScreen extends Component {
         this.store.visible = false;
     }
 
-    renderExerciseCard(item) {
+    renderExerciseCard(item: Exercise) {
         return <ExerciseCard key={item.id} item={item} onPress={this.showModal} />;
     }
 

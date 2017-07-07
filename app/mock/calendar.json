@@ -1,0 +1,19 @@
+{
+    "titulo": "Exercícios Preparatórios - Geografia",
+    "detalhes": "O foco será principalmente na multiplicação e divisão",
+    "pontuacao": null,
+    "bimestre": "2º Bimestre",
+    "topicos": [],
+    "tempoEstimado": null,
+    "questoes": [],
+    "data": "",
+    "horaInicio": "",
+    "horaFim": "",
+    "disciplina": "Geografia",
+    "tipo": "Exercício Preparatório",
+    "tipoAbreviado": "EP",
+    "ano": "7º",
+    "turma": ["A", "B", "C", "D"],
+    "cor": "",
+    "dayOfWeek": "@computed"
+}
