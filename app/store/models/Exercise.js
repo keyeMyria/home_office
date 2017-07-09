@@ -6,6 +6,7 @@ export type ExercicioRawData = {
     id: number,
     detalhes: string,
     duracao: number,
+    title: string,
     questoes: Array<number>,
 };
 
