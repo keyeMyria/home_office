@@ -56,7 +56,6 @@ export default class MessageScreen extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        console.warn('rrrr');
         return (
           <ScreenShell title="Mensagens" navigate={navigate} padder={false}>
             <List button icon>

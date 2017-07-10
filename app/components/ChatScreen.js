@@ -48,8 +48,8 @@ export default class ChatScreen extends Component {
 
     props: {
         store: {
-            title: string,
-            visible: boolean,
+            title: string, // eslint-disable-line
+            visible: boolean, // eslint-disable-line
         },
         onClose: () => void,
     };

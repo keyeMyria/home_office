@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, Modal, View, Dimensions } from 'react-native';
+import { TouchableWithoutFeedback, Modal, View } from 'react-native';
 import {
     Container,
     Header,
@@ -11,7 +11,6 @@ import {
     Body,
     Picker,
     Text,
-    Button,
     Item,
     Label,
     ListItem,
@@ -34,21 +33,6 @@ const QUESTION_QTDE_PICKER = _.range(0, 51, 1).map((val, index) => {
     const label = val === 0 ? 'Nenhuma' : val + (val === 1 ? ' Questão' : ' Questões');
     return <Picker.Item key={index} label={label} value={val + 1} />;
 });
-
-const ACTIVE_STYLE_MAP = {
-    true: {
-        ...styles.buttonActive,
-        // width: (Dimensions.get('window').width / 3) - 15,
-        width: 320 / 3 - 10,
-        minWidth: 110,
-    },
-    false: {
-        ...styles.buttonInactive,
-        // width: (Dimensions.get('window').width / 3) - 15,
-        width: 320 / 3 - 10,
-        minWidth: 110,
-    },
-};
 
 @observer
 class ExerciseConfigurationScreen extends Component {
