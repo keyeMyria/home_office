@@ -339,6 +339,7 @@ const calendars = [
     },
 ];
 
+
 /**
  * CALENDAR (TEACHER)
  */
@@ -347,7 +348,7 @@ const teacherCalendar = {
         {
             type: 'P.',
             colorType: '#E57373',
-            dayOfWeek: 'Qui.',
+            dayOfWeek: '5º',
             date: '17/ago',
             time: '14:40',
             datetime: '2017-08-14T16:00:00Z',
@@ -359,7 +360,7 @@ const teacherCalendar = {
         {
             type: 'E.E.',
             colorType: '#64B5F6',
-            dayOfWeek: 'Qua.',
+            dayOfWeek: '4ª',
             date: '16/ago',
             time: '13:00',
             datetime: '2017-08-14T16:00:00Z',
@@ -371,7 +372,7 @@ const teacherCalendar = {
         {
             type: 'E.P.',
             colorType: PREPARATORY_EXERCICE_COLOR,
-            dayOfWeek: 'Ter.',
+            dayOfWeek: '3ª',
             date: '15/ago',
             time: undefined,
             datetime: '2017-08-14T16:00:00Z',
@@ -383,7 +384,7 @@ const teacherCalendar = {
         {
             type: 'E.E.',
             colorType: '#64B5F6',
-            dayOfWeek: 'Seg.',
+            dayOfWeek: '2ª',
             date: '14/ago',
             time: '13:00',
             datetime: '2017-08-14T16:00:00Z',
@@ -397,7 +398,7 @@ const teacherCalendar = {
         {
             type: 'P.',
             colorType: '#E57373',
-            dayOfWeek: 'Sex.',
+            dayOfWeek: '6ª',
             date: '11/ago',
             time: '16:40',
             datetime: '2017-08-14T16:00:00Z',
@@ -409,7 +410,7 @@ const teacherCalendar = {
         {
             type: 'P.',
             colorType: '#E57373',
-            dayOfWeek: 'Qui.',
+            dayOfWeek: '5ª',
             date: '10/ago',
             time: '14:40',
             datetime: '2017-08-14T16:00:00Z',
@@ -421,7 +422,7 @@ const teacherCalendar = {
         {
             type: 'E.E.',
             colorType: '#64B5F6',
-            dayOfWeek: 'Qua.',
+            dayOfWeek: '4ª',
             date: '9/ago',
             time: '13:00',
             datetime: '2017-08-14T16:00:00Z',
@@ -433,7 +434,7 @@ const teacherCalendar = {
         {
             type: 'E.P.',
             colorType: PREPARATORY_EXERCICE_COLOR,
-            dayOfWeek: 'Ter.',
+            dayOfWeek: '3ª',
             date: '8/ago',
             time: undefined,
             datetime: '2017-08-14T16:00:00Z',
@@ -445,7 +446,7 @@ const teacherCalendar = {
         {
             type: 'E.P.',
             colorType: PREPARATORY_EXERCICE_COLOR,
-            dayOfWeek: 'Ter.',
+            dayOfWeek: '3ª',
             date: '8/ago',
             time: undefined,
             datetime: '2017-08-14T16:00:00Z',
@@ -457,7 +458,7 @@ const teacherCalendar = {
         {
             type: 'E.E.',
             colorType: '#64B5F6',
-            dayOfWeek: 'Seg.',
+            dayOfWeek: '2ª',
             date: '7/ago',
             time: '13:00',
             datetime: '2017-08-14T16:00:00Z',
@@ -1253,9 +1254,9 @@ const exerciceTypes = [{ id: 1, name: 'Lista Física' }, { id: 2, name: 'Lista S
  * QUESTION DATABASE TYPES
  */
 const questionDatabaseTypes = [
-    { id: 1, name: 'Da Escola' },
-    { id: 2, name: 'De Provas Anteriores' },
-    { id: 3, name: 'Do Sistema' },
+    { id: 1, name: 'Escola' },
+    { id: 2, name: 'Provas Anteriores' },
+    { id: 3, name: 'Sistema' },
 ];
 
 /**
@@ -1264,7 +1265,7 @@ const questionDatabaseTypes = [
 const questionGenerationTypes = [
     { id: 1, name: 'Diferente por Aluno' },
     { id: 2, name: 'Única para Todos' },
-    { id: 3, name: 'Selecionar Questões' },
+    // { id: 3, name: 'Selecionar Questões' },
 ];
 
 /**
