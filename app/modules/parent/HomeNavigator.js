@@ -44,7 +44,7 @@ export default class HomeTabNavigator extends Component {
               </Button>
               <Button active={index === 4} onPress={() => navigate('PlanningScreen')}>
                 <Icon name="tune" />
-                <Text>Planejar</Text>
+                <Text>Rotina</Text>
               </Button>
             </FooterTab>
           </Footer>

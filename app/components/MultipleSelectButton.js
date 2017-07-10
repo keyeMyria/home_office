@@ -22,7 +22,7 @@ export default class MultipleSelectButton extends Component {
         const { onChange } = this.props;
         const onPress = () => onChange(key, !active);
         return (
-          <SelectButton text={value} onPress={onPress} active={active} />
+          <SelectButton key={key} text={value} onPress={onPress} active={active} />
         );
     }
 
