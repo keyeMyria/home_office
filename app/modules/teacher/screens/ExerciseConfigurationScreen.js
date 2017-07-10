@@ -26,6 +26,7 @@ import store from '../../../store';
 import { styles } from '../../../themes/educareTheme';
 
 import { PickerField } from '../../../components/fields';
+import SegmentedControl from '../../../components/SegmentedControl';
 import SetDateForClassScreen from './SetDateForClassScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
 
@@ -89,18 +90,11 @@ class ExerciseConfigurationScreen extends Component {
      */
     renderQuestionDatabaseTypes() {
         const { questionDatabaseTypeId } = this.state;
-
-        const mapFunc = (type, index) => {
-            const activeStyle = ACTIVE_STYLE_MAP[type.id === questionDatabaseTypeId];
-            const onPress = () => this.setState({ questionDatabaseTypeId: type.id });
-            return (
-              <Button key={index} rounded onPress={onPress} style={activeStyle}>
-                <Text style={{ textAlign: 'center', fontSize: 12 }}>{type.name}</Text>
-              </Button>
-            );
-        };
-
-        return store.questionDatabaseTypes.map(mapFunc);
+        const items = store.questionDatabaseTypes.map(t => ({ key: t.id, value: t.name }));
+        const onChange = id => this.setState({ questionDatabaseTypeId: id });
+        return (
+          <SegmentedControl items={items} onChange={onChange} selected={questionDatabaseTypeId} />
+        );
     }
 
     /**
@@ -108,18 +102,11 @@ class ExerciseConfigurationScreen extends Component {
      */
     renderQuestionGenerationTypes() {
         const { questionGenerationTypeId } = this.state;
-        const mapFunc = (type, index) => {
-            const onPress = () => this.setState({ questionGenerationTypeId: type.id });
-            const activeStyle = ACTIVE_STYLE_MAP[type.id === questionGenerationTypeId];
-
-            return (
-              <Button key={index} rounded onPress={onPress} style={activeStyle}>
-                <Text style={{ textAlign: 'center', fontSize: 12 }}>{type.name}</Text>
-              </Button>
-            );
-        };
-
-        return store.questionGenerationTypes.map(mapFunc);
+        const items = store.questionGenerationTypes.map(t => ({ key: t.id, value: t.name }));
+        const onChange = id => this.setState({ questionGenerationTypeId: id });
+        return (
+          <SegmentedControl items={items} onChange={onChange} selected={questionGenerationTypeId} />
+        );
     }
 
     /**
@@ -209,8 +196,14 @@ class ExerciseConfigurationScreen extends Component {
 
             return (
               <ListItem key={index} onPress={checkBoxPress} icon style={{ marginLeft: 60 }}>
-                <Body><Text>{topic.name}</Text></Body>
-                <Right><CheckBox {...checkBoxProps} /></Right>
+                <Body>
+                  <Text>
+                    {topic.name}
+                  </Text>
+                </Body>
+                <Right>
+                  <CheckBox {...checkBoxProps} />
+                </Right>
               </ListItem>
             );
         };
@@ -256,9 +249,17 @@ class ExerciseConfigurationScreen extends Component {
                 return (
                   <View key={index}>
                     <ListItem onPress={onPress} icon>
-                      <Left><Icon name={iconName} /></Left>
-                      <Body><Text>{topic.name}</Text></Body>
-                      <Right><CheckBox {...checkBoxProps} /></Right>
+                      <Left>
+                        <Icon name={iconName} />
+                      </Left>
+                      <Body>
+                        <Text>
+                          {topic.name}
+                        </Text>
+                      </Body>
+                      <Right>
+                        <CheckBox {...checkBoxProps} />
+                      </Right>
                     </ListItem>
                     {this.renderSubTopics(topic)}
                   </View>
@@ -266,9 +267,17 @@ class ExerciseConfigurationScreen extends Component {
             }
             return (
               <ListItem key={index} onPress={onPress} icon>
-                <Left><Icon name={iconName} /></Left>
-                <Body><Text>{topic.name}</Text></Body>
-                <Right><CheckBox {...checkBoxProps} /></Right>
+                <Left>
+                  <Icon name={iconName} />
+                </Left>
+                <Body>
+                  <Text>
+                    {topic.name}
+                  </Text>
+                </Body>
+                <Right>
+                  <CheckBox {...checkBoxProps} />
+                </Right>
               </ListItem>
             );
         };

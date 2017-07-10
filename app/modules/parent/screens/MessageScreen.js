@@ -1,47 +1,18 @@
+// @flow
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Left,
-  Right,
-  Icon,
-  Body,
-  Text,
-} from 'native-base';
+import { Text } from 'native-base';
 
-// import { observer } from 'mobx-react/native';
-// import store from '../../../store';
-
+import ScreenShell from '../../../components/ScreenShell';
 import BubbleMenu from '../../../components/BubbleMenu';
 
-// @observer
 export default class MessageScreen extends Component {
-  
-  render() {
-
-    const { navigate } = this.props.navigation;
-
-    return (
-      <Container>
-        <Header appHeader>
-          <Left>
-            <TouchableWithoutFeedback onPress={() => navigate('DrawerOpen')}>
-              <Icon name='menu' />
-            </TouchableWithoutFeedback>
-          </Left>
-          <Body>
-            <Title>Mensagens</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-          <BubbleMenu />
-          <Text>Mensagens</Text>
-        </Content>
-      </Container>
-    );
-  }
+    render() {
+        const { navigate } = this.props.navigation;
+        return (
+          <ScreenShell title="Mensagens" navigate={navigate} padder={false}>
+            <BubbleMenu />
+            <Text>Mensagens</Text>
+          </ScreenShell>
+        );
+    }
 }
