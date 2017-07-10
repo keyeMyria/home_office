@@ -61,7 +61,7 @@ const COLOR_ARRAY = [
  * @param {number} percent
  */
 function getWidth(percent: number): number {
-    const total = Dimensions.get('window').width - 130;
+    const total = Dimensions.get('window').width - 100;
     const width = Math.floor(total * percent);
     return width < 10 ? 10 : width;
 }
@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     gradeLeftContainer: {
-        width: 120,
+        width: 90,
         borderRightWidth: 2,
         borderColor: '#000',
-        paddingHorizontal: 10,
+        paddingRight: 10,
         justifyContent: 'center',
     },
     chartBar: {
