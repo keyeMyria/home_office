@@ -32,6 +32,7 @@
     "babel-preset-react-native": "1.9.2",
     "eslint-plugin-import": "^2.6.1",
     "flow-bin": "^0.45.0",
+    "git-hooks": "^1.1.8",
     "jest": "20.0.3",
     "react-test-renderer": "16.0.0-alpha.6"
   },
