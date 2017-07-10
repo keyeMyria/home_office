@@ -7,7 +7,7 @@ var deviceWidth = _reactNative.Dimensions.get('window').width;
 var platform = _reactNative.Platform.OS;
 var platformStyle = 'material';
 
-const PRIMARY_COLOR = '#FF5722';
+const PRIMARY_COLOR = '#1C7FE2';
 
 exports.default = {
 
@@ -146,7 +146,7 @@ exports.default = {
 
 
 
-  tabBarTextColor: '#FFCCBC',
+  tabBarTextColor: '#d6d6d6',
   tabBarTextSize: platform === 'ios' ? 14 : 11,
   activeTab: '#fff',
   sTabBarActiveTextColor: '#007aff',
