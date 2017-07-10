@@ -207,7 +207,7 @@ class ExamScreen extends Component {
                 </Field>
                 <Field
                   name="grade"
-                  label="Nota"
+                  label="Pontuação"
                   component={PickerField}
                   props={{ initialValue: 10 }}
                 >
