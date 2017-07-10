@@ -1,0 +1,18 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "javascript.validate.enable": false,
+    "flow.useNPMPackagedFlow": true,
+    "editor.rulers": [
+        80,
+        100
+    ],
+    "prettier.trailingComma": "es5",
+    "prettier.singleQuote": true,
+    "prettier.tabWidth": 4,
+    "prettier.eslintIntegration": true,
+    "extensions.ignoreRecommendations": true,
+    "git.enableSmartCommit": true,
+    "files.associations": {
+        "*.js": "javascriptreact"
+    }
+}
