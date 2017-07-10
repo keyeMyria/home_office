@@ -70,7 +70,7 @@ export default class ScreenShell extends Component {
      */
     renderRight() {
         const { rightText, rightPress, showRight } = this.props;
-        if (!showRight || !rightText) return null;
+        if (!showRight || !rightText) return <Right />;
 
         const onPress = rightPress || emptyFunc;
 
@@ -100,6 +100,7 @@ export default class ScreenShell extends Component {
                   {title}
                 </Title>
               </Body>
+              {this.renderRight()}
             </Header>
             <Content padder={padder}>
               {this.props.children}
