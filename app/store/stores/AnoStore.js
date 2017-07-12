@@ -1,34 +1,23 @@
 // @flow
 
 import { observable, extendObservable, action } from 'mobx';
-
-import { AnoService } from '../services';
-
-class Ano {
-    id: ?number;
-    abreviacao: string;
-    titulo: string;
-    disciplinas: Array<Disciplina>;
-    turmas: Array<Turma>;
-    topicos: Array<Topico>;
-    tarefas: Array<Tarefa>;
-}
+import { AnoService } from '../../services';
 
 class AnoStore {
     service: AnoService;
-    @observable anos: Array<Ano>;
+    @observable anos: Array<any>; // TODO: Colocar o model especifico
 
     constructor() {
         this.service = new AnoService();
     }
 
-    async getAll() {
+    async load() {
         const result = await this.service.get();
         this.anos = result.anos;
     }
 }
 
 const store = new AnoStore();
-store.getAll();
+store.load();
 
 export default store;
