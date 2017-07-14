@@ -1,0 +1,182 @@
+[
+    {
+        "ano": {
+            "abreviacao": "1F",
+            "titulo": "1º Fundamental I",
+            "id": 1
+        },
+        "titulo": "A",
+        "id": 1
+    },
+    {
+        "ano": {
+            "abreviacao": "1F",
+            "titulo": "1º Fundamental I",
+            "id": 1
+        },
+        "titulo": "B",
+        "id": 2
+    },
+    {
+        "ano": {
+            "abreviacao": "1F",
+            "titulo": "1º Fundamental I",
+            "id": 1
+        },
+        "titulo": "C",
+        "id": 3
+    },
+    {
+        "ano": {
+            "abreviacao": "1F",
+            "titulo": "1º Fundamental I",
+            "id": 1
+        },
+        "titulo": "D",
+        "id": 4
+    },
+    {
+        "ano": {
+            "abreviacao": "2F",
+            "titulo": "2º Fundamental I",
+            "id": 2
+        },
+        "titulo": "A",
+        "id": 5
+    },
+    {
+        "ano": {
+            "abreviacao": "2F",
+            "titulo": "2º Fundamental I",
+            "id": 2
+        },
+        "titulo": "B",
+        "id": 6
+    },
+    {
+        "ano": {
+            "abreviacao": "2F",
+            "titulo": "2º Fundamental I",
+            "id": 2
+        },
+        "titulo": "C",
+        "id": 7
+    },
+    {
+        "ano": {
+            "abreviacao": "2F",
+            "titulo": "2º Fundamental I",
+            "id": 2
+        },
+        "titulo": "D",
+        "id": 8
+    },
+    {
+        "ano": {
+            "abreviacao": "3F",
+            "titulo": "3º Fundamental I",
+            "id": 3
+        },
+        "titulo": "A",
+        "id": 9
+    },
+    {
+        "ano": {
+            "abreviacao": "3F",
+            "titulo": "3º Fundamental I",
+            "id": 3
+        },
+        "titulo": "B",
+        "id": 10
+    },
+    {
+        "ano": {
+            "abreviacao": "3F",
+            "titulo": "3º Fundamental I",
+            "id": 3
+        },
+        "titulo": "C",
+        "id": 11
+    },
+    {
+        "ano": {
+            "abreviacao": "3F",
+            "titulo": "3º Fundamental I",
+            "id": 3
+        },
+        "titulo": "D",
+        "id": 12
+    },
+    {
+        "ano": {
+            "abreviacao": "4F",
+            "titulo": "4º Fundamental I",
+            "id": 4
+        },
+        "titulo": "A",
+        "id": 13
+    },
+    {
+        "ano": {
+            "abreviacao": "4F",
+            "titulo": "4º Fundamental I",
+            "id": 4
+        },
+        "titulo": "B",
+        "id": 14
+    },
+    {
+        "ano": {
+            "abreviacao": "4F",
+            "titulo": "4º Fundamental I",
+            "id": 4
+        },
+        "titulo": "C",
+        "id": 15
+    },
+    {
+        "ano": {
+            "abreviacao": "4F",
+            "titulo": "4º Fundamental I",
+            "id": 4
+        },
+        "titulo": "D",
+        "id": 16
+    },
+    {
+        "ano": {
+            "abreviacao": "5F",
+            "titulo": "5º Fundamental I",
+            "id": 5
+        },
+        "titulo": "A",
+        "id": 17
+    },
+    {
+        "ano": {
+            "abreviacao": "5F",
+            "titulo": "5º Fundamental I",
+            "id": 5
+        },
+        "titulo": "B",
+        "id": 18
+    },
+    {
+        "ano": {
+            "abreviacao": "5F",
+            "titulo": "5º Fundamental I",
+            "id": 5
+        },
+        "titulo": "C",
+        "id": 19
+    },
+    {
+        "ano": {
+            "abreviacao": "5F",
+            "titulo": "5º Fundamental I",
+            "id": 5
+        },
+        "titulo": "D",
+        "id": 20
+    }
+]

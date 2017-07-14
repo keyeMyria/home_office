@@ -4,7 +4,7 @@ import { List } from 'native-base';
 // Store
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react/native';
-import store from '../../../store';
+import store, { eventosStore } from '../../../store';
 
 // Components
 import ScreenShell from '../../../components/ScreenShell';
@@ -38,8 +38,8 @@ export default class CalendarScreen extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        const currentWeekItems = store.studentSelected.calendar.currentWeekItems;
-        const nextWeekItems = store.studentSelected.calendar.nextWeekItems;
+        // const eventosStore = eventosStore;
+        // const nextWeekItems = store.studentSelected.calendar.nextWeekItems;
 
         return (
           <ScreenShell title="Agenda" navigate={navigate} padder={false}>
@@ -50,14 +50,14 @@ export default class CalendarScreen extends Component {
             <List agendaList>
               <CalendarWeek
                 label="Semana Atual"
-                items={currentWeekItems}
+                items={eventosStore}
                 onPress={this.showModal}
               />
-              <CalendarWeek
+              {/* <CalendarWeek
                 label="Próxima Semana"
                 items={nextWeekItems}
                 onPress={this.showModal}
-              />
+              />*/}
             </List>
           </ScreenShell>
         );

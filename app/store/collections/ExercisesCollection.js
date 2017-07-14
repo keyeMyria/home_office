@@ -19,6 +19,7 @@ export default class ExercisesColletion extends BaseCollection {
 
     fetchData() {
         const exercises: Array<ExercicioRawData> = exercisesJson;
+        console.warn(exercisesJson);
         const exercisesMap: { [string]: ExercicioRawData } = exercises.reduce(
             (p, c) => Object.assign(p, { [String(c.id)]: new Exercise(c, this.$rootStore) }),
             {},

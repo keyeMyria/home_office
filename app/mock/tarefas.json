@@ -1,0 +1,406 @@
+[
+    {
+        "duracao": 30,
+        "tipo": "EXERCICIO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "titulo": "Exercicio teste",
+        "detalhes": "Para casa",
+        "id": 3
+    },
+    {
+        "duracao": 60,
+        "tipo": "EXERCICIO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "titulo": "Exercicio teste 2",
+        "detalhes": "Para casa 2",
+        "id": 4
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 2
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 1,
+            "dataCriacao": "2017-07-13T17:50:37.829+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.829+0000",
+            "titulo": "Português"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 8
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 12,
+            "dataCriacao": "2017-07-13T17:50:38.140+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.140+0000",
+            "titulo": "Artes"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 10
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 12
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 11,
+            "dataCriacao": "2017-07-13T17:50:38.106+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.106+0000",
+            "titulo": "Religião"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 14
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 2,
+            "dataCriacao": "2017-07-13T17:50:37.853+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.853+0000",
+            "titulo": "História"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 16
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 4,
+            "dataCriacao": "2017-07-13T17:50:37.900+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.900+0000",
+            "titulo": "Biologia"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 18
+    },
+    {
+        "tipo": "PROVA",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 3,
+            "dataCriacao": "2017-07-13T17:50:37.876+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.876+0000",
+            "titulo": "Geografia"
+        },
+        "valor": 15,
+        "titulo": "Prova teste",
+        "bimestre": 2,
+        "id": 20
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 1
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 1,
+            "dataCriacao": "2017-07-13T17:50:37.829+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.829+0000",
+            "titulo": "Português"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 7
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 12,
+            "dataCriacao": "2017-07-13T17:50:38.140+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.140+0000",
+            "titulo": "Artes"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 9
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 11
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 11,
+            "dataCriacao": "2017-07-13T17:50:38.106+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.106+0000",
+            "titulo": "Religião"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 13
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 2,
+            "dataCriacao": "2017-07-13T17:50:37.853+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.853+0000",
+            "titulo": "História"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 15
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 4,
+            "dataCriacao": "2017-07-13T17:50:37.900+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.900+0000",
+            "titulo": "Biologia"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 17
+    },
+    {
+        "tipo": "TRABALHO",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 3,
+            "dataCriacao": "2017-07-13T17:50:37.876+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.876+0000",
+            "titulo": "Geografia"
+        },
+        "valor": 10,
+        "titulo": "Teste",
+        "bimestre": 1,
+        "id": 19
+    },
+    {
+        "geracao": "INDIVIDUAL",
+        "duracao": null,
+        "banco": "ESCOLA",
+        "tipo": "LISTA_ONLINE",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "titulo": "Lista Online teste",
+        "detalhes": "Para casa online",
+        "id": 5
+    },
+    {
+        "geracao": "UNICA",
+        "duracao": null,
+        "banco": "PROVAS_ANTERIORES",
+        "tipo": "LISTA_ONLINE",
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "titulo": "Lista Online teste 2",
+        "detalhes": "Para casa online 2",
+        "id": 6
+    }
+]

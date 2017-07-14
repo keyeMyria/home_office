@@ -10,7 +10,7 @@ import { rootStore } from '../../../store';
 // Types
 import type Exercise from '../../../store/models/Exercise';
 
-//Components
+// Components
 import ScreenShell from '../../../components/ScreenShell';
 import ExerciseCard from '../../../components/ExerciseCard';
 

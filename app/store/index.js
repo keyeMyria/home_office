@@ -6,7 +6,6 @@ import * as MOCK from '../mock';
 import QuestionsCollection from './collections/QuestionsCollection';
 import ExercisesCollection from './collections/ExercisesCollection';
 
-
 class AppStore {
     // Statics
     @observable users = MOCK.users;
@@ -78,8 +77,9 @@ class AppStore {
     // Planning
 
     saveStudentPlanning(values: any) {
-        values.studentId = this.studentSelected.id;
-        this.studentSelected.planning = values;
+        const data = values;
+        data.studentId = this.studentSelected.id;
+        this.studentSelected.planning = data;
         if (this.plannings.length > 0) {
             this.plannings = this.plannings.filter(o => o.studentId !== this.studentSelected.id);
         }
@@ -140,13 +140,13 @@ class AppStore {
     getStudentImagebyId(studentId: number): any {
         switch (studentId) {
         case 1:
-            return require('../img/caio.png');
+            return require('../img/caio.png'); // eslint-disable-line
         case 2:
-            return require('../img/filipe.png');
+            return require('../img/filipe.png'); // eslint-disable-line
         case 3:
-            return require('../img/arwen.png');
+            return require('../img/arwen.png');// eslint-disable-line
         default:
-            return require('../img/user.png');
+            return require('../img/user.png'); // eslint-disable-line
         }
     }
 }
@@ -191,13 +191,13 @@ class Student {
     get avatar() {
         switch (this.id) {
         case 1:
-            return require('../img/caio.png');
+            return require('../img/caio.png'); // eslint-disable-line
         case 2:
-            return require('../img/filipe.png');
+            return require('../img/filipe.png'); // eslint-disable-line
         case 3:
-            return require('../img/arwen.png');
+            return require('../img/arwen.png'); // eslint-disable-line
         default:
-            return require('../img/user.png');
+            return require('../img/user.png'); // eslint-disable-line
         }
     }
 }
@@ -207,6 +207,9 @@ class RootStore {
     exercices = new ExercisesCollection(this);
 }
 
+const JSON_EVENTOS = require('./../mock/eventos.json');
+
+export const eventosStore = observable(JSON_EVENTOS);
 
 export const rootStore = new RootStore();
 

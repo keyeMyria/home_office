@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, View, Modal, Dimensions, StyleSheet } from 'react-native';
+import { TouchableWithoutFeedback, View, Modal, Dimensions } from 'react-native';
 import {
     Container,
     Header,
@@ -16,8 +16,10 @@ import {
     Button,
     H3,
     Label,
+    Col,
+    Row,
+    Grid,
 } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
@@ -31,14 +33,39 @@ const CalendarItem = (props) => {
     return (
       <ListItem onPress={() => onPress(item)}>
         <Grid>
-          <Col size={10} style={[styles.gridColumn, { backgroundColor: item.colorType }]}>
-            <Row><Text style={styles.gridRowText}>{item.type}</Text></Row>
+          <Col size={8} style={[styles.gridColumn, { backgroundColor: item.colorType }]}>
+            <Row>
+              <Text style={styles.gridRowText}>
+                {item.type}
+              </Text>
+            </Row>
           </Col>
-          <Col size={30} style={styles.gridColumn}>
-            <Row><Text style={styles.gridRowText}>{item.dayOfWeek} {item.date}</Text></Row>
+          <Col size={5} style={{ alignItems: 'flex-start', paddingLeft: 10 }}>
+            <Row>
+              <Text style={{ fontSize: 20 }}>
+                {item.dayOfWeek}
+              </Text>
+            </Row>
           </Col>
-          <Col size={60} style={styles.gridColumnAlignLeft}>
-            <Row><Text style={styles.gridRowText}>{item.information}</Text></Row>
+          <Col size={15} style={{ alignItems: 'center' }}>
+            <Row style={{ marginBottom: 0 }}>
+              <Text style={{ fontSize: 13 }}>
+                            ({item.date})
+                        </Text>
+            </Row>
+            {item.time &&
+            <Row style={{ marginTop: -10 }}>
+              <Text style={{ fontSize: 13 }}>
+                {item.time}
+              </Text>
+            </Row>}
+          </Col>
+          <Col size={75} style={{ ...styles.gridColumnAlignLeft, paddingLeft: 10 }}>
+            <Row>
+              <Text style={styles.gridRowText}>
+                {item.information}
+              </Text>
+            </Row>
           </Col>
         </Grid>
       </ListItem>
@@ -50,7 +77,12 @@ const CalendarWeek = (props) => {
 
     return (
       <View>
-        {items.length > 0 && <Separator><Text>{props.label}</Text></Separator>}
+        {items.length > 0 &&
+        <Separator>
+          <Text>
+            {props.label}
+          </Text>
+        </Separator>}
         {items.map((item, index) => <CalendarItem key={index} item={item} onPress={onPress} />)}
       </View>
     );
@@ -101,17 +133,25 @@ export default class CalendarScreen extends Component {
             <View style={localStyles.modalBackdrop}>
               <View style={localStyles.modalContainer}>
                 <View style={localStyles.modalHeader}>
-                  <H3>{item.title}</H3>
+                  <H3>
+                    {item.title}
+                  </H3>
                 </View>
                 <View style={localStyles.modalContent}>
                   {item.turma &&
-                  <View style={localStyles.modalItens}>
-                    <Label>Turma: </Label><Text>{item.turma}</Text>
-                  </View>}
+                    <View style={localStyles.modalItens}>
+                      <Label>Turma: </Label>
+                      <Text>
+                        {item.turma}
+                      </Text>
+                    </View>}
                   {item.grade &&
-                  <View style={localStyles.modalItens}>
-                    <Label>Nota: </Label><Text>{item.grade} Pontos</Text>
-                  </View>}
+                    <View style={localStyles.modalItens}>
+                      <Label>Nota: </Label>
+                      <Text>
+                        {item.grade} Pontos
+                                    </Text>
+                    </View>}
                 </View>
                 <View style={localStyles.modalFooter}>
                   <Button danger style={localStyles.button}>

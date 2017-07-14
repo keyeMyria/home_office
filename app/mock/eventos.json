@@ -1,0 +1,294 @@
+[
+    {
+        "duracao": null,
+        "turma": {
+            "id": 27,
+            "dataCriacao": "2017-07-13T17:50:42.684+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.684+0000",
+            "titulo": "C"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 4,
+            "dataCriacao": "2017-07-13T17:51:07.983+0000",
+            "ultimaModificacao": "2017-07-13T17:51:07.983+0000",
+            "titulo": "Exercicio teste 2",
+            "tipo": "EXERCICIO",
+            "valor": null,
+            "bimestre": 2,
+            "detalhes": "Para casa 2",
+            "duracao": 60
+        },
+        "inicio": "2017-07-07",
+        "fim": "2017-07-07",
+        "id": 1
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 25,
+            "dataCriacao": "2017-07-13T17:50:42.637+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.637+0000",
+            "titulo": "A"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 4,
+            "dataCriacao": "2017-07-13T17:51:07.983+0000",
+            "ultimaModificacao": "2017-07-13T17:51:07.983+0000",
+            "titulo": "Exercicio teste 2",
+            "tipo": "EXERCICIO",
+            "valor": null,
+            "bimestre": 2,
+            "detalhes": "Para casa 2",
+            "duracao": 60
+        },
+        "inicio": "2017-07-07",
+        "fim": "2017-07-07",
+        "id": 2
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 25,
+            "dataCriacao": "2017-07-13T17:50:42.637+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.637+0000",
+            "titulo": "A"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 2,
+            "dataCriacao": "2017-07-13T17:51:07.935+0000",
+            "ultimaModificacao": "2017-07-13T17:51:07.935+0000",
+            "titulo": "Prova teste",
+            "tipo": "PROVA",
+            "valor": 15,
+            "bimestre": 2
+        },
+        "inicio": "2017-07-18",
+        "fim": "2017-07-18",
+        "id": 5
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 27,
+            "dataCriacao": "2017-07-13T17:50:42.684+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.684+0000",
+            "titulo": "C"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 2,
+            "dataCriacao": "2017-07-13T17:51:07.935+0000",
+            "ultimaModificacao": "2017-07-13T17:51:07.935+0000",
+            "titulo": "Prova teste",
+            "tipo": "PROVA",
+            "valor": 15,
+            "bimestre": 2
+        },
+        "inicio": "2017-07-18",
+        "fim": "2017-07-18",
+        "id": 6
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 25,
+            "dataCriacao": "2017-07-13T17:50:42.637+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.637+0000",
+            "titulo": "A"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 1,
+            "dataCriacao": "2017-07-13T17:51:07.907+0000",
+            "ultimaModificacao": "2017-07-14T02:32:43.504+0000",
+            "titulo": "Teste",
+            "tipo": "TRABALHO",
+            "valor": 10,
+            "bimestre": 1,
+            "detalhes": "Trabalho teste"
+        },
+        "inicio": "2017-07-25",
+        "fim": "2017-07-25",
+        "id": 7
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 27,
+            "dataCriacao": "2017-07-13T17:50:42.684+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.684+0000",
+            "titulo": "C"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 1,
+            "dataCriacao": "2017-07-13T17:51:07.907+0000",
+            "ultimaModificacao": "2017-07-14T02:32:43.504+0000",
+            "titulo": "Teste",
+            "tipo": "TRABALHO",
+            "valor": 10,
+            "bimestre": 1,
+            "detalhes": "Trabalho teste"
+        },
+        "inicio": "2017-07-25",
+        "fim": "2017-07-25",
+        "id": 8
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 25,
+            "dataCriacao": "2017-07-13T17:50:42.637+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.637+0000",
+            "titulo": "A"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 5,
+            "dataCriacao": "2017-07-13T17:51:08.006+0000",
+            "ultimaModificacao": "2017-07-14T02:40:29.608+0000",
+            "titulo": "Lista Online teste",
+            "tipo": "LISTA_ONLINE",
+            "valor": null,
+            "bimestre": 2,
+            "detalhes": "Para casa online",
+            "duracao": null,
+            "banco": "ESCOLA",
+            "geracao": "INDIVIDUAL",
+            "faceis": 4,
+            "medias": 2,
+            "dificeis": 1
+        },
+        "inicio": "2017-07-17",
+        "fim": "2017-07-17",
+        "id": 3
+    },
+    {
+        "duracao": null,
+        "turma": {
+            "id": 27,
+            "dataCriacao": "2017-07-13T17:50:42.684+0000",
+            "ultimaModificacao": "2017-07-13T17:50:42.684+0000",
+            "titulo": "C"
+        },
+        "ano": {
+            "id": 7,
+            "dataCriacao": "2017-07-13T17:50:38.462+0000",
+            "ultimaModificacao": "2017-07-13T17:50:38.462+0000",
+            "titulo": "7º Fundamental II",
+            "abreviacao": "7F"
+        },
+        "disciplina": {
+            "id": 8,
+            "dataCriacao": "2017-07-13T17:50:37.993+0000",
+            "ultimaModificacao": "2017-07-13T17:50:37.993+0000",
+            "titulo": "Matemática"
+        },
+        "tarefa": {
+            "id": 5,
+            "dataCriacao": "2017-07-13T17:51:08.006+0000",
+            "ultimaModificacao": "2017-07-14T02:40:29.608+0000",
+            "titulo": "Lista Online teste",
+            "tipo": "LISTA_ONLINE",
+            "valor": null,
+            "bimestre": 2,
+            "detalhes": "Para casa online",
+            "duracao": null,
+            "banco": "ESCOLA",
+            "geracao": "INDIVIDUAL",
+            "faceis": 4,
+            "medias": 2,
+            "dificeis": 1
+        },
+        "inicio": "2017-07-17",
+        "fim": "2017-07-17",
+        "id": 4
+    }
+]

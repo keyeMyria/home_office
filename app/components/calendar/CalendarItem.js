@@ -1,124 +1,153 @@
 // @flow
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { ListItem, Grid, Row, Col, Text } from 'native-base';
 import { PropTypes } from 'mobx-react';
-
-import type CalendarItemModel from '../../store/models/CalendarItem';
+// import moment from 'moment';
+import _ from 'lodash';
 
 const emptyFunction = () => {};
 
+const TIPOS = {
+    EXERCICIO: 'DC',
+    PROVA: 'P',
+    TRABALHO: 'T',
+    LISTA_ONLINE: 'EP',
+};
+
+const TIPOS_COR = {
+    EXERCICIO: '#64B5F6',
+    PROVA: '#E57373',
+    TRABALHO: 'gray',
+    LISTA_ONLINE: '#FFF176',
+};
+
 export default class CalendarItem extends Component {
     props: {
-        item: CalendarItemModel,
-        onPress: CalendarItemModel => void,
+        item: Object,
+        onPress: Object => void,
         type: 'student' | 'teacher' | 'parent',
     };
 
     static propTypes = {
         item: PropTypes.objectOrObservableObject,
         onPress: React.PropTypes.func.isRequired,
-        type: React.PropTypes.oneOf(['student', 'teacher', 'parent']),
     };
 
     static defaultProps = {
         onPress: emptyFunction,
     };
 
-    renderTipoAbbr(item: CalendarItemModel) {
-        return (
-          <Col size={10} style={[styles.gridColumn, { backgroundColor: item.colorType }]}>
-            <Row>
-              <Text style={styles.gridRowText}>
-                {item.tipoAbreviado}
-              </Text>
-            </Row>
-          </Col>
-        );
-    }
-
-    renderDiaSemana(item: CalendarItemModel) {
-        return (
-          <Col size={10} style={[styles.gridColumn]}>
-            <Row>
-              <Text style={styles.gridRowText}>
-                {item.diaSemanaNumero}
-              </Text>
-            </Row>
-          </Col>
-        );
-    }
-
-    renderDataHora(item: CalendarItemModel) {
-        return (
-          <Col size={20} style={[styles.gridColumn, { backgroundColor: item.colorType }]}>
-            <Row>
-              <Text style={styles.gridRowText}>
-                {item.dataAbbr}
-              </Text>
-              {item.horaFim &&
-                <Text style={styles.gridRowText}>
-                  {item.horaFim}
-                </Text>}
-            </Row>
-          </Col>
-        );
-    }
-
-    getInfoText(item: CalendarItemModel) {
-        const { type } = this.props;
-        let anoAndTurma = '';
-        if (type !== 'student' || type !== 'parent') {
-            anoAndTurma = `${item.ano} ${item.turmas.join(', ')}`;
-        }
-        return {
-            linha1: `${anoAndTurma}${item.tipoAndDisciplina}`,
+    renderTipoAbbr(item: Object) {
+        const style = {
+            ...styles.gridColumn,
+            backgroundColor: TIPOS_COR[item.tarefa.tipo],
+            width: 30,
         };
-    }
-
-    renderInformation(item: CalendarItemModel) {
-        const { linha1, linha2 } = this.getInfoText(item);
 
         return (
-          <Col size={60} style={styles.gridColumnAlignLeft}>
+          <Col style={style}>
             <Row>
               <Text style={styles.gridRowText}>
-                {item.information}
+                {TIPOS[item.tarefa.tipo]}
               </Text>
             </Row>
+          </Col>
+        );
+    }
+
+    renderDiaSemana(item: Object) {
+        const style = {
+            ...styles.gridColumn,
+            width: 30,
+        };
+        return (
+          <Col style={style}>
+            <Row>
+              <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
+                {getDiaSemana(item.fim)}
+              </Text>
+            </Row>
+          </Col>
+        );
+    }
+
+    renderDataHora(item: Object) {
+        const style = {
+            ...styles.gridColumn,
+            width: 60,
+        };
+        return (
+          <Col style={style}>
+            <Row>
+              <Text style={styles.gridRowText}>
+                {getDateFormated(item.fim)}
+              </Text>
+            </Row>
+          </Col>
+        );
+    }
+
+    renderInformation(item: Object) {
+        return (
+          <Col
+            size={60}
+            style={{
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingHorizontal: 10,
+            }}
+          >
+            <View style={{ alignItems: 'flex-start' }}>
+              <Text style={{ ...styles.gridRowText, borderWidth: 1 }}>
+                {_.capitalize(item.tarefa.tipo.toLowerCase())} - {item.disciplina.titulo}
+              </Text>
+              <Text style={styles.gridRowText}>
+                {item.tarefa.titulo} - {item.tarefa.valor} - {item.tarefa.bimestre}º
+                        Bimestre
+                    </Text>
+            </View>
           </Col>
         );
     }
 
     render() {
-        const { item, onPress, type } = this.props;
+        const { item, onPress } = this.props;
         return (
           <ListItem onPress={() => onPress(item)}>
             <Grid>
-              <Col size={10} style={[styles.gridColumn, { backgroundColor: item.cor }]}>
-                <Row>
-                  <Text style={styles.gridRowText}>
-                    {item.tipoAbreviado}
-                  </Text>
-                </Row>
-              </Col>
-              <Col size={30} style={styles.gridColumn}>
-                <Row>
-                  <Text style={styles.gridRowText}>
-                    {item.diaSemanaNumero} {item.date}
-                  </Text>
-                </Row>
-              </Col>
-              <Col size={60} style={styles.gridColumnAlignLeft}>
-                <Row>
-                  <Text style={styles.gridRowText}>
-                    {item.information}
-                  </Text>
-                </Row>
-              </Col>
+              {this.renderTipoAbbr(item)}
+              {this.renderDiaSemana(item)}
+              {this.renderDataHora(item)}
+              {this.renderInformation(item)}
             </Grid>
           </ListItem>
         );
     }
+}
+
+function getDiaSemana(date) {
+    const _date = new Date(date);
+    return `${_date.getDay() + 2}ª`;
+}
+
+function getDateFormated(date) {
+    const d = new Date(date);
+    const meses = [
+        'Jan',
+        'Fev',
+        'Mar',
+        'Abr',
+        'Mai',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Set',
+        'Out',
+        'Nov',
+        'Dez',
+    ];
+    return `(${d.getDate()}/${meses[d.getMonth()]})`;
 }
 
 // Styles

@@ -4,7 +4,7 @@ import { Text, Thumbnail, Button } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import store from '../store';
-import anoStore from '../store/AnoStore';
+// import anoStore from '../store/AnoStore';
 
 import { styles } from '../themes/educareTheme';
 
@@ -49,12 +49,12 @@ export default class BubbleMenu extends Component {
     renderSchoolYear() {
         const mapFunc = (year, index) => {
             const active = year.id === store.schoolYearSelected.id;
-            const item = <SchoolYearItem name={year.abreviacao} active={active} />;
+            const item = <SchoolYearItem name={year.name} active={active} />;
             const onPress = () => store.selectSchoolYear(year.id);
             return <BubbleMenuItem key={index} item={item} onPress={onPress} />;
         };
-        
-        return anoStore.anos.map(mapFunc);
+
+        store.schoolYears.map(mapFunc);
     }
 
     renderStudent() {
