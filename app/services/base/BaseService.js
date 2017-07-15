@@ -3,7 +3,20 @@
 import axios, { AxiosPromise, AxiosRequestConfig, AxiosInstance } from 'axios';
 import _ from 'underscore';
 
-const BASE_URI = 'http://localhost:8080/api';
+import CONFIG from '../../../config';
+
+const BASE_URI = CONFIG.API.BASE_URL;
+
+const configs = {
+    token: '',
+    get Authorization() {
+        return `Bearer ${this.token}`;
+    },
+};
+
+export function setToken(token: string) {
+    configs.token = token;
+}
 
 /**
  * BASE SERVICE
@@ -18,8 +31,8 @@ export default class BaseService {
 
         this._axios.defaults.baseURL = BASE_URI;
 
-    // TODO: Recuperar o token recebido da autenticação
-        this._axios.defaults.headers.common.Authorization = 'AUTH_TOKEN';
+        // TODO: Recuperar o token recebido da autenticação
+        this._axios.defaults.headers.common.Authorization = configs.Authorization;
         this._axios.defaults.headers.common['Content-Type'] = 'application/json';
     }
 
@@ -27,7 +40,7 @@ export default class BaseService {
         return `${BASE_URI}/${this._path}`;
     }
 
-  // AXIOS ABSTRACTION
+    // AXIOS ABSTRACTION
 
     async get(params?: Object): AxiosPromise {
         return this._get(this._path, { params });
@@ -58,7 +71,7 @@ export default class BaseService {
         return this._patch(this._path, data, config);
     }
 
-  // AXIOS BASIC
+    // AXIOS BASIC
 
     async _request(config: AxiosRequestConfig): AxiosPromise {
         return this._invoke(() => this._axios.request(config));
@@ -88,7 +101,7 @@ export default class BaseService {
         return this._invoke(() => this._axios.patch(url, data, config));
     }
 
-  // HELPERS
+    // HELPERS
 
     _parseLinks(obj: any) {
         const result = {};
