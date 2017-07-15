@@ -1,14 +1,23 @@
-let json = require('./../app/mock/calendar.json');
+// @flow
+// import { autorun } from 'mobx';
+import { AuthService } from '../app/services';
+// import { AlunoService } from '../app/services';
+// import alunoStore from '../app/stores/AlunoStore';
 
-function teste() {
-    json = json.exercicios.concat(json.provas, json.trabalhos, json.listasOnline);
+async function teste() {
+    try {
+        // console.log(alunoStore);
 
-    json = json.map((o) => {
-        delete o._links; // eslint-disable-line
-        return o;
-    });
-
-    console.log(JSON.stringify(json, null, 4));
+        const service = new AuthService();
+        const { token, user, store } = await service.login('aluno', 'iogurte');
+        // autorun(() => {
+        //     console.log(store.loading);
+        //     console.log(store.notas);
+        // });
+    } catch (error) {
+        console.error(error);
+        // throw error;
+    }
 }
 
 teste();
