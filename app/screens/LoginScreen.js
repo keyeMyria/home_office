@@ -1,25 +1,27 @@
-/* @flow */
-
+// @flow
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Keyboard, Alert } from 'react-native';
 import { Form, Item, Input, Button, Text, Thumbnail, ActionSheet, Icon } from 'native-base';
 
-const LOGIN_OPTIONS = ['Pai ou Responsável', 'Professor', 'Aluno', 'Coordenador', 'Cancelar'];
-const ROUTER_OPTIONS = ['ParentHomeRouter', 'TeacherHomeRouter', 'StudentHomeRouter'];
+import { observable } from 'mobx';
+import { observer } from 'mobx-react/native';
 
-// const BG_IMG = require('../img/login.jpg');
-const BG_IMG = require('../img/bg.jpg');
-const ICON_IMG = require('../img/logo.png');
+import { AuthService } from '../services';
 
-// import { AnoService, DisciplinaService } from '../services';
-
+@observer
 export default class LoginScreen extends Component {
+    _service = new AuthService();
+
+    @observable
+    store = {
+        loading: false,
+        username: '',
+        password: '',
+    };
+
     actionSheet: any;
 
-    /**
-     * Handle the Login submission and redirects the user to the apropriate route
-     */
-    handleSubmit() {
+    showActionSheet() {
         const options = {
             options: LOGIN_OPTIONS,
             cancelButtonIndex: LOGIN_OPTIONS.length - 1,
@@ -37,52 +39,80 @@ export default class LoginScreen extends Component {
         this.actionSheet._root.showActionSheet(options, callbackFunc);
     }
 
-    // async httpTest() {
-    //     const anoService = new AnoService();
-    //     const disciplinaService = new DisciplinaService();
+    async login() {
+        Keyboard.dismiss();
+        const { username, password } = this.store;
 
-    //     const anos = await anoService.get();
-    //     console.log('[RESULT] anos', anos);
+        if (!this.store.username || !this.store.password) {
+            this.showActionSheet();
+            return null;
+        }
+        try {
+            const user = await this._service.login(username, password);
+            switch (user.user.role) {
+            case 'ALUNO':
+                this.props.navigation.navigate('StudentHomeRouter');
+                break;
+            default:
+                this.showActionSheet();
+                break;
+            }
+            return user;
+        } catch (error) {
+            if (error.response.status === 401) {
+                Alert.alert('Dados Inválidos', 'O usuário ou senha informada são inválidos');
+            } else {
+                this.showActionSheet();
+            }
+            return null;
+        }
+    }
 
-    //     const disciplina = await anoService.one(1).all('disciplinas').one(1).get();
-    //     console.log('[RESULT] disciplina 1', disciplina);
+    renderUsername() {
+        const onChange = val => (this.store.username = val);
 
-    //     const ano1 = await anoService.one(1).get();
-    //     const disciplinas = await ano1.link.disciplinas.get();
-    //     console.log('[RESULT] disciplinas do ano 1', disciplinas);
+        return (
+          <Item style={styles.loginInput}>
+            <Icon active name="mail-outline" />
+            <Input placeholder="Email" value={this.store.username} onChangeText={onChange} />
+          </Item>
+        );
+    }
 
-    //     const anosByProfessor = await anoService.findByProfessor(5);
-    //     console.log('[RESULT] anos do professor 5', anosByProfessor);
+    renderPassword() {
+        const onChange = val => (this.store.password = val);
+        return (
+          <Item style={styles.loginInput}>
+            <Icon active name="lock-outline" />
+            <Input
+              placeholder="Senha"
+              secureTextEntry
+              value={this.store.password}
+              onChangeText={onChange}
+            />
+          </Item>
+        );
+    }
 
-    //     const responsabilidades = await disciplina.link.responsabilidades.get();
-    //     console.log('[RESULT] responsabilidades da disciplina 1', responsabilidades);
-
-    //     anoService.one(1).all('disciplinas').patch(disciplinaService.one(10));
-    //     console.log('[RESULT] add discplina 10 no ano 1');
-    // }
+    renderLoginButton() {
+        const onPress = () => this.login();
+        return (
+          <Button block onPress={onPress}>
+            <Text>Entrar</Text>
+          </Button>
+        );
+    }
 
     render() {
-        const handleSubmit = () => this.handleSubmit();
-
-        // this.httpTest();
-
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <View style={styles.loginView}>
               <Thumbnail source={ICON_IMG} style={styles.loginImage} />
               <Form style={styles.loginForm}>
-                <Item style={styles.loginInput}>
-                  <Icon active name="mail-outline" />
-                  <Input placeholder="Email" />
-                </Item>
-                <Item style={styles.loginInput}>
-                  <Icon active name="lock-outline" />
-                  <Input placeholder="Senha" secureTextEntry />
-                </Item>
+                {this.renderUsername()}
+                {this.renderPassword()}
               </Form>
-              <Button block onPress={handleSubmit}>
-                <Text>Entrar</Text>
-              </Button>
+              {this.renderLoginButton()}
               <Text style={styles.forgotPassword}>Esqueceu a Senha?</Text>
               <View style={{ flex: 1 }} />
               <Button block style={styles.facebook}>
@@ -137,3 +167,9 @@ const styles = {
         marginTop: 10,
     },
 };
+
+const LOGIN_OPTIONS = ['Pai ou Responsável', 'Professor', 'Cancelar'];
+const ROUTER_OPTIONS = ['ParentHomeRouter', 'TeacherHomeRouter'];
+
+const BG_IMG = require('../img/bg.jpg');
+const ICON_IMG = require('../img/logo.png');
