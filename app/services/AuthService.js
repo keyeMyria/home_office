@@ -2,7 +2,7 @@
 import axios from 'axios';
 import CONFIG from '../../config';
 import { setToken } from './base/BaseService';
-// import alunoStore from '../stores/AlunoStore';
+import alunoStore from '../stores/AlunoStore';
 
 export default class AuthService {
     _token: string;

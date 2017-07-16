@@ -10,10 +10,8 @@ async function teste() {
 
         const service = new AuthService();
         const { token, user, store } = await service.login('aluno', 'iogurte');
-        // autorun(() => {
-        //     console.log(store.loading);
-        //     console.log(store.notas);
-        // });
+
+        console.log(token, user, store);
     } catch (error) {
         console.error(error);
         // throw error;
