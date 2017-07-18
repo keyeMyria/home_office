@@ -1,4 +1,8 @@
 export default {
+    ASYNC_STORE: { // Define the keys used to save data to the AsyncStore
+        TOKEN: '@educare:auth:token',
+        USER: '@educare:auth:current_user',
+    },
     LOGIN: {
         // BG_IMG: require('./app/img/bg.jpg'), // eslint-disable-line global-require
         // ICON_IMG: require('./app/img/logo.png'), // eslint-disable-line global-require
