@@ -1,21 +1,14 @@
 // @flow
 // import { autorun } from 'mobx';
-import { AuthService } from '../app/services';
-// import { AlunoService } from '../app/services';
-// import alunoStore from '../app/stores/AlunoStore';
+import userStore from './../app/stores/UserStore';
+import { FaltaService } from './../app/services';
 
 async function teste() {
-    try {
-        // console.log(alunoStore);
+    await userStore.login('professor', 'iogurte');
 
-        const service = new AuthService();
-        const { token, user, store } = await service.login('aluno', 'iogurte');
-
-        console.log(token, user, store);
-    } catch (error) {
-        console.error(error);
-        // throw error;
-    }
+    const faltaService = new FaltaService();
+    const faltas = await faltaService.get();
+    console.log(faltas);
 }
 
 teste();

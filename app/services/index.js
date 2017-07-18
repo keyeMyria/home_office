@@ -24,7 +24,6 @@ import TopicoService from './TopicoService';
 import TrabalhoService from './TrabalhoService';
 import TurmaService from './TurmaService';
 import UsuarioService from './UsuarioService';
-import AuthService from './AuthService';
 
 export {
     AdministradorService,
@@ -53,5 +52,4 @@ export {
     TrabalhoService,
     TurmaService,
     UsuarioService,
-    AuthService,
 };

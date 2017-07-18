@@ -8,15 +8,9 @@ import {
     Left,
     Right,
     Icon,
-    List,
-    ListItem,
     Body,
     Text,
-    Thumbnail,
-    CheckBox,
     Picker,
-    Item,
-    Label,
 } from 'native-base';
 import _ from 'underscore';
 import { connect } from 'react-redux';
@@ -29,9 +23,10 @@ import store, { studentStore } from '../../../store';
 import OccurrenceReasonScreen from './OccurrenceReasonScreen';
 import StudentPicker from './../../../components/StudentPicker';
 
+import { FaltaService, AnoService, TurmaService } from './../../../services';
+
 @observer
 class SelectClassScreen extends Component {
-
     @observable selected = [];
 
     constructor(props) {
@@ -58,6 +53,24 @@ class SelectClassScreen extends Component {
     }
     hideOccurrenceScreen() {
         this.setState({ occurrenceScreenVisible: false });
+    }
+
+    componentWillMount() {
+        this.testApi();
+    }
+
+    async testApi() {
+        const faltaService = new FaltaService();
+        const anoService = new AnoService();
+        const turmaService = new TurmaService();
+
+        const anos = await anoService.get();
+        const turmas = await turmaService.get();
+        const faltas = await faltaService.get();
+
+        console.warn('ANOS --> ', anos);
+        console.warn('TURMAS --> ', turmas);
+        console.warn('FALTAS --> ', faltas);
     }
 
     checkUncheckStudent(checked, studentId) {
@@ -126,9 +139,7 @@ class SelectClassScreen extends Component {
 
     renderStudentList() {
         studentStore.fetchStudents();
-        return (
-          <StudentPicker students={studentStore.students} selected={this.selected} />
-        );
+        return <StudentPicker students={studentStore.students} selected={this.selected} />;
     }
 
     getClassesItems() {
@@ -192,12 +203,18 @@ class SelectClassScreen extends Component {
                 </TouchableWithoutFeedback>
               </Left>
               <Body>
-                <Title>{this.getTitle(params.nextScreen)}</Title>
+                <Title>
+                  {this.getTitle(params.nextScreen)}
+                </Title>
               </Body>
               <Right>
                 {this.canSave() &&
-                <TouchableWithoutFeedback onPress={this.getNextFunction(params.nextScreen)}>
-                  <Text>{this.getNextText(params.nextScreen)}</Text>
+                <TouchableWithoutFeedback
+                  onPress={this.getNextFunction(params.nextScreen)}
+                >
+                  <Text>
+                    {this.getNextText(params.nextScreen)}
+                  </Text>
                 </TouchableWithoutFeedback>}
               </Right>
             </Header>
