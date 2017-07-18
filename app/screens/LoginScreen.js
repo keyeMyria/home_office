@@ -1,70 +1,44 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image, Keyboard, Alert } from 'react-native';
+import { View, Image, Keyboard } from 'react-native';
 import { Form, Item, Input, Button, Text, Thumbnail, ActionSheet, Icon } from 'native-base';
 
-import { observable } from 'mobx';
+import { observable, when } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-import { AuthService } from '../services';
+import userStore from './../stores/UserStore';
 
 @observer
 export default class LoginScreen extends Component {
-    _service = new AuthService();
+    actionSheet: any;
 
     @observable
     store = {
-        loading: false,
         username: '',
         password: '',
     };
 
-    actionSheet: any;
-
-    showActionSheet() {
-        const options = {
-            options: LOGIN_OPTIONS,
-            cancelButtonIndex: LOGIN_OPTIONS.length - 1,
-            title: 'Entrar como...',
-        };
-
-        const callbackFunc = (buttonIndex: string) => {
-            const index = parseInt(buttonIndex, 10);
-            const routeName = ROUTER_OPTIONS[index];
-            if (routeName) {
-                this.props.navigation.navigate(routeName);
+    constructor(props: any) {
+        super(props);
+        const onAuth = () => {
+            if (userStore.role) {
+                this.props.navigation.navigate(ROLE_ROUTER_MAP[userStore.role]);
             }
         };
-
-        this.actionSheet._root.showActionSheet(options, callbackFunc);
+        when(() => userStore.hasAuth, onAuth);
     }
 
+    /**
+     * Handle the button click
+     */
     async login() {
-        Keyboard.dismiss();
+        Keyboard.dismiss(); // hide the keyboard
         const { username, password } = this.store;
-
-        if (!this.store.username || !this.store.password) {
+        // Show action sheet if username or password are blank
+        if (username && password) {
+            userStore.login(username, password);
+        } else {
             this.showActionSheet();
-            return null;
-        }
-        try {
-            const user = await this._service.login(username, password);
-            switch (user.user.role) {
-            case 'ALUNO':
-                this.props.navigation.navigate('StudentHomeRouter');
-                break;
-            default:
-                this.showActionSheet();
-                break;
-            }
-            return user;
-        } catch (error) {
-            if (error.response.status === 401) {
-                Alert.alert('Dados Inválidos', 'O usuário ou senha informada são inválidos');
-            } else {
-                this.showActionSheet();
-            }
-            return null;
         }
     }
 
@@ -127,6 +101,30 @@ export default class LoginScreen extends Component {
           </Image>
         );
     }
+
+    /**
+     * This only shows in development mode
+     */
+    showActionSheet(): void {
+        // eslint-disable-next-line no-undef
+        if (__DEV__) {
+            const options = {
+                options: LOGIN_MOCK.map(o => o.name).concat('Cancelar'),
+                cancelButtonIndex: LOGIN_MOCK.length,
+                title: 'Entrar como...',
+            };
+
+            this.actionSheet._root.showActionSheet(options, (buttonIndex: string) => {
+                const index = parseInt(buttonIndex, 10);
+                const mock = LOGIN_MOCK[index];
+                if (!mock) return;
+
+                this.store.username = mock.username;
+                this.store.password = mock.password;
+                this.login();
+            });
+        }
+    }
 }
 
 const styles = {
@@ -168,8 +166,17 @@ const styles = {
     },
 };
 
-const LOGIN_OPTIONS = ['Pai ou Responsável', 'Professor', 'Cancelar'];
-const ROUTER_OPTIONS = ['ParentHomeRouter', 'TeacherHomeRouter'];
+const LOGIN_MOCK = [
+    { name: 'PROFESSOR', username: 'professor', password: 'iogurte' },
+    { name: 'RESPONSAVEL', username: 'responsavel', password: 'iogurte' },
+    { name: 'ALUNO', username: 'aluno', password: 'iogurte' },
+];
+
+const ROLE_ROUTER_MAP = {
+    ALUNO: 'StudentHomeRouter',
+    PROFESSOR: 'TeacherHomeRouter',
+    RESPONSAVEL: 'ParentHomeRouter',
+};
 
 const BG_IMG = require('../img/bg.jpg');
 const ICON_IMG = require('../img/logo.png');
