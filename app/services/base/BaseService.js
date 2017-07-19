@@ -1,68 +1,46 @@
 // @flow
-
-import axios, { AxiosPromise, AxiosRequestConfig, AxiosInstance } from 'axios';
 import _ from 'underscore';
-
-import CONFIG from '../../../config';
-
-const BASE_URI = CONFIG.API.BASE_URL;
-
-const configs = {
-    token: '',
-    get Authorization() {
-        return `Bearer ${this.token}`;
-    },
-};
-
-export function setToken(token: string) {
-    configs.token = token;
-}
+import httpClient from './../../lib/HttpClient';
 
 /**
  * BASE SERVICE
  */
 export default class BaseService {
-    _axios: AxiosInstance;
+    _axios: any;
     _path: string;
 
     constructor(path: string) {
         this._path = path;
-        this._axios = axios.create();
-
-        this._axios.defaults.baseURL = BASE_URI;
-
-        // TODO: Recuperar o token recebido da autenticação
-        this._axios.defaults.headers.common.Authorization = configs.Authorization;
-        this._axios.defaults.headers.common['Content-Type'] = 'application/json';
+        this._axios = httpClient;
     }
 
     get fullPath(): string {
-        return `${BASE_URI}/${this._path}`;
+        return `${this._axios._baseUri}/${this._path}`;
     }
 
     // AXIOS ABSTRACTION
 
-    async get(params?: Object): AxiosPromise {
+    async get(params?: Object) {
         return this._get(this._path, { params });
     }
 
-    async delete(): AxiosPromise {
+    async delete() {
         return this._delete(this._path);
     }
 
-    async head(): AxiosPromise {
+    async head() {
         return this._head(this._path);
     }
 
-    async post(data?: any): AxiosPromise {
+    async post(data?: any) {
         return this._post(this._path, data);
     }
 
-    async put(data?: any): AxiosPromise {
+    async put(data?: any) {
         return this._put(this._path, data);
     }
 
-    async patch(data?: any | EntityService): AxiosPromise {
+    async patch(data?: any | EntityService) {
         let config; // custom
         if (data instanceof EntityService) {
             data = data.fullPath; // eslint-disable-line
@@ -73,31 +51,31 @@ export default class BaseService {
 
     // AXIOS BASIC
 
-    async _request(config: AxiosRequestConfig): AxiosPromise {
+    async _request(config: any) {
         return this._invoke(() => this._axios.request(config));
     }
 
-    async _get(url: string, config?: AxiosRequestConfig): AxiosPromise {
+    async _get(url: string, config?: any) {
         return this._invoke(() => this._axios.get(url, config));
     }
 
-    async _delete(url: string, config?: AxiosRequestConfig): AxiosPromise {
+    async _delete(url: string, config?: any) {
         return this._invoke(() => this._axios.delete(url, config));
     }
 
-    async _head(url: string, config?: AxiosRequestConfig): AxiosPromise {
+    async _head(url: string, config?: any) {
         return this._invoke(() => this._axios.head(url, config));
     }
 
-    async _post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
+    async _post(url: string, data?: any, config?: any) {
         return this._invoke(() => this._axios.post(url, data, config));
     }
 
-    async _put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
+    async _put(url: string, data?: any, config?: any) {
         return this._invoke(() => this._axios.put(url, data, config));
     }
 
-    async _patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
+    async _patch(url: string, data?: any, config?: any) {
         return this._invoke(() => this._axios.patch(url, data, config));
     }
 

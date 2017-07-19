@@ -26,7 +26,6 @@ import httpClient from '../../../lib/HttpClient';
 
 @observer
 class SelectClassScreen extends Component {
-
     @observable selected = [];
 
     constructor(props) {
@@ -139,9 +138,7 @@ class SelectClassScreen extends Component {
 
     renderStudentList() {
         studentStore.fetchStudents();
-        return (
-          <StudentPicker students={studentStore.students} selected={this.selected} />
-        );
+        return <StudentPicker students={studentStore.students} selected={this.selected} />;
     }
 
     getClassesItems() {
@@ -205,12 +202,18 @@ class SelectClassScreen extends Component {
                 </TouchableWithoutFeedback>
               </Left>
               <Body>
-                <Title>{this.getTitle(params.nextScreen)}</Title>
+                <Title>
+                  {this.getTitle(params.nextScreen)}
+                </Title>
               </Body>
               <Right>
                 {this.canSave() &&
-                <TouchableWithoutFeedback onPress={this.getNextFunction(params.nextScreen)}>
-                  <Text>{this.getNextText(params.nextScreen)}</Text>
+                <TouchableWithoutFeedback
+                  onPress={this.getNextFunction(params.nextScreen)}
+                >
+                  <Text>
+                    {this.getNextText(params.nextScreen)}
+                  </Text>
                 </TouchableWithoutFeedback>}
               </Right>
             </Header>

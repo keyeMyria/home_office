@@ -21,13 +21,14 @@ fi
 
 for FILE in $STAGED_FILES
 do
-  eslint "$FILE"
-
-  if [[ "$?" == 0 ]]; then
-    echo -e "\t\033[32mESLint Passed: $FILE\033[0m"
-  else
-    echo -e "\t\033[41mESLint Failed: $FILE\033[0m"
-    PASS=false
+  if [[ "$FILE" != flow-typed* ]]; then
+    eslint "$FILE"
+    if [[ "$?" == 0 ]]; then
+      echo -e "\t\033[32mESLint Passed: $FILE\033[0m"
+    else
+      echo -e "\t\033[41mESLint Failed: $FILE\033[0m"
+      PASS=false
+    fi
   fi
 done
 
