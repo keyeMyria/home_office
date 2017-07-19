@@ -12,6 +12,8 @@
     "react/prefer-stateless-function": ["off"],
     "no-console": 1,
     "jsx-quotes": 1,
+    "jsx-a11y/href-no-hash": "off",
+    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
     "react/sort-comp": 0,
     "react/prop-types": 0,
     "no-underscore-dangle": 0,

@@ -8,15 +8,9 @@ import {
     Left,
     Right,
     Icon,
-    List,
-    ListItem,
     Body,
     Text,
-    Thumbnail,
-    CheckBox,
     Picker,
-    Item,
-    Label,
 } from 'native-base';
 import _ from 'underscore';
 import { connect } from 'react-redux';
@@ -28,6 +22,7 @@ import { PickerField, DatePickerField } from '../../../components/fields';
 import store, { studentStore } from '../../../store';
 import OccurrenceReasonScreen from './OccurrenceReasonScreen';
 import StudentPicker from './../../../components/StudentPicker';
+import httpClient from '../../../lib/HttpClient';
 
 @observer
 class SelectClassScreen extends Component {
@@ -39,12 +34,30 @@ class SelectClassScreen extends Component {
         this.state = {
             absenseScreenVisible: false,
             occurrenceScreenVisible: false,
+            anos: [],
+            turmas: [],
         };
 
         this.showAbsenseScreen = this.showAbsenseScreen.bind(this);
         this.showOccurrenceScreen = this.showOccurrenceScreen.bind(this);
         this.hideAbsenseScreen = this.hideAbsenseScreen.bind(this);
         this.hideOccurrenceScreen = this.hideOccurrenceScreen.bind(this);
+    }
+
+    componentWillMount() {
+        httpClient.get('anos')
+            .then((res) => {
+                // console.log('here is the result ********** ', res.data._embedded.anos)
+                this.setState({
+                    anos: res.data._embedded.anos,
+                });
+            });
+        httpClient.get('turmas')
+            .then((res) => {
+                this.setState({
+                    turmas: res.data._embedded.turmas,
+                });
+            });
     }
 
     showAbsenseScreen() {
@@ -133,7 +146,7 @@ class SelectClassScreen extends Component {
 
     getClassesItems() {
         const classNames = _.uniq(
-            store.classes.map(o => o.name.split('-')[0].trim()),
+            this.state.anos.map(o => o.titulo),
         ).map((name, index) => ({ id: index + 1, name }));
 
         const mapFunc = ({ id, name }) => <Picker.Item key={id} value={id} label={name} />;
@@ -143,7 +156,7 @@ class SelectClassScreen extends Component {
 
     getTurmasItems() {
         const classNames = _.uniq(
-            store.classes.map(o => o.name.split('-')[1].trim()),
+            this.state.turmas.map(o => o.titulo),
         ).map((name, index) => ({ id: index + 1, name }));
 
         const mapFunc = ({ id, name }) => <Picker.Item key={id} value={id} label={name} />;
