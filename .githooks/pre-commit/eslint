@@ -1,46 +1,32 @@
 #!/bin/bash
+cd "$(git rev-parse --show-toplevel)"
+ESLINT="node_modules/.bin/eslint"
 
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".jsx\{0,1\}$")
+if [[ ! -x "$ESLINT" ]]; then
+  printf "\t\033[41mPlease install ESlint\033[0m (npm install eslint)\n"
+  exit 1
+fi
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".jsx\{0,1\}$" | grep  -v "^flow-typed")
+
+echo "Verifying ${#STAGED_FILES[@]} files"
 
 if [[ "$STAGED_FILES" = "" ]]; then
   exit 0
 fi
 
-PASS=true
+$ESLINT "${STAGED_FILES[@]}" --fix
 
-echo -e "\nValidating Javascript:\n"
+ESLINT_EXIT="$?"
 
-# Check for eslint
-which eslint &> /dev/null
-if [[ "$?" == 1 ]]; then
-  echo -e "\t\033[41mPlease install ESlint\033[0m"
-  echo -e "\n"
-  echo -e "RUN: yarn add global eslint"
-  exit 1
-fi
+# Re-add files since they may have been fixed
+git add "${STAGED_FILES[@]}"
 
-for FILE in $STAGED_FILES
-do
-  if [[ "$FILE" != flow-typed* ]]; then
-    eslint "$FILE"
-    if [[ "$?" == 0 ]]; then
-      echo -e "\t\033[32mESLint Passed: $FILE\033[0m"
-    else
-      echo -e "\t\033[41mESLint Failed: $FILE\033[0m"
-      PASS=false
-    fi
-  fi
-done
-
-echo -e "\nJavascript validation completed!\n"
-
-if ! $PASS; then
-  echo -e "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass ESLint but do not. Please fix the ESLint errors and try again.\n"
-  echo -e "\n"
-  echo -e "You cloud try fo fix by runnnig eslint --fix [FILE]"
-  exit 1
+if [[ "${ESLINT_EXIT}" == 0 ]]; then
+  printf "\n\033[42mCOMMIT SUCCEEDED\033[0m\n"
 else
-  echo -e "\033[42mCOMMIT SUCCEEDED\033[0m\n"
+  printf "\n\033[41mCOMMIT FAILED:\033[0m Fix eslint errors and try again\n"
+  exit 1
 fi
 
 exit $?

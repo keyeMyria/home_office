@@ -1,16 +1,14 @@
 {
     "javascript.validate.enable": false,
     "flow.useNPMPackagedFlow": true,
-    "editor.rulers": [
-        80,
-        100
-    ],
+    "editor.rulers": [80, 100],
     "prettier.trailingComma": "es5",
     "prettier.singleQuote": true,
     "prettier.tabWidth": 4,
     "prettier.eslintIntegration": true,
     "extensions.ignoreRecommendations": true,
     "git.enableSmartCommit": true,
+    "eslint.autoFixOnSave": true,
     "files.associations": {
         "*.js": "javascriptreact"
     }
