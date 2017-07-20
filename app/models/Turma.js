@@ -1,5 +1,5 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import Ano from './Ano';
 import type Evento from './Evento';
 import type Responsabilidade from './Responsabilidade';

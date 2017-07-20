@@ -1,5 +1,5 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import Usuario from './Usuario';
 import Responsabilidade from './Responsabilidade';
 import Disciplina from './Disciplina';

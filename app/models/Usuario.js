@@ -1,5 +1,5 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import type Mensagem from './Mensagem';
 import type Chat from './Chat';
 import type ChatGroup from './ChatGroup';
