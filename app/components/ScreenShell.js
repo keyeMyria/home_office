@@ -1,28 +1,44 @@
 /* @flow */
 import React, { Component } from 'react';
-import { TouchableNativeFeedback, TouchableOpacity, Platform } from 'react-native';
-import { Container, Header, Left, Right, Icon, Title, Content, Body, Text } from 'native-base';
+import {
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
+import {
+  Container,
+  Header,
+  Left,
+  Right,
+  Icon,
+  Title,
+  Content,
+  Body,
+  Text,
+} from 'native-base';
+import { observer } from 'mobx-react/native';
+import LoadingModal from './LoadingModal';
 
 const emptyFunc = () => {};
 
 /**
  * Render a plataform especific Touchable Area
  */
-const Touchable = (props) => {
-    const { onPress } = props;
+const Touchable = props => {
+  const { onPress } = props;
 
-    if (Platform.OS === 'android') {
-        return (
-          <TouchableNativeFeedback onPress={onPress}>
-            {props.children}
-          </TouchableNativeFeedback>
-        );
-    }
+  if (Platform.OS === 'android') {
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableNativeFeedback onPress={onPress}>
         {props.children}
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
+  }
+  return (
+    <TouchableOpacity onPress={onPress}>
+      {props.children}
+    </TouchableOpacity>
+  );
 };
 
 /**
@@ -49,63 +65,68 @@ const Touchable = (props) => {
  * ```
  *
  */
+
 export default class ScreenShell extends Component {
-    static propTypes = {
-        navigate: React.PropTypes.func.isRequired,
-        title: React.PropTypes.string.isRequired,
-        padder: React.PropTypes.bool.isRequired,
-        rightText: React.PropTypes.string,
-        rightPress: React.PropTypes.func,
-        showRight: React.PropTypes.bool,
-    };
+  props: {
+    navigate: string => any,
+    title: string,
+    padder?: boolean,
+    rightText?: string,
+    rightPress?: () => any,
+    showRight?: boolean,
+    loading: boolean,
+    children: any,
+  };
 
-    static defaultProps = {
-        padder: true,
-    };
+  static defaultProps = {
+    padder: true,
+  };
 
-    /**
+  /**
      * Render's the right portion of the StatusBar
      *
      * only renders the
      */
-    renderRight() {
-        const { rightText, rightPress, showRight } = this.props;
-        if (!showRight || !rightText) return <Right />;
+  renderRight() {
+    const { rightText, rightPress, showRight } = this.props;
+    if (!showRight || !rightText) return <Right />;
 
-        const onPress = rightPress || emptyFunc;
+    const onPress = rightPress || emptyFunc;
 
-        return (
-          <Right>
-            <Touchable onPress={onPress}>
-              <Text>
-                {rightText}
-              </Text>
+    return (
+      <Right>
+        <Touchable onPress={onPress}>
+          <Text>
+            {rightText}
+          </Text>
+        </Touchable>
+      </Right>
+    );
+  }
+
+  render() {
+    const { navigate, title, padder } = this.props;
+    return (
+      <Container>
+        <Header appHeader>
+          <Left>
+            <Touchable onPress={() => navigate('DrawerOpen')}>
+              <Icon name="menu" />
             </Touchable>
-          </Right>
-        );
-    }
-
-    render() {
-        const { navigate, title, padder } = this.props;
-        return (
-          <Container>
-            <Header appHeader>
-              <Left>
-                <Touchable onPress={() => navigate('DrawerOpen')}>
-                  <Icon name="menu" />
-                </Touchable>
-              </Left>
-              <Body>
-                <Title>
-                  {title}
-                </Title>
-              </Body>
-              {this.renderRight()}
-            </Header>
-            <Content padder={padder}>
-              {this.props.children}
-            </Content>
-          </Container>
-        );
-    }
+          </Left>
+          <Body>
+            <Title>
+              {title}
+            </Title>
+          </Body>
+          {this.renderRight()}
+        </Header>
+        <LoadingModal loading={this.props.loading}>
+          <Content padder={padder}>
+            {this.props.children}
+          </Content>
+        </LoadingModal>
+      </Container>
+    );
+  }
 }
