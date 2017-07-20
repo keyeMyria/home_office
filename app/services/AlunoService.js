@@ -1,6 +1,6 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class AlunoService extends CollectionService {
     constructor() {
@@ -8,6 +8,6 @@ export default class AlunoService extends CollectionService {
     }
 
     findByAno(id: number) {
-        return super.search({ id });
+        return super.search({ id }, 'findByAno');
     }
 }

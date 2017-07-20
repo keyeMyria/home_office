@@ -1,29 +1,29 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class EventoService extends CollectionService {
-  constructor() {
-    super(Constants.EVENTOS);
-  }
+    constructor() {
+        super(Constants.EVENTOS);
+    }
 
-  findByProfessor(id: number) {
-    return super.search({ id });
-  }
+    findByProfessor(id: number) {
+        return super.search({ id });
+    }
 
-  findByTarefa(id: number) {
-    return super.search({ id });
-  }
+    findByTarefa(id: number) {
+        return super.search({ id });
+    }
 
-  findByTarefaAndTurma(tarefa: number, turma: number) {
-    return super.search({ tarefa, turma });
-  }
+    findByTarefaAndTurma(tarefa: number, turma: number) {
+        return super.search({ tarefa, turma });
+    }
 
-  findByAnoAndProfessor(ano: number, professor: number) {
-    return super.search({ ano, professor });
-  }
+    findByAnoAndProfessor(ano: number, professor: number) {
+        return super.search({ ano, professor });
+    }
 
-  findByTurma(id: number) {
-    return super.search({ id });
-  }
+    findByTurma(id: number) {
+        return super.search({ id });
+    }
 }

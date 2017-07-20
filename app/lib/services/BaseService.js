@@ -84,7 +84,7 @@ export default class BaseService {
     _parseLinks(obj: any) {
         const result = {};
 
-        _.map(_.keys(obj), (key) => {
+        _.map(_.keys(obj), key => {
             const value = obj[key];
             result[key] = new CollectionService(value.href);
         });
@@ -95,7 +95,7 @@ export default class BaseService {
     _parseObject(obj: any): any {
         const result = {};
 
-        _.map(_.keys(obj), (key) => {
+        _.map(_.keys(obj), key => {
             const value = obj[key];
 
             if (key === '_embedded') {
@@ -105,7 +105,9 @@ export default class BaseService {
             } else if (_.isArray(value)) {
                 result[key] = [];
                 _.each(value, (val, index) => {
-                    result[key][index] = _.isObject(val) ? this._parseObject(val) : val;
+                    result[key][index] = _.isObject(val)
+                        ? this._parseObject(val)
+                        : val;
                 });
             } else {
                 result[key] = value;
@@ -138,13 +140,14 @@ export class CollectionService extends BaseService {
         return new EntityService(`${this._path}/${id}`);
     }
 
-    search(params: Object) {
+    search(params: Object, funcName?: string) {
         // TODO: refactor
         // This way of get the search name is not ideial since arguments.callee is
         // is not part of the EcScript especification anymore, a should be deprecated in
         // a future release of JavaScriptCore.
         // eslint-disable-next-line no-caller, no-restricted-properties
-        const service = new BaseService(`${this._path}/search/${arguments.callee.caller.name}`);
+        const name = funcName || arguments.callee.caller.name;
+        const service = new BaseService(`${this._path}/search/${name}`);
         return service.get(params);
     }
 }

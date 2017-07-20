@@ -1,13 +1,13 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class FaltaService extends CollectionService {
-  constructor() {
-    super(Constants.FALTAS);
-  }
+    constructor() {
+        super(Constants.FALTAS);
+    }
 
-  findByData(data: Date) {
-    return super.search({ data });
-  }
+    findByData(data: Date) {
+        return super.search({ data });
+    }
 }

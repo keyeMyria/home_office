@@ -1,9 +1,9 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class MensagemService extends CollectionService {
-  constructor() {
-    super(Constants.MENSAGENS);
-  }
+    constructor() {
+        super(Constants.MENSAGENS);
+    }
 }
