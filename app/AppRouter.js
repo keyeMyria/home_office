@@ -8,13 +8,13 @@ import TeacherHomeRouter from './modules/teacher/AppRouter';
 import StudentHomeRouter from './modules/student/AppRouter';
 
 export default StackNavigator(
-    {
-        LoginScreen: { screen: LoginScreen },
-        ParentHomeRouter: { screen: ParentHomeRouter },
-        TeacherHomeRouter: { screen: TeacherHomeRouter },
-        StudentHomeRouter: { screen: StudentHomeRouter },
-    },
-    {
-        headerMode: 'none',
-    },
+  {
+    LoginScreen: { screen: LoginScreen },
+    TeacherHomeRouter: { screen: TeacherHomeRouter },
+    ParentHomeRouter: { screen: ParentHomeRouter },
+    StudentHomeRouter: { screen: StudentHomeRouter },
+  },
+  {
+    headerMode: 'none',
+  }
 );
