@@ -1,3 +1,4 @@
+// @flow
 import _ from 'lodash';
 import CONFIG from './../../config';
 
@@ -18,6 +19,7 @@ export function getConfig(key: string, defaultValue: ?any): any {
 /**
  * Set a config key at runtime
  */
-export function setConfig(key: string, value: any): void { // eslint-disable-line
+export function setConfig(key: string, value: any): void {
+    // eslint-disable-line
     throw new Error('Not Implemented');
 }
