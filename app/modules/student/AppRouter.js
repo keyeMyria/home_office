@@ -7,7 +7,7 @@ import HomeNavigator from './HomeNavigator';
 import {
     AlertScreen,
     CalendarScreen,
-    ExerciseScreen,
+    // ExerciseScreen,
     ScoreScreen,
     MessageScreen,
     FeedBackScreen,
@@ -19,7 +19,7 @@ const HomeRouter = TabNavigator(
         CalendarScreen: { screen: CalendarScreen },
         ScoreScreen: { screen: ScoreScreen },
         AlertScreen: { screen: AlertScreen },
-        ExerciseScreen: { screen: ExerciseScreen },
+        // ExerciseScreen: { screen: ExerciseScreen },
     },
     {
         tabBarComponent: HomeNavigator,
