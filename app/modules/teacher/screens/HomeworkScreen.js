@@ -17,6 +17,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+import TrabalhoStore from '../../../store/stores/TrabalhoStore';
 
 import { PickerField, TextField } from '../../../components/fields';
 
@@ -122,6 +123,7 @@ class HomeworkScreen extends Component {
               visible={this.state.setDateForClassScreenVisible}
               hideModal={this.hideSetDateForClassScreen}
               screenFormValues={this.props.formValues}
+              screenStore={TrabalhoStore}
             />
           </Container>
         );
@@ -134,10 +136,10 @@ const selector = formValueSelector('formHomeworkScreen');
 export default connect(
   state => ({
     formValues: {
-      disciplina: selector(state, 'disciplina'),
-      bimestre: selector(state, 'bimestre'),
-      valor: selector(state, 'valor'),
-      detalhes: selector(state, 'detalhes'),
+        disciplina: selector(state, 'disciplina'),
+        bimestre: selector(state, 'bimestre'),
+        valor: selector(state, 'valor'),
+        detalhes: selector(state, 'detalhes'),
     },
   })
 )(HomeworkScreenForm);
