@@ -1,9 +1,10 @@
+// @flow
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { observer } from 'mobx-react/native';
 
 // Store
-import { observer } from 'mobx-react/native';
-import store from '../../../store';
+import alunoStore from '../../../stores/AlunoStore';
 
 // Components
 import ScreenShell from '../../../components/ScreenShell';
@@ -12,15 +13,15 @@ import GradeChartItem from '../../../components/GradeChartItem';
 @observer
 export default class ScoreScreen extends Component {
     renderGradeChart() {
-        const { id } = store.studentSelected;
-        const grades = store.grades.filter(o => o.studentId === id)[0];
-        return grades.items.map((grade, index) => <GradeChartItem key={index} grade={grade} />);
+        return alunoStore.notas.map(grade =>
+          <GradeChartItem key={grade.disciplina.id} grade={grade} />,
+        );
     }
 
     render() {
         const { navigate } = this.props.navigation;
         return (
-          <ScreenShell title="Notas" navigate={navigate}>
+          <ScreenShell title="Notas" navigate={navigate} loading={alunoStore.loading}>
             <View>
               <Text style={styles.avgText}>Média 60%</Text>
             </View>
