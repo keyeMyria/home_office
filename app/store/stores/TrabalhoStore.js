@@ -2,7 +2,7 @@
 
 import { observable, extendObservable, action } from 'mobx';
 import { TrabalhoService } from '../../services';
-import moment from 'moment';
+import CONFIG from './../../../config';
 
 class TrabalhoStore {
     service: TrabalhoService;
@@ -21,7 +21,7 @@ class TrabalhoStore {
     async save(data: Object) {
         const readyData = {
             ...data,
-            disciplina: `http://escola.educarebox.com/api/disciplinas/${data.disciplina}`,
+            disciplina: `${CONFIG.API.BASE_URL}/disciplinas/${data.disciplina}`,
             titulo: 'Teste',
         };
         console.log(readyData);

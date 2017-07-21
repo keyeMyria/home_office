@@ -2,6 +2,7 @@
 
 import { observable, extendObservable, action } from 'mobx';
 import { ExercicioService } from '../../services';
+import CONFIG from './../../../config';
 
 class ExercicioStore {
     service: ExercicioService;
@@ -19,7 +20,7 @@ class ExercicioStore {
     async save(data: Object) {
         const readyData = {
             ...data,
-            disciplina: `http://escola.educarebox.com/api/disciplinas/${data.disciplina}`,
+            disciplina: `${CONFIG.API.BASE_URL}/disciplinas/${data.disciplina}`,
             titulo: 'Teste',
         };
         const result = await this.service.post(readyData);
