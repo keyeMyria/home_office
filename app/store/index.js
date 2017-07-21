@@ -2,10 +2,6 @@ import { observable, extendObservable, action } from 'mobx';
 
 import * as MOCK from '../mock';
 
-// Collections
-import QuestionsCollection from './collections/QuestionsCollection';
-import ExercisesCollection from './collections/ExercisesCollection';
-
 class AppStore {
     // Statics
     @observable users = MOCK.users;
@@ -140,13 +136,13 @@ class AppStore {
     getStudentImagebyId(studentId: number): any {
         switch (studentId) {
         case 1:
-            return require('../img/caio.png'); // eslint-disable-line
+                return require('../img/caio.png'); // eslint-disable-line
         case 2:
-            return require('../img/filipe.png'); // eslint-disable-line
+                return require('../img/filipe.png'); // eslint-disable-line
         case 3:
-            return require('../img/arwen.png');// eslint-disable-line
+                return require('../img/arwen.png'); // eslint-disable-line
         default:
-            return require('../img/user.png'); // eslint-disable-line
+                return require('../img/user.png'); // eslint-disable-line
         }
     }
 }
@@ -191,20 +187,24 @@ class Student {
     get avatar() {
         switch (this.id) {
         case 1:
-            return require('../img/caio.png'); // eslint-disable-line
+                return require('../img/caio.png'); // eslint-disable-line
         case 2:
-            return require('../img/filipe.png'); // eslint-disable-line
+                return require('../img/filipe.png'); // eslint-disable-line
         case 3:
-            return require('../img/arwen.png'); // eslint-disable-line
+                return require('../img/arwen.png'); // eslint-disable-line
         default:
-            return require('../img/user.png'); // eslint-disable-line
+                return require('../img/user.png'); // eslint-disable-line
         }
     }
 }
 
 class RootStore {
-    questions = new QuestionsCollection(this);
-    exercices = new ExercisesCollection(this);
+    constructor() {
+        console.warn('DEPRECATED');
+    }
+
+    questions = { questions: new Map() };
+    exercices = { exercises: new Map() };
 }
 
 const JSON_EVENTOS = require('./../mock/eventos.json');
