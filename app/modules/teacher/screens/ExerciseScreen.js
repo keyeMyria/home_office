@@ -20,6 +20,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+import ExercicioStore from '../../../store/stores/ExercicioStore';
 
 import { styles } from '../../../themes/educareTheme';
 
@@ -151,7 +152,7 @@ class ExerciseScreen extends Component {
                 </Field>}
                 <Field
                   style={{ height: 150 }}
-                  name="information"
+                  name="detalhes"
                   label="Descrição da Atividade"
                   component={TextField}
                   multiline
@@ -161,11 +162,14 @@ class ExerciseScreen extends Component {
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
               hideModal={this.hideSetDateForClassScreen}
+              screenFormValues={this.props.formValues}
+              screenStore={ExercicioStore}
             />
             <ExerciseConfigurationScreen
-              subjectAreaId={this.props.subjectAreaId}
               visible={this.state.exerciseConfigurationScreenVisible}
               hideModal={this.hideExerciseConfigurationScreen}
+              screenFormValues={this.props.formValues}
+              screenStore={ExercicioStore}
             />
           </Container>
         );
@@ -175,5 +179,9 @@ class ExerciseScreen extends Component {
 const form = reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
 const selector = formValueSelector('formExerciseScreen');
 export default connect(state => ({
-    subjectAreaId: selector(state, 'disciplina'),
+    formValues: {
+        disciplina: selector(state, 'disciplina'),
+        tempoAproximado: selector(state, 'tempoAproximado'),
+        detalhes: selector(state, 'detalhes'),
+    },
 }))(form);

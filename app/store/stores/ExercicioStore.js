@@ -1,19 +1,19 @@
 // @flow
 
 import { observable, extendObservable, action } from 'mobx';
-import { ProvaService } from '../../services';
+import { ExercicioService } from '../../services';
 
-class ProvaStore {
-    service: ProvaService;
-    @observable provas: Array<any>; // TODO: Colocar o model especifico
+class ExercicioStore {
+    service: ExercicioService;
+    @observable exercicios: Array<any>; // TODO: Colocar o model especifico
 
     constructor() {
-        this.service = new ProvaService();
+        this.service = new ExercicioService();
     }
 
     async load() {
         const result = await this.service.get();
-        this.provas = result.provas;
+        this.exercicios = result.exercicios;
     }
 
     async save(data: Object) {
@@ -27,7 +27,7 @@ class ProvaStore {
     }
 }
 
-const store = new ProvaStore();
+const store = new ExercicioStore();
 store.load();
 
 export default store;

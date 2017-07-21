@@ -21,9 +21,10 @@ class TrabalhoStore {
     async save(data: Object) {
         const readyData = {
             ...data,
-            disciplina: `http://escola.educarebox.com/api/trabalhos/${data.disciplina}`,
+            disciplina: `http://escola.educarebox.com/api/disciplinas/${data.disciplina}`,
             titulo: 'Teste',
         };
+        console.log(readyData);
         const result = await this.service.post(readyData);
         if (__DEV__) console.log(result); // eslint-disable-line
     }

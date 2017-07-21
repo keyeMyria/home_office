@@ -704,7 +704,7 @@ const subjectAreas = [
         ],
     },
     {
-        id: 2,
+        id: 8,
         key: 'matematica',
         name: 'Matemática',
         topics: [
@@ -774,7 +774,7 @@ const subjectAreas = [
         ],
     },
     {
-        id: 3,
+        id: 2,
         key: 'historia',
         name: 'História',
         topics: [
@@ -914,7 +914,7 @@ const subjectAreas = [
         ],
     },
     {
-        id: 5,
+        id: 3,
         key: 'geografia',
         name: 'Geografia',
         topics: [
@@ -984,7 +984,7 @@ const subjectAreas = [
         ],
     },
     {
-        id: 6,
+        id: 10,
         key: 'fisica',
         name: 'Física',
         topics: [
@@ -1054,7 +1054,7 @@ const subjectAreas = [
         ],
     },
     {
-        id: 7,
+        id: 9,
         key: 'quimica',
         name: 'Química',
         topics: [
