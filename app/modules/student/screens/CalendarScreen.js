@@ -1,11 +1,15 @@
+// @flow
 import React, { Component } from 'react';
 import { List } from 'native-base';
+import { observer } from 'mobx-react/native';
+
+import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../../lib/dates';
+
+// Types
+import type { Evento } from './../../../models';
 
 // Store
-import { observable, action } from 'mobx';
-import { observer } from 'mobx-react/native';
-import store from '../../../store';
-import { eventosStore } from '../../../store';
+import eventoStore from '../../../stores/EventosStore';
 
 // Components
 import ScreenShell from '../../../components/ScreenShell';
@@ -14,49 +18,33 @@ import CalendarModal from '../../../components/calendar/CalendarModal';
 
 @observer
 export default class CalendarScreen extends Component {
-    @observable
-    state = {
-        item: {},
-        visible: false,
-    };
+    showModal = (ev: Evento) => eventoStore.selectEvento(ev);
+    hideModal = () => eventoStore.selectEvento();
 
-    constructor(props) {
-        super(props);
-        store.selectStudent(1);
+    renderWeek(titulo: string, filter: Date => boolean) {
+        const items = eventoStore.eventos.filter(ev => filter(ev.fim));
+        if (!items.length) return null;
+        return <CalendarWeek label={titulo} items={items} onPress={this.showModal} />;
     }
 
-    @action.bound
-    showModal(item) {
-        if (!item) return;
-        this.state.item = item;
-        this.state.visible = true;
-    }
-
-    @action.bound
-    hideModal() {
-        this.state.item = {};
-        this.state.visible = false;
+    get screenShellProps(): Object {
+        const { navigate } = this.props.navigation;
+        return {
+            navigate,
+            title: 'Agenda',
+            padder: false,
+            loading: eventoStore.loading,
+        };
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-        const currentWeekItems = eventosStore;
-        // const nextWeekItems = store.studentSelected.calendar.nextWeekItems;
-
         return (
-          <ScreenShell title="Agenda" navigate={navigate} padder={false}>
-            <CalendarModal state={this.state} onClose={this.hideModal} />
+          <ScreenShell {...this.screenShellProps}>
+            <CalendarModal onClose={this.hideModal} />
             <List agendaList>
-              <CalendarWeek
-                label="Semana Atual"
-                items={currentWeekItems}
-                onPress={this.showModal}
-              />
-              {/* <CalendarWeek
-                label="Próxima Semana"
-                items={nextWeekItems}
-                onPress={this.showModal}
-              />*/}
+              {this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}
+              {this.renderWeek('Semanas Atual', isThisWeek)}
+              {this.renderWeek('Próxima Semana', isNextWeek)}
             </List>
           </ScreenShell>
         );
