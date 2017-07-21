@@ -34,7 +34,7 @@ export default class SegmentedControl extends Component {
         };
     }
 
-    mapItems({ key, value }: ItemType, index, array) {
+    mapItems({ key, value }: ItemType, index: number, array: Array<ItemType>) {
         const { onChange } = this.props;
         const active = key === this.props.selected;
         const onPress = () => onChange(key, !active);
