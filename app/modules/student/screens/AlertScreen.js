@@ -1,19 +1,29 @@
 /* @flow */
 import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
-import store from '../../../store';
+
+// Store
+import avisoStore from '../../../stores/AvisoStore';
+
 import ScreenShell from '../../../components/ScreenShell';
 import CardAlert from '../../../components/CardAlert';
 
 @observer
 export default class AlertScreen extends Component {
-    render() {
+    get screenShellProps() {
         const { navigate } = this.props.navigation;
-        const alerts = store.studentSelected.alerts.items;
+        return {
+            navigate,
+            title: 'Alertas',
+            loading: avisoStore.loading,
+        };
+    }
 
+    render() {
+        const alerts = avisoStore.avisos;
         return (
-          <ScreenShell navigate={navigate} title="Alertas">
-            {alerts.map((alert, index) => <CardAlert key={index} alert={alert} />)}
+          <ScreenShell>
+            {alerts.map(aviso => <CardAlert key={aviso.id} alert={aviso} />)}
           </ScreenShell>
         );
     }
