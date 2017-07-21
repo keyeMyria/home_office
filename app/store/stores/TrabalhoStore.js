@@ -1,0 +1,35 @@
+// @flow
+
+import { observable, extendObservable, action } from 'mobx';
+import { TrabalhoService } from '../../services';
+import moment from 'moment';
+
+class TrabalhoStore {
+    service: TrabalhoService;
+    @observable trabalhos: Array<any>; // TODO: Colocar o model especifico
+    @observable errorMessage: string; // TODO: Add computed to show error message
+
+    constructor() {
+        this.service = new TrabalhoService();
+    }
+
+    async load() {
+        const result = await this.service.get();
+        this.trabalhos = result.trabalhos;
+    }
+
+    async saveTrabalho(data: Object) {
+        const readyData = {
+          ...data,
+          disciplina: `http://escola.educarebox.com/api/trabalhos/${data.disciplina}`,
+          titulo: 'Teste',
+        };
+        const result = await this.service.post(readyData);
+        if (__DEV__) console.log(result);
+    }
+}
+
+const store = new TrabalhoStore();
+store.load();
+
+export default store;

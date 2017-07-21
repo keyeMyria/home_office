@@ -4,8 +4,10 @@ import { Container, Header, Title, Content, Left, Right, Icon, Body, Text } from
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector, change } from 'redux-form';
 
+// Stores
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+import TrabalhoStore from '../../../store/stores/TrabalhoStore';
 
 import { DatePickerField } from '../../../components/fields';
 
@@ -62,6 +64,12 @@ class ExerciseScreen extends Component {
     }
 
     save = () => {
+        const formValues = {
+            ...this.props.screenFormValues,
+            ...this.props.formValues,
+        };
+        // if (__DEV__) console.log('Form Values---------: ', formValues, this.props.formValues);
+        TrabalhoStore.saveTrabalho(formValues);
         Alert.alert('Sucesso', 'Dados salvos com sucesso!', [
             { text: 'OK', onPress: this.props.hideModal },
         ]);
@@ -114,6 +122,7 @@ class ExerciseScreen extends Component {
     }
 }
 
+// Pass form data to props
 const form = reduxForm({ form: 'formExerciseScreen' })(ExerciseScreen);
 const selector = formValueSelector('formExerciseScreen');
 export default connect((state) => {
