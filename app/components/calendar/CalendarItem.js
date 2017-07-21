@@ -2,152 +2,56 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ListItem, Grid, Row, Col, Text } from 'native-base';
-import { PropTypes } from 'mobx-react';
-// import moment from 'moment';
-import _ from 'lodash';
 
-const emptyFunction = () => {};
-
-const TIPOS = {
-    EXERCICIO: 'DC',
-    PROVA: 'P',
-    TRABALHO: 'T',
-    LISTA_ONLINE: 'EP',
-};
-
-const TIPOS_COR = {
-    EXERCICIO: '#64B5F6',
-    PROVA: '#E57373',
-    TRABALHO: 'gray',
-    LISTA_ONLINE: '#FFF176',
-};
+import type { Evento } from '../../models';
 
 export default class CalendarItem extends Component {
     props: {
-        item: Object,
-        onPress: Object => void,
-        type: 'student' | 'teacher' | 'parent',
-    };
-
-    static propTypes = {
-        item: PropTypes.objectOrObservableObject,
-        onPress: React.PropTypes.func.isRequired,
+        item: Evento,
+        onPress: Evento => void,
     };
 
     static defaultProps = {
-        onPress: emptyFunction,
+        onPress: () => {},
     };
-
-    renderTipoAbbr(item: Object) {
-        const style = {
-            ...styles.gridColumn,
-            backgroundColor: TIPOS_COR[item.tarefa.tipo],
-            width: 30,
-        };
-
-        return (
-          <Col style={style}>
-            <Row>
-              <Text style={styles.gridRowText}>
-                {TIPOS[item.tarefa.tipo]}
-              </Text>
-            </Row>
-          </Col>
-        );
-    }
-
-    renderDiaSemana(item: Object) {
-        const style = {
-            ...styles.gridColumn,
-            width: 30,
-        };
-        return (
-          <Col style={style}>
-            <Row>
-              <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
-                {getDiaSemana(item.fim)}
-              </Text>
-            </Row>
-          </Col>
-        );
-    }
-
-    renderDataHora(item: Object) {
-        const style = {
-            ...styles.gridColumn,
-            width: 60,
-        };
-        return (
-          <Col style={style}>
-            <Row>
-              <Text style={styles.gridRowText}>
-                {getDateFormated(item.fim)}
-              </Text>
-            </Row>
-          </Col>
-        );
-    }
-
-    renderInformation(item: Object) {
-        return (
-          <Col
-            size={60}
-            style={{
-                alignItems: 'flex-start',
-                justifyContent: 'center',
-                paddingHorizontal: 10,
-            }}
-          >
-            <View style={{ alignItems: 'flex-start' }}>
-              <Text style={{ ...styles.gridRowText, borderWidth: 1 }}>
-                {_.capitalize(item.tarefa.tipo.toLowerCase())} - {item.disciplina.titulo}
-              </Text>
-              <Text style={styles.gridRowText}>
-                {item.tarefa.titulo} - {item.tarefa.valor} - {item.tarefa.bimestre}º
-                        Bimestre
-                    </Text>
-            </View>
-          </Col>
-        );
-    }
 
     render() {
         const { item, onPress } = this.props;
         return (
           <ListItem onPress={() => onPress(item)}>
             <Grid>
-              {this.renderTipoAbbr(item)}
-              {this.renderDiaSemana(item)}
-              {this.renderDataHora(item)}
-              {this.renderInformation(item)}
+              <Col style={styles.tipoAbbrCol(item.tarefa.color)}>
+                <Row>
+                  <Text style={styles.gridRowText}>
+                    {item.tarefa.abbr}
+                  </Text>
+                </Row>
+              </Col>
+              <Col style={styles.diaSemana}>
+                <Row>
+                  <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
+                    {item.dayOfWeek}
+                  </Text>
+                </Row>
+              </Col>
+              <Col style={styles.dataHora}>
+                <Row>
+                  <Text style={styles.gridRowText}>
+                    {item.fim.format('(DD/MMM)')}
+                  </Text>
+                </Row>
+              </Col>
+              <Col size={100} style={styles.infoText}>
+                <View style={{ alignItems: 'flex-start' }}>
+                  <Text style={styles.gridRowText}>
+                    {item.infoText}
+                  </Text>
+                </View>
+              </Col>
             </Grid>
           </ListItem>
         );
     }
-}
-
-function getDiaSemana(date) {
-    const _date = new Date(date);
-    return `${_date.getDay() + 2}ª`;
-}
-
-function getDateFormated(date) {
-    const d = new Date(date);
-    const meses = [
-        'Jan',
-        'Fev',
-        'Mar',
-        'Abr',
-        'Mai',
-        'Jun',
-        'Jul',
-        'Ago',
-        'Set',
-        'Out',
-        'Nov',
-        'Dez',
-    ];
-    return `(${d.getDate()}/${meses[d.getMonth()]})`;
 }
 
 // Styles
@@ -162,5 +66,29 @@ const styles = {
     },
     gridRowText: {
         fontSize: 14,
+    },
+    tipoAbbrCol: function tipoAbbrCol(cor: string) {
+        return {
+            ...this.gridColumn,
+            backgroundColor: cor,
+            width: 30,
+        };
+    },
+    get diaSemana(): Object {
+        return {
+            ...this.gridColumn,
+            width: 30,
+        };
+    },
+    infoText: {
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingHorizontal: 10,
+    },
+    get dataHora() {
+        return {
+            ...this.gridColumn,
+            width: 60,
+        };
     },
 };
