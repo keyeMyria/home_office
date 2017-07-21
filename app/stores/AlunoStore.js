@@ -1,34 +1,46 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, autorun } from 'mobx';
 import AlunoService from './../services/AlunoService';
-import { Aluno } from './../models';
+import EventoService from './../services/EventoService';
+import AvisoService from './../services/AvisoService';
+import { Aluno, Evento, Aviso } from './../models';
 import type { Nota } from './../models';
+
+// Other Stores
+import eventoStore from './EventosStore';
+import avisoStore from './AvisoStore';
 
 class AlunoStore {
     _service = new AlunoService();
     @observable id: ?number;
     @observable loading = false;
-    @observable aluno: Aluno;
+    @observable aluno: ?Aluno;
+    @observable notas = [];
+    @observable avisos = [];
+    @observable error = false;
 
-    @action
     async fetchAluno(id) {
-        this.id = id;
-        this.loading = true;
-        const aluno = await this._service.one(this.id).get();
-        this.aluno = new Aluno(aluno);
-        this.loading = false;
+        try {
+            this.id = id;
+            this.loading = true;
+            const aluno = await this._service.one(this.id).get();
+            this.aluno = new Aluno(aluno);
+            eventoStore.fecthEventosAluno(this.aluno);
+            avisoStore.fecthAvisosAluno(this.id);
+            this.notas = await this.fecthNotas();
+            this.loading = false;
+        } catch (error) {
+            console.error(error);
+            this.error = true;
+        }
         return this;
     }
 
-    @computed
-    get notas(): Array<Nota> {
-        return this.aluno ? this.aluno.notas : [];
+    async fecthNotas() {
+        const notas = await this._service.one(this.id).all('notas/resumo').get();
+        return notas.historicoResumidoes;
     }
-
-    @computed
-    get avisos(): Array<Nota> {
-        // return this.aluno ? this.aluno.notas : [];
-    }
-
 }
 
-export default new AlunoStore();
+const alunoStore = new AlunoStore();
+
+export default alunoStore;
