@@ -1,3 +1,4 @@
+// @flow
 import Model from './BaseModel';
 
 export * from './fields';

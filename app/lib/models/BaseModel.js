@@ -2,6 +2,10 @@
 import { observable } from 'mobx';
 
 export default class BaseModel {
+    _data$: any;
+    _links: { [string]: any };
+    static fields = {};
+
     // eslint-disable-next-line consistent-return
     constructor(data: Object) {
         if (Array.isArray(data)) {
@@ -9,7 +13,7 @@ export default class BaseModel {
         }
         if (data) {
             const fields = this.constructor.fields;
-            const result = {};
+            const result: { [string]: any } = {};
             Object.keys(fields).forEach((key) => {
                 result[key] = fields[key](data[key], this, key);
             });

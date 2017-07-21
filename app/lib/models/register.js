@@ -1,3 +1,4 @@
+// @flow
 import type BaseModel from './BaseModel';
 
 const MODELS_REGISTER: Map<string, Class<BaseModel>> = new Map();
