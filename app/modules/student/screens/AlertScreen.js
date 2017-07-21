@@ -10,7 +10,7 @@ import CardAlert from '../../../components/CardAlert';
 
 @observer
 export default class AlertScreen extends Component {
-    get screenShellProps() {
+    get screenShellProps(): Object {
         const { navigate } = this.props.navigation;
         return {
             navigate,
@@ -20,9 +20,9 @@ export default class AlertScreen extends Component {
     }
 
     render() {
-        const alerts = avisoStore.avisos;
+        const alerts = avisoStore.avisos || [];
         return (
-          <ScreenShell>
+          <ScreenShell {...this.screenShellProps}>
             {alerts.map(aviso => <CardAlert key={aviso.id} alert={aviso} />)}
           </ScreenShell>
         );
