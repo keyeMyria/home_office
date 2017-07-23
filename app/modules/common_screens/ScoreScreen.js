@@ -4,11 +4,12 @@ import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react/native';
 
 // Store
-import alunoStore from '../../../stores/AlunoStore';
+import alunoStore from './../../stores/AlunoStore';
 
 // Components
-import ScreenShell from '../../../components/ScreenShell';
-import GradeChartItem from '../../../components/GradeChartItem';
+import ScreenShell from './../../components/ScreenShell';
+import GradeChartItem from './../../components/GradeChartItem';
+import BubbleMenu from './../../components/BubbleMenu';
 
 @observer
 export default class ScoreScreen extends Component {
@@ -18,10 +19,20 @@ export default class ScoreScreen extends Component {
         );
     }
 
-    render() {
+    get screenShellProps() {
         const { navigate } = this.props.navigation;
+        return {
+            title: 'Notas',
+            navigate,
+            loading: alunoStore.loading,
+            padder: false,
+        };
+    }
+
+    render() {
         return (
-          <ScreenShell title="Notas" navigate={navigate} loading={alunoStore.loading}>
+          <ScreenShell {...this.screenShellProps}>
+            <BubbleMenu />
             <View>
               <Text style={styles.avgText}>Média 60%</Text>
             </View>

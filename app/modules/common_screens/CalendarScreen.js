@@ -3,18 +3,19 @@ import React, { Component } from 'react';
 import { List } from 'native-base';
 import { observer } from 'mobx-react/native';
 
-import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../../lib/dates';
+import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../lib/dates';
 
 // Types
-import type { Evento } from './../../../models';
+import type { Evento } from './../../models';
 
 // Store
-import eventoStore from '../../../stores/EventosStore';
+import eventoStore from './../../stores/EventosStore';
 
 // Components
-import ScreenShell from '../../../components/ScreenShell';
-import CalendarWeek from '../../../components/calendar/CalendarWeek';
-import CalendarModal from '../../../components/calendar/CalendarModal';
+import ScreenShell from './../../components/ScreenShell';
+import CalendarWeek from './../../components/calendar/CalendarWeek';
+import CalendarModal from './../../components/calendar/CalendarModal';
+import BubbleMenu from './../../components/BubbleMenu';
 
 @observer
 export default class CalendarScreen extends Component {
@@ -40,6 +41,7 @@ export default class CalendarScreen extends Component {
     render() {
         return (
           <ScreenShell {...this.screenShellProps}>
+            <BubbleMenu />
             <CalendarModal onClose={this.hideModal} />
             <List agendaList>
               {this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}

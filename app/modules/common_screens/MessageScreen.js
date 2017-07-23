@@ -1,15 +1,12 @@
-
-// import store from '../../../store';
-
 // @flow
 import React, { Component } from 'react';
 import { Text, List, ListItem, Body, Icon, Right } from 'native-base';
 
-import { observable, action } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-import ScreenShell from '../../../components/ScreenShell';
-import ChatScreen from '../../../components/ChatScreen';
+import ScreenShell from './../../components/ScreenShell';
+import ChatScreen from './../../components/ChatScreen';
 
 const ENTIDADES = [
     'Administrativo',
@@ -27,17 +24,15 @@ export default class MessageScreen extends Component {
         title: '',
     };
 
-    @action.bound
-    showChat(title: string) {
+    showChat = (title: string) => {
         this.store.title = title;
         this.store.visible = true;
-    }
+    };
 
-    @action.bound
-    hideChat() {
+    hideChat = () => {
         this.store.title = '';
         this.store.visible = false;
-    }
+    };
 
     renderItems(name: string, index: number) {
         return (
