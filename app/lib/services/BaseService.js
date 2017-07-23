@@ -24,8 +24,8 @@ export default class BaseService {
         return this._get(this._path, { params });
     }
 
-    async delete() {
-        return this._delete(this._path);
+    async delete(id: number) {
+        return this._delete(`${this._path}/${id}`);
     }
 
     async head() {
@@ -60,6 +60,7 @@ export default class BaseService {
     }
 
     async _delete(url: string, config?: any) {
+        console.log(url);
         return this._invoke(() => this._axios.delete(url, config));
     }
 
@@ -84,7 +85,7 @@ export default class BaseService {
     _parseLinks(obj: any) {
         const result = {};
 
-        _.map(_.keys(obj), key => {
+        _.map(_.keys(obj), (key) => {
             const value = obj[key];
             result[key] = new CollectionService(value.href);
         });
@@ -95,7 +96,7 @@ export default class BaseService {
     _parseObject(obj: any): any {
         const result = {};
 
-        _.map(_.keys(obj), key => {
+        _.map(_.keys(obj), (key) => {
             const value = obj[key];
 
             if (key === '_embedded') {

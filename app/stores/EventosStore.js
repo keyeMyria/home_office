@@ -6,6 +6,7 @@ import remotedev from 'mobx-remotedev';
 
 import EventoService from './../services/EventoService';
 import TarefaService from './../services/TarefaService';
+
 import { Evento, Topico } from './../models';
 import type { Aluno } from './../models';
 
@@ -47,6 +48,12 @@ class EventoStore {
         }
     }
 
+    async deleteEvent() {
+        if (this.selectedEvent) {
+            await this._service.delete(this.selectedEvent.id);
+        }
+    }
+
     @action
     setLoading(loading: boolean) {
         this.loading = !!loading;
@@ -79,6 +86,7 @@ class EventoStore {
             );
         }
     };
+
 }
 
 const eventoStore = new EventoStore();

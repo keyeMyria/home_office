@@ -15,8 +15,6 @@ import eventoStore from './../../stores/EventosStore';
 import type { Evento, Topico } from './../../models';
 import LoadingModal from './../LoadingModal';
 
-const voidFunc = () => {};
-
 @observer
 export default class CalendarModal extends Component {
     props: {
@@ -121,6 +119,19 @@ export default class CalendarModal extends Component {
         );
     }
 
+    deleteEvent() {
+        eventoStore.deleteEvent();
+        this.props.onClose();
+    }
+
+    editEvent() {
+        this.props.onClose();
+    }
+
+    fillEventInformation() {
+
+    }
+
     renderFooter() {
         if (this.loading) return null;
         const role = userStore.role || 'ALUNO';
@@ -130,11 +141,11 @@ export default class CalendarModal extends Component {
           <View style={localStyles.modalFooter}>
             {isProfessor &&
             <View style={localStyles.modalFooterButtonsContainer}>
-              {this.renderButton('Cancelar', voidFunc)}
-              {this.renderButton('Salvar', voidFunc)}
+              {this.renderButton('Excluir', this.deleteEvent.bind(this)) }
+              {this.renderButton('Editar', this.editEvent.bind(this)) }
             </View>}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {isProfessor && this.renderButton('Lançar', voidFunc)}
+              {isProfessor && this.renderButton('Lançar', this.fillEventInformation)}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>
