@@ -11,10 +11,7 @@ export default class HomeTabNavigator extends Component {
         return (
           <Footer>
             <FooterTab footerTabNavigation>
-              <Button
-                active={index === 0}
-                onPress={() => navigate('CalendarScreen')}
-              >
+              <Button active={index === 0} onPress={() => navigate('CalendarScreen')}>
                 <Icon name="event-note" />
                 <Text>Agenda</Text>
               </Button>
@@ -26,13 +23,13 @@ export default class HomeTabNavigator extends Component {
                 <Icon name="notifications" />
                 <Text>Avisos</Text>
               </Button>
-              <Button
+              {/* <Button
                 active={index === 3}
                 onPress={() => navigate('ExerciseScreen')}
               >
                 <Icon name="library-books" />
                 <Text>Exercícios</Text>
-              </Button>
+              </Button> */}
             </FooterTab>
           </Footer>
         );
