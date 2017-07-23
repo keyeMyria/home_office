@@ -1,24 +1,25 @@
-import { observable, action, computed, autorun } from 'mobx';
+// @flow
+import { observable } from 'mobx';
+import remotedev from 'mobx-remotedev';
+
 import AlunoService from './../services/AlunoService';
-import EventoService from './../services/EventoService';
-import AvisoService from './../services/AvisoService';
-import { Aluno, Evento, Aviso } from './../models';
-import type { Nota } from './../models';
+import { Aluno } from './../models';
 
 // Other Stores
 import eventoStore from './EventosStore';
 import avisoStore from './AvisoStore';
 
+@remotedev({ remote: true })
 class AlunoStore {
     _service = new AlunoService();
-    @observable id: ?number;
+    @observable id: number;
     @observable loading = false;
     @observable aluno: ?Aluno;
     @observable notas = [];
     @observable avisos = [];
     @observable error = false;
 
-    async fetchAluno(id) {
+    async fetchAluno(id: number) {
         try {
             this.id = id;
             this.loading = true;
@@ -29,7 +30,29 @@ class AlunoStore {
             this.notas = await this.fecthNotas();
             this.loading = false;
         } catch (error) {
-            console.error(error);
+            // eslint-disable-next-line no-undef
+            if (__DEV__) {
+                console.error(error); // eslint-disable-line no-console
+            }
+            this.error = true;
+        }
+        return this;
+    }
+
+    async setAluno(aluno: Aluno) {
+        try {
+            this.loading = true;
+            this.id = aluno.id;
+            this.aluno = aluno;
+            eventoStore.fecthEventosAluno(this.aluno);
+            avisoStore.fecthAvisosAluno(this.id);
+            this.notas = await this.fecthNotas();
+            this.loading = false;
+        } catch (error) {
+            // eslint-disable-next-line no-undef
+            if (__DEV__) {
+                console.error(error); // eslint-disable-line no-console
+            }
             this.error = true;
         }
         return this;
