@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import {
@@ -14,7 +15,7 @@ import {
     Button,
 } from 'native-base';
 
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react/native';
 
 const StudentItem = (props) => {
     const { student, active, onPress } = props;
@@ -43,7 +44,7 @@ export default class StudentPicker extends Component {
         selectAll: boolean,
     };
 
-    selectStudent = (student) => {
+    selectStudent = (student: Object) => {
         const index = this.props.selected.indexOf(student.id);
         if (index === -1) {
             this.props.selected.push(student.id);

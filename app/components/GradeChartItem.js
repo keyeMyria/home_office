@@ -5,8 +5,8 @@ export default class GradeChartItem extends Component {
     render() {
         const { disciplina, acumulado, total } = this.props.grade;
 
-        const percent = acumulado / total;
-        const percentText = `${Math.floor(percent * 100)}%`;
+        const percent = total ? acumulado / total : 0;
+        const percentText = percent ? `${Math.floor(percent * 100)}%` : '';
         const points = `${total}/${acumulado}`;
         const width = { width: getWidth(percent) };
         const color = { backgroundColor: getColor(disciplina.id) };
@@ -56,7 +56,8 @@ const COLOR_ARRAY = [
 function getWidth(percent: number): number {
     const total = Dimensions.get('window').width - 100;
     const width = Math.floor(total * percent);
-    return width < 10 ? 10 : width;
+    if (width === 0) return 0;
+    return width < 15 ? 15 : width;
 }
 
 /**

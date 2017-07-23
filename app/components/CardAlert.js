@@ -25,7 +25,7 @@ export default class CardAlert extends Component {
                 </Text>
                 <View style={{ flex: 1 }} />
                 <Text style={styles.textDateTime}>
-                  {alert.data.locale('pt-br').fromNow()}
+                  {alert.data.fromNow()}
                 </Text>
               </View>
               <View>
@@ -43,10 +43,8 @@ const styles = {
     cardStyle: {
         backgroundColor: '#fff',
         flexDirection: 'row',
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderColor: '#ddd',
-        marginTop: 4,
-        borderRadius: 4,
     },
     iconView: {
         backgroundColor: '#7792A9',
