@@ -1,4 +1,4 @@
-package com.educare;
+package com.educarebox.app;
 
 import com.facebook.react.ReactActivity;
 
