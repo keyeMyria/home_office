@@ -4,7 +4,7 @@ import moment from 'moment';
 import { getModel } from './register';
 
 export function String() {
-    return value => `${value}`;
+    return value => (value ? `${value}` : '');
 }
 
 export function Integer() {

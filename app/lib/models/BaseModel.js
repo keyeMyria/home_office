@@ -6,8 +6,12 @@ export default class BaseModel {
     _links: { [string]: any };
     static fields = {};
 
+    static fromArray(data: Array<Object>): Array<this> {
+        return data.map(d => new this(d));
+    }
+
     // eslint-disable-next-line consistent-return
-    constructor(data: Object) {
+    constructor(data: Object | Array<Object>) {
         if (Array.isArray(data)) {
             return data.map(d => new this.constructor(d));
         }

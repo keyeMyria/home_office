@@ -12,18 +12,31 @@ import type Turma from './Turma';
     turma: models.ForeignKey('Turma'),
 })
 export default class Evento extends models.Model {
+    id: number;
     inicio: Date;
     fim: Date;
     duracao: number;
     tarefa: Tarefa;
     turma: Turma;
 
-    constructor(data: Object | Array<any>) {
+    static fromSearchArray(eventos: Array<Object>): Array<Eventos> {
+        return eventos.map((data) => {
+            // eslint-disable-next-line no-param-reassign
+            data.tarefa.disciplina = data.disciplina;
+            // eslint-disable-next-line no-param-reassign
+            data.turma.ano = data.ano;
+            return new Evento(data);
+        });
+    }
+
+    constructor(data: Object | Array<any>): Evento | Array<Evento> {
         if (data && !Array.isArray(data)) {
             if (data.disciplina) {
+                // eslint-disable-next-line no-param-reassign
                 data.tarefa.disciplina = data.disciplina;
             }
             if (data.ano) {
+                // eslint-disable-next-line no-param-reassign
                 data.turma.ano = data.ano;
             }
         }
@@ -31,9 +44,13 @@ export default class Evento extends models.Model {
     }
 
     get infoText(): string {
-        return `${this.tarefa.nomeTipo} de ${this.tarefa.disciplina.titulo}\n${this.tarefa
-            .titulo} - ${this.tarefa.pontosText}${this.duracaoText}${this.tarefa
+        return `${this.tarefa.nomeTipo} de ${this.tarefa.disciplina.titulo}\n${this
+            .tituloText}${this.tarefa.pontosText}${this.duracaoText}${this.tarefa
             .bimestre}ºBimestre`;
+    }
+
+    get tituloText(): string {
+        return this.tarefa.titulo ? `${this.tarefa.titulo} - ` : '';
     }
 
     get duracaoText(): string {
