@@ -1,3 +1,4 @@
+// @flow
 import Alternativa from './Alternativa';
 import Aluno from './Aluno';
 import Ano from './Ano';

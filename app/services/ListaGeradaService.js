@@ -1,9 +1,9 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class ListaGeradaService extends CollectionService {
-  constructor() {
-    super(Constants.LISTASGERADAS);
-  }
+    constructor() {
+        super(Constants.LISTASGERADAS);
+    }
 }

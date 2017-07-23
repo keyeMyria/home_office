@@ -7,19 +7,16 @@ import HomeNavigator from './HomeNavigator';
 import {
     AlertScreen,
     CalendarScreen,
-    ExerciseScreen,
     ScoreScreen,
-    MessageScreen,
     FeedBackScreen,
     HelpScreen,
-} from './screens';
+} from './../common_screens';
 
 const HomeRouter = TabNavigator(
     {
         CalendarScreen: { screen: CalendarScreen },
         ScoreScreen: { screen: ScoreScreen },
         AlertScreen: { screen: AlertScreen },
-        ExerciseScreen: { screen: ExerciseScreen },
     },
     {
         tabBarComponent: HomeNavigator,
@@ -30,7 +27,6 @@ const HomeRouter = TabNavigator(
 export default DrawerNavigator(
     {
         HomeRouter: { screen: HomeRouter },
-        MessageScreen: { screen: MessageScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
     },

@@ -1,5 +1,6 @@
 export default {
-    ASYNC_STORE: { // Define the keys used to save data to the AsyncStore
+    ASYNC_STORE: {
+        // Define the keys used to save data to the AsyncStore
         TOKEN: '@educare:auth:token',
         USER: '@educare:auth:current_user',
     },
@@ -34,6 +35,16 @@ export default {
             PROVA: 'Prova',
             EXERCICIO: 'Exercício',
             LISTA_ONLINE: 'Lista Online',
+        },
+    },
+    AVISOS: {
+        tipoIconMap: {
+            COMUNICADO: 'note',
+            FALTA: 'event-busy',
+            ATRASO: 'assignment-late',
+            OCORRENCIA: 'new-releases',
+            NOTA: 'library-books',
+            NAO_ENTREGA: 'mood-bad',
         },
     },
 };

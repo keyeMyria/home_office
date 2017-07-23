@@ -1,13 +1,14 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import type Mensagem from './Mensagem';
 import type Chat from './Chat';
 import type ChatGroup from './ChatGroup';
 
+type Role = 'ALUNO' | 'RESPONSAVEL' | 'PROFESSOR';
+
 @models.register('Usuario', {
     nome: models.String(),
     email: models.String(),
-    password: models.String(),
     imagem: models.String(),
     enabled: models.Boolean(),
     lastPasswordResetDate: models.Date(),
@@ -20,7 +21,6 @@ import type ChatGroup from './ChatGroup';
 export default class Usuario extends models.Model {
     nome: string;
     email: string;
-    password: string;
     imagem: string;
     enabled: boolean;
     lastPasswordResetDate: Date;

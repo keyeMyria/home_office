@@ -1,5 +1,5 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import type Evento from './Evento';
 import type Nota from './Nota';
 import type Disciplina from './Disciplina';
@@ -23,8 +23,7 @@ type TipoTarefa = 'TRABALHO' | 'PROVA' | 'EXERCICIO' | 'LISTA_ONLINE';
     ano: models.ForeignKey('Ano'),
 })
 export default class Tarefa extends models.Model {
-
-    id: ?number;
+    id: number;
     titulo: string;
     tipo: TipoTarefa;
     valor: number;
@@ -34,6 +33,10 @@ export default class Tarefa extends models.Model {
     disciplina: Disciplina;
     topicos: Array<Topico>;
     ano: Ano;
+
+    get pontosText(): string {
+        return this.valor ? `${this.valor} pontos - ` : '';
+    }
 
     /**
      * Cor da tarefa quando exibida na agenda
@@ -57,5 +60,4 @@ export default class Tarefa extends models.Model {
     get nomeTipo(): string {
         return CONFIG.AGENDA.tipoNameMap[this.tipo];
     }
-
 }

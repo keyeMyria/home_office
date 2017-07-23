@@ -1,67 +1,161 @@
+// @flow
 import React, { Component } from 'react';
-import { Modal, View, StyleSheet } from 'react-native';
-import { H3, Label, Text, Button } from 'native-base';
+import { Modal, View } from 'react-native';
+import { H3, Label, Text, Button, Icon } from 'native-base';
+
+import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { PropTypes } from 'mobx-react';
+
+import _ from 'lodash';
+
+// Store
+import userStore from './../../stores/UserStore';
+import eventoStore from './../../stores/EventosStore';
+
+import type { Evento, Topico } from './../../models';
+import LoadingModal from './../LoadingModal';
+
+const voidFunc = () => {};
 
 @observer
 export default class CalendarModal extends Component {
-    static propTypes = {
-        state: PropTypes.observableObject,
-        onClose: React.PropTypes.func.isRequired,
+    props: {
+        onClose: void => void,
     };
 
     static defaultProps = {
         onClose: () => {},
     };
 
-    renderModalHeader() {
-        const { item } = this.props.state;
+    @computed
+    get isVisible(): boolean {
+        return !!eventoStore.selectedEvent;
+    }
+
+    @computed
+    get event(): Evento {
+        return eventoStore.selectedEvent || {};
+    }
+
+    @computed
+    get loading(): boolean {
+        if (eventoStore.selectedEventTopics) {
+            return eventoStore.selectedEventTopics.state === 'pending';
+        }
+        return true;
+    }
+
+    @computed
+    get topics(): Array<Topico> {
+        if (eventoStore.selectedEventTopics && eventoStore.selectedEventTopics.value) {
+            // console.log(eventoStore.selectedEventTopics.value);
+            return eventoStore.selectedEventTopics.value;
+        }
+        return [];
+    }
+
+    renderHeader() {
+        if (this.loading) return null;
 
         return (
           <View style={localStyles.modalHeader}>
             <H3>
-              {item.title || ''}
+              {_.get(this.event, 'tarefa.titulo') || '<Título>'}
             </H3>
           </View>
         );
     }
 
-    renderModalFooter() {
-        const { onClose } = this.props;
+    renderItem(label: string, text: string, suffix: string = '', isPath: boolean = true) {
+        const value = isPath ? _.get(this, text) : text;
+        if (!value) return null;
+        return (
+          <View style={localStyles.modalItens}>
+            <Label>{`${label}: `}</Label>
+            <Text>
+              {value}
+            </Text>
+          </View>
+        );
+    }
+
+    renderTopics() {
+        if (!this.topics || !this.topics.length) return null;
+        return (
+          <View style={localStyles.topicsView}>
+            <Label>Tópicos: </Label>
+            <View style={{ marginLeft: 25, alignSelf: 'stretch' }}>
+              {this.topics.map(t =>
+                (<View key={t.id} style={{ flexDirection: 'row', marginTop: 10 }}>
+                  <Icon name="content-paste" style={{ fontSize: 20 }} />
+                  <Text style={localStyles.topicText}>
+                    {t.titulo}
+                  </Text>
+                </View>),
+                    )}
+            </View>
+          </View>
+        );
+    }
+
+    renderButton(label: string, callback: any => void, bordered: boolean = true) {
+        return (
+          <Button bordered={bordered} block onPress={callback} style={localStyles.button}>
+            <Text>
+              {label}
+            </Text>
+          </Button>
+        );
+    }
+
+    renderContent() {
+        return (
+          <LoadingModal loading={this.loading}>
+            <View style={localStyles.modalContent}>
+              {this.renderItem('Turma', 'event.turma.titulo')}
+              {this.renderItem('Nota', 'event.tarefa.valor', ' Pontos')}
+              {this.renderItem('Tempo Aprox.', 'event.duracaoText')}
+              {this.renderTopics()}
+            </View>
+          </LoadingModal>
+        );
+    }
+
+    renderFooter() {
+        if (this.loading) return null;
+        const role = userStore.role || 'ALUNO';
+        const isProfessor = role === 'PROFESSOR';
+
         return (
           <View style={localStyles.modalFooter}>
-            <Button transparent onPress={onClose} style={{ alignSelf: 'auto' }}>
-              <Text>OK</Text>
-            </Button>
+            {isProfessor &&
+            <View style={localStyles.modalFooterButtonsContainer}>
+              {this.renderButton('Cancelar', voidFunc)}
+              {this.renderButton('Salvar', voidFunc)}
+            </View>}
+            <View style={localStyles.modalFooterButtonsContainer}>
+              {isProfessor && this.renderButton('Lançar', voidFunc)}
+              {this.renderButton('Voltar', this.props.onClose, false)}
+            </View>
           </View>
         );
     }
 
     render() {
-        const { state: { item, visible }, onClose } = this.props;
+        const onClose = this.props.onClose;
+        const modalOptions = {
+            animationType: 'fade',
+            transparent: true,
+            visible: this.isVisible,
+            onRequestClose: onClose,
+        };
         return (
-          <Modal animationType="fade" transparent visible={visible} onRequestClose={onClose}>
+          <Modal {...modalOptions}>
             <View style={localStyles.modalBackdrop}>
               <View style={localStyles.modalContainer}>
-                {this.renderModalHeader()}
-                <View style={localStyles.modalContent}>
-                  {item.turma &&
-                    <View style={localStyles.modalItens}>
-                      <Label>Turma: </Label>
-                      <Text>
-                        {item.turma}
-                      </Text>
-                    </View>}
-                  {item.grade &&
-                    <View style={localStyles.modalItens}>
-                      <Label>Nota: </Label>
-                      <Text>
-                        {item.grade} Pontos
-                                    </Text>
-                    </View>}
-                </View>
-                {this.renderModalFooter()}
+                {this.renderHeader()}
+                {this.renderContent()}
+                {this.renderFooter()}
               </View>
             </View>
           </Modal>
@@ -69,18 +163,21 @@ export default class CalendarModal extends Component {
     }
 }
 
-const localStyles = StyleSheet.create({
+const localStyles = {
     modalBackdrop: {
         backgroundColor: 'rgba(0,0,0,0.5)',
         flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
     },
     modalContainer: {
+        alignSelf: 'stretch',
+        get marginHorizontal() {
+            return 20;
+        },
         padding: 20,
-        minHeight: 200,
-        backgroundColor: '#fff',
-        marginHorizontal: 40,
-        alignItems: 'stretch',
+        backgroundColor: 'white',
+        minHeight: 100,
     },
     modalHeader: {
         alignItems: 'center',
@@ -93,16 +190,36 @@ const localStyles = StyleSheet.create({
         textAlign: 'center',
     },
     modalContent: {
-        flex: 1,
+        // flex: 1,
     },
     modalFooter: {
         paddingTop: 10,
-        marginTop: 10,
-        borderColor: '#E0E0E0',
-        alignItems: 'flex-end',
+        marginTop: 15,
+    },
+    modalFooterButtonsContainer: {
+        marginHorizontal: -5,
+        marginBottom: 0,
+        flexDirection: 'row',
     },
     modalItens: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
     },
-});
+    button: {
+        alignSelf: 'auto',
+        flex: 1,
+        margin: 5,
+    },
+    get topicsView() {
+        return {
+            ...this.modalItens,
+            flexDirection: 'column',
+            marginVertical: 15,
+        };
+    },
+    topicText: {
+        flex: 1,
+        marginLeft: 5,
+        flexWrap: 'wrap',
+    },
+};

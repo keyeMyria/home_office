@@ -1,9 +1,9 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class ListaOnlineService extends CollectionService {
-  constructor() {
-    super(Constants.LISTASONLINE);
-  }
+    constructor() {
+        super(Constants.LISTASONLINE);
+    }
 }

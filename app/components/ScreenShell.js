@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { TouchableNativeFeedback, TouchableOpacity, Platform } from 'react-native';
 import { Container, Header, Left, Right, Icon, Title, Content, Body, Text } from 'native-base';
+import { observer } from 'mobx-react/native';
+import LoadingModal from './LoadingModal';
 
 const emptyFunc = () => {};
 
@@ -49,18 +51,22 @@ const Touchable = (props) => {
  * ```
  *
  */
+
 export default class ScreenShell extends Component {
-    static propTypes = {
-        navigate: React.PropTypes.func.isRequired,
-        title: React.PropTypes.string.isRequired,
-        padder: React.PropTypes.bool.isRequired,
-        rightText: React.PropTypes.string,
-        rightPress: React.PropTypes.func,
-        showRight: React.PropTypes.bool,
+    props: {
+        navigate: string => any,
+        title: string,
+        padder?: boolean,
+        rightText?: string,
+        rightPress?: () => any,
+        showRight?: boolean,
+        loading: boolean,
+        children?: any,
     };
 
     static defaultProps = {
         padder: true,
+        loading: false,
     };
 
     /**
@@ -102,9 +108,11 @@ export default class ScreenShell extends Component {
               </Body>
               {this.renderRight()}
             </Header>
-            <Content padder={padder}>
-              {this.props.children}
-            </Content>
+            <LoadingModal loading={this.props.loading}>
+              <Content padder={padder}>
+                {this.props.children}
+              </Content>
+            </LoadingModal>
           </Container>
         );
     }

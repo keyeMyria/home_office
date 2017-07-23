@@ -1,13 +1,13 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class ExercicioService extends CollectionService {
-  constructor() {
-    super(Constants.EXERCICIOS);
-  }
+    constructor() {
+        super(Constants.EXERCICIOS);
+    }
 
-  findByProfessor(id: number) {
-    super.search({ id });
-  }
+    findByProfessor(id: number) {
+        super.search({ id });
+    }
 }

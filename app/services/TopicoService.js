@@ -1,13 +1,13 @@
 // @flow
 
-import { CollectionService, Constants } from './base';
+import { CollectionService, Constants } from './../lib/services';
 
 export default class TopicoService extends CollectionService {
-  constructor() {
-    super(Constants.TOPICOS);
-  }
+    constructor() {
+        super(Constants.TOPICOS);
+    }
 
-  findByDisciplinaAndAno(disciplina: number, ano: number) {
-    return super.search({ disciplina, ano });
-  }
+    findByDisciplinaAndAno(disciplina: number, ano: number) {
+        return super.search({ disciplina, ano });
+    }
 }

@@ -1,5 +1,5 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import type Falta from './Falta';
 import type Atraso from './Atraso';
 import type Nota from './Nota';
@@ -15,6 +15,7 @@ import type ChatGroup from './ChatGroup';
 type Role = 'ALUNO' | 'PROFESSOR' | 'DIRETOR';
 
 @models.register('Aluno', {
+    id: models.PrimaryKey(),
     nome: models.String(),
     email: models.String(),
     password: models.String(),
@@ -37,6 +38,7 @@ type Role = 'ALUNO' | 'PROFESSOR' | 'DIRETOR';
     listasGeradas: models.OneToMany('ListaGerada'),
 })
 export default class Aluno extends models.Model {
+    id: number;
     nome: string;
     email: string;
     password: string;
@@ -57,4 +59,12 @@ export default class Aluno extends models.Model {
     responsaveis: Array<Responsavel>;
     avisos: Array<Responsavel>;
     listasGeradas: Array<ListaGerada>;
+
+    get imageSource(): Object {
+        return {
+            uri: this.imagem,
+            width: 50,
+            height: 50,
+        };
+    }
 }

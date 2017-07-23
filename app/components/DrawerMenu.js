@@ -49,7 +49,7 @@ export default class DrawerMenu extends Component {
           <Container sideBarContainer>
             <ListItem>
               <Left>
-                <Thumbnail source={{ uri: userStore.avatar }} />
+                <Thumbnail source={userStore.avatar} />
               </Left>
               <Body>
                 <Text>

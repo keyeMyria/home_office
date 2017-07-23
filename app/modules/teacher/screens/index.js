@@ -1,6 +1,5 @@
-import AlertScreen from './AlertScreen';
+// @flow
 import ExerciseScreen from './ExerciseScreen';
-import MessageScreen from './MessageScreen';
 import HistoryScreen from './HistoryScreen';
 import AbsenseScreen from './AbsenseScreen';
 import OccurrenceScreen from './OccurrenceScreen';
@@ -12,14 +11,10 @@ import AnalysisScreen from './AnalysisScreen';
 import SetDateForClassScreen from './SetDateForClassScreen';
 import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
-import CalendarScreen from './CalendarScreen';
-import FeedBackScreen from './FeedBackScreen';
-import HelpScreen from './HelpScreen';
+import ComunicadosScreen from './ComunicadosScreen';
 
 export {
-    AlertScreen,
     ExerciseScreen,
-    MessageScreen,
     HistoryScreen,
     AbsenseScreen,
     OccurrenceScreen,
@@ -31,7 +26,5 @@ export {
     SetDateForClassScreen,
     ExerciseConfigurationScreen,
     SelectQuestionScreen,
-    CalendarScreen,
-    FeedBackScreen,
-    HelpScreen,
+    ComunicadosScreen,
 };

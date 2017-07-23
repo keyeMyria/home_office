@@ -1,12 +1,19 @@
 // @flow
 import { AsyncStorage, Alert } from 'react-native';
 import { observable, action, computed } from 'mobx';
+import remotedev from 'mobx-remotedev';
+
 import httpClient from './../lib/HttpClient';
 
 // Config
 import { getConfig } from './../lib/config';
 
 import { Turma } from './../models';
+
+// Other Stores
+import alunoStore from './AlunoStore';
+import professorStore from './ProfessorStore';
+import responsavelStore from './ResponsavelStore';
 
 type RoleEnum = 'ALUNO' | 'PROFESSOR' | 'RESPONSAVEL';
 type UserType = {
@@ -28,6 +35,8 @@ type loginReturnType = {
  * User store is common for all 'ROLES' in the application
  * this store is responsible for the basic information of the user.
  */
+
+@remotedev({ remote: true })
 class UserStore {
     @observable loading = false; // if is waiting for any request
     @observable user: ?UserType; // the user object
@@ -37,15 +46,21 @@ class UserStore {
     }
 
     @computed
-    get avatar(): string {
-        const gravatarUrl = 'https://www.gravatar.com/avatar/0?d=mm&f=y';
-        if (!this.user) return gravatarUrl;
+    get avatar(): Object {
+        let img;
         try {
-            const url = new URL(this.user.imagem); // eslint-disable-line
-            return String(url);
+            if (this.user) {
+                const url = new URL(this.user.imagem); // eslint-disable-line
+                img = this.user.imagem;
+            }
         } catch (error) {
-            return gravatarUrl;
+            img = 'https://www.gravatar.com/avatar/0?d=mm&f=y';
         }
+        return {
+            uri: img,
+            width: 50,
+            height: 50,
+        };
     }
 
     @computed
@@ -60,12 +75,18 @@ class UserStore {
 
     @computed
     get turma(): ?Turma {
-        return this.user && !!this.user.turma && new Turma(this.user.turma);
+        if (this.user && !!this.user.turma) {
+            return new Turma(this.user.turma);
+        }
+        return undefined;
     }
 
     @computed
-    get role(): ?RoleEnum {
-        return this.user && this.user.role;
+    get role(): RoleEnum {
+        if (this.user && this.user.role) {
+            return this.user.role;
+        }
+        return 'ALUNO';
     }
 
     @computed
@@ -85,8 +106,25 @@ class UserStore {
     setUser(user: ?UserType) {
         if (user) {
             this.user = user;
+            this.setupUserStore(user);
         }
         return this;
+    }
+
+    setupUserStore(user: UserType) {
+        switch (user.role) {
+        case 'ALUNO':
+            alunoStore.fetchAluno(user.id);
+            break;
+        case 'RESPONSAVEL':
+            responsavelStore.fetchResponsavel(user.id);
+            break;
+        case 'PROFESSOR':
+            professorStore.fetchProfessor(user.id);
+            break;
+        default:
+            break;
+        }
     }
 
     @action
@@ -98,11 +136,12 @@ class UserStore {
     /**
      * Handles the logic of the login;
      */
-
     async login(username: string, password: string) {
         this.loading = true;
         const { user } = await this._makeLogin(username, password);
-        this.setUser(user)._saveUserInAsyncStorage(user);
+        if (user) {
+            this.setUser(user)._saveUserInAsyncStorage(user);
+        }
         this.loading = false;
     }
 
@@ -115,7 +154,10 @@ class UserStore {
         const userUrl = 'usuarios/search/findByJwtToken';
 
         try {
-            const { data: { token } } = await httpClient.post(authUrl, { username, password });
+            const { data: { token } } = await httpClient.post(authUrl, {
+                username,
+                password,
+            });
             if (!token) {
                 return errorReturn;
             }

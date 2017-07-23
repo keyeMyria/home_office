@@ -1,10 +1,11 @@
 // @flow
-import * as models from './base';
+import * as models from './../lib/models';
 import Aluno from './Aluno';
 import Disciplina from './Disciplina';
 import Tarefa from './Tarefa';
 
 @models.register('Nota', {
+    id: models.PrimaryKey(),
     pontuacao: models.Float(),
     naoEntregue: models.Boolean(),
     lancado: models.Boolean(),
@@ -13,7 +14,8 @@ import Tarefa from './Tarefa';
     tarefa: models.ForeignKey('Tarefa'),
 })
 export default class Nota extends models.Model {
-    pontuacao: Float;
+    id: number;
+    pontuacao: number;
     naoEntregue: boolean;
     lancado: boolean;
     aluno: Aluno;

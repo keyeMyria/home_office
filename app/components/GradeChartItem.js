@@ -2,29 +2,20 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
 
 export default class GradeChartItem extends Component {
-    static propTypes = {
-        grade: React.PropTypes.shape({
-            id: React.PropTypes.number.isRequired,
-            name: React.PropTypes.string.isRequired,
-            pointsReceived: React.PropTypes.number.isRequired,
-            pointsGiven: React.PropTypes.number.isRequired,
-        }).isRequired,
-    };
-
     render() {
-        const { id, name, pointsReceived, pointsGiven } = this.props.grade;
+        const { disciplina, acumulado, total } = this.props.grade;
 
-        const percent = pointsReceived / pointsGiven;
-        const percentText = `${Math.floor(percent * 100)}%`;
-        const points = `${pointsGiven}/${pointsReceived}`;
+        const percent = total ? acumulado / total : 0;
+        const percentText = percent ? `${Math.floor(percent * 100)}%` : '';
+        const points = `${total}/${acumulado}`;
         const width = { width: getWidth(percent) };
-        const color = { backgroundColor: getColor(id) };
+        const color = { backgroundColor: getColor(disciplina.id) };
 
         return (
           <View style={styles.gradeContainer}>
             <View style={styles.gradeLeftContainer}>
               <Text style={styles.diciplineName}>
-                {name}
+                {disciplina.titulo}
               </Text>
               <Text style={styles.diciplinePoints}>
                 {points}
@@ -32,7 +23,9 @@ export default class GradeChartItem extends Component {
             </View>
             <View style={styles.chartBarContainer}>
               <View style={[styles.chartBar, width, color]}>
-                <Text style={styles.percentText}>{percentText}</Text>
+                <Text style={styles.percentText}>
+                  {percentText}
+                </Text>
               </View>
             </View>
           </View>
@@ -63,7 +56,8 @@ const COLOR_ARRAY = [
 function getWidth(percent: number): number {
     const total = Dimensions.get('window').width - 100;
     const width = Math.floor(total * percent);
-    return width < 10 ? 10 : width;
+    if (width === 0) return 0;
+    return width < 15 ? 15 : width;
 }
 
 /**
