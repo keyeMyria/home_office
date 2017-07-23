@@ -10,6 +10,7 @@ import {
     ExamScreen,
     HomeworkScreen,
     ComunicadosScreen,
+    LancarNotasScreen,
 } from './screens';
 
 import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../common_screens';
@@ -35,6 +36,7 @@ export default DrawerNavigator(
         SelectClassScreen: { screen: SelectClassScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
+        LancarNotasScreen: { screen: LancarNotasScreen },
     },
     {
         headerMode: 'none',

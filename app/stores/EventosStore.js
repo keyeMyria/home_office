@@ -18,6 +18,7 @@ class EventoStore {
     @observable eventosMap: ObservableMap<Evento> = observable.map({});
     @observable error = false;
     @observable selectedEvent: ?Evento;
+    @observable selectedEventLancar: ?Evento;
     @observable selectedEventTopics: any;
 
     @computed

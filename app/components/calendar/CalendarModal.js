@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Modal, View, Alert } from 'react-native';
 import { H3, Label, Text, Button, Icon } from 'native-base';
 
-import { computed } from 'mobx';
+import { computed, toJS } from 'mobx';
 import { observer } from 'mobx-react/native';
 
 import _ from 'lodash';
@@ -15,10 +15,12 @@ import eventoStore from './../../stores/EventosStore';
 import type { Evento, Topico } from './../../models';
 import LoadingModal from './../LoadingModal';
 
+
 @observer
 export default class CalendarModal extends Component {
     props: {
         onClose: void => void,
+        navigate: string => void
     };
 
     static defaultProps = {
@@ -46,7 +48,6 @@ export default class CalendarModal extends Component {
     @computed
     get topics(): Array<Topico> {
         if (eventoStore.selectedEventTopics && eventoStore.selectedEventTopics.value) {
-            // console.log(eventoStore.selectedEventTopics.value);
             return eventoStore.selectedEventTopics.value;
         }
         return [];
@@ -142,7 +143,9 @@ export default class CalendarModal extends Component {
     }
 
     fillEventInformation() {
-
+        eventoStore.selectedEventLancar = toJS(eventoStore.selectedEvent);
+        this.props.navigate('LancarNotasScreen', eventoStore.selectedEventLancar);
+        this.props.onClose();
     }
 
     renderFooter() {
@@ -158,7 +161,7 @@ export default class CalendarModal extends Component {
               {this.renderButton('Editar', this.editEvent.bind(this)) }
             </View>}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {isProfessor && this.renderButton('Lançar', this.fillEventInformation)}
+              {isProfessor && this.renderButton('Lançar', this.fillEventInformation.bind(this))}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>
