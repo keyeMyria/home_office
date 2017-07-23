@@ -1,99 +1,105 @@
+// @flow
 import React, { Component } from 'react';
 import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import { Text, Thumbnail, Button } from 'native-base';
 
 import { observer } from 'mobx-react/native';
-import store from '../store';
-// import anoStore from '../store/AnoStore';
+
+import userStore from './../stores/UserStore';
+import professorStore from './../stores/ProfessorStore';
+import responsavelStore from './../stores/ResponsavelStore';
 
 import { styles } from '../themes/educareTheme';
 
 function StudentItem(props) {
     const { active, source } = props;
-    const activeStyle = active
-        ? styles.bubbleMenuItemActive
-        : styles.bubbleMenuItemInactive;
+    const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
 
     return (
-        <View style={styles.bubbleMenuItemView}>
-            <Thumbnail source={source} style={activeStyle} />
-            <Text style={styles.bubbleMenuItemText}>{props.name}</Text>
-        </View>
+      <View style={styles.bubbleMenuItemView}>
+        <Thumbnail source={source} style={activeStyle} />
+        <Text style={styles.bubbleMenuItemText}>
+          {props.name}
+        </Text>
+      </View>
     );
 }
 
 function SchoolYearItem(props) {
     const { active, name } = props;
-    const activeStyle = active
-        ? styles.bubbleMenuItemActive
-        : styles.bubbleMenuItemInactive;
+    const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
 
     return (
-        <View style={styles.bubbleMenuItemView}>
-            <Button disabled={!active} style={activeStyle}>
-                <Text>{name}</Text>
-            </Button>
-        </View>
+      <View style={styles.bubbleMenuItemView}>
+        <Button disabled={!active} style={activeStyle}>
+          <Text>
+            {name}
+          </Text>
+        </Button>
+      </View>
     );
 }
 
 function BubbleMenuItem(props) {
     const { item, onPress } = props;
     return (
-        <TouchableWithoutFeedback onPress={onPress}>
-            <View>
-                {item}
-            </View>
-        </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View>
+          {item}
+        </View>
+      </TouchableWithoutFeedback>
     );
 }
 
 @observer
 export default class BubbleMenu extends Component {
     renderSchoolYear() {
-        const mapFunc = (year, index) => {
-            const active = year.id === store.schoolYearSelected.id;
-            const item = <SchoolYearItem name={year.name} active={active} />;
-            const onPress = () => store.selectSchoolYear(year.id);
-            return <BubbleMenuItem key={index} item={item} onPress={onPress} />;
+        const mapFunc = (ano, index) => {
+            let active = index === 0;
+            if (professorStore.anoSelectedId) {
+                active = ano.id === professorStore.anoSelectedId;
+            }
+            const item = <SchoolYearItem name={ano.abreviacao} active={active} />;
+            const onPress = () => professorStore.selectAno(ano.id);
+            return <BubbleMenuItem key={ano.id} item={item} onPress={onPress} />;
         };
-
-        store.schoolYears.map(mapFunc);
+        if (professorStore.loading) return null;
+        return professorStore.anos.map(mapFunc);
     }
 
     renderStudent() {
-        const mapFunc = (student, index) => {
-            const { name, id } = student;
-            const active = id === store.studentSelected.id;
-            const imageSource = store.getStudentImagebyId(id);
-            const item = (
-                <StudentItem name={name} active={active} source={imageSource} />
-            );
-            const onPress = () => store.selectStudent(student.id);
-
-            return <BubbleMenuItem key={index} item={item} onPress={onPress} />;
+        const mapFunc = (aluno, index) => {
+            const { nome, id } = aluno;
+            let active = index === 0;
+            if (responsavelStore.alunoSelectedId) {
+                active = id === responsavelStore.alunoSelectedId;
+            }
+            const item = <StudentItem name={nome} active={active} source={aluno.imageSource} />;
+            const onPress = () => responsavelStore.selectAluno(id);
+            return <BubbleMenuItem key={id} item={item} onPress={onPress} />;
         };
-
-        return store.childStudents.map(mapFunc);
+        if (responsavelStore.loading) return null;
+        return responsavelStore.alunos.map(mapFunc);
     }
 
     render() {
-        const { mode } = this.props;
-        const modeMap = {
-            schoolYear: this.renderSchoolYear,
-            student: this.renderStudent,
+        const roleMap = {
+            PROFESSOR: this.renderSchoolYear,
+            RESPONSAVEL: this.renderStudent,
+            ALUNO: undefined, // Prevent the the rendering
         };
+        const renderItens = roleMap[userStore.role];
 
-        const renderItens = modeMap[mode] || modeMap.student;
+        if (!renderItens) return null;
 
         return (
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.bubbleMenuView}
-            >
-                {renderItens()}
-            </ScrollView>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.bubbleMenuView}
+          >
+            {renderItens()}
+          </ScrollView>
         );
     }
 }
