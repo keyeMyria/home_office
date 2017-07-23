@@ -1,41 +1,39 @@
+// @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Separator, Text } from 'native-base';
-import { PropTypes } from 'mobx-react';
 
+import type { Evento } from './../../models';
 // Components
 import CalendarItem from './CalendarItem';
 
 export default class CalendarWeek extends Component {
-  static defaultProps = {
-    onPress: () => {},
-  };
+    props: {
+        onPress?: Evento => void,
+        items?: Array<Evento>,
+        label?: string,
+    };
 
-  renderCalendarItems() {
-    const { items, onPress } = this.props;
+    static defaultProps = {
+        onPress: (evento) => {
+            console.warn('', evento); // eslint-disable-line no-console
+        },
+        items: [],
+        label: '',
+    };
 
-    return (
-      items &&
-      items.map((item, index) =>
-        <CalendarItem key={index} item={item} onPress={onPress} />
-      )
-    );
-  }
-
-  render() {
-    const { items, label } = this.props;
-
-    return (
-      <View>
-        {!!items &&
-          !!items.length &&
-          <Separator>
-            <Text>
-              {label}
-            </Text>
-          </Separator>}
-        {this.renderCalendarItems()}
-      </View>
-    );
-  }
+    render() {
+        const { items, label, onPress } = this.props;
+        if (!Array.isArray(items)) return null;
+        return (
+          <View>
+            <Separator>
+              <Text>
+                {label}
+              </Text>
+            </Separator>
+            {items.map(item => <CalendarItem key={item.id} item={item} onPress={onPress} />)}
+          </View>
+        );
+    }
 }
