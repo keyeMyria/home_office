@@ -49,8 +49,14 @@ class EventoStore {
     }
 
     async deleteEvent() {
-        if (this.selectedEvent) {
-            await this._service.delete(this.selectedEvent.id);
+        try {
+            if (this.selectedEvent) {
+                this.deleteEventAction(this.selectedEvent.id);
+                await this._service.delete(this.selectedEvent.id);
+            }
+        } catch (error) {
+            console.error(error);
+            this.setError(true);
         }
     }
 
@@ -85,6 +91,11 @@ class EventoStore {
                     .then(t => t.map(m => new Topico(m))),
             );
         }
+    };
+
+    @action
+    deleteEventAction = (id: number): void => {
+        this.eventosMap.delete(`${id}`);
     };
 
 }

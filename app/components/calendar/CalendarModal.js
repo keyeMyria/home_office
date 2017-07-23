@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Modal, View } from 'react-native';
+import { Modal, View, Alert } from 'react-native';
 import { H3, Label, Text, Button, Icon } from 'native-base';
 
 import { computed } from 'mobx';
@@ -119,9 +119,22 @@ export default class CalendarModal extends Component {
         );
     }
 
-    deleteEvent() {
-        eventoStore.deleteEvent();
+    async confirmDeleteAction() {
+        await eventoStore.deleteEvent();
         this.props.onClose();
+    }
+
+    deleteEvent = (): any => {
+        // Works on both iOS and Android
+        Alert.alert(
+            'Atenção!',
+            'Tem certeza que quer deletar o evento?',
+            [
+                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                { text: 'OK', onPress: () => this.confirmDeleteAction() },
+            ],
+            { cancelable: true },
+        );
     }
 
     editEvent() {
