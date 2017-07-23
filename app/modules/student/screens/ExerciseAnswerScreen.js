@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Modal } from 'react-native';
 import {
@@ -15,27 +16,33 @@ import {
 } from 'native-base';
 
 import { observer } from 'mobx-react/native';
-// import store from '../../../store';
 
 import QuestionCard from '../../../components/QuestionCard';
 
 @observer
 export default class ExerciseAnswerScreen extends Component {
+    props: {
+        state: {
+            item: Object,
+            visible: boolean,
+        },
+        onClose: void => void,
+    };
 
-    renderQuestoes(item, index) {
-        return (<QuestionCard key={index} index={index} item={item} />);
+    renderQuestoes(item: Object, index: number) {
+        return <QuestionCard key={item.id} index={index} item={item} />;
     }
 
     render() {
         const { state: { item, visible }, onClose } = this.props;
-
+        const modalOptions = {
+            animationType: 'slide',
+            transparent: false,
+            visible,
+            onRequestClose: onClose,
+        };
         return (
-          <Modal
-            animationType={'slide'}
-            transparent={false}
-            visible={visible}
-            onRequestClose={onClose}
-          >
+          <Modal {...modalOptions}>
             <Container>
               <Header appHeader>
                 <Left>
@@ -48,14 +55,9 @@ export default class ExerciseAnswerScreen extends Component {
                     {item.title}
                   </Title>
                 </Body>
-                 {/*<Right>
-                  <TouchableWithoutFeedback onPress={this.save}>
-                    <Text>OK</Text>
-                  </TouchableWithoutFeedback>
-                </Right>*/}
               </Header>
               <Content padder>
-                  {!!item.questoes && item.questoes.map(this.renderQuestoes, this)}
+                {!!item.questoes && item.questoes.map(this.renderQuestoes, this)}
               </Content>
               <Footer style={{ marginBottom: -10 }}>
                 <Col>
