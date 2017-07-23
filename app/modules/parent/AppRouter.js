@@ -1,3 +1,4 @@
+// @flow
 import { Dimensions } from 'react-native';
 import { DrawerNavigator, TabNavigator } from 'react-navigation';
 
@@ -7,22 +8,16 @@ import HomeNavigator from './HomeNavigator';
 import {
     AlertScreen,
     CalendarScreen,
-    ExerciseScreen,
-    PlanningScreen,
     ScoreScreen,
-    MessageScreen,
-    HistoryScreen,
     FeedBackScreen,
     HelpScreen,
-} from './screens';
+} from './../common_screens';
 
 const HomeRouter = TabNavigator(
     {
         CalendarScreen: { screen: CalendarScreen },
         ScoreScreen: { screen: ScoreScreen },
         AlertScreen: { screen: AlertScreen },
-        ExerciseScreen: { screen: ExerciseScreen },
-        PlanningScreen: { screen: PlanningScreen },
     },
     {
         tabBarComponent: HomeNavigator,
@@ -33,8 +28,6 @@ const HomeRouter = TabNavigator(
 export default DrawerNavigator(
     {
         HomeRouter: { screen: HomeRouter },
-        MessageScreen: { screen: MessageScreen },
-        HistoryScreen: { screen: HistoryScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
     },
