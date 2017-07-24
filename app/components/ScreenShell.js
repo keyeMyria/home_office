@@ -51,7 +51,7 @@ const Touchable = (props) => {
  * ```
  *
  */
-
+@observer
 export default class ScreenShell extends Component {
     props: {
         navigate: string => any,
@@ -62,11 +62,15 @@ export default class ScreenShell extends Component {
         showRight?: boolean,
         loading: boolean,
         children?: any,
+        leftIcon?: string,
+        leftPress?: () => any,
     };
 
     static defaultProps = {
         padder: true,
         loading: false,
+        leftIcon: 'menu',
+        leftPress: undefined,
     };
 
     /**
@@ -92,13 +96,15 @@ export default class ScreenShell extends Component {
     }
 
     render() {
-        const { navigate, title, padder } = this.props;
+        const { navigate, title, padder, leftIcon, leftPress } = this.props;
+        const _leftPress = leftPress || (() => navigate('DrawerOpen'));
+
         return (
           <Container>
             <Header appHeader>
               <Left>
-                <Touchable onPress={() => navigate('DrawerOpen')}>
-                  <Icon name="menu" />
+                <Touchable onPress={_leftPress}>
+                  <Icon name={leftIcon} />
                 </Touchable>
               </Left>
               <Body>
