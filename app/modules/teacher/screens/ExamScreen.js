@@ -21,7 +21,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
-import ProvaStore from '../../../store/stores/ProvaStore';
+import ProvaStore from '../../../stores/professor/ProvaStore';
 
 import { PickerField } from '../../../components/fields';
 

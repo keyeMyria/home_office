@@ -20,7 +20,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
-import ExercicioStore from '../../../store/stores/ExercicioStore';
+import ExercicioStore from '../../../stores/professor/ExercicioStore';
 
 import { styles } from '../../../themes/educareTheme';
 
