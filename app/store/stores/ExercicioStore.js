@@ -22,6 +22,9 @@ class ExercicioStore {
             ...data,
             disciplina: `${CONFIG.API.BASE_URL}/disciplinas/${data.disciplina}`,
             titulo: 'Teste',
+            topicos: data.topicos ?
+                data.topicos.map((item) => `${CONFIG.API.BASE_URL}/topicos/${item}`)
+                : []
         };
         const result = await this.service.post(readyData);
         if (__DEV__) console.log(result); // eslint-disable-line

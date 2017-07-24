@@ -332,6 +332,7 @@ class ExerciseConfigurationScreen extends Component {
                   ...this.props.formValues,
                   questionDatabaseTypeId: this.state.questionDatabaseTypeId,
                   questionGenerationTypeId: this.state.questionGenerationTypeId,
+                  topicos: store.exerciseTopics.toJS(),
               }}
               screenStore={ExercicioStore}
             />

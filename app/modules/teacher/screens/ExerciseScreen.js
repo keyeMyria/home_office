@@ -143,7 +143,7 @@ class ExerciseScreen extends Component {
                 </Field>
                 {hasTempoAproximado &&
                 <Field
-                  name="tempoAproximado"
+                  name="duracao"
                   label="Tempo Aproximado"
                   component={PickerField}
                   props={{ initialValue: 60 }}
@@ -181,7 +181,7 @@ const selector = formValueSelector('formExerciseScreen');
 export default connect(state => ({
     formValues: {
         disciplina: selector(state, 'disciplina'),
-        tempoAproximado: selector(state, 'tempoAproximado'),
+        duracao: selector(state, 'duracao'),
         detalhes: selector(state, 'detalhes'),
     },
 }))(form);
