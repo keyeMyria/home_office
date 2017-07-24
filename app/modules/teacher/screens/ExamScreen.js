@@ -223,7 +223,10 @@ class ExamScreen extends Component {
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
               hideModal={this.hideSetDateForClassScreen}
-              screenFormValues={this.props.formValues}
+              screenFormValues={{
+                ...this.props.formValues,
+                topicos: store.examTopics.toJS(),
+              }}
               screenStore={ProvaStore}
             />
           </Container>
