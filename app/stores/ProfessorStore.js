@@ -1,6 +1,6 @@
 // @flow
 import { observable, computed, action } from 'mobx';
-import remotedev from 'mobx-remotedev';
+
 import ProfessorService from './../services/ProfessorService';
 import AnoService from './../services/AnoService';
 import { Professor, Ano } from './../models';
@@ -9,7 +9,6 @@ import { Professor, Ano } from './../models';
 import eventoStore from './EventosStore';
 import avisoStore from './AvisoStore';
 
-@remotedev({ remote: true })
 class ProfessorStore {
     _service = new ProfessorService();
     @observable id: number;
@@ -50,7 +49,6 @@ class ProfessorStore {
         const ano = this.anos.find(a => a.id === id);
         if (ano) {
             this.anoSelectedId = id;
-            eventoStore.selectAno(id);
         }
     };
 
