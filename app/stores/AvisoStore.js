@@ -1,7 +1,6 @@
 // @flow
 import { observable } from 'mobx';
 import type { IObservableArray } from 'mobx';
-import remotedev from 'mobx-remotedev';
 
 import AvisoService from './../services/AvisoService';
 import { Aviso } from './../models';
@@ -18,7 +17,6 @@ type avisosSearchApiReturn = {
     semanas: { [string]: Array<avisosItem> },
 };
 
-@remotedev({ remote: true })
 class AvisoStore {
     _service = new AvisoService();
     userRole: string;

@@ -1,6 +1,5 @@
 // @flow
 import { observable, computed } from 'mobx';
-import remotedev from 'mobx-remotedev';
 
 import ResponsavelService from './../services/ResponsavelService';
 import { Aluno, Responsavel } from './../models';
@@ -8,7 +7,6 @@ import { Aluno, Responsavel } from './../models';
 // Other Stores
 import alunoStore from './AlunoStore';
 
-@remotedev({ remote: true })
 class ResponsavelStore {
     _service = new ResponsavelService();
     @observable id: ?number;

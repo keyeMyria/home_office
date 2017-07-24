@@ -2,7 +2,6 @@
 import { observable, action, computed } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { fromPromise } from 'mobx-utils';
-import remotedev from 'mobx-remotedev';
 
 import EventoService from './../services/EventoService';
 import TarefaService from './../services/TarefaService';
@@ -10,7 +9,6 @@ import TarefaService from './../services/TarefaService';
 import { Evento, Topico } from './../models';
 import type { Aluno } from './../models';
 
-@remotedev({ remote: true })
 class EventoStore {
     _service = new EventoService();
     userRole: string;

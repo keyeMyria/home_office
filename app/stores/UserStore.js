@@ -1,9 +1,10 @@
 // @flow
 import { AsyncStorage, Alert } from 'react-native';
 import { observable, action, computed } from 'mobx';
-import remotedev from 'mobx-remotedev';
 
 import httpClient from './../lib/HttpClient';
+
+import UsuarioService from './../services/UsuarioService';
 
 // Config
 import { getConfig } from './../lib/config';
@@ -36,7 +37,6 @@ type loginReturnType = {
  * this store is responsible for the basic information of the user.
  */
 
-@remotedev({ remote: true })
 class UserStore {
     @observable loading = false; // if is waiting for any request
     @observable user: ?UserType; // the user object
@@ -61,6 +61,11 @@ class UserStore {
             width: 50,
             height: 50,
         };
+    }
+
+    @computed
+    get endpointArn(): string {
+        return this.user.endpointArn;
     }
 
     @computed
@@ -131,6 +136,14 @@ class UserStore {
     logout() {
         this.user = null;
         AsyncStorage.removeItem(getConfig('@educare:async_store:user'));
+        try {
+            if (this.id) {
+                const service = new UsuarioService();
+                service.one(this.id).patch({ endpointArn: null });
+            }
+        } catch (error) {
+            console.warn('Não foi possivél remover o arn do usuário');
+        }
     }
 
     /**
