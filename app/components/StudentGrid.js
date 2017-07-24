@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { ListItem, Grid, Row, Col, Text,
-         CheckBox, View, Input } from 'native-base';
+         CheckBox, Input } from 'native-base';
 
 import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
@@ -32,8 +32,8 @@ export default class StudentGrid extends Component {
                 onPress(this._isChecked, aluno.id);
             },
         };
-
         const isProva = taskType === 'PROVA';
+        console.warn(taskType);
 
         return (
           <ListItem>
@@ -65,11 +65,9 @@ export default class StudentGrid extends Component {
                 </Row>
               </Col>
               <Col style={styles.coluna(100)}>
-                <Row style={{ alignItems: 'center' }}>
-                  <View >
-                    { !isProva && <CheckBox {...checkBoxProps} />}
-                    { isProva && <Input placeholder="Nota" />}
-                  </View>
+                <Row style={{ display: 'flex', alignItems: 'center', height: 55, justifyContent: 'center' }}>
+                  { !isProva && <CheckBox {...checkBoxProps} />}
+                  { isProva && <Input placeholder="Nota" style={styles.input()} />}
                 </Row>
               </Col>
             </Grid>
@@ -101,6 +99,19 @@ const styles = {
         return {
             ...this.gridColumn,
             width,
+        };
+    },
+    input: function input() {
+        return {
+            backgroundColor: '#FFFFFF',
+            borderWidth: 1,
+            borderColor: '#E0E0E0',
+            borderRadius: 2,
+            marginTop: 15,
+            width: 30,
+            height: 30,
+            padding: 5,
+            ...this.gridRowText,
         };
     },
 };
