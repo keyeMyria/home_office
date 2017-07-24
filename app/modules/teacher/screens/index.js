@@ -12,6 +12,7 @@ import SetDateForClassScreen from './SetDateForClassScreen';
 import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
 import ComunicadosScreen from './ComunicadosScreen';
+import LancarNotasScreen from './LancarNotasScreen';
 
 export {
     ExerciseScreen,
@@ -27,4 +28,5 @@ export {
     ExerciseConfigurationScreen,
     SelectQuestionScreen,
     ComunicadosScreen,
+    LancarNotasScreen,
 };

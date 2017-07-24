@@ -26,4 +26,5 @@ export default class EventoService extends CollectionService {
     findByTurma(id: number) {
         return super.search({ id });
     }
+
 }

@@ -42,7 +42,7 @@ export default class CalendarScreen extends Component {
         return (
           <ScreenShell {...this.screenShellProps}>
             <BubbleMenu />
-            <CalendarModal onClose={this.hideModal} />
+            <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
             <List agendaList>
               {this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}
               {this.renderWeek('Semanas Atual', isThisWeek)}

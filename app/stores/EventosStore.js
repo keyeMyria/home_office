@@ -6,6 +6,7 @@ import remotedev from 'mobx-remotedev';
 
 import EventoService from './../services/EventoService';
 import TarefaService from './../services/TarefaService';
+
 import { Evento, Topico } from './../models';
 import type { Aluno } from './../models';
 
@@ -17,6 +18,7 @@ class EventoStore {
     @observable eventosMap: ObservableMap<Evento> = observable.map({});
     @observable error = false;
     @observable selectedEvent: ?Evento;
+    @observable selectedEventLancar: ?Evento;
     @observable selectedEventTopics: any;
 
     @computed
@@ -41,6 +43,18 @@ class EventoStore {
             this.setLoading(true);
             const eventos = await this._service.findByProfessor(professorId);
             this.setEventos(eventos.eventos);
+        } catch (error) {
+            console.error(error);
+            this.setError(true);
+        }
+    }
+
+    async deleteEvent() {
+        try {
+            if (this.selectedEvent) {
+                this.deleteEventAction(this.selectedEvent.id);
+                await this._service.delete(this.selectedEvent.id);
+            }
         } catch (error) {
             console.error(error);
             this.setError(true);
@@ -79,6 +93,12 @@ class EventoStore {
             );
         }
     };
+
+    @action
+    deleteEventAction = (id: number): void => {
+        this.eventosMap.delete(`${id}`);
+    };
+
 }
 
 const eventoStore = new EventoStore();
