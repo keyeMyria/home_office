@@ -1,6 +1,5 @@
 // @flow
 import { observable } from 'mobx';
-import remotedev from 'mobx-remotedev';
 
 import AlunoService from './../services/AlunoService';
 import { Aluno } from './../models';
@@ -9,7 +8,6 @@ import { Aluno } from './../models';
 import eventoStore from './EventosStore';
 import avisoStore from './AvisoStore';
 
-@remotedev({ remote: true })
 class AlunoStore {
     _service = new AlunoService();
     @observable id: number;

@@ -17,6 +17,7 @@ type Role = 'ALUNO' | 'RESPONSAVEL' | 'PROFESSOR';
     mensagens: models.OneToMany('Mensagem'),
     chats: models.ManyToMany('Chat'),
     chatGroups: models.ManyToMany('ChatGroup'),
+    endpointArn: models.String(),
 })
 export default class Usuario extends models.Model {
     nome: string;
@@ -29,4 +30,5 @@ export default class Usuario extends models.Model {
     mensagens: Array<Mensagem>;
     chats: Array<Chat>;
     chatGroups: Array<ChatGroup>;
+    endpointArn: string;
 }
