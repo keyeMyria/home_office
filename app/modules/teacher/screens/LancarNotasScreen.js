@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 
 import { observable } from 'mobx';
@@ -10,16 +9,30 @@ import eventoStore from '../../../stores/EventosStore';
 import StudentGrid from '../../../components/StudentGrid';
 import ScreenShell from '../../../components/ScreenShell';
 
-import AlunoService from '../../../services/AlunoService';
+import { AlunoService, NotaService } from '../../../services';
 
-import { Evento, Aluno } from '../../../models';
+import { Evento, Aluno, Nota } from '../../../models';
 
 @observer
 export default class LancarNotasScreen extends Component {
 
-    _service = new AlunoService();
-    @observable _alunosByEvento: any;
-    @observable _alunosChecked: Array<number> = [];
+    _taskType: any;
+    _alunoService = new AlunoService();
+    _notaService = new NotaService();
+
+    @observable alunosAndNotas: Array<Map<String, Object>> = [];
+
+    constructor() {
+        super();
+
+        if (eventoStore.selectedEventLancar && eventoStore.selectedEventLancar.tarefa) {
+            this._taskType = eventoStore.selectedEventLancar.tarefa.tipo;
+        }
+
+        this.onPressCheckBox = this.onPressCheckBox.bind(this);
+        this.onChangeInputText = this.onChangeInputText.bind(this);
+        this.getNotaByAluno = this.getNotaByAluno.bind(this);
+    }
 
     get screenShellProps(): Object {
         const { navigate } = this.props.navigation;
@@ -41,60 +54,96 @@ export default class LancarNotasScreen extends Component {
     }
 
     saveStudentsTask() {
-        // $FlowFixMe
-        const event:Evento = eventoStore.selectedEventLancar;
+        this.alunosAndNotas.forEach((item) => {
+            const nota = item.get('nota');
 
-        this._alunosChecked.forEach((alunoId) => {
-            const data = {
-                aluno: this._service.one(alunoId).fullPath,
-                disciplina: event.tarefa.disciplina._links.self,
-                lancado: true,
-                naoEntregue: null,
-                pontuacao: null,
-                tarefa: null,
-            };
-            console.log(data);
+            if (nota.id === null) {
+                // post
+                this._notaService.post(nota);
+            } else {
+                // patch
+                this._notaService.patch(nota);
+            }
         });
+    }
+
+    async getNotaByAluno(event, aluno) {
+        const nota = await this._notaService.findByEventoAndAluno(event.id, aluno.id);
+        return nota;
     }
 
     componentWillMount() {
         // $FlowFixMe
         const event:Evento = eventoStore.selectedEventLancar;
+        const component = this;
 
-        this._service.findByEvento(event.turma.ano.id).then((data) => {
-            this._alunosByEvento = data.alunos;
+        component._alunoService.findByEvento(event.id).then((data) => {
+            data.alunos.forEach((aluno) => {
+                // Loading the grades when component is rendered
+                component.getNotaByAluno(event, aluno).then((nota) => {
+                    const userData = new Map();
+
+                    userData.set('nota', nota);
+                    userData.set('aluno', aluno);
+                    component.alunosAndNotas.push(userData);
+                });
+            });
         });
     }
 
+    updateAlunosAndNotas(value, alunoId, type) {
+        this.alunosAndNotas = this.alunosAndNotas.map((item) => {
+            const aluno = item.get('aluno');
+            let nota = item.get('nota');
+
+            if (aluno.id === alunoId) {
+                if (nota === null) {
+                    nota = new Nota();
+                    const evento = eventoStore.selectedEventLancar;
+                    nota.aluno = aluno;
+                    nota.disciplina = evento.disciplina;
+                    nota.tarefa = evento.disciplina.tarefa;
+                }
+
+                if (type === 'PROVA') {
+                    nota.lancado = value;
+                } else {
+                    nota.pontuacao = value;
+                }
+
+                item.set('nota', nota);
+            }
+            return item;
+        });
+    }
+
+    onPressCheckBox(value, alunoId) {
+        this.updateAlunosAndNotas.bind(this)(value, alunoId, this._taskType);
+    }
+
+    onChangeInputText(value, alunoId) {
+        this.updateAlunosAndNotas.bind(this)(value, alunoId, this._taskType);
+    }
+
     render() {
-        const items = this._alunosByEvento || [];
+        const alunosAndNotas = this.alunosAndNotas || [];
+
         // $FlowFixMe
         const event:Evento = eventoStore.selectedEventLancar;
         const taskType = event.tarefa.tipo;
 
-        const onPress = (value, studenId) => {
-            if (value) {
-                this._alunosChecked.push(studenId);
-            } else {
-                const index = this._alunosChecked.indexOf(studenId);
-
-                if (index !== -1) {
-                    this._alunosChecked.splice(index, 1);
-                }
-            }
-        };
-
         return (
           <ScreenShell {...this.screenShellProps}>
-            {items.map((item) => {
-                const aluno:Aluno = item;
-                // $FlowFixMe
+            {alunosAndNotas && alunosAndNotas.map((item) => {
+                const aluno:Aluno = item.get('aluno');
                 return (<StudentGrid
-                  key={item.id}
+                  key={aluno.id}
                   aluno={aluno}
                   evento={event}
                   taskType={taskType}
-                  onPress={onPress}
+                  nota={`${item.get('nota').pontuacao}`}
+                  onPress={this.onPressCheckBox}
+                  onChange={this.onChangeInputText}
                 />);
             })}
           </ScreenShell>
