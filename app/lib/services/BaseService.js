@@ -60,7 +60,6 @@ export default class BaseService {
     }
 
     async _delete(url: string, config?: any) {
-        console.log(url);
         return this._invoke(() => this._axios.delete(url, config));
     }
 
