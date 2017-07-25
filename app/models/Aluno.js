@@ -23,7 +23,7 @@ type Role = 'ALUNO' | 'PROFESSOR' | 'DIRETOR';
     enabled: models.Boolean(),
     lastPasswordResetDate: models.Date(),
     role: models.String(),
-    telefones: models.Array(),
+    telefones: models.String(),
     mensagens: models.OneToMany('Mensagem'),
     chats: models.ManyToMany('Chat'),
     chatGroups: models.ManyToMany('ChatGroup'),
@@ -46,7 +46,7 @@ export default class Aluno extends models.Model {
     enabled: boolean;
     lastPasswordResetDate: Date;
     role: Role;
-    telefones: Array<string>;
+    telefones: string;
     mensagens: Array<Mensagem>;
     chats: Array<Chat>;
     chatGroups: Array<ChatGroup>;

@@ -9,10 +9,12 @@ import { createStore } from 'redux';
 // Theme
 import { educareTheme } from './app/themes/educareTheme';
 
+import pushHandler from './app/lib/push';
 import allReducers from './app/reducers';
 import AppRouter from './app/AppRouter';
 
 const formStore = createStore(allReducers);
+pushHandler.configure();
 
 class EducareApp extends Component {
     render() {
