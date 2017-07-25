@@ -34,7 +34,12 @@ export function register(name, fields) {
 
         Object.keys(fields).forEach((key) => {
             Object.defineProperty(target.prototype, key, {
-                get() { return this._data$[key]; },
+                get() {
+                    return this._data$[key];
+                },
+                set(value) {
+                    this._data$[key] = value;
+                },
                 configurable: true,
             });
         });

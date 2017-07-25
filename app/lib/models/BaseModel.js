@@ -22,9 +22,33 @@ export default class BaseModel {
                 result[key] = fields[key](data[key], this, key);
             });
             this._data$ = observable(result);
-            this._links = data.link;
+            this._links = data.link || {};
         } else {
             this._data$ = observable({});
         }
+    }
+
+    toJS(): Object {
+        const result = {};
+        const fields = this.constructor.fields;
+        Object.keys(fields).forEach((key) => {
+            if (this._data$[key] !== undefined) {
+                const value = this._data$[key];
+                result[key] = (value && value._selfLink) || value;
+            }
+        });
+        return result;
+    }
+
+    get _selfLink(): ?string {
+        const link = this._links.self;
+        if (link) {
+            if (typeof link === 'string') {
+                return link;
+            } else if (link.fullPath) {
+                return link.fullPath;
+            }
+        }
+        return null;
     }
 }
