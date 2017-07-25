@@ -139,6 +139,25 @@ export default class CalendarModal extends Component {
     }
 
     editEvent() {
+        const eventType = eventoStore.selectedEvent;
+
+        switch (eventType) {
+        case 'TRABALHO':
+            this.props.navigate('ExerciseScreen');
+            break;
+        case 'PROVA':
+            this.props.navigate('ExamScreen');
+            break;
+        case 'EXERCICIO':
+            this.props.navigate('ExerciseScreen');
+            break;
+        case 'LISTA_ONLINE':
+            this.props.navigate('ExerciseScreen');
+            break;
+        default:
+            break;
+        }
+
         this.props.onClose();
     }
 

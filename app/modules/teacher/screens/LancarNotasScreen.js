@@ -77,18 +77,22 @@ export default class LancarNotasScreen extends Component {
         const event:Evento = eventoStore.selectedEventLancar;
         const component = this;
 
-        component._alunoService.findByEvento(event.id).then((data) => {
-            data.alunos.forEach((aluno) => {
-                // Loading the grades when component is rendered
-                component.getNotaByAluno(event, aluno).then((nota) => {
-                    const userData = new Map();
+        try {
+            component._alunoService.findByEvento(event.id).then((data) => {
+                data.alunos.forEach((aluno) => {
+                    // Loading the grades when component is rendered
+                    component.getNotaByAluno(event, aluno).then((nota) => {
+                        const userData = new Map();
 
-                    userData.set('nota', nota);
-                    userData.set('aluno', aluno);
-                    component.alunosAndNotas.push(userData);
+                        userData.set('nota', nota);
+                        userData.set('aluno', aluno);
+                        component.alunosAndNotas.push(userData);
+                    });
                 });
             });
-        });
+        } catch (error) {
+            console.log(`No event found for event ${event.id}`);
+        }
     }
 
     updateAlunosAndNotas(value, alunoId, type) {
@@ -141,7 +145,7 @@ export default class LancarNotasScreen extends Component {
                   aluno={aluno}
                   evento={event}
                   taskType={taskType}
-                  nota={`${item.get('nota').pontuacao}`}
+                  nota={item.get('nota') && `${item.get('nota').pontuacao}`}
                   onPress={this.onPressCheckBox}
                   onChange={this.onChangeInputText}
                 />);
