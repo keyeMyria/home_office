@@ -1,9 +1,10 @@
 // @flow
 import { observable, computed, action } from 'mobx';
+import type { ObservableMap } from 'mobx';
 
 import ProfessorService from './../services/ProfessorService';
 import AnoService from './../services/AnoService';
-import { Professor, Ano } from './../models';
+import { Professor, Ano, Disciplina } from './../models';
 
 // Other Stores
 import eventoStore from './EventosStore';
@@ -14,7 +15,8 @@ class ProfessorStore {
     @observable id: number;
     @observable loading = false;
     @observable professor: ?Professor;
-    @observable anos: Array<Ano> = [];
+    @observable anosMap: ObservableMap<Ano> = observable.map({});
+    @observable disciplinasMap: ObservableMap<Disciplina> = observable.map({});
     @observable anoSelectedId: number;
     @observable error = false;
     @observable errorMessage = '';
@@ -40,21 +42,42 @@ class ProfessorStore {
     }
 
     async fetchAnos(id: number) {
-        const anos = await new AnoService().findByProfessor(id);
-        this.anos = Ano.fromArray(anos.anos);
+        const response = await new AnoService().findByProfessor(id);
+        const anos = Ano.fromArray(response.anos).map(a => [a.id, new Ano(a)]);
+        this.anosMap.replace(anos);
+        const fisrtAnoID = this.anosMap.keys()[0];
+        if (!this.anoSelectedId && fisrtAnoID) {
+            this.anoSelectedId = parseInt(fisrtAnoID, 10);
+        }
+    }
+
+    async fetchDisciplinas(id: number) {
+        const response = await this._service.one(id).all('disciplinas').get();
+        const disciplinas = Disciplina.fromArray(response.disciplinas).map(a => [
+            a.id,
+            new Disciplina(a),
+        ]);
+        this.disciplinasMap.replace(disciplinas);
     }
 
     @action
     selectAno = (id: number) => {
-        const ano = this.anos.find(a => a.id === id);
-        if (ano) {
-            this.anoSelectedId = id;
-        }
+        this.anoSelectedId = id;
     };
 
     @computed
+    get disciplinas(): Array<Disciplina> {
+        return this.disciplinasMap.values();
+    }
+
+    @computed
+    get anos(): Array<Ano> {
+        return this.anosMap.values();
+    }
+
+    @computed
     get anoSelected(): Ano {
-        return this.anos.find(a => a.id === this.anoSelectedId) || this.anos[0];
+        return this.anosMap.get(this.anoSelectedId);
     }
 }
 

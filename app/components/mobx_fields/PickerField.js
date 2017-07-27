@@ -5,44 +5,44 @@ import { View } from 'react-native';
 import { Picker, Item, Text } from 'native-base';
 import { observer } from 'mobx-react/native';
 
+import _ from 'lodash';
+
 @observer
 export default class PickerField extends Component {
     props: {
-    label: string,
-    value: number | string,
-    items: Array<any>,
-    itemValue: string,
-    itemLabel: string,
-    showEmpty: string,
-    emptyLabel: string,
-    emptyValue: string | number,
-    iosHeader: string,
-    onChange: (string | number) => void,
-  };
+        name: string, // nome do campo
+        label: string, // The label
+        value: number | string, // The current value
+        items: Array<Object>, // Array of options to render
+        valKey: string, // Key usada para resgatar o valor item
+        labelKey: string, // Key usada para resgatar o valor do label de cada item
+        // assim como valKey, pode ser usada qualquer expressão aceita
+        // pela função `get` do lodash
+        placeholder: string, // Placeholder do campo
+        placeholderValue: string | number, // Valor padrão do placeholder
+        iosHeader: string, // Header exibido no select do iOS
+        onChange: any => void, // Callback
+    };
 
     static defaultProps = {
-        itemValue: 'id',
-        itemLabel: 'nome',
-        showEmpty: true,
-        emptyLabel: '-- Selecione --',
-        emptyValue: 0,
+        valKey: 'id',
+        labelKey: 'titulo',
+        placeholder: '-- Selecione --',
+        placeholderValue: 0,
         iosHeader: 'Selecione',
-        value: 0,
     };
 
     get emptyItem(): Picker.Item {
-        const { emptyValue, emptyLabel } = this.props;
-        return (
-          <Picker.Item key={emptyValue} value={emptyValue} label={emptyLabel} />
-        );
+        const { placeholderValue, placeholder } = this.props;
+        return <Picker.Item key={placeholderValue} value={placeholderValue} label={placeholder} />;
     }
 
     renderItems() {
-        const { itemValue, itemLabel } = this.props;
+        const { labelKey, valKey } = this.props;
 
         const mapFunc = (item, index) => {
-            const key = item[itemValue] || index;
-            const label = item[itemLabel] || '-- invalid label --';
+            const key = _.get(item, valKey) || index + 1;
+            const label = _.get(item, labelKey) || '-- invalid label --';
             return <Picker.Item key={key} value={key} label={label} />;
         };
 
@@ -58,7 +58,9 @@ export default class PickerField extends Component {
                 {label}
               </Text>
               <Picker
-                ref={ref => (this._root = ref)}
+                ref={(ref) => {
+                    this._root = ref;
+                }}
                 iosHeader={iosHeader}
                 mode="dialog"
                 selectedValue={value}

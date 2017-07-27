@@ -8,6 +8,7 @@ import UsuarioService from './../services/UsuarioService';
 
 // Config
 import { getConfig } from './../lib/config';
+import pushHandler from './../lib/push';
 
 import { Turma } from './../models';
 
@@ -23,8 +24,9 @@ type UserType = {
     nome: string,
     imagem: string,
     email: string,
-    telefones: Array<string>,
+    telefones: string,
     turma?: Turma,
+    endpointArn?: string,
 };
 
 type loginReturnType = {
@@ -64,8 +66,8 @@ class UserStore {
     }
 
     @computed
-    get endpointArn(): string {
-        return this.user.endpointArn;
+    get endpointArn(): ?string {
+        return this.user && this.user.endpointArn;
     }
 
     @computed
@@ -95,6 +97,15 @@ class UserStore {
     }
 
     @computed
+    get homeScreen(): string {
+        return {
+            ALUNO: 'StudentHomeRouter',
+            PROFESSOR: 'TeacherHomeRouter',
+            RESPONSAVEL: 'ParentHomeRouter',
+        }[this.role];
+    }
+
+    @computed
     get nome(): string {
         return this.user ? this.user.nome : '';
     }
@@ -114,6 +125,23 @@ class UserStore {
             this.setupUserStore(user);
         }
         return this;
+    }
+    async checkEndPointARN() {
+        try {
+            if (!this.user) return;
+            const id = this.user.id;
+            const lastEndpoint = this.user.endpointArn;
+            const currentEndpoint = await pushHandler.getPlatformEndpoint();
+            if (lastEndpoint !== currentEndpoint) {
+                await new UsuarioService().one(id).patch({
+                    endpointArn: currentEndpoint,
+                });
+            }
+        } catch (error) {
+            if (__DEV__) {
+                console.error(error);
+            }
+        }
     }
 
     setupUserStore(user: UserType) {

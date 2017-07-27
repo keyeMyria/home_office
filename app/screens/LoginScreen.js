@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, Image, Keyboard } from 'react-native';
 import { Form, Item, Input, Button, Text, Thumbnail, ActionSheet, Icon } from 'native-base';
 
-import { observable, when } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
 import userStore from './../stores/UserStore';
@@ -17,16 +17,6 @@ export default class LoginScreen extends Component {
         username: '',
         password: '',
     };
-
-    constructor(props: any) {
-        super(props);
-        const onAuth = () => {
-            if (userStore.role) {
-                this.props.navigation.navigate(ROLE_ROUTER_MAP[userStore.role]);
-            }
-        };
-        when(() => userStore.hasAuth, onAuth);
-    }
 
     /**
      * Handle the button click
@@ -43,7 +33,9 @@ export default class LoginScreen extends Component {
     }
 
     renderUsername() {
-        const onChange = val => (this.store.username = val);
+        const onChange = (val) => {
+            this.store.username = val;
+        };
 
         return (
           <Item style={styles.loginInput}>
@@ -54,7 +46,9 @@ export default class LoginScreen extends Component {
     }
 
     renderPassword() {
-        const onChange = val => (this.store.password = val);
+        const onChange = (val) => {
+            this.store.password = val;
+        };
         return (
           <Item style={styles.loginInput}>
             <Icon active name="lock-outline" />
@@ -81,6 +75,7 @@ export default class LoginScreen extends Component {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <View style={styles.loginView}>
+              <View style={{ flex: 1 }} />
               <Thumbnail source={ICON_IMG} style={styles.loginImage} />
               <Form style={styles.loginForm}>
                 {this.renderUsername()}
@@ -89,14 +84,12 @@ export default class LoginScreen extends Component {
               {this.renderLoginButton()}
               <Text style={styles.forgotPassword}>Esqueceu a Senha?</Text>
               <View style={{ flex: 1 }} />
-              <Button block style={styles.facebook}>
-                <Text>Entrar com Facebook</Text>
-              </Button>
-              <ActionSheet
-                ref={(c) => {
-                    this.actionSheet = c;
-                }}
-              />
+              {__DEV__ &&
+                <ActionSheet
+                  ref={(c) => {
+                      this.actionSheet = c;
+                  }}
+                />}
             </View>
           </Image>
         );
@@ -171,12 +164,6 @@ const LOGIN_MOCK = [
     { name: 'RESPONSAVEL', username: 'responsavel', password: 'iogurte' },
     { name: 'ALUNO', username: 'aluno', password: 'iogurte' },
 ];
-
-const ROLE_ROUTER_MAP = {
-    ALUNO: 'StudentHomeRouter',
-    PROFESSOR: 'TeacherHomeRouter',
-    RESPONSAVEL: 'ParentHomeRouter',
-};
 
 const BG_IMG = require('../img/bg.jpg');
 const ICON_IMG = require('../img/logo.png');
