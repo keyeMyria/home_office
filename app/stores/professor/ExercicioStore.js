@@ -8,12 +8,8 @@ import ProfessorStore from '../../stores/ProfessorStore';
 import CONFIG from './../../../config';
 
 class ExercicioStore {
-    service: ExercicioService;
+    service: ExercicioService = new ExercicioService();
     @observable exercicios: Array<any>; // TODO: Colocar o model especifico
-
-    constructor() {
-        this.service = new ExercicioService();
-    }
 
     async load() {
         const result = await this.service.get();
@@ -36,6 +32,5 @@ class ExercicioStore {
 }
 
 const store = new ExercicioStore();
-store.load();
 
 export default store;

@@ -1,7 +1,7 @@
-import { AsyncStorage } from 'react-native';
+// @flow
 import PushNotification from 'react-native-push-notification';
 import uuid from 'uuid';
-import AWS from 'aws-sdk';
+import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 import CONFIG from './../../config';
 
@@ -11,71 +11,53 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: CONFIG.PUSH.IDENTITY_POOL_ID,
 });
 
-type asyncStoreReturnObject = {
-    token: string,
-    endpoint: string,
-};
-
 class PushHandler {
-    _token: string;
-    _endpointArn: string;
+    _token: ?string;
+    _endpointArn: ?string;
 
-    constructor() {
-        this.init();
-    }
+    async getPlatformEndpoint() {
+        if (this._endpointArn) return this._endpointArn;
+        const params = {
+            PlatformApplicationArn: CONFIG.PUSH.APPLICATION_ARN,
+            Token: uuid(),
+            Attributes: { Token: this._token },
+        };
 
-    async init() {
-        const { token, endpoint } = await this._getFromAsyncStorage();
-        this._token = token || null;
-        this._endpointArn = endpoint || null;
-    }
-
-    _getFromAsyncStorage(): Promise<asyncStoreReturnObject> {
-        return Promise.all([
-            AsyncStorage.getItem(CONFIG.ASYNC_STORE.PUSH_TOKEN),
-            AsyncStorage.getItem(CONFIG.ASYNC_STORE.PUSH_ENDPOINT),
-        ]).then(([token, endpoint]) => ({ token, endpoint }));
-    }
-
-    _saveInAsyncStorage({ token, endpoint }: asyncStoreReturnObject): void {
-        AsyncStorage.setItem(CONFIG.ASYNC_STORE.PUSH_TOKEN, token);
-        AsyncStorage.setItem(CONFIG.ASYNC_STORE.PUSH_ENDPOINT, endpoint);
-    }
-
-    _clearAsyncStorage(): void {
-        AsyncStorage.removeItem(CONFIG.ASYNC_STORE.PUSH_TOKEN);
-        AsyncStorage.removeItem(CONFIG.ASYNC_STORE.PUSH_ENDPOINT);
-    }
-
-    async getPlatformEndpoint(token: string) {
-        return new Promise((resolve, reject) => {
-            const callback = (e, d) => (!e ? resolve(d) : reject(e));
-            const params = {
-                PlatformApplicationArn: CONFIG.PUSH.APPLICATION_ARN,
-                Token: uuid(),
-                Attributes: { Token: token },
-                CustomUserData: 'TESTE',
-            };
+        try {
             const sns = new AWS.SNS({ region: CONFIG.PUSH.REGION });
-            sns.createPlatformEndpoint(params, callback);
-        });
+            const response = await sns.createPlatformEndpoint(params).promise();
+            this._endpointArn = response.EndpointArn;
+            if (__DEV__) {
+                console.log('END_POINT_SRN', this._endpointArn);
+            }
+            return response.EndpointArn;
+        } catch (error) {
+            if (__DEV__) {
+                console.error(error);
+            }
+            return undefined;
+        }
     }
 
-    needsUpdate(endpoint: string) {
-        return this._endpointArn !== endpoint;
-    }
-
-    onError = (error) => {
-        console.warn('ERROR:', error);
-    }
-
-    onToken = (token) => {
-        console.log('TOKEN:', token);
+    onError = (error: any) => {
+        if (__DEV__) {
+            console.warn('PUSH ERROR:', error);
+        }
     };
 
-    onNotification = (notification) => {
-        console.warn('NOTIFICATION:', notification);
-    }
+    onToken = (token: any) => {
+        this._token = token.token;
+        this.getPlatformEndpoint(token);
+        if (__DEV__) {
+            console.log('TOKEN', this._token);
+        }
+    };
+
+    onNotification = (notification: any) => {
+        if (__DEV__) {
+            console.warn('NOTIFICATION:', notification);
+        }
+    };
 
     configureNotifications(): void {
         PushNotification.configure({

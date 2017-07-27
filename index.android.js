@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 import { StyleProvider } from 'native-base';
@@ -14,7 +15,8 @@ import allReducers from './app/reducers';
 import AppRouter from './app/AppRouter';
 
 const formStore = createStore(allReducers);
-pushHandler.configure();
+
+pushHandler.configureNotifications();
 
 class EducareApp extends Component {
     render() {

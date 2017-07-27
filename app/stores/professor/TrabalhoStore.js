@@ -1,6 +1,6 @@
 // @flow
 
-import { observable, extendObservable, action } from 'mobx';
+import { observable } from 'mobx';
 import { TrabalhoService } from '../../services';
 
 import ProfessorStore from '../../stores/ProfessorStore';
@@ -8,18 +8,9 @@ import ProfessorStore from '../../stores/ProfessorStore';
 import CONFIG from '../../../config';
 
 class TrabalhoStore {
-    service: TrabalhoService;
+    service: TrabalhoService = new TrabalhoService();
     @observable trabalhos: Array<any>; // TODO: Colocar o model especifico
     @observable errorMessage: string; // TODO: Add computed to show error message
-
-    constructor() {
-        this.service = new TrabalhoService();
-    }
-
-    async load() {
-        const result = await this.service.get();
-        this.trabalhos = result.trabalhos;
-    }
 
     async save(data: Object) {
         const readyData = {
@@ -34,6 +25,5 @@ class TrabalhoStore {
 }
 
 const store = new TrabalhoStore();
-store.load();
 
 export default store;
