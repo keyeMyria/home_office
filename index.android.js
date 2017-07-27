@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 import { StyleProvider } from 'native-base';
+import codePush from 'react-native-code-push';
 
 // Redux Form Store
 import { Provider } from 'react-redux';
@@ -18,6 +19,7 @@ const formStore = createStore(allReducers);
 
 pushHandler.configureNotifications();
 
+@codePush
 class EducareApp extends Component {
     render() {
         return (
