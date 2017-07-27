@@ -2,6 +2,9 @@
 
 import { observable } from 'mobx';
 import { ExercicioService } from '../../services';
+
+import ProfessorStore from '../../stores/ProfessorStore';
+
 import CONFIG from './../../../config';
 
 class ExercicioStore {
@@ -20,11 +23,12 @@ class ExercicioStore {
     async save(data: Object) {
         const readyData = {
             ...data,
-            disciplina: `${CONFIG.API.BASE_URL}/disciplinas/${data.disciplina}`,
+            disciplina: `${CONFIG.API.BASE_URL}disciplinas/${data.disciplina}`,
             titulo: 'Teste',
             topicos: data.topicos
-                ? data.topicos.map(item => `${CONFIG.API.BASE_URL}/topicos/${item}`)
+                ? data.topicos.map(item => `${CONFIG.API.BASE_URL}topicos/${item}`)
                 : [],
+            ano: `${CONFIG.API.BASE_URL}anos/${ProfessorStore.anoSelectedId}`,
         };
         const result = await this.service.post(readyData);
         if (__DEV__) console.log(result); // eslint-disable-line

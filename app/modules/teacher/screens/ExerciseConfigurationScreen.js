@@ -16,11 +16,13 @@ import {
     ListItem,
     CheckBox,
 } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import _ from 'underscore';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+import ExercicioStore from '../../../stores/professor/ExercicioStore';
 
 import { styles } from '../../../themes/educareTheme';
 
@@ -134,8 +136,8 @@ class ExerciseConfigurationScreen extends Component {
     }
 
     getSubjectAreas() {
-        const { subjectAreaId } = this.props;
-        return store.teacher.subjectAreas.filter(subject => subject.id === subjectAreaId);
+        const { disciplina } = this.props.screenFormValues;
+        return store.teacher.subjectAreas.filter(subject => subject.id === disciplina);
     }
 
     getTopics() {
@@ -325,6 +327,14 @@ class ExerciseConfigurationScreen extends Component {
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
               hideModal={() => this.hideSetDateForClassScreen()}
+              screenFormValues={{
+                  ...this.props.screenFormValues,
+                  ...this.props.formValues,
+                  questionDatabaseTypeId: this.state.questionDatabaseTypeId,
+                  questionGenerationTypeId: this.state.questionGenerationTypeId,
+                  topicos: store.exerciseTopics.toJS(),
+              }}
+              screenStore={ExercicioStore}
             />
             <SelectQuestionScreen
               visible={this.state.selectQuestionScreenVisible}
@@ -335,4 +345,12 @@ class ExerciseConfigurationScreen extends Component {
     }
 }
 
-export default reduxForm({ form: 'formExerciseConfigurationScreen' })(ExerciseConfigurationScreen);
+const ExerciseConfigurationScreenForm = reduxForm({ form: 'formExerciseConfigurationScreen' })(ExerciseConfigurationScreen);
+const selector = formValueSelector('formExerciseConfigurationScreen');
+export default connect(state => ({
+  formValues: {
+      numQuestoesFaceis: selector(state, 'numQuestoesFaceis'),
+      numQuestoesMedias: selector(state, 'numQuestoesMedias'),
+      numQuestoesDificeis: selector(state, 'numQuestoesDificeis'),
+  },
+}))(ExerciseConfigurationScreenForm);

@@ -12,10 +12,12 @@ import {
     Picker,
     Text,
 } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+import TrabalhoStore from '../../../stores/professor/TrabalhoStore';
 
 import { PickerField, TextField } from '../../../components/fields';
 
@@ -93,7 +95,7 @@ class HomeworkScreen extends Component {
                   {subjectAreaItems}
                 </Field>
                 <Field
-                  name="periodo"
+                  name="bimestre"
                   label="Bimestre"
                   component={PickerField}
                   props={{ initialValue: 1 }}
@@ -101,7 +103,7 @@ class HomeworkScreen extends Component {
                   {periodItems}
                 </Field>
                 <Field
-                  name="grade"
+                  name="valor"
                   label="Pontuação"
                   component={PickerField}
                   props={{ initialValue: 10 }}
@@ -110,7 +112,7 @@ class HomeworkScreen extends Component {
                 </Field>
                 <Field
                   style={{ height: 150 }}
-                  name="information"
+                  name="detalhes"
                   label="Descrição da Atividade"
                   component={TextField}
                   multiline
@@ -120,10 +122,24 @@ class HomeworkScreen extends Component {
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
               hideModal={this.hideSetDateForClassScreen}
+              screenFormValues={this.props.formValues}
+              screenStore={TrabalhoStore}
             />
           </Container>
         );
     }
 }
 
-export default reduxForm({ form: 'formHomeworkScreen' })(HomeworkScreen);
+// Pass form data to props
+HomeworkScreenForm = reduxForm({ form: 'formHomeworkScreen' })(HomeworkScreen);
+const selector = formValueSelector('formHomeworkScreen');
+export default connect(
+  state => ({
+    formValues: {
+        disciplina: selector(state, 'disciplina'),
+        bimestre: selector(state, 'bimestre'),
+        valor: selector(state, 'valor'),
+        detalhes: selector(state, 'detalhes'),
+    },
+  })
+)(HomeworkScreenForm);

@@ -21,6 +21,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
+import ProvaStore from '../../../stores/professor/ProvaStore';
 
 import { PickerField } from '../../../components/fields';
 
@@ -76,8 +77,8 @@ class ExamScreen extends Component {
     }
 
     getSubjectAreas() {
-        const { subjectAreaId } = this.props;
-        return store.teacher.subjectAreas.filter(subject => subject.id === subjectAreaId);
+        const { disciplina } = this.props.formValues;
+        return store.teacher.subjectAreas.filter(subject => subject.id === disciplina);
     }
 
     getTopics() {
@@ -198,7 +199,7 @@ class ExamScreen extends Component {
                   {subjectAreaItems}
                 </Field>
                 <Field
-                  name="periodo"
+                  name="bimestre"
                   label="Bimestre"
                   component={PickerField}
                   props={{ initialValue: 1 }}
@@ -206,7 +207,7 @@ class ExamScreen extends Component {
                   {periodItems}
                 </Field>
                 <Field
-                  name="grade"
+                  name="valor"
                   label="Pontuação"
                   component={PickerField}
                   props={{ initialValue: 10 }}
@@ -222,6 +223,11 @@ class ExamScreen extends Component {
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
               hideModal={this.hideSetDateForClassScreen}
+              screenFormValues={{
+                ...this.props.formValues,
+                topicos: store.examTopics.toJS(),
+              }}
+              screenStore={ProvaStore}
             />
           </Container>
         );
@@ -231,5 +237,9 @@ class ExamScreen extends Component {
 const form = reduxForm({ form: 'formExamScreen' })(ExamScreen);
 const selector = formValueSelector('formExamScreen');
 export default connect(state => ({
-    subjectAreaId: selector(state, 'disciplina'),
+    formValues: {
+        disciplina: selector(state, 'disciplina'),
+        bimestre: selector(state, 'bimestre'),
+        valor: selector(state, 'valor'),
+    },
 }))(form);

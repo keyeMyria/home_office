@@ -29,7 +29,7 @@ export default class SelectQuestionScreen extends Component {
     checked ?
       store.uncheckExerciceQuestion(questionId) :
       store.checkExerciceQuestion(questionId);
-  }
+  };
 
   render() {
 

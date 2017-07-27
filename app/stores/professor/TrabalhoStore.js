@@ -1,23 +1,24 @@
 // @flow
 
-import { observable } from 'mobx';
-import { ProvaService } from '../../services';
+import { observable, extendObservable, action } from 'mobx';
+import { TrabalhoService } from '../../services';
 
 import ProfessorStore from '../../stores/ProfessorStore';
 
-import CONFIG from './../../../config';
+import CONFIG from '../../../config';
 
-class ProvaStore {
-    service: ProvaService;
-    @observable provas: Array<any>; // TODO: Colocar o model especifico
+class TrabalhoStore {
+    service: TrabalhoService;
+    @observable trabalhos: Array<any>; // TODO: Colocar o model especifico
+    @observable errorMessage: string; // TODO: Add computed to show error message
 
     constructor() {
-        this.service = new ProvaService();
+        this.service = new TrabalhoService();
     }
 
     async load() {
         const result = await this.service.get();
-        this.provas = result.provas;
+        this.trabalhos = result.trabalhos;
     }
 
     async save(data: Object) {
@@ -25,9 +26,6 @@ class ProvaStore {
             ...data,
             disciplina: `${CONFIG.API.BASE_URL}disciplinas/${data.disciplina}`,
             titulo: 'Teste',
-            topicos: data.topicos
-                ? data.topicos.map(item => `${CONFIG.API.BASE_URL}topicos/${item}`)
-                : [],
             ano: `${CONFIG.API.BASE_URL}anos/${ProfessorStore.anoSelectedId}`,
         };
         const result = await this.service.post(readyData);
@@ -35,7 +33,7 @@ class ProvaStore {
     }
 }
 
-const store = new ProvaStore();
+const store = new TrabalhoStore();
 store.load();
 
 export default store;
