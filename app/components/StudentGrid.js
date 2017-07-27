@@ -17,23 +17,34 @@ export default class StudentGrid extends Component {
         aluno: Aluno,
         evento: Evento,
         taskType: String,
-        onPress: any
+        onPress: any,
+        onChange: any,
+        nota: number
     };
 
     @observable _isChecked = false;
+    @observable _inputValue = '';
 
     render() {
-        const { aluno, evento, onPress, taskType } = this.props;
+        const { aluno, evento, onPress, taskType, onChange, nota } = this.props;
+
         const checkBoxProps = {
-            checked: this._isChecked,
+            checked: nota !== 'null' ? nota : this._isChecked,
             style: { marginRight: 20 },
             onPress: () => {
                 this._isChecked = !this._isChecked;
                 onPress(this._isChecked, aluno.id);
             },
         };
+
+        const inputProps = {
+            onChangeText: (value) => {
+                onChange(value, aluno.id);
+            },
+            defaultValue: nota !== null ? nota : this._inputValue,
+        };
+
         const isProva = taskType === 'PROVA';
-        console.warn(taskType);
 
         return (
           <ListItem>
@@ -67,7 +78,7 @@ export default class StudentGrid extends Component {
               <Col style={styles.coluna(100)}>
                 <Row style={{ display: 'flex', alignItems: 'center', height: 55, justifyContent: 'center' }}>
                   { !isProva && <CheckBox {...checkBoxProps} />}
-                  { isProva && <Input placeholder="Nota" style={styles.input()} />}
+                  { isProva && <Input placeholder="Nota" style={styles.input()} {...inputProps} />}
                 </Row>
               </Col>
             </Grid>

@@ -14,4 +14,9 @@ export default class TarefaService extends CollectionService {
     findByAnoAndDisciplina(ano: number, disciplina: number) {
         return super.search({ ano, disciplina });
     }
+
+    findByEvento(evento: number) {
+        return super.search({ evento });
+    }
+
 }

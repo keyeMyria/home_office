@@ -22,4 +22,9 @@ export default class NotaService extends CollectionService {
     findByTurmaAndTarefa(turma: number, tarefa: number) {
         return super.search({ turma, tarefa });
     }
+
+    findByEventoAndAluno(evento: number, aluno: number) {
+        return super.search({ evento, aluno });
+    }
+
 }
