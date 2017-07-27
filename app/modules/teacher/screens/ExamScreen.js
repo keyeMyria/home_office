@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import {
@@ -18,39 +19,53 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
+import _ from 'lodash';
 
 import { observer } from 'mobx-react/native';
 import store from '../../../store';
-import ProvaStore from '../../../stores/professor/ProvaStore';
+import provaStore from '../../../stores/professor/ProvaStore';
+import topicoStore from '../../../stores/professor/TopicoStore';
+import professorStore from '../../../stores/ProfessorStore';
 
 import { PickerField } from '../../../components/fields';
 
 import BubbleMenu from '../../../components/BubbleMenu';
+import LoadingModal from '../../../components/LoadingModal';
 import SetDateForClassScreen from './SetDateForClassScreen';
 
 @observer
 class ExamScreen extends Component {
+    state: {
+        setDateForClassScreenVisible: boolean,
+        openTopics: number[],
+    };
+
+
     constructor(props) {
         super(props);
         this.state = {
             setDateForClassScreenVisible: false,
             openTopics: [],
         };
-        this.showSetDateForClassScreen = this.showSetDateForClassScreen.bind(this);
-        this.hideSetDateForClassScreen = this.hideSetDateForClassScreen.bind(this);
-        this.checkUncheckTopic = this.checkUncheckTopic.bind(this);
-        this.toogleTopic = this.toogleTopic.bind(this);
     }
 
-    showSetDateForClassScreen() {
+    componentWillReceiveProps(newProps) {
+        const disciplina = _.get(newProps, 'formValues.disciplina');
+        const ano = professorStore.anoSelectedId;
+        if (disciplina && ano) {
+            topicoStore.getTopicos(disciplina, ano);
+        }
+    }
+
+    showSetDateForClassScreen = () => {
         this.setState({ setDateForClassScreenVisible: true });
     }
 
-    hideSetDateForClassScreen() {
+    hideSetDateForClassScreen = () => {
         this.setState({ setDateForClassScreenVisible: false });
     }
 
-    checkUncheckTopic(checked, topicId) {
+    checkUncheckTopic = (checked, topicId) => {
         if (checked) {
             store.uncheckExamTopic(topicId);
         } else {
@@ -65,9 +80,9 @@ class ExamScreen extends Component {
     }
 
     getSubjectAreaItems() {
-        const mapFunc = (subject, index) =>
-          <Picker.Item key={index} label={subject.name} value={subject.id} />;
-        return store.teacher.subjectAreas.map(mapFunc);
+        const mapFunc = d =>
+          <Picker.Item key={d.id} label={d.titulo} value={d.id} />;
+        return professorStore.disciplinas.map(mapFunc);
     }
 
     getPeriodItems() {
@@ -104,7 +119,7 @@ class ExamScreen extends Component {
         const topics = mainTopic.subtopics;
 
         const mapFunc = (topic, index) => {
-            const checked = store.examTopics.indexOf(topic.id) !== -1;
+            const checked = topicoStore.examTopics.indexOf(topic.id) !== -1;
             const checkBoxPress = () => this.checkUncheckTopic(checked, topic.id);
             const checkBoxProps = {
                 checked,
@@ -218,16 +233,18 @@ class ExamScreen extends Component {
                   <Label>Selecione os Tópicos</Label>
                 </Item>
               </Content>
-              {this.renderTopicsSelection()}
+              <LoadingModal loading={false}>
+                {this.renderTopicsSelection()}
+              </LoadingModal>
             </Content>
             <SetDateForClassScreen
               visible={this.state.setDateForClassScreenVisible}
               hideModal={this.hideSetDateForClassScreen}
               screenFormValues={{
-                ...this.props.formValues,
-                topicos: store.examTopics.toJS(),
+                  ...this.props.formValues,
+                  topicos: store.examTopics.toJS(),
               }}
-              screenStore={ProvaStore}
+              screenStore={provaStore}
             />
           </Container>
         );
