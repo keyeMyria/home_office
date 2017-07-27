@@ -1,13 +1,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 const _color = require('color'); // eslint-disable-line
 
-const _color2 = _interopRequireDefault(_color);
 
 const _reactNative = require('react-native');
-
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
-}
 
 const deviceHeight = _reactNative.Dimensions.get('window').height;
 const deviceWidth = _reactNative.Dimensions.get('window').width;
@@ -161,7 +156,7 @@ exports.default = {
     toolbarDefaultBorder: PRIMARY_COLOR,
     iosStatusbar: 'light-content',
     get statusBarColor() {
-        return (0, _color2.default)(this.toolbarDefaultBg).darken(0.2).hexString();
+        return _color(this.toolbarDefaultBg).darken(0.2).string();
     },
 
     iconFamily: 'MaterialIcons',
@@ -219,7 +214,7 @@ exports.default = {
     radioColor: '#7e7e7e',
 
     get radioSelectedColor() {
-        return (0, _color2.default)(this.radioColor).darken(0.2).hexString();
+        return _color(this.radioColor).darken(0.2).string();
     },
 
     defaultSpinnerColor: '#45D56E',
@@ -245,7 +240,7 @@ exports.default = {
     contentPadding: 10,
 
     get darkenHeader() {
-        return (0, _color2.default)(this.tabBgColor).darken(0.03).hexString();
+        return _color(this.tabBgColor).darken(0.03).string();
     },
 
     dropdownBg: '#000',
