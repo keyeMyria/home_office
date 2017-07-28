@@ -91,5 +91,25 @@
     <false/>
     <key>CodePushDeploymentKey</key>
     <string>PJxXYvB0EUGhAOr6xAmcybgpsUxX5d3fb5cc-f2fc-4c4f-8353-0a5e5213f3e3</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb1915124495417051</string>
+        </array>
+      </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>1915124495417051</string>
+    <key>FacebookDisplayName</key>
+    <string>EducareBox</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
   </dict>
 </plist>
