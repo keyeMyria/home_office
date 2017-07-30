@@ -131,7 +131,7 @@ export default class CalendarModal extends Component {
             'Atenção!',
             'Tem certeza que quer deletar o evento?',
             [
-                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
                 { text: 'OK', onPress: () => this.confirmDeleteAction() },
             ],
             { cancelable: true },
