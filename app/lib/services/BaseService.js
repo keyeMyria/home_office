@@ -105,9 +105,7 @@ export default class BaseService {
             } else if (_.isArray(value)) {
                 result[key] = [];
                 _.each(value, (val, index) => {
-                    result[key][index] = _.isObject(val)
-                        ? this._parseObject(val)
-                        : val;
+                    result[key][index] = _.isObject(val) ? this._parseObject(val) : val;
                 });
             } else {
                 result[key] = value;
@@ -123,9 +121,7 @@ export default class BaseService {
             return this._parseObject(data);
         } catch (error) {
             // TODO: Tratar aqui o erro das chamadas rest
-            // eslint-disable-next-line no-console
-            console.warn('API_CALL_ERROR', error);
-            return null;
+            throw error;
         }
     }
 }
