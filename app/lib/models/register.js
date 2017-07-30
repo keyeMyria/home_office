@@ -9,8 +9,9 @@ const MODELS_REGISTER: Map<string, Class<BaseModel>> = new Map();
  * Caso nome não exista no registro, lança uma exceção.
  */
 export function getModel(name: string): Class<BaseModel> {
-    if (MODELS_REGISTER.has(name)) {
-        return MODELS_REGISTER.get(name);
+    const Model = MODELS_REGISTER.get(name);
+    if (Model) {
+        return Model;
     }
     throw Error(`Model com nome ${name}, não foi encontrado no registro`);
 }
@@ -18,7 +19,7 @@ export function getModel(name: string): Class<BaseModel> {
 /**
  * Registra um Model
  */
-export function register(name, fields) {
+export function register(name: string | [string], fields: Object) {
     if (!name) {
         throw Error('you must define a name for the Model');
     }
@@ -27,9 +28,11 @@ export function register(name, fields) {
         throw Error('fields must be an object');
     }
 
-    return (klass) => {
+    return (klass: any) => {
         const target = klass;
-        target.name = name;
+        const [nameSingular, pluralName] = [].concat(name);
+        target.name = nameSingular;
+        target.collectionName = pluralName || `${nameSingular.toLowerCase()}s`;
         target.fields = fields;
 
         Object.keys(fields).forEach((key) => {
@@ -43,7 +46,7 @@ export function register(name, fields) {
                 configurable: true,
             });
         });
-        MODELS_REGISTER.set(name, target);
+        MODELS_REGISTER.set(nameSingular, target);
         return target;
     };
 }
