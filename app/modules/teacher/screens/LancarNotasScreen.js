@@ -1,13 +1,19 @@
+// @flow
 import React, { Component } from 'react';
+import { Alert, View } from 'react-native';
 
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
+import { fromPromise } from 'mobx-utils';
 import { observer } from 'mobx-react/native';
+
+import logger from './../../../lib/logger';
 
 // Store
 import eventoStore from '../../../stores/EventosStore';
 
 import StudentGrid from '../../../components/StudentGrid';
 import ScreenShell from '../../../components/ScreenShell';
+import LoadingModal from '../../../components/LoadingModal';
 
 import { AlunoService, NotaService } from '../../../services';
 
@@ -15,37 +21,37 @@ import { Evento, Aluno, Nota } from '../../../models';
 
 @observer
 export default class LancarNotasScreen extends Component {
-
-    _taskType: any;
     _alunoService = new AlunoService();
     _notaService = new NotaService();
 
-    @observable alunosAndNotas: Array<Map<String, Object>> = [];
+    @observable alunosAndNotas: Array<[Nota, Aluno]> = [];
+    @observable notasSavePromise: any;
 
-    constructor() {
-        super();
-
+    @computed
+    get taskType(): string {
         if (eventoStore.selectedEventLancar && eventoStore.selectedEventLancar.tarefa) {
-            this._taskType = eventoStore.selectedEventLancar.tarefa.tipo;
+            return eventoStore.selectedEventLancar.tarefa.tipo;
         }
+        return 'PROVA';
+    }
 
-        this.onPressCheckBox = this.onPressCheckBox.bind(this);
-        this.onChangeInputText = this.onChangeInputText.bind(this);
-        this.getNotaByAluno = this.getNotaByAluno.bind(this);
+    @computed
+    get isSaving(): boolean {
+        return !!this.notasSavePromise && this.notasSavePromise.state === 'pending';
     }
 
     get screenShellProps(): Object {
         const { navigate } = this.props.navigation;
 
         // $FlowFixMe
-        const selectedTask:Evento = eventoStore.selectedEventLancar;
+        const selectedTask: Evento = eventoStore.selectedEventLancar;
 
         return {
             navigate,
-            title: selectedTask.tarefa.tipo === 'PROVA' ? 'Lançar Notas' : 'Lançar entrega',
+            title: selectedTask.tarefa.tipo === 'PROVA' ? 'Lançar Notas' : 'Lançar Entrega',
             loading: eventoStore.loading,
             rightText: 'Salvar',
-            rightPress: this.saveStudentsTask.bind(this),
+            rightPress: this.saveStudentsTask,
             leftIcon: 'arrow-back',
             leftPress: () => navigate('CalendarScreen'),
             showRight: true,
@@ -53,103 +59,97 @@ export default class LancarNotasScreen extends Component {
         };
     }
 
-    saveStudentsTask() {
-        this.alunosAndNotas.forEach((item) => {
-            const nota = item.get('nota');
+    saveStudentsTask = () => {
+        const { navigate } = this.props.navigation;
 
-            if (nota.id === null) {
-                // post
-                this._notaService.post(nota);
-            } else {
-                // patch
-                this._notaService.patch(nota);
+        const notasSavePromise = this.alunosAndNotas.map(([nota]) => {
+            if (!nota.id) {
+                return this._notaService.post(nota.toJS());
             }
+            nota.lancado = true; // eslint-disable-line no-param-reassign
+            return this._notaService.one(nota.id).patch(nota.toJS());
         });
-    }
-
-    async getNotaByAluno(event, aluno) {
-        const nota = await this._notaService.findByEventoAndAluno(event.id, aluno.id);
-        return nota;
-    }
-
-    componentWillMount() {
-        // $FlowFixMe
-        const event:Evento = eventoStore.selectedEventLancar;
-        const component = this;
-
-        try {
-            component._alunoService.findByEvento(event.id).then((data) => {
-                data.alunos.forEach((aluno) => {
-                    // Loading the grades when component is rendered
-                    component.getNotaByAluno(event, aluno).then((nota) => {
-                        const userData = new Map();
-
-                        userData.set('nota', nota);
-                        userData.set('aluno', aluno);
-                        component.alunosAndNotas.push(userData);
-                    });
-                });
+        this.notasSavePromise = fromPromise(Promise.all(notasSavePromise));
+        this.notasSavePromise.promise
+            .then(() => {
+                Alert.alert('Sucesso', 'Lançamentos salvos com sucesso');
+                navigate('CalendarScreen');
+            })
+            .catch((err) => {
+                Alert.alert('ERRO', 'Não foi possível salvar os lançamentos');
+                logger.warn(err);
             });
+    };
+
+    async getNotaByAluno(event: Evento, aluno: Aluno): Promise<[Nota, Aluno]> {
+        try {
+            const nota = await this._notaService.findByEventoAndAluno(event.id, aluno.id);
+            return [new Nota(nota), aluno];
         } catch (error) {
-            console.log(`No event found for event ${event.id}`);
+            if (error.response && error.response.status === 404) {
+                const nota = new Nota({});
+                nota.aluno = aluno;
+                nota.disciplina = event.tarefa.disciplina;
+                nota.tarefa = event.tarefa;
+                nota.lancado = true;
+                return [nota, aluno];
+            }
+            throw error;
         }
     }
 
-    updateAlunosAndNotas(value, alunoId, type) {
-        this.alunosAndNotas = this.alunosAndNotas.map((item) => {
-            const aluno = item.get('aluno');
-            let nota = item.get('nota');
+    async loadAlunos(event: Evento) {
+        try {
+            const response = await this._alunoService.findByEvento(event.id);
+            const alunos = Aluno.fromArray(response.alunos);
+            const promises = await Promise.all(
+                alunos.map(aluno => this.getNotaByAluno(event, aluno)),
+            );
+            this.alunosAndNotas = promises;
+        } catch (error) {
+            logger.error(error);
+            alert('[LNS-001] Aconteceu um erro no sistema'); // eslint-disable-line no-alert, no-undef
+        }
+    }
 
-            if (aluno.id === alunoId) {
-                if (nota === null) {
-                    nota = new Nota();
-                    const evento = eventoStore.selectedEventLancar;
-                    nota.aluno = aluno;
-                    nota.disciplina = evento.disciplina;
-                    nota.tarefa = evento.disciplina.tarefa;
-                }
-
-                if (type === 'PROVA') {
-                    nota.lancado = value;
-                } else {
-                    nota.pontuacao = value;
-                }
-
-                item.set('nota', nota);
+    componentWillMount() {
+        const event: ?Evento = eventoStore.selectedEventLancar;
+        if (event) {
+            try {
+                this.loadAlunos(event);
+            } catch (error) {
+                logger.error(`No event found for event ${event.id}`);
             }
-            return item;
-        });
+        }
     }
 
-    onPressCheckBox(value, alunoId) {
-        this.updateAlunosAndNotas.bind(this)(value, alunoId, this._taskType);
-    }
-
-    onChangeInputText(value, alunoId) {
-        this.updateAlunosAndNotas.bind(this)(value, alunoId, this._taskType);
+    renderStudentGrid([nota, aluno]: [Nota, Aluno]) {
+        const event = eventoStore.selectedEventLancar;
+        if (event) {
+            return (
+              <StudentGrid
+                key={aluno.id}
+                aluno={aluno}
+                evento={event}
+                taskType={this.taskType}
+                nota={nota}
+              />
+            );
+        }
+        return null;
     }
 
     render() {
         const alunosAndNotas = this.alunosAndNotas || [];
-
-        // $FlowFixMe
-        const event:Evento = eventoStore.selectedEventLancar;
-        const taskType = event.tarefa.tipo;
+        const savingText = 'Aguarde\nSalvando Lancamentos...';
 
         return (
           <ScreenShell {...this.screenShellProps}>
-            {alunosAndNotas && alunosAndNotas.map((item) => {
-                const aluno:Aluno = item.get('aluno');
-                return (<StudentGrid
-                  key={aluno.id}
-                  aluno={aluno}
-                  evento={event}
-                  taskType={taskType}
-                  nota={item.get('nota') && `${item.get('nota').pontuacao}`}
-                  onPress={this.onPressCheckBox}
-                  onChange={this.onChangeInputText}
-                />);
-            })}
+            <LoadingModal loading={this.isSaving} text={savingText}>
+              <View>
+                {alunosAndNotas.map(this.renderStudentGrid, this)}
+              </View>
+            </LoadingModal>
           </ScreenShell>
         );
     }

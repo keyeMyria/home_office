@@ -1,87 +1,62 @@
 // @flow
+/* eslint no-return-assign: 0 */
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { ListItem, Grid, Row, Col, Text,
-         CheckBox, Input } from 'native-base';
+import { ListItem, Left, Body, Right, Text, CheckBox, Input, Thumbnail } from 'native-base';
 
-import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-import Aluno from '../models/Aluno';
-import Evento from '../models/Evento';
+import type Aluno from '../models/Aluno';
+import type Evento from '../models/Evento';
+import type Nota from '../models/Nota';
 
 @observer
 export default class StudentGrid extends Component {
-
     props: {
         aluno: Aluno,
         evento: Evento,
-        taskType: String,
-        onPress: any,
-        onChange: any,
-        nota: number
+        taskType: string,
+        nota: Nota,
     };
 
-    @observable _isChecked = false;
-    @observable _inputValue = '';
-
-    render() {
-        const { aluno, evento, onPress, taskType, onChange, nota } = this.props;
-
-        const checkBoxProps = {
-            checked: nota !== 'null' ? nota : this._isChecked,
-            style: { marginRight: 20 },
-            onPress: () => {
-                this._isChecked = !this._isChecked;
-                onPress(this._isChecked, aluno.id);
-            },
-        };
-
-        const inputProps = {
-            onChangeText: (value) => {
-                onChange(value, aluno.id);
-            },
-            defaultValue: nota !== null ? nota : this._inputValue,
-        };
-
+    renderInput() {
+        const { taskType, nota } = this.props;
         const isProva = taskType === 'PROVA';
+        if (isProva) {
+            return (
+              <Input
+                placeholder="Nota"
+                style={styles.input()}
+                onChangeText={val => (nota.pontuacao = Number(val))}
+                keyboardType="numeric"
+              />
+            );
+        }
 
         return (
-          <ListItem>
-            <Grid>
-              <Col style={styles.coluna(30)}>
-                <Row>
-                  <Image style={{ width: 30, height: 50 }} source={{ uri: aluno.imagem }} />
-                </Row>
-              </Col>
-              <Col style={styles.coluna(100)}>
-                <Row>
-                  <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
-                    {aluno.nome}
-                  </Text>
-                </Row>
-              </Col>
-              <Col style={styles.coluna(30)}>
-                <Row>
-                  <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
-                    {evento.turma.titulo}
-                  </Text>
-                </Row>
-              </Col>
-              <Col style={styles.coluna(100)}>
-                <Row>
-                  <Text style={styles.gridRowText}>
-                    {evento.turma.ano.titulo}
-                  </Text>
-                </Row>
-              </Col>
-              <Col style={styles.coluna(100)}>
-                <Row style={{ display: 'flex', alignItems: 'center', height: 55, justifyContent: 'center' }}>
-                  { !isProva && <CheckBox {...checkBoxProps} />}
-                  { isProva && <Input placeholder="Nota" style={styles.input()} {...inputProps} />}
-                </Row>
-              </Col>
-            </Grid>
+          <CheckBox
+            checked={nota.naoEntregue}
+            style={{ marginRight: 20 }}
+            onPress={() => (nota.naoEntregue = !nota.naoEntregue)}
+          />
+        );
+    }
+
+    render() {
+        const { aluno, evento } = this.props;
+
+        return (
+          <ListItem avatar>
+            <Left>
+              <Thumbnail small source={aluno.imageSource} />
+            </Left>
+            <Body>
+              <Text>
+                {`${aluno.nome} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
+              </Text>
+            </Body>
+            <Right>
+              {this.renderInput()}
+            </Right>
           </ListItem>
         );
     }
@@ -114,13 +89,12 @@ const styles = {
     },
     input: function input() {
         return {
-            backgroundColor: '#FFFFFF',
             borderWidth: 1,
             borderColor: '#E0E0E0',
             borderRadius: 2,
-            marginTop: 15,
-            width: 30,
-            height: 30,
+            marginTop: 0,
+            width: 50,
+            // height: 30,
             padding: 5,
             ...this.gridRowText,
         };

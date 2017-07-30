@@ -14,7 +14,7 @@ import type Aluno from './Aluno';
     alunos: models.OneToMany('Aluno'),
 })
 export default class Turma extends models.Model {
-    id: ?number;
+    id: number;
     titulo: string;
     eventos: Array<Evento>;
     ano: Ano;

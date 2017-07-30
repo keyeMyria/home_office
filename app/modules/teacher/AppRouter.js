@@ -5,11 +5,11 @@ import { DrawerNavigator, TabNavigator } from 'react-navigation';
 import AppNavigator from './AppNavigator';
 import HomeNavigator from './HomeNavigator';
 import {
-    ExerciseScreen,
-    SelectClassScreen,
-    ExamScreen,
-    HomeworkScreen,
-    ComunicadosScreen,
+    // ExerciseScreen,
+    // SelectClassScreen,
+    // ExamScreen,
+    // HomeworkScreen,
+    // ComunicadosScreen,
     LancarNotasScreen,
 } from './screens';
 
@@ -18,10 +18,10 @@ import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../co
 const HomeRouter = TabNavigator(
     {
         CalendarScreen: { screen: CalendarScreen },
-        ExerciseScreen: { screen: ExerciseScreen },
+        // ExerciseScreen: { screen: ExerciseScreen },
         AlertScreen: { screen: AlertScreen },
-        ExamScreen: { screen: ExamScreen },
-        HomeworkScreen: { screen: HomeworkScreen },
+        // ExamScreen: { screen: ExamScreen },
+        // HomeworkScreen: { screen: HomeworkScreen },
     },
     {
         tabBarComponent: HomeNavigator,
@@ -32,8 +32,8 @@ const HomeRouter = TabNavigator(
 export default DrawerNavigator(
     {
         HomeRouter: { screen: HomeRouter },
-        ComunicadosScreen: { screen: ComunicadosScreen },
-        SelectClassScreen: { screen: SelectClassScreen },
+        // ComunicadosScreen: { screen: ComunicadosScreen },
+        // SelectClassScreen: { screen: SelectClassScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
         LancarNotasScreen: { screen: LancarNotasScreen },

@@ -1,5 +1,7 @@
 // @flow
 import * as models from './../lib/models';
+import { avatar } from './../lib/img';
+
 import type Falta from './Falta';
 import type Atraso from './Atraso';
 import type Nota from './Nota';
@@ -61,10 +63,6 @@ export default class Aluno extends models.Model {
     listasGeradas: Array<ListaGerada>;
 
     get imageSource(): Object {
-        return {
-            uri: this.imagem,
-            width: 50,
-            height: 50,
-        };
+        return avatar(this.imagem);
     }
 }
