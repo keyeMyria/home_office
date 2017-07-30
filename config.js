@@ -6,6 +6,9 @@ export default {
         USER: '@educare:auth:current_user',
         PUSH_TOKEN: '@educare:push:token',
         PUSH_ENDPOINT: '@educare:push:endpoint',
+        ESCOLA_ENDPOINT: '@educare:escola:endpoint',
+        ESCOLA_CONFIG: '@educare:escola:config',
+        ESCOLA_NOME: '@educare:escola:nome',
     },
     PUSH: {
         REGION: 'us-east-1',
@@ -18,7 +21,8 @@ export default {
         // ICON_IMG: require('./app/img/logo.png'), // eslint-disable-line global-require
     },
     API: {
-        DOMAIN: 'http://escola.educarebox.com/',
+        DOMAIN: 'https://escola.educarebox.com/',
+        ESCOLAS_URL: 'https://api.educarebox.com/api/escolas',
         get BASE_URL() {
             return `${this.DOMAIN}api/`;
         },
