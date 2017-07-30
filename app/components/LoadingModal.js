@@ -7,11 +7,11 @@ import { observer } from 'mobx-react/native';
 export default class LoadingModal extends Component {
     props: {
         loading?: boolean,
-        // children: any,
+        text?: string,
     };
 
     static defaultProps = {
-        color: 'gray',
+        text: 'Carregando',
         loading: false,
     };
 
@@ -26,10 +26,13 @@ export default class LoadingModal extends Component {
                 }}
               >
                 <ActivityIndicator size="large" />
-                <Text>Carregando</Text>
+                <Text>
+                  {this.props.text}
+                </Text>
               </View>
             );
         }
+        // $FlowFixMe
         return this.props.children;
     }
 }
