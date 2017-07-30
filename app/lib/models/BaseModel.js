@@ -1,10 +1,14 @@
 // @flow
 import { observable } from 'mobx';
+import CONFIG from './../../../config';
 
 export default class BaseModel {
     _data$: any;
     _links: { [string]: any };
+    pk: number;
     static fields = {};
+    static name = '';
+    static collectionName = '';
 
     static fromArray(data: Array<Object>): Array<this> {
         return data.map(d => new this(d));
@@ -45,9 +49,14 @@ export default class BaseModel {
         if (link) {
             if (typeof link === 'string') {
                 return link;
-            } else if (link.fullPath) {
-                return link.fullPath;
+            } else if (link._path) {
+                return link._path;
             }
+        }
+        const baseUrl = CONFIG.API.BASE_URL;
+        const name = this.constructor.collectionName.toLowerCase();
+        if (this.pk) {
+            return `${baseUrl}${name}/${this.pk}`;
         }
         return null;
     }
