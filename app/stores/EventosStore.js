@@ -3,6 +3,7 @@ import { observable, action, computed } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { fromPromise } from 'mobx-utils';
 
+import logger from './../lib/logger';
 import EventoService from './../services/EventoService';
 import TarefaService from './../services/TarefaService';
 
@@ -30,7 +31,7 @@ class EventoStore {
             const eventos = await this._service.findByTurma(aluno.turma.id);
             this.setEventos(eventos.eventos);
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             this.setError(true);
             this.setLoading(false);
         }
@@ -42,19 +43,20 @@ class EventoStore {
             const eventos = await this._service.findByProfessor(professorId);
             this.setEventos(eventos.eventos);
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             this.setError(true);
         }
     }
 
     async deleteEvent() {
+        const event = this.selectedEvent;
         try {
-            if (this.selectedEvent) {
-                this.deleteEventAction(this.selectedEvent.id);
-                await this._service.delete(this.selectedEvent.id);
+            if (event) {
+                await this._service.delete(event.id);
+                this.deleteEventAction(event.id);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             this.setError(true);
         }
     }
@@ -72,7 +74,6 @@ class EventoStore {
     @action
     setEventos(eventos: Array<Object>) {
         const _eventos: Array<Evento> = Evento.fromSearchArray(eventos);
-        // $FlowFixMe
         this.eventosMap.replace(_eventos.map(ev => [ev.id, ev]));
         this.loading = false;
     }
@@ -96,7 +97,6 @@ class EventoStore {
     deleteEventAction = (id: number): void => {
         this.eventosMap.delete(`${id}`);
     };
-
 }
 
 const eventoStore = new EventoStore();
