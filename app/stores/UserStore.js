@@ -9,10 +9,13 @@ import UsuarioService from './../services/UsuarioService';
 // Config
 import { getConfig } from './../lib/config';
 import pushHandler from './../lib/push';
+import { avatar } from './../lib/img';
 
 import { Turma } from './../models';
 
 // Other Stores
+import uiStore from './UiStore';
+import escolaStore from './EscolaStore';
 import alunoStore from './AlunoStore';
 import professorStore from './ProfessorStore';
 import responsavelStore from './ResponsavelStore';
@@ -42,6 +45,7 @@ type loginReturnType = {
 class UserStore {
     @observable loading = false; // if is waiting for any request
     @observable user: ?UserType; // the user object
+    @observable finishInit: boolean = false;
 
     constructor() {
         this._getUserFromAsyncStorage();
@@ -49,20 +53,7 @@ class UserStore {
 
     @computed
     get avatar(): Object {
-        let img;
-        try {
-            if (this.user) {
-                const url = new URL(this.user.imagem); // eslint-disable-line
-                img = this.user.imagem;
-            }
-        } catch (error) {
-            img = 'https://www.gravatar.com/avatar/0?d=mm&f=y';
-        }
-        return {
-            uri: img,
-            width: 50,
-            height: 50,
-        };
+        return avatar(this.user && this.user.imagem);
     }
 
     @computed
@@ -163,7 +154,8 @@ class UserStore {
     @action
     logout() {
         this.user = null;
-        AsyncStorage.removeItem(getConfig('@educare:async_store:user'));
+        escolaStore.clear();
+        AsyncStorage.clear();
         try {
             if (this.id) {
                 const service = new UsuarioService();
@@ -233,8 +225,11 @@ class UserStore {
     async _getUserFromAsyncStorage() {
         const userKey = getConfig('@educare:async_store:user');
         const user = await AsyncStorage.getItem(userKey);
-        if (!user) return;
-        this.setUser(user);
+        if (user) {
+            this.setUser(JSON.parse(user));
+        }
+        this.finishInit = true;
+        uiStore.userStoreFinishInit = true;
     }
 }
 
