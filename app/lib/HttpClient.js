@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 import type { AxiosXHRConfig, AxiosPromise } from 'axios';
 import CONFIG from './../../config';
+import uiStore from './../stores/UiStore';
 
 /**
  * Use this class to make all the http requests in the application;
@@ -15,16 +16,26 @@ class HttpClient {
     _axios = axios.create();
 
     constructor() {
-        AsyncStorage.clear(); // TODO
         this._axios.defaults.baseURL = this._baseUri;
         this._axios.defaults.headers.common['Content-Type'] = 'application/json';
+        this._getTokenFromAsyncStorage();
+    }
+
+    getUrl(...args: [string | number]): string {
+        return `this._baseUri${args.join('/')}`;
+    }
+
+    setBaseURL(url: string): this {
+        this._baseUri = url;
+        this._axios.defaults.baseURL = this._baseUri;
+        return this;
     }
 
     /**
      * Saves the token in AsyncStorage
      */
     async _saveTokenInAsyncStore() {
-        return await AsyncStorage.setItem(CONFIG.ASYNC_STORE.TOKEN, this.token);
+        return AsyncStorage.setItem(CONFIG.ASYNC_STORE.TOKEN, this.token);
     }
 
     /**
@@ -36,6 +47,7 @@ class HttpClient {
             this.token = token;
             this._axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
         }
+        uiStore.httpClientFinishInit = true;
     }
 
     /**
@@ -44,7 +56,7 @@ class HttpClient {
     setToken(token: string): this {
         this.token = token;
         this._axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
-        // this._saveTokenInAsyncStore();
+        this._saveTokenInAsyncStore();
         return this;
     }
 
