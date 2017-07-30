@@ -24,7 +24,7 @@ export default class DrawerMenu extends Component {
         const { navigation: { dispatch } } = this.props;
         const resetAction = NavigationActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'LoginScreen' })],
+            actions: [NavigationActions.navigate({ routeName: 'SplashScreen' })],
         });
         userStore.logout();
         dispatch(resetAction);
