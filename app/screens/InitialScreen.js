@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Alert } from 'react-native';
 import { Button, Text, Thumbnail } from 'native-base';
-import { LoginManager, AccessToken } from 'react-native-fbsdk';
 
 import { when } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+import facebookLogin from './../lib/facebookLogin';
 import userStore from './../stores/UserStore';
 
 @observer
@@ -21,7 +21,6 @@ export default class LoginScreen extends Component {
             }
         };
         this.when = when(() => userStore.hasAuth, onAuth);
-        AccessToken.getCurrentAccessToken().then(r => console.warn(r), r => console.warn(r));
     }
 
     componentWillUnmount() {
@@ -29,14 +28,13 @@ export default class LoginScreen extends Component {
     }
 
     facebookPress = () => {
-        LoginManager.logInWithReadPermissions(['public_profile']).then(
-            (result) => {
-                console.warn(JSON.stringify(result, null, 2));
-            },
-            (error) => {
-                console.warn(JSON.stringify(error, null, 2));
-            },
-        );
+        facebookLogin.login().then((token) => {
+            if (token) {
+                this.props.navigation.navigate('CreateUserScreen', { token });
+            } else {
+                Alert.alert('Erro', 'Não foi possível logar usando o facebook');
+            }
+        });
     };
 
     loginPress = () => {
@@ -107,7 +105,6 @@ const styles = {
     haveAccount: {
         color: '#fff',
         alignSelf: 'center',
-        // marginTop: 25,
         marginBottom: 10,
     },
 };
