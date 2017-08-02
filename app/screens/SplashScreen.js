@@ -66,21 +66,21 @@ export default class SplashScreen extends Component {
         if (escolas.length === 0) return this.renderError();
         return (
           <View style={{ backgroundColor: '#fff', padding: 15 }}>
-            <Text style={styles.haveAccount}>Escolha uma escola</Text>
             <Picker
-              iosHeader="Selecione"
+              iosHeader="Selecione uma escola"
               mode="dialog"
+              headerBackButtonText="Voltar"
               selectedValue={this.selectedEscola}
               onValueChange={this.setValue}
               style={styles.picker}
             >
-              {[{ escola: 'Selecione', api: '' }].concat(...escolas).map(
+              {[{ escola: 'Selecionar escola...', api: '' }].concat(...escolas).map(
                         ({ escola }, index) =>
                             <Picker.Item key={index} value={index} label={escola} />, //eslint-disable-line
                     )}
             </Picker>
             <Button block onPress={this.selectEscola}>
-              <Text>Selecionar</Text>
+              <Text>Prosseguir</Text>
             </Button>
           </View>
         );
@@ -165,6 +165,7 @@ const styles = {
         borderColor: '#E0E0E0',
         borderRadius: 2,
         marginBottom: 15,
+        alignSelf: 'stretch',
     },
 };
 

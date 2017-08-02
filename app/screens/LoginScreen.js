@@ -82,7 +82,7 @@ export default class LoginScreen extends Component {
                 {this.renderPassword()}
               </Form>
               {this.renderLoginButton()}
-              <Text style={styles.forgotPassword}>Esqueceu a Senha?</Text>
+              {/* <Text style={styles.forgotPassword}>Esqueceu a Senha?</Text> */}
               <View style={{ flex: 1 }} />
               {__DEV__ &&
                 <ActionSheet
