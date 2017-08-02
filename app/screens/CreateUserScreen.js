@@ -7,6 +7,10 @@ import { TextInputMask } from 'react-native-masked-text';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+import facebookLogin from './../lib/facebookLogin';
+// import logger from './../lib/logger';
+import userStore from './../stores/UserStore';
+
 @observer
 export default class LoginScreen extends Component {
     actionSheet: any;
@@ -29,6 +33,17 @@ export default class LoginScreen extends Component {
         if (params && params.token) {
             if (!telefone) {
                 Alert.alert('Erro', 'Informe o telefone cadastrado na escola');
+            } else {
+                try {
+                    const token = await facebookLogin.sendTokenToServer(params.token, telefone);
+                    if (token) {
+                        userStore.loginToken(token);
+                    } else {
+                        Alert.alert('Erro', 'Falha no login com facebook');
+                    }
+                } catch (error) {
+                    Alert.alert('Erro', 'Falha no login com facebook');
+                }
             }
         } else if (!telefone) {
             Alert.alert('Erro', 'Informe o telefone cadastrado na escola');

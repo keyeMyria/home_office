@@ -28,13 +28,22 @@ export default class LoginScreen extends Component {
     }
 
     facebookPress = () => {
-        facebookLogin.login().then((token) => {
-            if (token) {
-                this.props.navigation.navigate('CreateUserScreen', { token });
-            } else {
+        facebookLogin
+            .login()
+            .then((token) => {
+                if (token) {
+                    facebookLogin.sendTokenToServer(token).then((jwt) => {
+                        if (jwt) {
+                            userStore.loginToken(jwt);
+                        } else {
+                            this.props.navigation.navigate('CreateUserScreen', { token });
+                        }
+                    });
+                }
+            })
+            .catch(() => {
                 Alert.alert('Erro', 'Não foi possível logar usando o facebook');
-            }
-        });
+            });
     };
 
     loginPress = () => {

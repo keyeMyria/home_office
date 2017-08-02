@@ -2,7 +2,9 @@
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 
 import logger from './logger';
-// import httpClient from './HttpClient';
+import httpClient from './HttpClient';
+
+const FACEBOOK_AUTH_URL = 'usuarios/signin-mobile';
 
 class FacebookLogin {
     _permissions: Array<string>;
@@ -34,9 +36,18 @@ class FacebookLogin {
         }
     }
 
-    // async sendTokenToServer(token: string) {
-    //     // TODO - Send token to server;
-    // }
+    async sendTokenToServer(token: string, telefone?: string): Promise<?string> {
+        try {
+            if (telefone) {
+                const response = await httpClient.put(FACEBOOK_AUTH_URL, { token, telefone });
+                return response.data.token;
+            }
+            const response = await httpClient.put(FACEBOOK_AUTH_URL, { token });
+            return response.data.token;
+        } catch (error) {
+            return null;
+        }
+    }
 }
 
 const facebookLogin = new FacebookLogin();

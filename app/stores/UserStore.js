@@ -178,6 +178,19 @@ class UserStore {
         this.loading = false;
     }
 
+    async loginToken(token: string) {
+        try {
+            const userUrl = 'usuarios/search/findByJwtToken';
+            const { data: user } = await httpClient.setToken(token).get(userUrl);
+            if (user) {
+                this.setUser(user)._saveUserInAsyncStorage(user);
+            }
+            this.loading = false;
+        } catch (error) {
+            Alert.alert('Token Inválido', 'O token informado é inválido');
+        }
+    }
+
     /**
      * Make the login of a user and return the token and the user object
      */
