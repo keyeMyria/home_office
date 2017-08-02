@@ -111,6 +111,7 @@ class EscolaStore {
     async getEscolas(): Promise<ApiEscolasReturn> {
         try {
             const response = await httpClient.get(CONFIG.API.ESCOLAS_URL);
+            console.log('>>>>>>>>>>>>> getEscolas', response);
             return response.data._embedded.escolas;
         } catch (error) {
             logger.error('EscolaStore.getEscolas', error);

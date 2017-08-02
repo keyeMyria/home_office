@@ -74,9 +74,9 @@ export default class SplashScreen extends Component {
               onValueChange={this.setValue}
               style={styles.picker}
             >
-              <Picker.Item value={0} label="Selecione" />
-              {escolas.map(({ escola, api }, index) =>
-                <Picker.Item key={index + 1} value={index + 1} label={escola} />, //eslint-disable-line
+              {[{ escola: 'Selecione', api: '' }].concat(...escolas).map(
+                        ({ escola }, index) =>
+                            <Picker.Item key={index} value={index} label={escola} />, //eslint-disable-line
                     )}
             </Picker>
             <Button block onPress={this.selectEscola}>
