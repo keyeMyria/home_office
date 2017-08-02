@@ -113,6 +113,7 @@ const styles = {
     },
     haveAccount: {
         color: '#fff',
+        backgroundColor: 'rgba(0,0,0,0)',
         alignSelf: 'center',
         marginBottom: 10,
     },
