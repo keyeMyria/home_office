@@ -36,10 +36,10 @@ class FacebookLogin {
         }
     }
 
-    async sendTokenToServer(token: string, telefone?: string): Promise<?string> {
+    async sendTokenToServer(token: string, celular?: string): Promise<?string> {
         try {
-            if (telefone) {
-                const response = await httpClient.put(FACEBOOK_AUTH_URL, { token, telefone });
+            if (celular) {
+                const response = await httpClient.put(FACEBOOK_AUTH_URL, { token, celular });
                 return response.data.token;
             }
             const response = await httpClient.put(FACEBOOK_AUTH_URL, { token });
