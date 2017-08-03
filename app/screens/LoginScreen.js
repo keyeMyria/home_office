@@ -6,6 +6,7 @@ import { Form, Item, Input, Button, Text, Thumbnail, ActionSheet, Icon } from 'n
 import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+import uiStore from './../stores/UiStore';
 import userStore from './../stores/UserStore';
 
 @observer
@@ -76,7 +77,8 @@ export default class LoginScreen extends Component {
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <KeyboardAvoidingView style={styles.loginView}>
               <View style={{ flex: 1 }} />
-              <Thumbnail source={ICON_IMG} style={styles.loginImage} />
+              {!uiStore.keyboardIsVisible &&
+                <Thumbnail source={ICON_IMG} style={styles.loginImage} />}
               <Form style={styles.loginForm}>
                 {this.renderUsername()}
                 {this.renderPassword()}
