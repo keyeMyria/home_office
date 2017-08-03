@@ -10,7 +10,7 @@ class FacebookLogin {
     _permissions: Array<string>;
 
     constructor() {
-        this.setPermissions(['public_profile']);
+        this.setPermissions(['public_profile', 'email']);
     }
 
     setPermissions(permissions: Array<string>) {
