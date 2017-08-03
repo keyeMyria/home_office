@@ -7,6 +7,7 @@ import httpClient from './../lib/HttpClient';
 import UsuarioService from './../services/UsuarioService';
 
 // Config
+import logger from './../lib/logger';
 import { getConfig } from './../lib/config';
 import pushHandler from './../lib/push';
 import { avatar } from './../lib/img';
@@ -180,6 +181,7 @@ class UserStore {
 
     async loginToken(token: string) {
         try {
+            logger.warn('FACEBOOK JWT TOKEN', token);
             const userUrl = 'usuarios/search/findByJwtToken';
             const { data: user } = await httpClient.setToken(token).get(userUrl);
             if (user) {
@@ -187,6 +189,7 @@ class UserStore {
             }
             this.loading = false;
         } catch (error) {
+            logger.warn(error);
             Alert.alert('Token Inválido', 'O token informado é inválido');
         }
     }

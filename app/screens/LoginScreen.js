@@ -76,7 +76,7 @@ export default class LoginScreen extends Component {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <KeyboardAvoidingView style={styles.loginView}>
-              <View style={{ flex: 1 }} />
+              {!uiStore.keyboardIsVisible && <View style={{ flex: 1 }} />}
               {!uiStore.keyboardIsVisible &&
                 <Thumbnail source={ICON_IMG} style={styles.loginImage} />}
               <Form style={styles.loginForm}>

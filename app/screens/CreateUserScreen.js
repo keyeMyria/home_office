@@ -8,6 +8,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
 import facebookLogin from './../lib/facebookLogin';
+import logger from './../lib/logger';
 // import logger from './../lib/logger';
 import userStore from './../stores/UserStore';
 
@@ -38,6 +39,7 @@ export default class LoginScreen extends Component {
             } else {
                 try {
                     const token = await facebookLogin.sendTokenToServer(params.token, _telefone);
+                    logger.warn('FACEBOOK TOKEN JWT', token);
                     if (token) {
                         userStore.loginToken(token);
                     } else {
