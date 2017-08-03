@@ -45,6 +45,7 @@ class FacebookLogin {
             const response = await httpClient.put(FACEBOOK_AUTH_URL, { token });
             return response.data.token;
         } catch (error) {
+            logger.warn(error);
             return null;
         }
     }
