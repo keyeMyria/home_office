@@ -9,8 +9,9 @@ import { observer } from 'mobx-react/native';
 
 import facebookLogin from './../lib/facebookLogin';
 import logger from './../lib/logger';
-// import logger from './../lib/logger';
+
 import userStore from './../stores/UserStore';
+import uiStore from './../stores/UiStore';
 
 @observer
 export default class LoginScreen extends Component {
@@ -153,7 +154,7 @@ export default class LoginScreen extends Component {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <KeyboardAvoidingView style={styles.loginView}>
-              <View style={{ flex: 1 }} />
+              {!uiStore.keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Form style={styles.loginForm}>
                 {this.renderTelefone()}
                 {this.renderEmail()}
