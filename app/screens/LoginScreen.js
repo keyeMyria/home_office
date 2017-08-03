@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image, Keyboard } from 'react-native';
+import { View, Image, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { Form, Item, Input, Button, Text, Thumbnail, ActionSheet, Icon } from 'native-base';
 
 import { observable } from 'mobx';
@@ -74,7 +74,7 @@ export default class LoginScreen extends Component {
     render() {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <View style={styles.loginView}>
+            <KeyboardAvoidingView style={styles.loginView}>
               <View style={{ flex: 1 }} />
               <Thumbnail source={ICON_IMG} style={styles.loginImage} />
               <Form style={styles.loginForm}>
@@ -90,7 +90,7 @@ export default class LoginScreen extends Component {
                       this.actionSheet = c;
                   }}
                 />}
-            </View>
+            </KeyboardAvoidingView>
           </Image>
         );
     }

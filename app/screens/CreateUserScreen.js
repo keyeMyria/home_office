@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image, Keyboard, Alert } from 'react-native';
+import { View, Image, Keyboard, Alert, KeyboardAvoidingView } from 'react-native';
 import { Form, Item, Input, Button, Text, Icon } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -30,22 +30,27 @@ export default class LoginScreen extends Component {
         Keyboard.dismiss(); // hide the keyboard
         const { telefone, email, senha, confirmaSenha } = this.store;
         const { params } = this.props.navigation.state;
+        const _telefone = telefone.replace(/[^0-9]/g, '');
+
         if (params && params.token) {
-            if (!telefone) {
+            if (!_telefone) {
                 Alert.alert('Erro', 'Informe o telefone cadastrado na escola');
             } else {
                 try {
-                    const token = await facebookLogin.sendTokenToServer(params.token, telefone);
+                    const token = await facebookLogin.sendTokenToServer(params.token, _telefone);
                     if (token) {
                         userStore.loginToken(token);
                     } else {
-                        Alert.alert('Erro', 'Falha no login com facebook');
+                        Alert.alert(
+                            'Telefone não encontrado',
+                            'Telefone não cadastrado no sistema, entre em contato com a escola para mais informações.',
+                        );
                     }
                 } catch (error) {
                     Alert.alert('Erro', 'Falha no login com facebook');
                 }
             }
-        } else if (!telefone) {
+        } else if (!_telefone) {
             Alert.alert('Erro', 'Informe o telefone cadastrado na escola');
         } else if (!email) {
             Alert.alert('Erro', 'Informe um email válido');
@@ -71,9 +76,7 @@ export default class LoginScreen extends Component {
               placeholder="Telefone cadastrado na escola"
               value={this.store.telefone}
               onChangeText={onChange}
-              underlineColorAndroid="transparent"
-              placeholderTextColor="#575757"
-              style={{ flex: 1, fontSize: 17 }}
+              customTextInput={Input}
             />
           </Item>
         );
@@ -147,7 +150,7 @@ export default class LoginScreen extends Component {
     render() {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <View style={styles.loginView}>
+            <KeyboardAvoidingView style={styles.loginView}>
               <View style={{ flex: 1 }} />
               <Form style={styles.loginForm}>
                 {this.renderTelefone()}
@@ -157,7 +160,7 @@ export default class LoginScreen extends Component {
               </Form>
               {this.renderButton()}
               <View style={{ flex: 1 }} />
-            </View>
+            </KeyboardAvoidingView>
           </Image>
         );
     }
