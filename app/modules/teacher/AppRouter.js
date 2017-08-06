@@ -8,9 +8,10 @@ import {
     // ExerciseScreen,
     // SelectClassScreen,
     // ExamScreen,
-    // HomeworkScreen,
+    HomeworkScreen,
     // ComunicadosScreen,
     LancarNotasScreen,
+    SetDateForTarefa,
 } from './screens';
 
 import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../common_screens';
@@ -21,7 +22,6 @@ const HomeRouter = TabNavigator(
         // ExerciseScreen: { screen: ExerciseScreen },
         AlertScreen: { screen: AlertScreen },
         // ExamScreen: { screen: ExamScreen },
-        // HomeworkScreen: { screen: HomeworkScreen },
     },
     {
         tabBarComponent: HomeNavigator,
@@ -34,9 +34,11 @@ export default DrawerNavigator(
         HomeRouter: { screen: HomeRouter },
         // ComunicadosScreen: { screen: ComunicadosScreen },
         // SelectClassScreen: { screen: SelectClassScreen },
+        HomeworkScreen: { screen: HomeworkScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
         LancarNotasScreen: { screen: LancarNotasScreen },
+        SetDateForTarefa: { screen: SetDateForTarefa },
     },
     {
         headerMode: 'none',
