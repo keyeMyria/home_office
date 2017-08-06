@@ -1,33 +1,32 @@
+// @flow
 import React, { Component } from 'react';
 import { View, DatePickerIOS, LayoutAnimation, Platform } from 'react-native';
 import { Item, Label, Text } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 import moment from 'moment';
+import _ from 'lodash';
 
+@observer
 export default class DatePickerField extends Component {
+    @observable visible: boolean = false;
+
     props: {
-    value: Date | string,
-    format: string,
-    mode: string,
-    label: string,
-    onChange: Date => any,
-    placeholder: string,
-  };
+        format?: string,
+        mode?: string,
+        label: string,
+        store: *,
+        storeKey: string,
+        placeholder?: string,
+    };
 
     static defaultProps = {
         format: 'DD/MM/YYYY',
         mode: 'date',
         label: 'Data',
-        placeholder: '--',
-        onChange: () => {},
+        placeholder: '--/--/----',
     };
-
-    constructor(props) {
-        super(props);
-        this.state = { visible: false };
-        this.toogle = this.toogle.bind(this);
-    }
 
     componentWillUpdate() {
         if (Platform.OS === 'ios') {
@@ -35,9 +34,9 @@ export default class DatePickerField extends Component {
         }
     }
 
-    toogle() {
-        this.setState({ visible: !this.state.visible });
-    }
+    toogle = () => {
+        this.visible = !this.visible;
+    };
 
     renderDatePicker() {
         if (Platform.OS === 'ios') {
@@ -46,36 +45,58 @@ export default class DatePickerField extends Component {
         return this.renderAndroid();
     }
 
+    /**
+     * Update the value in store
+     */
+    updateValue = (val: string) => {
+        const { store, storeKey } = this.props;
+        _.set(store, storeKey, val);
+    };
+
+    /**
+     * Get the value from store
+     */
+    getValueFromStore(): Date {
+        const { store, storeKey } = this.props;
+        const value = _.get(store, storeKey);
+        return new Date(value);
+    }
+
+    /**
+     * Render the android component
+     */
     renderAndroid() {
-        const { value, mode, onChange } = this.props;
+        const { mode } = this.props;
         return (
           <DateTimePicker
             mode={mode}
-            date={value instanceof Date ? value : new Date()}
+            date={this.getValueFromStore()}
             datePickerModeAndroid="calendar"
-            isVisible={this.state.visible}
-            onConfirm={onChange}
+            isVisible={this.visible}
+            onConfirm={this.updateValue}
             onCancel={this.toogle}
           />
         );
     }
 
+    /**
+     * Render the iphone component
+     */
     renderIPhone() {
-        const { value, onChange } = this.props;
-        if (!this.state.visible) return false;
+        if (!this.visible) return false;
         return (
           <DatePickerIOS
             mode="date"
-            date={value instanceof Date ? value : new Date()}
-            onDateChange={onChange}
+            date={this.getValueFromStore()}
+            onDateChange={this.updateValue}
             style={{ flex: 1 }}
           />
         );
     }
 
     render() {
-        const { label, format, placeholder, value } = this.props;
-
+        const { label, format, placeholder } = this.props;
+        const value = this.getValueFromStore();
         return (
           <View>
             <Item style={styles.item} onPress={this.toogle}>
