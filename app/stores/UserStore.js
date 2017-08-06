@@ -118,23 +118,6 @@ class UserStore {
         }
         return this;
     }
-    async checkEndPointARN() {
-        try {
-            if (!this.user) return;
-            const id = this.user.id;
-            const lastEndpoint = this.user.endpointArn;
-            const currentEndpoint = await pushHandler.getPlatformEndpoint();
-            if (lastEndpoint !== currentEndpoint) {
-                await new UsuarioService().one(id).patch({
-                    endpointArn: currentEndpoint,
-                });
-            }
-        } catch (error) {
-            if (__DEV__) {
-                console.error(error);
-            }
-        }
-    }
 
     setupUserStore(user: UserType) {
         switch (user.role) {
@@ -177,6 +160,13 @@ class UserStore {
             this.setUser(user)._saveUserInAsyncStorage(user);
         }
         this.loading = false;
+    }
+
+    async updateUser() {
+        const userUrl = 'usuarios/search/findByJwtToken';
+        const { data: user } = await httpClient.get(userUrl);
+        this.user = user;
+        pushHandler.registerWithSNS(user.endpointArn);
     }
 
     async loginToken(token: string) {
@@ -242,6 +232,7 @@ class UserStore {
         const userKey = getConfig('@educare:async_store:user');
         const user = await AsyncStorage.getItem(userKey);
         if (user) {
+            this.updateUser();
             this.setUser(JSON.parse(user));
         }
         this.finishInit = true;

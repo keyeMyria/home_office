@@ -17,7 +17,7 @@ function warn(...args: Array<any>): void {
 function error(...args: Array<any>): void {
     if (__DEV__) {
         // eslint-disable-next-line no-console
-        console.warn(...args);
+        console.error(...args);
     }
 }
 

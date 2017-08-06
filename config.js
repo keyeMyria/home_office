@@ -13,7 +13,10 @@ export default {
     PUSH: {
         REGION: 'us-east-1',
         IDENTITY_POOL_ID: 'us-east-1:4ee00cb4-9d9b-49e3-b9d1-eabbd931d533',
-        APPLICATION_ARN: 'arn:aws:sns:us-east-1:234924483865:app/GCM/Educarebox-gcm',
+        APPLICATION_ARN: {
+            ios: 'arn:aws:sns:us-east-1:234924483865:app/APNS/Educarebox-ios',
+            android: 'arn:aws:sns:us-east-1:234924483865:app/GCM/Educarebox-gcm',
+        },
         SENDER_ID: '447786875542',
     },
     LOGIN: {
