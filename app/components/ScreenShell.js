@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import { TouchableNativeFeedback, TouchableOpacity, Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Container, Header, Left, Right, Icon, Title, Content, Body, Text } from 'native-base';
 import { observer } from 'mobx-react/native';
 import LoadingModal from './LoadingModal';
@@ -11,17 +11,9 @@ const emptyFunc = () => {};
  * Render a plataform especific Touchable Area
  */
 const Touchable = (props) => {
-    const { onPress } = props;
-
-    if (Platform.OS === 'android') {
-        return (
-          <TouchableNativeFeedback onPress={onPress}>
-            {props.children}
-          </TouchableNativeFeedback>
-        );
-    }
+    const { onPress, ...other } = props;
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity {...other} onPress={onPress}>
         {props.children}
       </TouchableOpacity>
     );
@@ -64,6 +56,8 @@ export default class ScreenShell extends Component {
         children?: any,
         leftIcon?: string,
         leftPress?: () => any,
+        fab?: *,
+        fabProps?: *,
     };
 
     static defaultProps = {
@@ -71,6 +65,8 @@ export default class ScreenShell extends Component {
         loading: false,
         leftIcon: 'menu',
         leftPress: undefined,
+        fab: null,
+        fabProps: {},
     };
 
     /**
@@ -96,14 +92,14 @@ export default class ScreenShell extends Component {
     }
 
     render() {
-        const { navigate, title, padder, leftIcon, leftPress } = this.props;
+        const { navigate, title, padder, leftIcon, leftPress, fab: Fab, fabProps } = this.props;
         const _leftPress = leftPress || (() => navigate('DrawerOpen'));
-
+        const hitSlop = { top: 20, left: 20, bottom: 20, right: 20 };
         return (
           <Container>
             <Header appHeader>
               <Left>
-                <Touchable onPress={_leftPress}>
+                <Touchable hitSlop={hitSlop} onPress={_leftPress}>
                   <Icon name={leftIcon} />
                 </Touchable>
               </Left>
@@ -119,6 +115,7 @@ export default class ScreenShell extends Component {
                 {this.props.children}
               </Content>
             </LoadingModal>
+            {Fab ? <Fab navigate={navigate} {...fabProps} /> : null}
           </Container>
         );
     }

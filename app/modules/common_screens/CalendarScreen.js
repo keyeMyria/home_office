@@ -1,7 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { List } from 'native-base';
+import { List, Icon } from 'native-base';
 import { observer } from 'mobx-react/native';
+
+import ActionButton from 'react-native-action-button';
 
 import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../lib/dates';
 
@@ -10,6 +12,7 @@ import type { Evento } from './../../models';
 
 // Store
 import eventoStore from './../../stores/EventosStore';
+import userStore from './../../stores/UserStore';
 
 // Components
 import ScreenShell from './../../components/ScreenShell';
@@ -35,6 +38,7 @@ export default class CalendarScreen extends Component {
             title: 'Agenda',
             padder: false,
             loading: eventoStore.loading,
+            fab: userStore.role === 'PROFESSOR' ? Fab : null,
         };
     }
 
@@ -51,4 +55,24 @@ export default class CalendarScreen extends Component {
           </ScreenShell>
         );
     }
+}
+
+function Fab({ navigate }) {
+    return (
+      <ActionButton buttonColor="rgba(231,76,60,1)">
+        <ActionButton.Item buttonColor="#1C7FE2" title="Prova" onPress={() => {}}>
+          <Icon name="assignment-turned-in" style={{ color: '#fff', fontSize: 24 }} />
+        </ActionButton.Item>
+        <ActionButton.Item
+          buttonColor="#1C7FE2"
+          title="Trabalho"
+          onPress={() => navigate('HomeworkScreen')}
+        >
+          <Icon name="library-books" style={{ color: '#fff', fontSize: 24 }} />
+        </ActionButton.Item>
+        <ActionButton.Item buttonColor="#1C7FE2" title="Exercícios" onPress={() => {}}>
+          <Icon name="tune" style={{ color: '#fff', fontSize: 24 }} />
+        </ActionButton.Item>
+      </ActionButton>
+    );
 }
