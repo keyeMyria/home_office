@@ -7,19 +7,15 @@ export default class TurmaService extends CollectionService {
         super(Constants.TURMAS);
     }
 
-    findByAnoAndProfessorAndDisciplina(
-        ano: number,
-        professor: number,
-        disciplina: number
-    ) {
-        return super.search({ ano, professor, disciplina });
+    findByAnoAndProfessorAndDisciplina(ano: number, professor: number, disciplina: number) {
+        return super.search({ ano, professor, disciplina }, 'findByAnoAndProfessorAndDisciplina');
     }
 
     findByProfessor(id: number) {
-        return super.search({ id });
+        return super.search({ id }, 'findByProfessor');
     }
 
     findByAnoAndProfessor(ano: number, professor: number) {
-        return super.search({ ano, professor });
+        return super.search({ ano, professor }, 'findByAnoAndProfessor');
     }
 }

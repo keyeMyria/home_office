@@ -4,7 +4,8 @@ import type { ObservableMap } from 'mobx';
 
 import ProfessorService from './../services/ProfessorService';
 import AnoService from './../services/AnoService';
-import { Professor, Ano, Disciplina } from './../models';
+import TurmaService from './../services/TurmaService';
+import { Professor, Ano, Disciplina, Turma } from './../models';
 
 // Other Stores
 import eventoStore from './EventosStore';
@@ -30,6 +31,7 @@ class ProfessorStore {
             eventoStore.fecthEventosProfessor(id);
             avisoStore.fecthAvisosProfessor(id);
             await this.fetchAnos(id);
+            await this.fetchDisciplinas(id);
             this.loading = false;
         } catch (error) {
             // eslint-disable-next-line no-undef
@@ -58,6 +60,13 @@ class ProfessorStore {
             new Disciplina(a),
         ]);
         this.disciplinasMap.replace(disciplinas);
+    }
+
+    async fetchTurmas(ano: number, disciplina: number) {
+        const service = new TurmaService();
+        const professor = this.id;
+        const resp = await service.findByAnoAndProfessorAndDisciplina(ano, professor, disciplina);
+        return Turma.fromArray(resp.turmas);
     }
 
     @action

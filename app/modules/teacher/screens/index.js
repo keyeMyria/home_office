@@ -8,7 +8,7 @@ import OccurrenceReasonScreen from './OccurrenceReasonScreen';
 import ExamScreen from './ExamScreen';
 import HomeworkScreen from './HomeworkScreen';
 import AnalysisScreen from './AnalysisScreen';
-import SetDateForClassScreen from './SetDateForClassScreen';
+import SetDateForTarefa from './SetDateForTarefa';
 import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 import SelectQuestionScreen from './SelectQuestionScreen';
 import ComunicadosScreen from './ComunicadosScreen';
@@ -24,7 +24,7 @@ export {
     ExamScreen,
     HomeworkScreen,
     AnalysisScreen,
-    SetDateForClassScreen,
+    SetDateForTarefa,
     ExerciseConfigurationScreen,
     SelectQuestionScreen,
     ComunicadosScreen,
