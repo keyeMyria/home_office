@@ -29,4 +29,8 @@ export default class Disciplina extends models.Model {
     rotinas: Array<Rotina>;
     professores: Array<Professor>;
     anos: Array<Ano>;
+
+    toString() {
+        return this.titulo || '';
+    }
 }

@@ -22,4 +22,8 @@ export default class Ano extends models.Model {
     disciplinas: Array<Disciplina>;
     tarefas: Array<Tarefa>;
     topicos: Array<Topico>;
+
+    toString() {
+        return this.titulo || '';
+    }
 }
