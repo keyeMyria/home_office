@@ -1,94 +1,128 @@
 // @flow
-
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Picker, Item, Text } from 'native-base';
+import { Picker, Item, Label } from 'native-base';
 import { observer } from 'mobx-react/native';
-
 import _ from 'lodash';
 
 @observer
 export default class PickerField extends Component {
     props: {
-        name: string, // nome do campo
-        label: string, // The label
-        value: number | string, // The current value
-        items: Array<Object>, // Array of options to render
-        valKey: string, // Key usada para resgatar o valor item
-        labelKey: string, // Key usada para resgatar o valor do label de cada item
-        // assim como valKey, pode ser usada qualquer expressão aceita
-        // pela função `get` do lodash
-        placeholder: string, // Placeholder do campo
-        placeholderValue: string | number, // Valor padrão do placeholder
-        iosHeader: string, // Header exibido no select do iOS
-        onChange: any => void, // Callback
+        label: string,
+        items: Array<[number | string, string]>,
+        store: *,
+        placeholder: string,
+        storeKey: string,
+        iosHeader: string,
+        headerBackButtonText: string,
+        mode: string,
     };
 
     static defaultProps = {
-        valKey: 'id',
-        labelKey: 'titulo',
-        placeholder: '-- Selecione --',
-        placeholderValue: 0,
         iosHeader: 'Selecione',
+        headerBackButtonText: 'Voltar',
+        mode: 'dialog',
+        placeholder: '-- Selecione --',
     };
 
-    get emptyItem(): Picker.Item {
-        const { placeholderValue, placeholder } = this.props;
-        return <Picker.Item key={placeholderValue} value={placeholderValue} label={placeholder} />;
+    /**
+     * Return all the extra props
+     */
+    getPickerProps() {
+        const props = _.omit(this.props, ['label', 'store', 'storeKey', 'items']);
+        props.style = { ...styles.picker, ...props.style };
+        return props;
     }
 
-    renderItems() {
-        const { labelKey, valKey } = this.props;
+    /**
+     * Get the value from store
+     */
+    getValueFromStore(): string {
+        const { store, storeKey } = this.props;
+        const value = _.get(store, storeKey);
+        return value || 'nil';
+    }
 
-        const mapFunc = (item, index) => {
-            const key = _.get(item, valKey) || index + 1;
-            const label = _.get(item, labelKey) || '-- invalid label --';
-            return <Picker.Item key={key} value={key} label={label} />;
-        };
+    /**
+     * Update the value in store
+     */
+    updateValue = (val: string) => {
+        const { store, storeKey } = this.props;
+        if (val === 'nil') {
+            _.set(store, storeKey, undefined);
+        } else {
+            _.set(store, storeKey, val);
+        }
+    };
 
-        return [this.emptyItem].concat(this.props.items.map(mapFunc));
+    renderPickerItems() {
+        const { items, placeholder } = this.props;
+        const entries = items.map(([key, label]) =>
+          <Picker.Item key={key} value={key} label={label} />,
+        );
+        if (placeholder) {
+            return [<Picker.Item key="nil" value="nil" label={placeholder} />].concat(...entries);
+        }
+        return entries;
+    }
+
+    renderPicker() {
+        return (
+          <Picker
+            selectedValue={this.getValueFromStore()}
+            onValueChange={this.updateValue}
+            style={styles.picker}
+            {...this.getPickerProps()}
+          >
+            {this.renderPickerItems()}
+          </Picker>
+        );
     }
 
     render() {
-        const { iosHeader, value, onChange, label } = this.props;
+        const { label } = this.props;
+
         return (
-          <View style={styles.picker}>
-            <Item>
-              <Text style={styles.itemLabel}>
+          <View>
+            <Item stackedLabel style={styles.itemLabel}>
+              <Label>
                 {label}
-              </Text>
-              <Picker
-                ref={(ref) => {
-                    this._root = ref;
-                }}
-                iosHeader={iosHeader}
-                mode="dialog"
-                selectedValue={value}
-                onValueChange={onChange}
-                style={{ flex: 1 }}
-              >
-                {this.renderItems()}
-              </Picker>
+              </Label>
+            </Item>
+            <Item style={styles.item}>
+              {this.renderPicker()}
             </Item>
           </View>
         );
     }
 }
 
+export function createPickerField(
+    label: string,
+    items: Array<[number | string, string]>,
+    store: *,
+    storeKey: string,
+    options?: *,
+) {
+    return (
+      <PickerField label={label} store={store} items={items} storeKey={storeKey} {...options} />
+    );
+}
+
 const styles = {
+    item: {
+        marginTop: 5,
+        borderBottomWidth: 0,
+        backgroundColor: '#FFFFFF',
+    },
     itemLabel: {
-        color: '#999',
+        borderBottomWidth: 0,
     },
     picker: {
-        paddingHorizontal: 15,
         borderWidth: 1,
-        backgroundColor: '#FFFFFF',
         borderColor: '#E0E0E0',
         borderRadius: 2,
-        marginTop: 5,
-    },
-    itemValue: {
-        color: '#000',
-        fontWeight: 'bold',
+        alignSelf: 'stretch',
+        flex: 1,
     },
 };
