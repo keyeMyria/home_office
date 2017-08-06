@@ -4,29 +4,29 @@ import moment from 'moment';
 import { getModel } from './register';
 
 export function String() {
-    return value => (value ? `${value}` : '');
+    return (value: *) => (value ? `${value}` : '');
 }
 
 export function Integer() {
-    return value => parseInt(value, 10) || null;
+    return (value: *) => parseInt(value, 10) || null;
 }
 
 export function Float() {
-    return value => parseFloat(value) || null;
+    return (value: *) => parseFloat(value) || null;
 }
 
 export function Array() {
-    return value => value;
+    return (value: *) => value;
 }
 
-export function ForeignKey(Type) {
+export function ForeignKey(Type: *) {
     if (!Type) {
         throw Error('models.ForeignKey, deve receber uma string ou Classe');
     }
 
     let Model = Type;
 
-    return (value) => {
+    return (value: *) => {
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }
@@ -34,13 +34,15 @@ export function ForeignKey(Type) {
     };
 }
 
-export function ManyToMany(Type) {
+export function ManyToMany(Type: *) {
     if (!Type) {
         throw Error('models.ManyToMany, deve receber uma string ou Classe');
     }
     let Model = Type;
 
-    return (value) => {
+    return (value: *) => {
+        if (!value) return undefined;
+
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }
@@ -48,13 +50,14 @@ export function ManyToMany(Type) {
     };
 }
 
-export function OneToMany(Type) {
+export function OneToMany(Type: *) {
     if (!Type) {
         throw Error('models.OneToMany, deve receber uma string ou Classe');
     }
     let Model = Type;
 
-    return (value) => {
+    return (value: *) => {
+        if (!value) return undefined;
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }
@@ -63,11 +66,11 @@ export function OneToMany(Type) {
 }
 
 export function Date() {
-    return value => moment(value);
+    return (value: *) => moment(value);
 }
 
 export function PrimaryKey() {
-    return (value, self, key) => {
+    return (value: *, self: *, key: string) => {
         self.pk = value; // eslint-disable-line no-param-reassign
         self._pkName = key; // eslint-disable-line no-param-reassign
         return value;
@@ -75,5 +78,9 @@ export function PrimaryKey() {
 }
 
 export function Boolean() {
-    return value => !!value;
+    return (value: *) => !!value;
+}
+
+export function Static(value: string) {
+    return () => value;
 }

@@ -45,7 +45,7 @@ export default class BaseModel {
     }
 
     get _selfLink(): ?string {
-        const link = this._links.self;
+        const link = this._links && this._links.self;
         if (link) {
             if (typeof link === 'string') {
                 return link;
