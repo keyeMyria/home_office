@@ -1,145 +1,88 @@
+// @flow
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
-import {
-    Container,
-    Header,
-    Title,
-    Content,
-    Left,
-    Right,
-    Icon,
-    Body,
-    Picker,
-    Text,
-} from 'native-base';
-import { connect } from 'react-redux';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
-
 import { observer } from 'mobx-react/native';
-import store from '../../../store';
-import TrabalhoStore from '../../../stores/professor/TrabalhoStore';
+import { computed } from 'mobx';
 
-import { PickerField, TextField } from '../../../components/fields';
+import _ from 'lodash';
 
-import BubbleMenu from '../../../components/BubbleMenu';
-import SetDateForClassScreen from './SetDateForClassScreen';
+// Stores
+import professorStore from '../../../stores/ProfessorStore';
+import escolaStore from '../../../stores/EscolaStore';
+
+import { Trabalho } from './../../../models';
+import TrabalhoService from './../../../services/TrabalhoService';
+
+import { createTextField } from './../../../components/mobx_fields/TextField';
+import { createForeignKeyField } from './../../../components/mobx_fields/ForeignKeyField';
+import { createPickerField } from './../../../components/mobx_fields/PickerField';
+
+import ScreenShell from '../../../components/ScreenShell';
 
 @observer
-class HomeworkScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { setDateForClassScreenVisible: false };
-        this.showSetDateForClassScreen = this.showSetDateForClassScreen.bind(this);
-        this.hideSetDateForClassScreen = this.hideSetDateForClassScreen.bind(this);
+export default class HomeworkScreen extends Component {
+    trabalho = new Trabalho({});
+
+    showNextScreen = () => {
+        const { navigate } = this.props.navigation;
+        navigate('SetDateForTarefa', { tarefa: this.trabalho, service: new TrabalhoService() });
+    };
+
+    @computed
+    get isComplete(): boolean {
+        return !!(
+            this.trabalho.ano &&
+            this.trabalho.bimestre &&
+            this.trabalho.disciplina &&
+            this.trabalho.titulo &&
+            this.trabalho.valor
+        );
     }
 
-    showSetDateForClassScreen() {
-        this.setState({ setDateForClassScreenVisible: true });
+    get screenShellProps(): * {
+        const { navigate, goBack } = this.props.navigation;
+        return {
+            leftIcon: 'arrow-back',
+            leftPress: () => goBack(),
+            navigate,
+            title: 'Trabalhos',
+            rightText: '> Datas',
+            rightPress: this.showNextScreen,
+            showRight: this.isComplete,
+        };
     }
 
-    hideSetDateForClassScreen() {
-        this.setState({ setDateForClassScreenVisible: false });
+    renderPeriodo() {
+        const label = _.capitalize(escolaStore.getConfig('nomePeriodo') || 'bimestre');
+        const num = escolaStore.getConfig('numeroPeriodos') || 4;
+        const items = _.range(1, num + 1).map(n => [n, `${n}º ${label}`]);
+        return createPickerField(label, items, this.trabalho, 'bimestre');
     }
 
-    getSubjectAreaItems() {
-        const mapFunc = (subject, index) =>
-          <Picker.Item key={index} label={subject.name} value={subject.id} />;
-        return store.teacher.subjectAreas.map(mapFunc);
-    }
-
-    getGradesItems() {
-        const mapFunc = (grade, index) =>
-          <Picker.Item key={index} label={`${grade} Pontos`} value={grade} />;
-        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(mapFunc);
-    }
-
-    getPeriodItems() {
-        const mapFunc = (period, index) =>
-          <Picker.Item key={index} label={period.name} value={period.id} />;
-        return store.periods.map(mapFunc);
+    renderPontuacao() {
+        const items = _.range(1, 11).map(n => [n, `${n} Pontos`]);
+        return createPickerField('Pontuação', items, this.trabalho, 'valor');
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
-        const subjectAreaItems = this.getSubjectAreaItems();
-        const gradesItems = this.getGradesItems();
-        const periodItems = this.getPeriodItems();
-
         return (
-          <Container>
-            <Header appHeader>
-              <Left>
-                <TouchableWithoutFeedback onPress={() => navigate('DrawerOpen')}>
-                  <Icon name="menu" />
-                </TouchableWithoutFeedback>
-              </Left>
-              <Body>
-                <Title>Trabalhos</Title>
-              </Body>
-              <Right>
-                <TouchableWithoutFeedback onPress={this.showSetDateForClassScreen}>
-                  <Text>Próximo</Text>
-                </TouchableWithoutFeedback>
-              </Right>
-            </Header>
-            <Content>
-              <BubbleMenu mode="schoolYear" />
-              <Content padder>
-                <Field
-                  name="disciplina"
-                  label="Disciplina"
-                  component={PickerField}
-                  props={{ initialValue: 1 }}
-                >
-                  {subjectAreaItems}
-                </Field>
-                <Field
-                  name="bimestre"
-                  label="Bimestre"
-                  component={PickerField}
-                  props={{ initialValue: 1 }}
-                >
-                  {periodItems}
-                </Field>
-                <Field
-                  name="valor"
-                  label="Pontuação"
-                  component={PickerField}
-                  props={{ initialValue: 10 }}
-                >
-                  {gradesItems}
-                </Field>
-                <Field
-                  style={{ height: 150 }}
-                  name="detalhes"
-                  label="Descrição da Atividade"
-                  component={TextField}
-                  multiline
-                />
-              </Content>
-            </Content>
-            <SetDateForClassScreen
-              visible={this.state.setDateForClassScreenVisible}
-              hideModal={this.hideSetDateForClassScreen}
-              screenFormValues={this.props.formValues}
-              screenStore={TrabalhoStore}
-            />
-          </Container>
+          <ScreenShell {...this.screenShellProps}>
+            {createTextField('Título', this.trabalho, 'titulo', {
+                placeholder: 'Título do Trabalho...',
+            })}
+            {createForeignKeyField('Ano', professorStore.anosMap, this.trabalho, 'ano')}
+            {createForeignKeyField(
+                    'Disciplina',
+                    professorStore.disciplinasMap,
+                    this.trabalho,
+                    'disciplina',
+                )}
+            {this.renderPeriodo()}
+            {this.renderPontuacao()}
+            {createTextField('Detalhes', this.trabalho, 'detalhes', {
+                placeholder: 'Descrição Trabalho...',
+                multiline: true,
+            })}
+          </ScreenShell>
         );
     }
 }
-
-// Pass form data to props
-HomeworkScreenForm = reduxForm({ form: 'formHomeworkScreen' })(HomeworkScreen);
-const selector = formValueSelector('formHomeworkScreen');
-export default connect(
-  state => ({
-    formValues: {
-        disciplina: selector(state, 'disciplina'),
-        bimestre: selector(state, 'bimestre'),
-        valor: selector(state, 'valor'),
-        detalhes: selector(state, 'detalhes'),
-    },
-  })
-)(HomeworkScreenForm);
