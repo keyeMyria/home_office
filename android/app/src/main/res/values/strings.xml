@@ -1,5 +1,5 @@
 <resources>
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">E4Uk9azyqXw3CtXwJAWh0JerD_Is5d3fb5cc-f2fc-4c4f-8353-0a5e5213f3e3</string>
     <string name="app_name">Educare Box</string>
-    <string name="facebook_app_id">1915124495417051</string>
+    <string name="facebook_app_id">181427211875741</string>
 </resources>
