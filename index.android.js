@@ -19,7 +19,9 @@ const formStore = createStore(allReducers);
 
 pushHandler.configureNotifications();
 
-@codePush
+@codePush({
+    installMode: codePush.InstallMode.IMMEDIATE,
+})
 class EducareApp extends Component {
     render() {
         return (
