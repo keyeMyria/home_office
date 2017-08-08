@@ -5,6 +5,7 @@ import { DrawerNavigator, TabNavigator } from 'react-navigation';
 import AppNavigator from './AppNavigator';
 import HomeNavigator from './HomeNavigator';
 import {
+    FaltasScreen,
     // ExerciseScreen,
     // SelectClassScreen,
     // ExamScreen,
@@ -39,6 +40,7 @@ export default DrawerNavigator(
         HelpScreen: { screen: HelpScreen },
         LancarNotasScreen: { screen: LancarNotasScreen },
         SetDateForTarefa: { screen: SetDateForTarefa },
+        FaltasScreen: { screen: FaltasScreen },
     },
     {
         headerMode: 'none',

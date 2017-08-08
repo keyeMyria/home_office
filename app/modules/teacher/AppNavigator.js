@@ -6,7 +6,7 @@ export default class AppNavigator extends Component {
     get items() {
         return [
             { title: 'Visão Geral', icon: 'home', route: 'HomeRouter' },
-            // { title: 'Faltas', icon: 'assignment-turned-in', route: 'SelectClassScreen' },
+            { title: 'Faltas', icon: 'assignment-turned-in', route: 'FaltasScreen' },
             // { title: 'Ocorrências', icon: 'highlight-off', route: 'SelectClassScreen' },
             // { title: 'Comunicados', icon: 'note', route: 'ComunicadosScreen' },
             { title: 'Enviar feedback', icon: 'announcement', route: 'FeedBackScreen' },
