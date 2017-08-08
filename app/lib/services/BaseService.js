@@ -36,7 +36,11 @@ export default class BaseService {
         return this._post(this._path, data);
     }
 
-    async put(data?: any) {
+    async put(data?: any, uri: boolean = false) {
+        if (uri && typeof data === 'string') {
+            const config = { headers: { 'Content-Type': 'text/uri-list' } };
+            return this._put(this._path, data, config);
+        }
         return this._put(this._path, data);
     }
 
