@@ -27,4 +27,8 @@ export default class Aviso extends models.Model {
     get iconName(): string {
         return CONFIG.AVISOS.tipoIconMap[this.tipo];
     }
+
+    toString() {
+        return this.titulo || '';
+    }
 }

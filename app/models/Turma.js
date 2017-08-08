@@ -20,4 +20,8 @@ export default class Turma extends models.Model {
     ano: Ano;
     responsabilidades: Array<Responsabilidade>;
     alunos: Array<Aluno>;
+
+    toString(): string {
+        return this.titulo || '';
+    }
 }

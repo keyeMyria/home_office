@@ -1,4 +1,6 @@
 // @flow
+import { observable } from 'mobx';
+
 import * as models from './../lib/models';
 import { avatar } from './../lib/img';
 
@@ -14,8 +16,6 @@ import type Mensagem from './Mensagem';
 import type Chat from './Chat';
 import type ChatGroup from './ChatGroup';
 
-type Role = 'ALUNO' | 'PROFESSOR' | 'DIRETOR';
-
 @models.register('Aluno', {
     id: models.PrimaryKey(),
     nome: models.String(),
@@ -24,7 +24,7 @@ type Role = 'ALUNO' | 'PROFESSOR' | 'DIRETOR';
     imagem: models.String(),
     enabled: models.Boolean(),
     lastPasswordResetDate: models.Date(),
-    role: models.String(),
+    role: models.Static('ALUNO'),
     telefones: models.String(),
     mensagens: models.OneToMany('Mensagem'),
     chats: models.ManyToMany('Chat'),
@@ -47,8 +47,11 @@ export default class Aluno extends models.Model {
     imagem: string;
     enabled: boolean;
     lastPasswordResetDate: Date;
-    role: Role;
+    role: 'ALUNO';
     telefones: string;
+    turma: Turma;
+
+    // Related fields
     mensagens: Array<Mensagem>;
     chats: Array<Chat>;
     chatGroups: Array<ChatGroup>;
@@ -57,12 +60,18 @@ export default class Aluno extends models.Model {
     notas: Array<Nota>;
     ocorrencias: Array<Ocorrencia>;
     rotinas: Array<Rotina>;
-    turma: Turma;
     responsaveis: Array<Responsavel>;
     avisos: Array<Responsavel>;
     listasGeradas: Array<ListaGerada>;
 
+    // Used for selecting alunos in StudentPicker Component
+    @observable _selected: boolean = false;
+
     get imageSource(): Object {
         return avatar(this.imagem);
+    }
+
+    toString(): string {
+        return this.nome;
     }
 }
