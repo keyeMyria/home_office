@@ -63,4 +63,16 @@ export default {
             NAO_ENTREGA: 'mood-bad',
         },
     },
+    OCORRENCIAS: {
+        tipoNameMap: {
+            ATRASO: 'Demora ao retornar do recreio.',
+            AGRESSAO_FISICA: 'Agressão física à colega(s).',
+            AGRESSAO_VERBAL: 'Agressão verbal à colega(s).',
+            BAGUNCA: 'Bagunça em sala de aula.',
+            CONVERSA: 'Conversa excessiva em sala de aula.',
+            FALTA_MATERIAL: 'Falta de material necessário para aula.',
+            INDISCIPLINA: 'Indisciplina durante o recreio.',
+            OUTROS: 'Outros motivos.',
+        },
+    },
 };

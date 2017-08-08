@@ -11,6 +11,7 @@ import {
     // ExamScreen,
     HomeworkScreen,
     // ComunicadosScreen,
+    OcorrenciasScreen,
     LancarNotasScreen,
     SetDateForTarefa,
 } from './screens';
@@ -41,6 +42,7 @@ export default DrawerNavigator(
         LancarNotasScreen: { screen: LancarNotasScreen },
         SetDateForTarefa: { screen: SetDateForTarefa },
         FaltasScreen: { screen: FaltasScreen },
+        OcorrenciasScreen: { screen: OcorrenciasScreen },
     },
     {
         headerMode: 'none',

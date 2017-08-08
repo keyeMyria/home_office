@@ -10,6 +10,7 @@ import SetDateForTarefa from './SetDateForTarefa';
 // import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
 // import SelectQuestionScreen from './SelectQuestionScreen';
 // import ComunicadosScreen from './ComunicadosScreen';
+import OcorrenciasScreen from './Ocorrencias/OcorrenciasScreen';
 import LancarNotasScreen from './LancarNotasScreen';
 
 export {
@@ -27,4 +28,5 @@ export {
     // SelectQuestionScreen,
     // ComunicadosScreen,
     LancarNotasScreen,
+    OcorrenciasScreen,
 };
