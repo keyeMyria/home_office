@@ -17,62 +17,56 @@ import {
 
 import { observer } from 'mobx-react/native';
 
-const StudentItem = (props) => {
-    const { student, active, onPress } = props;
+import type { Aluno } from './../models';
+
+const StudentItem = observer((props: { aluno: Aluno }) => {
+    const { aluno } = props;
+    const onPress = () => {
+        aluno._selected = !aluno._selected;
+    };
     return (
-      <ListItem icon onPress={() => onPress(student)}>
+      <ListItem icon onPress={onPress}>
         <Left>
-          <Thumbnail small source={student.avatar} />
+          <Thumbnail small source={aluno.imageSource} />
         </Left>
         <Body>
           <Text>
-            {student.name}
+            {aluno.nome}
           </Text>
         </Body>
         <Right>
-          <CheckBox checked={active} style={{ marginRight: 20 }} onPress={onPress} />
+          <CheckBox
+            checked={!!aluno._selected}
+            style={{ marginRight: 20 }}
+            onPress={onPress}
+          />
         </Right>
       </ListItem>
     );
-};
+});
 
 @observer
 export default class StudentPicker extends Component {
     props: {
-        students: Array<any>,
-        selected: Array<number | string>,
-        selectAll: boolean,
+        alunos: Array<Aluno>,
+        /** If True shows a selectAll button */
+        selectAll?: boolean,
     };
 
-    selectStudent = (student: Object) => {
-        const index = this.props.selected.indexOf(student.id);
-        if (index === -1) {
-            this.props.selected.push(student.id);
-        } else {
-            this.props.selected.splice(index, 1);
-        }
+    static defaultProps = {
+        selectAll: false,
     };
 
     selectAll = () => {
-        this.props.students.forEach((aluno) => {
-            const index = this.props.selected.indexOf(aluno.id);
-            if (index === -1) {
-                this.props.selected.push(aluno.id);
-            } else {
-                this.props.selected.splice(index, 1);
-            }
+        this.props.alunos.forEach((aluno) => {
+            // eslint-disable-next-line no-param-reassign
+            aluno._selected = !aluno._selected;
         });
     };
 
     render() {
-        const { students } = this.props;
-        const mapFunc = student =>
-          (<StudentItem
-            key={student.id}
-            student={student}
-            onPress={this.selectStudent}
-            active={this.props.selected.indexOf(student.id) !== -1}
-          />);
+        const { alunos } = this.props;
+        const mapFunc = aluno => <StudentItem key={aluno.pk} aluno={aluno} />;
 
         return (
           <View>
@@ -85,7 +79,7 @@ export default class StudentPicker extends Component {
                 </Button>}
             </Item>
             <List>
-              {students.map(mapFunc)}
+              {alunos.map(mapFunc)}
             </List>
           </View>
         );
