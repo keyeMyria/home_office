@@ -19,6 +19,21 @@ const Touchable = (props) => {
     );
 };
 
+export type ScreenShellProps = {
+    navigate: string => any,
+    title: string,
+    padder?: boolean,
+    rightText?: string,
+    rightPress?: () => any,
+    showRight?: boolean,
+    loading?: boolean,
+    children?: any,
+    leftIcon?: string,
+    leftPress?: () => any,
+    fab?: *,
+    fabProps?: *,
+};
+
 /**
  * Render the `Outter Shell` for a screen
  * Props
@@ -45,20 +60,7 @@ const Touchable = (props) => {
  */
 @observer
 export default class ScreenShell extends Component {
-    props: {
-        navigate: string => any,
-        title: string,
-        padder?: boolean,
-        rightText?: string,
-        rightPress?: () => any,
-        showRight?: boolean,
-        loading: boolean,
-        children?: any,
-        leftIcon?: string,
-        leftPress?: () => any,
-        fab?: *,
-        fabProps?: *,
-    };
+    props: ScreenShellProps;
 
     static defaultProps = {
         padder: true,
