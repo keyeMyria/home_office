@@ -6,8 +6,10 @@ import { observer } from 'mobx-react/native';
 import { computed, observable } from 'mobx';
 
 import { Evento } from './../../../models';
+import type { Topico } from './../../../models';
 import logger from './../../../lib/logger';
 import EventoService from './../../../services/EventoService';
+import type { CollectionService } from './../../../lib/services';
 
 // Stores
 import professorStore from './../../../stores/ProfessorStore';
@@ -22,25 +24,35 @@ export default class SetDateForTarefa extends Component {
     @observable eventos: Array<Evento> = [];
 
     async save() {
+        // console.warn('', this.eventos.toJS());
+
         try {
             const { params } = this.props.navigation.state;
             if (!params) return;
             const { navigate } = this.props.navigation;
-            const service = params.service;
+            const service: CollectionService = params.service;
             const tarefa = params.tarefa;
+            const topicos: void | Array<Topico> = params.topicos;
             const method = tarefa.pk ? 'put' : 'post';
+            // $FlowFixMe
             const resp = await service[method](tarefa.toJS());
             if (method === 'post') {
                 tarefa.id = resp.id;
             }
+
+            if (topicos && topicos.length) {
+                const topicosLink = topicos.map(t => t._selfLink);
+                await service.one(tarefa.id).all('topicos').put(topicosLink.join('\n'), true);
+            }
+
             await Promise.all(
                 this.eventos.map((evento) => {
                     const eventoService = new EventoService();
-                    return eventoService.post(evento);
+                    return eventoService.post(evento.toJS());
                 }),
             );
             Alert.alert('Sucesso', 'Dados salvos com sucesso');
-            navigate('CalendarScreen');
+            navigate('HomeRouter');
         } catch (error) {
             logger.error(error);
             Alert.alert('Erro', '[SDFT-01] Não foi possível salvar a tarefa');
@@ -55,15 +67,22 @@ export default class SetDateForTarefa extends Component {
         if (params) {
             const ano = params.tarefa.ano;
             const disciplina = params.tarefa.disciplina;
-            professorStore.fetchTurmas(ano.pk, disciplina.pk).then((turmas) => {
-                turmas.forEach((t) => {
-                    const evento = new Evento({});
-                    evento.turma = t;
-                    evento.tarefa = params.tarefa;
-                    this.eventos.push(evento);
+            professorStore
+                .fetchTurmas(ano.pk, disciplina.pk)
+                .then((turmas) => {
+                    turmas.forEach((t) => {
+                        const evento = new Evento({});
+                        evento.turma = t;
+                        evento.tarefa = params.tarefa;
+                        this.eventos.push(evento);
+                    });
+                    this.loading = false;
+                })
+                .catch((err) => {
+                    this.loading = false;
+                    logger.error(err);
+                    logger.warn(err);
                 });
-                this.loading = false;
-            });
         }
     }
 

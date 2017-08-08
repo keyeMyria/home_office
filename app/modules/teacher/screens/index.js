@@ -12,6 +12,7 @@ import SetDateForTarefa from './SetDateForTarefa';
 // import ComunicadosScreen from './ComunicadosScreen';
 import OcorrenciasScreen from './Ocorrencias/OcorrenciasScreen';
 import LancarNotasScreen from './LancarNotasScreen';
+import ProvasScreen from './ProvasScreen';
 
 export {
     // ExerciseScreen,
@@ -29,4 +30,5 @@ export {
     // ComunicadosScreen,
     LancarNotasScreen,
     OcorrenciasScreen,
+    ProvasScreen,
 };

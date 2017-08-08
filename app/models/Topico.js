@@ -1,4 +1,6 @@
 // @flow
+import { observable } from 'mobx';
+
 import * as models from './../lib/models';
 import Disciplina from './Disciplina';
 import type Tarefa from './Tarefa';
@@ -27,4 +29,6 @@ export default class Topico extends models.Model {
     ano: Ano;
     questoes: Array<Questao>;
     lancamentos: Array<Lancamento>;
+
+    @observable _selected: boolean = false;
 }

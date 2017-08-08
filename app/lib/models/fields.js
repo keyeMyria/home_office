@@ -27,6 +27,7 @@ export function ForeignKey(Type: *) {
     let Model = Type;
 
     return (value: *) => {
+        if (!value) return null;
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }

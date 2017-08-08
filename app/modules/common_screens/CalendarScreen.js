@@ -58,20 +58,26 @@ export default class CalendarScreen extends Component {
 }
 
 function Fab({ navigate }) {
+    const goTo = name => () => navigate(name);
+
+    const items = [
+        { buttonColor: '#1C7FE2', title: 'Prova', onPress: goTo('ProvasScreen') },
+        { buttonColor: '#1C7FE2', title: 'Trabalho', onPress: goTo('HomeworkScreen') },
+        { buttonColor: '#1C7FE2', title: 'Exercicio', onPress: () => {} },
+    ];
+
+    const iconStyle = { color: '#fff', fontSize: 24 };
+
     return (
       <ActionButton buttonColor="rgba(231,76,60,1)">
-        <ActionButton.Item buttonColor="#1C7FE2" title="Prova" onPress={() => {}}>
-          <Icon name="assignment-turned-in" style={{ color: '#fff', fontSize: 24 }} />
+        <ActionButton.Item {...items[0]}>
+          <Icon name="assignment-turned-in" style={iconStyle} />
         </ActionButton.Item>
-        <ActionButton.Item
-          buttonColor="#1C7FE2"
-          title="Trabalho"
-          onPress={() => navigate('HomeworkScreen')}
-        >
-          <Icon name="library-books" style={{ color: '#fff', fontSize: 24 }} />
+        <ActionButton.Item {...items[1]}>
+          <Icon name="library-books" style={iconStyle} />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor="#1C7FE2" title="Exercícios" onPress={() => {}}>
-          <Icon name="tune" style={{ color: '#fff', fontSize: 24 }} />
+        <ActionButton.Item {...items[2]}>
+          <Icon name="tune" style={iconStyle} />
         </ActionButton.Item>
       </ActionButton>
     );

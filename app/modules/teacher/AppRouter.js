@@ -14,6 +14,7 @@ import {
     OcorrenciasScreen,
     LancarNotasScreen,
     SetDateForTarefa,
+    ProvasScreen,
 } from './screens';
 
 import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../common_screens';
@@ -37,6 +38,7 @@ export default DrawerNavigator(
         // ComunicadosScreen: { screen: ComunicadosScreen },
         // SelectClassScreen: { screen: SelectClassScreen },
         HomeworkScreen: { screen: HomeworkScreen },
+        ProvasScreen: { screen: ProvasScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
         LancarNotasScreen: { screen: LancarNotasScreen },
