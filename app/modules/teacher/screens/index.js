@@ -7,7 +7,7 @@ import FaltasScreen from './FaltasScreen';
 // import ExamScreen from './ExamScreen';
 import HomeworkScreen from './HomeworkScreen';
 import SetDateForTarefa from './SetDateForTarefa';
-// import ExerciseConfigurationScreen from './ExerciseConfigurationScreen';
+import ExerciciosScreen from './ExerciciosScreen';
 // import SelectQuestionScreen from './SelectQuestionScreen';
 // import ComunicadosScreen from './ComunicadosScreen';
 import OcorrenciasScreen from './Ocorrencias/OcorrenciasScreen';
@@ -31,4 +31,5 @@ export {
     LancarNotasScreen,
     OcorrenciasScreen,
     ProvasScreen,
+    ExerciciosScreen,
 };

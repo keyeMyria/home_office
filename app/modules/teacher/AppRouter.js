@@ -6,15 +6,13 @@ import AppNavigator from './AppNavigator';
 import HomeNavigator from './HomeNavigator';
 import {
     FaltasScreen,
-    // ExerciseScreen,
-    // SelectClassScreen,
-    // ExamScreen,
     HomeworkScreen,
     // ComunicadosScreen,
     OcorrenciasScreen,
     LancarNotasScreen,
     SetDateForTarefa,
     ProvasScreen,
+    ExerciciosScreen,
 } from './screens';
 
 import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../common_screens';
@@ -39,6 +37,7 @@ export default DrawerNavigator(
         // SelectClassScreen: { screen: SelectClassScreen },
         HomeworkScreen: { screen: HomeworkScreen },
         ProvasScreen: { screen: ProvasScreen },
+        ExerciciosScreen: { screen: ExerciciosScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
         LancarNotasScreen: { screen: LancarNotasScreen },

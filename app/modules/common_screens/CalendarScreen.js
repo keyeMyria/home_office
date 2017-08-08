@@ -63,7 +63,7 @@ function Fab({ navigate }) {
     const items = [
         { buttonColor: '#1C7FE2', title: 'Prova', onPress: goTo('ProvasScreen') },
         { buttonColor: '#1C7FE2', title: 'Trabalho', onPress: goTo('HomeworkScreen') },
-        { buttonColor: '#1C7FE2', title: 'Exercicio', onPress: () => {} },
+        { buttonColor: '#1C7FE2', title: 'Exercício', onPress: goTo('ExerciciosScreen') },
     ];
 
     const iconStyle = { color: '#fff', fontSize: 24 };
