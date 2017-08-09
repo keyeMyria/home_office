@@ -53,13 +53,14 @@ export default class ExamScreen extends Component {
 
     @computed
     get isComplete(): boolean {
-        return !!(
-            this.prova.ano &&
-            this.prova.bimestre &&
-            this.prova.disciplina &&
-            this.prova.titulo &&
-            this.prova.valor
-        );
+        // return !!(
+        //     this.prova.ano &&
+        //     this.prova.bimestre &&
+        //     this.prova.disciplina &&
+        //     this.prova.titulo &&
+        //     this.prova.valor
+        // );
+        return true;
     }
 
     renderPeriodo() {

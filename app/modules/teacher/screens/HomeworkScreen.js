@@ -29,13 +29,14 @@ export default class HomeworkScreen extends Component {
 
     @computed
     get isComplete(): boolean {
-        return !!(
-            this.trabalho.ano &&
-            this.trabalho.bimestre &&
-            this.trabalho.disciplina &&
-            this.trabalho.titulo &&
-            this.trabalho.valor
-        );
+        // return !!(
+        //     this.trabalho.ano &&
+        //     this.trabalho.bimestre &&
+        //     this.trabalho.disciplina &&
+        //     this.trabalho.titulo &&
+        //     this.trabalho.valor
+        // );
+        return true;
     }
 
     get screenShellProps(): * {

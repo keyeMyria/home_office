@@ -31,7 +31,8 @@ export default class ExerciciosScreen extends Component {
 
     @computed
     get isComplete(): boolean {
-        return !!(this.exercicio.ano && this.exercicio.disciplina && this.exercicio.titulo);
+        // return !!(this.exercicio.ano && this.exercicio.disciplina && this.exercicio.titulo);
+        return true;
     }
 
     get screenShellProps(): * {

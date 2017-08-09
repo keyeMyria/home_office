@@ -96,8 +96,9 @@ export default class FaltasScreen extends Component {
 
     @computed
     get canSave(): boolean {
-        const alunosSelected = this.alunosMap.values().filter(a => a._selected);
-        return !!(this.falta.data && this.falta.disciplina && alunosSelected.length);
+        // const alunosSelected = this.alunosMap.values().filter(a => a._selected);
+        // return !!(this.falta.data && this.falta.disciplina && alunosSelected.length);
+        return true;
     }
 
     get screenShellProps(): ScreenShellProps {
