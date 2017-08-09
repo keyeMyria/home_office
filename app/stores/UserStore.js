@@ -136,17 +136,20 @@ class UserStore {
     }
 
     @action
-    logout() {
-        this.user = null;
+    async logout() {
         escolaStore.clear();
         AsyncStorage.clear();
+        const id = this.user.id;
+        this.user = null;
         try {
-            if (this.id) {
+            if (id) {
                 const service = new UsuarioService();
-                service.one(this.id).patch({ endpointArn: null });
+                await service.one(id).patch({ endpointArn: null });
+            } else {
+                logger.error('logout not working');
             }
         } catch (error) {
-            console.warn('Não foi possivél remover o arn do usuário');
+            logger.warn('Não foi possivél remover o arn do usuário');
         }
     }
 
