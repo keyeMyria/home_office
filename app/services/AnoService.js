@@ -8,10 +8,10 @@ export default class AnoService extends CollectionService {
     }
 
     findByProfessor(id: number) {
-        return super.search({ id });
+        return super.search({ id }, 'findByProfessor');
     }
 
     findByProfessorAndDisciplina(professor: number, disciplina: number) {
-        return super.search({ professor, disciplina });
+        return super.search({ professor, disciplina }, 'findByProfessorAndDisciplina');
     }
 }
