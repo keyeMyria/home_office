@@ -71,9 +71,10 @@ export default class SetDateForTarefa extends Component {
                 .fetchTurmas(ano.pk, disciplina.pk)
                 .then((turmas) => {
                     turmas.forEach((t) => {
-                        const evento = new Evento({});
-                        evento.turma = t;
-                        evento.tarefa = params.tarefa;
+                        const evento = new Evento({
+                            turma: t,
+                            tarefa: params.tarefa,
+                        });
                         this.eventos.push(evento);
                     });
                     this.loading = false;

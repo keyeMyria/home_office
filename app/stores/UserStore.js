@@ -161,6 +161,7 @@ class UserStore {
         const { user } = await this._makeLogin(username, password);
         if (user) {
             this.setUser(user)._saveUserInAsyncStorage(user);
+            pushHandler.registerWithSNS(user.endpointArn);
         }
         this.loading = false;
     }
@@ -179,6 +180,7 @@ class UserStore {
             const { data: user } = await httpClient.setToken(token).get(userUrl);
             if (user) {
                 this.setUser(user)._saveUserInAsyncStorage(user);
+                pushHandler.registerWithSNS(user.endpointArn);
             }
             this.loading = false;
         } catch (error) {
