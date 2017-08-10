@@ -60,7 +60,7 @@ export default class HomeworkScreen extends Component {
     }
 
     renderPontuacao() {
-        const items = _.range(1, 11).map(n => [n, `${n} Pontos`]);
+        const items = _.range(1, 36).map(n => [n, `${n} Pontos`]);
         return createPickerField('Pontuação', items, this.trabalho, 'valor');
     }
 
