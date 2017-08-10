@@ -8,6 +8,6 @@ export default class ChatGroupService extends CollectionService {
     }
 
     findByAcesso(role: string) {
-        return super.search({ role });
+        return super.search({ role }, 'findByAcesso');
     }
 }

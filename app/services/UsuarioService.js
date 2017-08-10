@@ -8,6 +8,6 @@ export default class UsuarioService extends CollectionService {
     }
 
     findByEmailAndPassword(email: string, password: string) {
-        return super.search({ email, password });
+        return super.search({ email, password }, 'findByEmailAndPassword');
     }
 }

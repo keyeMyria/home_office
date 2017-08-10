@@ -8,6 +8,6 @@ export default class ChatService extends CollectionService {
     }
 
     findConversation(u1: number, u2: number) {
-        return super.search({ u1, u2 });
+        return super.search({ u1, u2 }, 'findConversation');
     }
 }

@@ -8,6 +8,6 @@ export default class TopicoService extends CollectionService {
     }
 
     findByDisciplinaAndAno(disciplina: number, ano: number) {
-        return super.search({ disciplina, ano });
+        return super.search({ disciplina, ano }, 'findByDisciplinaAndAno');
     }
 }
