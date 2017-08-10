@@ -9,7 +9,7 @@ import HomeworkScreen from './HomeworkScreen';
 import SetDateForTarefa from './SetDateForTarefa';
 import ExerciciosScreen from './ExerciciosScreen';
 // import SelectQuestionScreen from './SelectQuestionScreen';
-// import ComunicadosScreen from './ComunicadosScreen';
+import ComunicadosScreen from './Comunicados/ComunicadosScreen';
 import OcorrenciasScreen from './Ocorrencias/OcorrenciasScreen';
 import LancarNotasScreen from './LancarNotasScreen';
 import ProvasScreen from './ProvasScreen';
@@ -27,7 +27,7 @@ export {
     SetDateForTarefa,
     // ExerciseConfigurationScreen,
     // SelectQuestionScreen,
-    // ComunicadosScreen,
+    ComunicadosScreen,
     LancarNotasScreen,
     OcorrenciasScreen,
     ProvasScreen,
