@@ -11,8 +11,11 @@ export default class AlunoService extends CollectionService {
         return super.search({ id }, 'findByAno');
     }
 
+    findByTurma(id: number) {
+        return super.search({ id }, 'findByTurma');
+    }
+
     findByEvento(id: number) {
         return super.search({ id }, 'findByEvento');
     }
-
 }
