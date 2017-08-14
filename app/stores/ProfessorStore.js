@@ -4,6 +4,7 @@ import type { ObservableMap } from 'mobx';
 
 import ProfessorService from './../services/ProfessorService';
 import AnoService from './../services/AnoService';
+import DisciplinaService from './../services/DisciplinaService';
 import TurmaService from './../services/TurmaService';
 import { Professor, Ano, Disciplina, Turma } from './../models';
 
@@ -54,7 +55,7 @@ class ProfessorStore {
     }
 
     async fetchDisciplinas(id: number) {
-        const response = await this._service.one(id).all('disciplinas').get();
+        const response = await new DisciplinaService().findByProfessor(id);
         const disciplinas = Disciplina.fromArray(response.disciplinas).map(a => [
             a.id,
             new Disciplina(a),

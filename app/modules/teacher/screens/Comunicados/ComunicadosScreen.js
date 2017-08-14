@@ -1,30 +1,28 @@
 // @flow
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
 import { observable, computed, autorun } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-import { Falta, Turma, Aluno } from './../../../models';
-import TurmaService from './../../../services/TurmaService';
-import AlunoService from './../../../services/AlunoService';
-import FaltaService from './../../../services/FaltaService';
+import { Aviso, Turma, Aluno } from './../../../../models';
+import TurmaService from '../../../../services/TurmaService';
+import AlunoService from '../../../../services/AlunoService';
 
-import professorStore from './../../../stores/ProfessorStore';
+import professorStore from '../../../../stores/ProfessorStore';
+import ComunicadosModal from './ComunicadosModal';
 
-import logger from './../../../lib/logger';
-
-import ScreenShell from './../../../components/ScreenShell';
-import StudentPicker from './../../../components/StudentPicker';
-import { DatePickerField, createForeignKeyField } from './../../../components/mobx_fields';
-import type { ScreenShellProps } from './../../../components/ScreenShell';
+import ScreenShell from '../../../../components/ScreenShell';
+import StudentPicker from '../../../../components/StudentPicker';
+import { DatePickerField, createForeignKeyField } from './../../../../components/mobx_fields';
+import type { ScreenShellProps } from '../../../../components/ScreenShell';
 
 @observer
-export default class FaltasScreen extends Component {
+export default class ComunicadosScreen extends Component {
+
     cancelTurmaAutorun: *;
     cancelAlunosAutorun: *;
 
-    falta = new Falta({});
+    comunicado = new Aviso({ tipo: 'COMUNICADO' });
     @observable turmasMap: ObservableMap<Turma> = observable.map({});
     @observable alunosMap: ObservableMap<Aluno> = observable.map({});
 
@@ -32,6 +30,7 @@ export default class FaltasScreen extends Component {
     store = {
         ano: null,
         turma: null,
+        modalVisible: false,
     };
 
     constructor(props: *) {
@@ -49,7 +48,7 @@ export default class FaltasScreen extends Component {
             }
         });
         // $FlowFixMe
-        this.save = this.save.bind(this);
+        // this.save = this.save.bind(this);
     }
 
     componentWillUnmount() {
@@ -75,57 +74,49 @@ export default class FaltasScreen extends Component {
         this.alunosMap.replace(alunos);
     }
 
-    async save() {
-        const { navigate } = this.props.navigation;
-        try {
-            const service = new FaltaService();
-            const faltaData = this.falta.toJS();
-            const response = await service.post(faltaData);
-            const falta = new Falta(response);
-            // $FlowFixMe
-            const alunosSelected = this.alunosMap.values().filter(a => a._selected);
-            const alunosLink = alunosSelected.map(a => a._selfLink);
-            await service.one(falta.pk).all('alunos').put(alunosLink.join('\n'), true);
-            Alert.alert('Sucesso', 'Dados salvos com sucesso!');
-            navigate('CalendarScreen');
-        } catch (error) {
-            logger.error(error);
-            logger.warn('response', error.response);
-            Alert.alert('Erro', 'Ocoreu um erro');
-        }
+    @computed
+    get alunosSelected(): Array<Aluno> {
+        return this.alunosMap.values().filter(a => a._selected);
     }
 
     @computed
     get canSave(): boolean {
-        // const alunosSelected = this.alunosMap.values().filter(a => a._selected);
-        // return !!(this.falta.data && this.falta.disciplina && alunosSelected.length);
-        return true;
+        return !!(this.comunicado.data && this.alunosSelected.length);
     }
 
     get screenShellProps(): ScreenShellProps {
         const { navigate } = this.props.navigation;
         return {
             navigate,
-            title: 'Faltas',
-            rightPress: this.save,
-            rightText: 'Salvar',
+            title: 'Comunicados',
+            rightPress: this.showModal,
+            rightText: 'Próximo',
             showRight: this.canSave,
         };
     }
 
+    showModal = () => {
+        this.store.modalVisible = true;
+    };
+
+    hideModal = () => {
+        this.store.modalVisible = false;
+    };
+
     render() {
         return (
           <ScreenShell {...this.screenShellProps}>
-            <DatePickerField label="Data" store={this.falta} storeKey="data" />
+            <DatePickerField label="Data" store={this.comunicado} storeKey="data" />
             {createForeignKeyField('Ano', professorStore.anosMap, this.store, 'ano')}
             {createForeignKeyField('Turma', this.turmasMap, this.store, 'turma')}
-            {createForeignKeyField(
-                    'Disciplina',
-                    professorStore.disciplinasMap,
-                    this.falta,
-                    'disciplina',
-                )}
             <StudentPicker alunos={this.alunosMap.values()} />
+            <ComunicadosModal
+              visible={this.store.modalVisible}
+              comunicado={this.comunicado}
+              alunos={this.alunosMap.values()}
+              navigation={this.props.navigation}
+              hide={this.hideModal}
+            />
           </ScreenShell>
         );
     }

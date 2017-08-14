@@ -8,6 +8,6 @@ export default class AdministradorService extends CollectionService {
     }
 
     findByNome(nome: string) {
-        return super.search({ nome });
+        return super.search({ nome }, 'findByNome');
     }
 }

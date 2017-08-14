@@ -8,6 +8,6 @@ export default class FaltaService extends CollectionService {
     }
 
     findByData(data: Date) {
-        return super.search({ data });
+        return super.search({ data }, 'findByData');
     }
 }

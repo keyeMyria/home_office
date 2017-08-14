@@ -7,6 +7,7 @@ import { observer } from 'mobx-react/native';
 
 import { Ocorrencia, Turma, Aluno } from './../../../../models';
 import TurmaService from './../../../../services/TurmaService';
+import AlunoService from './../../../../services/AlunoService';
 import OcorrenciaService from './../../../../services/OcorrenciaService';
 
 import professorStore from './../../../../stores/ProfessorStore';
@@ -75,8 +76,8 @@ export default class OcorrenciaScreen extends Component {
     async fecthAlunos() {
         const turma = this.store.turma;
         if (!turma) return;
-        const service = new TurmaService();
-        const result = await service.one(turma.pk).all('alunos').get();
+        const service = new AlunoService();
+        const result = await service.findByTurma(turma.pk);
         const alunos = Aluno.fromArray(result.alunos).map(t => [t.pk, t]);
         this.alunosMap.replace(alunos);
     }

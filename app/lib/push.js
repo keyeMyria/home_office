@@ -1,7 +1,6 @@
 // @flow
 import { Platform } from 'react-native';
 import PushNotification from 'react-native-push-notification';
-import uuid from 'uuid';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 import CONFIG from './../../config';
@@ -65,7 +64,7 @@ class PushHandler {
                 EndpointArn: endpointArn,
             }).promise();
             updateNeeded =
-                Attributes.Token === token || Attributes.Enabled.toLowerCase() === 'true';
+                Attributes.Token !== token || Attributes.Enabled.toLowerCase() !== 'true';
         } catch (error) {
             if (error.code === 'NotFound') {
                 logger.log(
@@ -102,7 +101,7 @@ class PushHandler {
             logger.log(`[SNS] Creating platform endpoint with token: "${token}"`);
             const params = {
                 PlatformApplicationArn: this.APPLICATION_ARN,
-                Token: uuid(),
+                Token: this._token,
                 Attributes: { Token: this._token, Enabled: 'true' },
             };
             const { EndpointArn } = await SNS.createPlatformEndpoint(params).promise();

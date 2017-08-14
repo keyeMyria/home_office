@@ -8,6 +8,6 @@ export default class TrabalhoService extends CollectionService {
     }
 
     findByProfessor(id: number) {
-        return super.search({ id });
+        return super.search({ id }, 'findByProfessor');
     }
 }

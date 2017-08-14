@@ -8,6 +8,6 @@ export default class ExercicioService extends CollectionService {
     }
 
     findByProfessor(id: number) {
-        super.search({ id });
+        super.search({ id }, 'findByProfessor');
     }
 }

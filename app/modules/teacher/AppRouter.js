@@ -7,7 +7,7 @@ import HomeNavigator from './HomeNavigator';
 import {
     FaltasScreen,
     HomeworkScreen,
-    // ComunicadosScreen,
+    ComunicadosScreen,
     OcorrenciasScreen,
     LancarNotasScreen,
     SetDateForTarefa,
@@ -33,7 +33,7 @@ const HomeRouter = TabNavigator(
 export default DrawerNavigator(
     {
         HomeRouter: { screen: HomeRouter },
-        // ComunicadosScreen: { screen: ComunicadosScreen },
+        ComunicadosScreen: { screen: ComunicadosScreen },
         // SelectClassScreen: { screen: SelectClassScreen },
         HomeworkScreen: { screen: HomeworkScreen },
         ProvasScreen: { screen: ProvasScreen },
