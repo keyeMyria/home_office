@@ -15,12 +15,11 @@ import eventoStore from './../../stores/EventosStore';
 import type { Evento, Topico } from './../../models';
 import LoadingModal from './../LoadingModal';
 
-
 @observer
 export default class CalendarModal extends Component {
     props: {
         onClose: void => void,
-        navigate: string => void
+        navigate: string => void,
     };
 
     static defaultProps = {
@@ -67,12 +66,14 @@ export default class CalendarModal extends Component {
 
     renderItem(label: string, text: string, suffix: string = '', isPath: boolean = true) {
         const value = isPath ? _.get(this, text) : text;
-        if (!value) return null;
+        if (!value) {
+            return null;
+        }
         return (
           <View style={localStyles.modalItens}>
             <Label>{`${label}: `}</Label>
             <Text>
-              {value}
+              {`${value}`}
             </Text>
           </View>
         );
@@ -111,9 +112,11 @@ export default class CalendarModal extends Component {
         return (
           <LoadingModal loading={this.loading}>
             <View style={localStyles.modalContent}>
+              {this.renderItem('Data', 'event.dataFormatada')}
               {this.renderItem('Turma', 'event.turma.titulo')}
               {this.renderItem('Nota', 'event.tarefa.valor', ' Pontos')}
-              {this.renderItem('Tempo Aprox.', 'event.duracaoText')}
+              {this.renderItem('Tempo Aprox.', 'event.duracaoTextModal')}
+              {this.renderItem('Detalhes', 'event.tarefa.detalhes')}
               {this.renderTopics()}
             </View>
           </LoadingModal>
@@ -136,7 +139,7 @@ export default class CalendarModal extends Component {
             ],
             { cancelable: true },
         );
-    }
+    };
 
     editEvent() {
         const eventType = eventoStore.selectedEvent;
@@ -176,11 +179,12 @@ export default class CalendarModal extends Component {
           <View style={localStyles.modalFooter}>
             {isProfessor &&
             <View style={localStyles.modalFooterButtonsContainer}>
-              {this.renderButton('Excluir', this.deleteEvent.bind(this)) }
-              {this.renderButton('Editar', this.editEvent.bind(this)) }
+              {this.renderButton('Excluir', this.deleteEvent.bind(this))}
+              {this.renderButton('Editar', this.editEvent.bind(this))}
             </View>}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {isProfessor && this.renderButton('Lançar', this.fillEventInformation.bind(this))}
+              {isProfessor &&
+                        this.renderButton('Lançar', this.fillEventInformation.bind(this))}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>

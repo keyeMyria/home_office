@@ -16,6 +16,8 @@ type TipoTarefa = 'TRABALHO' | 'PROVA' | 'EXERCICIO' | 'LISTA_ONLINE';
     tipo: models.String(),
     valor: models.Integer(),
     bimestre: models.Integer(),
+    detalhes: models.String(),
+    duracao: models.Integer(),
     eventos: models.OneToMany('Evento'),
     notas: models.ManyToMany('Nota'),
     disciplina: models.ForeignKey('Disciplina'),
@@ -28,6 +30,8 @@ export default class Tarefa extends models.Model {
     tipo: TipoTarefa;
     valor: number;
     bimestre: number;
+    detalhes: string;
+    duracao: number;
     eventos: Array<Evento>;
     notas: Array<Nota>;
     disciplina: Disciplina;

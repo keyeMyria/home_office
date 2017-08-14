@@ -45,8 +45,14 @@ export default class Evento extends models.Model {
 
     get infoText(): string {
         return `${this.tarefa.nomeTipo} de ${this.tarefa.disciplina.titulo}\n${this
-            .tituloText}${this.tarefa.pontosText}${this.duracaoText}${this.tarefa
-            .bimestre}ºBimestre`;
+            .tituloText}${this.tarefa.pontosText}${this.duracaoText}${this.getBimestreText}`;
+    }
+
+    get getBimestreText(): string {
+        if (this.tarefa.bimestre) {
+            return `${this.tarefa.bimestre}ºBimestre`;
+        }
+        return '';
     }
 
     get tituloText(): string {
@@ -54,9 +60,20 @@ export default class Evento extends models.Model {
     }
 
     get duracaoText(): string {
-        if (this.duracao) {
-            const time = new Date(this.duracao * 60000).toJSON().substr(11, 5);
-            return `${time} - `;
+        return this.duracaoTextModal && `${this.duracaoTextModal} - `;
+    }
+
+    get duracaoTextModal(): string {
+        if (this.tarefa && this.tarefa.duracao) {
+            const time = new Date(this.tarefa.duracao * 60000).toJSON().substr(11, 5);
+            return `${time}`;
+        }
+        return '';
+    }
+
+    get dataFormatada(): string {
+        if (this.fim) {
+            return this.fim.format('DD/MM/YYYY');
         }
         return '';
     }
