@@ -23,39 +23,72 @@ export default class SetDateForTarefa extends Component {
     @observable saving: boolean = false;
     @observable eventos: Array<Evento> = [];
 
-    async save() {
-        // console.warn('', this.eventos.toJS());
-
+    async saveTarefa() {
         try {
             const { params } = this.props.navigation.state;
-            if (!params) return;
-            const { navigate } = this.props.navigation;
             const service: CollectionService = params.service;
             const tarefa = params.tarefa;
-            const topicos: void | Array<Topico> = params.topicos;
             const method = tarefa.pk ? 'put' : 'post';
             // $FlowFixMe
             const resp = await service[method](tarefa.toJS());
             if (method === 'post') {
-                tarefa.id = resp.id;
+                tarefa.id = resp.id; // eslint-disable-line no-param-reassign
             }
+            return tarefa;
+        } catch (error) {
+            logger.warn('Error Object', error);
+            Alert.alert('Erro', '[SDFT-01] Não foi possível salvar a tarefa');
+            throw error;
+        }
+    }
 
+    async saveTopicos(tarefa: *) {
+        try {
+            const { params } = this.props.navigation.state;
+            const service: CollectionService = params.service;
+            const topicos: void | Array<Topico> = params.topicos;
             if (topicos && topicos.length) {
                 const topicosLink = topicos.map(t => t._selfLink);
                 await service.one(tarefa.id).all('topicos').put(topicosLink.join('\n'), true);
             }
+        } catch (error) {
+            logger.warn('Error Object', error);
+            Alert.alert('Erro', '[SDFT-02] Não foi possível salvar a tarefa');
+            throw error;
+        }
+    }
 
-            await Promise.all(
-                this.eventos.map((evento) => {
-                    const eventoService = new EventoService();
-                    return eventoService.post(evento.toJS());
-                }),
+    async saveEventos() {
+        try {
+            const eventoService = new EventoService();
+            return Promise.all(this.eventos.map(evento => eventoService.post(evento.toJS())));
+        } catch (error) {
+            logger.warn('Error Object', error);
+            Alert.alert('Erro', '[SDFT-03] Não foi possível salvar a tarefa');
+            throw error;
+        }
+    }
+
+    async save() {
+        try {
+            const { params } = this.props.navigation.state;
+            if (!params) return;
+            const { navigate } = this.props.navigation;
+            const tarefa = await this.saveTarefa();
+            await this.saveTopicos(tarefa);
+            await this.saveEventos();
+
+            Alert.alert(
+                'Sucesso',
+                'Dados salvos com sucesso',
+                [{ text: 'OK', onPress: () => navigate('HomeRouter') }],
+                { cancelable: false },
             );
-            Alert.alert('Sucesso', 'Dados salvos com sucesso');
-            navigate('HomeRouter');
         } catch (error) {
             logger.error(error);
-            Alert.alert('Erro', '[SDFT-01] Não foi possível salvar a tarefa');
+            logger.warn('Error Response', error.response);
+            logger.warn('Error Request', error.request);
+            Alert.alert('Erro', '[SDFT-03] Não foi possível salvar a tarefa');
         }
     }
 
@@ -71,10 +104,9 @@ export default class SetDateForTarefa extends Component {
                 .fetchTurmas(ano.pk, disciplina.pk)
                 .then((turmas) => {
                     turmas.forEach((t) => {
-                        const evento = new Evento({
-                            turma: t,
-                            tarefa: params.tarefa,
-                        });
+                        const evento = new Evento({});
+                        evento.turma = t;
+                        evento.tarefa = params.tarefa;
                         this.eventos.push(evento);
                     });
                     this.loading = false;

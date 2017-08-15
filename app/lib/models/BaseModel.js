@@ -7,6 +7,7 @@ const ModelSymbol = '@@BaseModelInstance'; // JsCore does not support true Symbo
 export default class BaseModel {
     _data$: any;
     _links: { [string]: any };
+    _pkName: string;
     pk: number;
     static fields = {};
     static name = '';
@@ -65,8 +66,10 @@ export default class BaseModel {
         }
         const baseUrl = CONFIG.API.BASE_URL;
         const name = this.constructor.collectionName.toLowerCase();
-        if (this.pk) {
-            return `${baseUrl}${name}/${this.pk}`;
+        // $FlowFixMe
+        const pk = this.pk || this[this._pkName];
+        if (pk) {
+            return `${baseUrl}${name}/${pk}`;
         }
         return null;
     }
