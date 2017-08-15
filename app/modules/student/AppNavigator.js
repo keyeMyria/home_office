@@ -7,7 +7,7 @@ export default class AppNavigator extends Component {
         return [
             { title: 'Visão Geral', icon: 'home', route: 'HomeRouter' },
             // { title: 'Mensagens', icon: 'question-answer', route: 'MessageScreen' },
-            { title: 'Enviar feedback', icon: 'announcement', route: 'FeedBackScreen' },
+            // { title: 'Enviar feedback', icon: 'announcement', route: 'FeedBackScreen' },
             { title: 'Ajuda', icon: 'help', route: 'HelpScreen' },
         ];
     }

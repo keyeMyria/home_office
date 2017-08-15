@@ -10,15 +10,19 @@ import {
     Icon,
     Body,
     H3,
-    Item,
-    Input,
-    Button,
+    // Item,
+    // Input,
+    // Button,
     Text,
 } from 'native-base';
 
 const Link = (props) => {
     const onPress = () => Linking.openURL(props.href);
-    return <Text style={styles.link} onPress={onPress}>{props.children}</Text>;
+    return (
+      <Text style={styles.link} onPress={onPress}>
+        {props.children}
+      </Text>
+    );
 };
 
 export default class AnalysisScreen extends Component {
@@ -41,19 +45,21 @@ export default class AnalysisScreen extends Component {
             <Content padder>
               <View style={{ marginBottom: 25 }}>
                 <H3>Envie email para:</H3>
-                <Link href="mailto:assistencia@educare.digital">assistencia@educare.digital</Link>
+                <Link href="mailto:assistencia@educare.digital">
+                            assistencia@educare.digital
+                        </Link>
               </View>
               <View style={{ marginBottom: 50 }}>
                 <H3>Ligue para: </H3>
                 <Link href="tel:0800-505-6565">0800-505-6565</Link>
               </View>
-              <Text>Nos envie mensagem aqui na plataforma (responderemos nos seus alertas):</Text>
+              {/* <Text>Nos envie mensagem aqui na plataforma</Text>
               <Item style={styles.item}>
                 <Input placeholder="Digite aqui..." multiline style={styles.input} />
               </Item>
               <Button primary style={styles.button}>
                 <Text>Enviar mensagem</Text>
-              </Button>
+              </Button> */}
             </Content>
           </Container>
         );
