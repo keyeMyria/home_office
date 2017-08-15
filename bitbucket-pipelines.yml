@@ -3,18 +3,9 @@ pipelines:
   branches:
     master:
       - step:
-<<<<<<< HEAD
           script:
             - yarn install
             - yarn global add code-push-cli
             - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
             - code-push release-react EducareBox-iOS ios
             - code-push release-react EducareBox-Android android
-=======
-        script:
-          - yarn install
-          - yarn global add code-push-cli
-          - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
-          - code-push release-react EducareBox-iOS ios
-          - code-push release-react EducareBox-Android android
->>>>>>> ca06b0a5dc8aef35ac554d5455ecaf974511183c
