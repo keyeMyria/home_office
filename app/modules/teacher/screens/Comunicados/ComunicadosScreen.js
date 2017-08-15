@@ -18,7 +18,6 @@ import type { ScreenShellProps } from '../../../../components/ScreenShell';
 
 @observer
 export default class ComunicadosScreen extends Component {
-
     cancelTurmaAutorun: *;
     cancelAlunosAutorun: *;
 
@@ -109,7 +108,7 @@ export default class ComunicadosScreen extends Component {
             <DatePickerField label="Data" store={this.comunicado} storeKey="data" />
             {createForeignKeyField('Ano', professorStore.anosMap, this.store, 'ano')}
             {createForeignKeyField('Turma', this.turmasMap, this.store, 'turma')}
-            <StudentPicker alunos={this.alunosMap.values()} />
+            <StudentPicker alunos={this.alunosMap.values()} selectAll />
             <ComunicadosModal
               visible={this.store.modalVisible}
               comunicado={this.comunicado}

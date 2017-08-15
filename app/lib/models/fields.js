@@ -67,7 +67,7 @@ export function OneToMany(Type: *) {
 }
 
 export function Date() {
-    return (value: *) => moment(value);
+    return (value: *) => value ? moment(value) : moment().startOf('day');
 }
 
 export function PrimaryKey() {
