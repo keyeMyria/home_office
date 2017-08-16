@@ -3,6 +3,8 @@ pipelines:
   branches:
     master:
       - step:
+          caches:
+            - node
           script:
             - yarn install
             - yarn global add code-push-cli
