@@ -1,4 +1,5 @@
 // @flow
+import { AppState } from 'react-native';
 import { observable, action, computed } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { fromPromise } from 'mobx-utils';
@@ -13,12 +14,25 @@ import type { Aluno } from './../models';
 class EventoStore {
     _service = new EventoService();
     userRole: string;
+    aluno: ?Aluno;
+    professorId: ?number;
+    appState: string = AppState.currentState || '';
     @observable loading = true;
     @observable eventosMap: ObservableMap<Evento> = observable.map({});
     @observable error = false;
     @observable selectedEvent: ?Evento;
     @observable selectedEventLancar: ?Evento;
     @observable selectedEventTopics: any;
+
+    constructor() {
+        const handleAppStateChange = (nextAppState) => {
+            if (this.appState.match(/inactive|background/) && nextAppState === 'active') {
+                this.refresh();
+            }
+            this.appState = nextAppState;
+        };
+        AppState.addEventListener('change', handleAppStateChange);
+    }
 
     @computed
     get eventos(): Array<Evento> {
@@ -27,6 +41,8 @@ class EventoStore {
 
     async fecthEventosAluno(aluno: Aluno) {
         try {
+            this.aluno = aluno;
+            this.userRole = 'ALUNO';
             this.setLoading(true);
             const eventos = await this._service.findByTurma(aluno.turma.id);
             this.setEventos(eventos.eventos);
@@ -39,12 +55,32 @@ class EventoStore {
 
     async fecthEventosProfessor(professorId: number) {
         try {
+            this.professorId = professorId;
+            this.userRole = 'PROFESSOR';
             this.setLoading(true);
             const eventos = await this._service.findByProfessor(professorId);
             this.setEventos(eventos.eventos);
         } catch (error) {
             logger.error(error);
             this.setError(true);
+        }
+    }
+
+    refresh() {
+        switch (this.userRole) {
+        case 'ALUNO':
+            if (this.aluno) {
+                this.fecthEventosAluno(this.aluno);
+            }
+
+            break;
+        case 'PROFESSOR':
+            if (this.professorId) {
+                this.fecthEventosProfessor(this.professorId);
+            }
+            break;
+        default:
+            break;
         }
     }
 
