@@ -61,7 +61,10 @@ export default class SetDateForTarefa extends Component {
     async saveEventos() {
         try {
             const eventoService = new EventoService();
-            return Promise.all(this.eventos.map(evento => eventoService.post(evento.toJS())));
+            return Promise.all(this.eventos.map((evento) => {
+                evento.inicio = evento.fim; // eslint-disable-line no-param-reassign
+                return eventoService.post(evento.toJS());
+            }));
         } catch (error) {
             logger.warn('Error Object', error);
             Alert.alert('Erro', '[SDFT-03] Não foi possível salvar a tarefa');
