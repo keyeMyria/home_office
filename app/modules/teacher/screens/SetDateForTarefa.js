@@ -13,6 +13,7 @@ import type { CollectionService } from './../../../lib/services';
 
 // Stores
 import professorStore from './../../../stores/ProfessorStore';
+import eventosStore from './../../../stores/EventosStore';
 
 import DatePickerField from '../../../components/mobx_fields/DatePickerField';
 import ScreenShell from '../../../components/ScreenShell';
@@ -61,10 +62,12 @@ export default class SetDateForTarefa extends Component {
     async saveEventos() {
         try {
             const eventoService = new EventoService();
-            return Promise.all(this.eventos.map((evento) => {
-                evento.inicio = evento.fim; // eslint-disable-line no-param-reassign
-                return eventoService.post(evento.toJS());
-            }));
+            return Promise.all(
+                this.eventos.map((evento) => {
+                    evento.inicio = evento.fim; // eslint-disable-line no-param-reassign
+                    return eventoService.post(evento.toJS());
+                }),
+            );
         } catch (error) {
             logger.warn('Error Object', error);
             Alert.alert('Erro', '[SDFT-03] Não foi possível salvar a tarefa');
@@ -84,7 +87,15 @@ export default class SetDateForTarefa extends Component {
             Alert.alert(
                 'Sucesso',
                 'Dados salvos com sucesso',
-                [{ text: 'OK', onPress: () => navigate('HomeRouter') }],
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            eventosStore.refresh();
+                            navigate('HomeRouter');
+                        },
+                    },
+                ],
                 { cancelable: false },
             );
         } catch (error) {
