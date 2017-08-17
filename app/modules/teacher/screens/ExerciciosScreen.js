@@ -75,6 +75,7 @@ export default class ExerciciosScreen extends Component {
             {createTextField('Detalhes', this.exercicio, 'detalhes', {
                 placeholder: 'Descrição Exercício...',
                 multiline: true,
+                maxLength: 2000,
             })}
           </ScreenShell>
         );

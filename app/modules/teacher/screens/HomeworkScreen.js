@@ -82,6 +82,7 @@ export default class HomeworkScreen extends Component {
             {createTextField('Detalhes', this.trabalho, 'detalhes', {
                 placeholder: 'Descrição Trabalho...',
                 multiline: true,
+                maxLength: 2000,
             })}
           </ScreenShell>
         );
