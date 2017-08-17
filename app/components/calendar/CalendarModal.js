@@ -180,11 +180,12 @@ export default class CalendarModal extends Component {
             {isProfessor &&
             <View style={localStyles.modalFooterButtonsContainer}>
               {this.renderButton('Excluir', this.deleteEvent.bind(this))}
-              {this.renderButton('Editar', this.editEvent.bind(this))}
+              {/* {this.renderButton('Editar', this.editEvent.bind(this))}  */}
+              {this.renderButton('Lançar', this.fillEventInformation.bind(this))}
             </View>}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {isProfessor &&
-                        this.renderButton('Lançar', this.fillEventInformation.bind(this))}
+              {/* {isProfessor &&
+                        this.renderButton('Lançar', this.fillEventInformation.bind(this))} */}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>
