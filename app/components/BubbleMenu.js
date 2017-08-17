@@ -54,8 +54,19 @@ function BubbleMenuItem(props) {
 @observer
 export default class BubbleMenu extends Component {
     renderSchoolYear() {
-        const mapFunc = (ano, index) => {
-            let active = index === 0;
+        const schoolYearItem = (
+          <SchoolYearItem name="Todos" active={!professorStore.anoSelectedId} />
+        );
+        const bubbleMenuItem = (
+          <BubbleMenuItem
+            key={0}
+            item={schoolYearItem}
+            onPress={() => professorStore.selectAno(0)}
+          />
+        );
+
+        const mapFunc = (ano) => {
+            let active = false;
             if (professorStore.anoSelectedId) {
                 active = ano.id === professorStore.anoSelectedId;
             }
@@ -64,7 +75,8 @@ export default class BubbleMenu extends Component {
             return <BubbleMenuItem key={ano.id} item={item} onPress={onPress} />;
         };
         if (professorStore.loading) return null;
-        return professorStore.anos.map(mapFunc);
+        const items = professorStore.anos.map(mapFunc);
+        return [bubbleMenuItem].concat(...items);
     }
 
     renderStudent() {

@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { List, Icon } from 'native-base';
+import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
 
 import ActionButton from 'react-native-action-button';
@@ -13,6 +14,7 @@ import type { Evento } from './../../models';
 // Store
 import eventoStore from './../../stores/EventosStore';
 import userStore from './../../stores/UserStore';
+import professorStore from './../../stores/ProfessorStore';
 
 // Components
 import ScreenShell from './../../components/ScreenShell';
@@ -25,8 +27,19 @@ export default class CalendarScreen extends Component {
     showModal = (ev: Evento) => eventoStore.selectEvento(ev);
     hideModal = () => eventoStore.selectEvento();
 
+    @computed
+    get eventos(): Array<Evento> {
+        if (userStore.role === 'PROFESSOR') {
+            const anoSelected = professorStore.anoSelectedId;
+            if (anoSelected) {
+                return eventoStore.eventos.filter(ev => ev.turma.ano.id === anoSelected);
+            }
+        }
+        return eventoStore.eventos;
+    }
+
     renderWeek(titulo: string, filter: Date => boolean) {
-        const items = eventoStore.eventos.filter(ev => filter(ev.fim));
+        const items = this.eventos.filter(ev => filter(ev.fim));
         if (!items.length) return null;
         return <CalendarWeek label={titulo} items={items} onPress={this.showModal} />;
     }

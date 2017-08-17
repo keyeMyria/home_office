@@ -48,10 +48,6 @@ class ProfessorStore {
         const response = await new AnoService().findByProfessor(id);
         const anos = Ano.fromArray(response.anos).map(a => [a.id, new Ano(a)]);
         this.anosMap.replace(anos);
-        const fisrtAnoID = this.anosMap.keys()[0];
-        if (!this.anoSelectedId && fisrtAnoID) {
-            this.anoSelectedId = parseInt(fisrtAnoID, 10);
-        }
     }
 
     async fetchDisciplinas(id: number) {
