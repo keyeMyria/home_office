@@ -67,7 +67,6 @@ class EscolaStore {
         this.escolaBaseURL = undefined;
         this.escolaNome = undefined;
         this.escolaConfig = undefined;
-        httpClient.setToken('');
     }
 
     @computed

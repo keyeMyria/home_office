@@ -149,8 +149,10 @@ class UserStore {
                 logger.error('logout not working');
             }
         } catch (error) {
+            logger.warn('', error);
             logger.warn('Não foi possivél remover o arn do usuário');
         }
+        httpClient.setToken('');
     }
 
     /**
