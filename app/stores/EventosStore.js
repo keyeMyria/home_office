@@ -87,9 +87,9 @@ class EventoStore {
     async deleteEvent() {
         const event = this.selectedEvent;
         try {
-            if (event) {
-                await this._service.delete(event.id);
-                this.deleteEventAction(event.id);
+            if (event && event.tarefa && event.tarefa.id) {
+                await new TarefaService().delete(event.tarefa.id);
+                this.refresh();
             }
         } catch (error) {
             logger.error(error);
