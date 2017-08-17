@@ -6,7 +6,7 @@ import { observer } from 'mobx-react/native';
 
 import ActionButton from 'react-native-action-button';
 
-import { isThisWeek, isNextWeek } from './../../lib/dates';
+import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../lib/dates';
 
 // Types
 import type { Evento } from './../../models';
@@ -29,13 +29,18 @@ export default class CalendarScreen extends Component {
 
     @computed
     get eventos(): Array<Evento> {
-        if (userStore.role === 'PROFESSOR') {
+        if (this.isProfessor) {
             const anoSelected = professorStore.anoSelectedId;
             if (anoSelected) {
                 return eventoStore.eventos.filter(ev => ev.turma.ano.id === anoSelected);
             }
         }
         return eventoStore.eventos;
+    }
+
+    @computed
+    get isProfessor(): boolean {
+        return userStore.role === 'PROFESSOR';
     }
 
     renderWeek(titulo: string, filter: Date => boolean) {
@@ -51,7 +56,7 @@ export default class CalendarScreen extends Component {
             title: 'Agenda',
             padder: false,
             loading: eventoStore.loading,
-            fab: userStore.role === 'PROFESSOR' ? Fab : null,
+            fab: this.isProfessor ? Fab : null,
         };
     }
 
@@ -61,7 +66,7 @@ export default class CalendarScreen extends Component {
             <BubbleMenu />
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
             <List agendaList>
-              {/* {this.renderWeek('Semanas Anteriores', isBeforeThisWeek)} */}
+              {this.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}
               {this.renderWeek('Semanas Atual', isThisWeek)}
               {this.renderWeek('Próxima Semana', isNextWeek)}
             </List>
