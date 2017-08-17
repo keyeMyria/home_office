@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Modal, View, Alert } from 'react-native';
+import { Modal, View, Alert, ScrollView } from 'react-native';
 import { H3, Label, Text, Button, Icon } from 'native-base';
 
 import { computed, toJS } from 'mobx';
@@ -203,11 +203,11 @@ export default class CalendarModal extends Component {
         return (
           <Modal {...modalOptions}>
             <View style={localStyles.modalBackdrop}>
-              <View style={localStyles.modalContainer}>
+              <ScrollView contentContainerStyle={localStyles.modalContainer}>
                 {this.renderHeader()}
                 {this.renderContent()}
                 {this.renderFooter()}
-              </View>
+              </ScrollView>
             </View>
           </Modal>
         );
@@ -218,8 +218,11 @@ const localStyles = {
     modalBackdrop: {
         backgroundColor: 'rgba(0,0,0,0.5)',
         flex: 1,
-        alignItems: 'center',
+        flexDirection: 'column',
+        alignItems: 'stretch',
         justifyContent: 'center',
+        paddingTop: 20,
+        paddingBottom: 20,
     },
     modalContainer: {
         alignSelf: 'stretch',
@@ -241,7 +244,6 @@ const localStyles = {
         textAlign: 'center',
     },
     modalContent: {
-        // flex: 1,
     },
     modalFooter: {
         paddingTop: 10,

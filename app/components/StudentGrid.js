@@ -1,7 +1,7 @@
 // @flow
 /* eslint no-return-assign: 0 */
 import React, { Component } from 'react';
-import { ListItem, Left, Body, Right, Text, CheckBox, Input, Thumbnail } from 'native-base';
+import { ListItem, Left, Body, Right, Text, CheckBox, Input, Thumbnail, View } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 
@@ -47,16 +47,40 @@ export default class StudentGrid extends Component {
         const { aluno, evento } = this.props;
 
         return (
-          <ListItem avatar>
+          <ListItem
+            avatar
+            style={{
+                flexDirection: 'row',
+                alignContent: 'flex-start',
+                alignItems: 'flex-start',
+                height: 70,
+            }}
+          >
             <Left>
               <Thumbnail small source={aluno.imageSource} />
             </Left>
-            <Body>
-              <Text>
-                {`${aluno.nome} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
-              </Text>
+            <Body style={{
+                flex: 4,
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-start',
+            }}
+            >
+              <View style={{
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+              }}
+              >
+                <Text type="number">
+                  {`${aluno.nome} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
+                </Text>
+              </View>
             </Body>
-            <Right>
+            <Right style={{
+                flex: 2,
+            }}
+            >
               {this.renderInput()}
             </Right>
           </ListItem>
@@ -95,9 +119,9 @@ const styles = {
             borderColor: '#E0E0E0',
             borderRadius: 2,
             marginTop: 0,
-            width: 50,
-            // height: 30,
+            width: 80,
             padding: 5,
+            marginLeft: 10,
             ...this.gridRowText,
         };
     },

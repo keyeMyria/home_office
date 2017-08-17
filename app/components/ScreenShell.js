@@ -69,6 +69,9 @@ export default class ScreenShell extends Component {
         leftPress: undefined,
         fab: null,
         fabProps: {},
+        style: {
+            flex: 1,
+        },
     };
 
     /**

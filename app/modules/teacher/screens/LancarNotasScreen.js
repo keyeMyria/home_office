@@ -56,6 +56,12 @@ export default class LancarNotasScreen extends Component {
             leftPress: () => navigate('CalendarScreen'),
             showRight: true,
             padder: false,
+            style: {
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
         };
     }
 
@@ -141,7 +147,7 @@ export default class LancarNotasScreen extends Component {
 
     render() {
         const alunosAndNotas = this.alunosAndNotas || [];
-        const savingText = 'Aguarde\nSalvando Lancamentos...';
+        const savingText = 'Salvando Lancamentos...';
 
         return (
           <ScreenShell {...this.screenShellProps}>

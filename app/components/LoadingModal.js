@@ -23,6 +23,7 @@ export default class LoadingModal extends Component {
                     flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
+                    alignSelf: 'stretch',
                 }}
               >
                 <ActivityIndicator size="large" />
