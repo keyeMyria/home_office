@@ -11,6 +11,7 @@ import AlunoService from './../../../services/AlunoService';
 import FaltaService from './../../../services/FaltaService';
 
 import professorStore from './../../../stores/ProfessorStore';
+import escolaStore from './../../../stores/EscolaStore';
 
 import logger from './../../../lib/logger';
 
@@ -102,6 +103,12 @@ export default class FaltasScreen extends Component {
         return true;
     }
 
+    @computed
+    get lancamentoFaltasPorDisciplina(): boolean {
+        return escolaStore.getConfig('lancamentoFaltas') === 'POR_DISCIPLINA';
+    }
+
+
     get screenShellProps(): ScreenShellProps {
         const { navigate } = this.props.navigation;
         return {
@@ -119,7 +126,7 @@ export default class FaltasScreen extends Component {
             <DatePickerField label="Data" store={this.falta} storeKey="data" />
             {createForeignKeyField('Ano', professorStore.anosMap, this.store, 'ano')}
             {createForeignKeyField('Turma', this.turmasMap, this.store, 'turma')}
-            {createForeignKeyField(
+            {this.lancamentoFaltasPorDisciplina && createForeignKeyField(
                     'Disciplina',
                     professorStore.disciplinasMap,
                     this.falta,
