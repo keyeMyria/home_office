@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import { View, Image, Alert } from 'react-native';
-import { Button, Text, Thumbnail } from 'native-base';
+import { Button, Text, Thumbnail, Icon } from 'native-base';
 
 import { when } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+import escolaStore from './../stores/EscolaStore';
 import facebookLogin from './../lib/facebookLogin';
 import userStore from './../stores/UserStore';
 
@@ -54,20 +55,56 @@ export default class LoginScreen extends Component {
         this.props.navigation.navigate('CreateUserScreen');
     };
 
+    handleBackAction = () => {
+        // TODO: Go back to SplashScreen not working
+
+        escolaStore.clear();
+        this.props.navigation.goBack();
+    }
+
     render() {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <View style={styles.loginView}>
+              <Button
+                onPress={this.handleBackAction}
+                transparent
+                style={{
+                    backgroundColor: '#fff',
+                    position: 'absolute',
+                    paddingLeft: 2,
+                    zIndex: 20,
+                    top: 20,
+                    left: 20,
+                }}
+              >
+                <Icon
+                  name="chevron-left"
+                  style={{
+                      color: '#757575',
+                      fontSize: 28,
+                  }}
+                />
+                <Text style={{
+                    color: '#757575',
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                    top: 2,
+                }}
+                >
+                    Voltar
+                </Text>
+              </Button>
+              <View style={{ flex: 1 }} />
               <Thumbnail source={ICON_IMG} style={styles.loginImage} />
               <View style={{ flex: 1 }} />
               <Button block style={styles.button} success onPress={this.newUserPress}>
                 <Text style={styles.buttonText}>Criar novo Usuário</Text>
               </Button>
               <Button block style={styles.facebook} onPress={this.facebookPress}>
-                <Text>Continuar com Facebook</Text>
+                <Text style={{ color: 'white' }}>Continuar com Facebook</Text>
               </Button>
-              <View style={{ flex: 1 }} />
-              <Text style={styles.haveAccount}>Já tem usuário e senha?</Text>
+              <Text style={styles.haveAccount}>Já possui usuário e senha?</Text>
               <Button block style={styles.button} onPress={this.loginPress}>
                 <Text style={styles.buttonText}>Entrar</Text>
               </Button>
@@ -94,7 +131,7 @@ const styles = {
         width: 240,
         height: 195,
         alignSelf: 'center',
-        marginBottom: 30,
+        margin: 30,
     },
     facebook: {
         marginBottom: 15,
