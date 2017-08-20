@@ -4,7 +4,7 @@ import { View, Image, ActivityIndicator, Alert } from 'react-native';
 import { Button, Text, Thumbnail, Picker } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
-import { observable } from 'mobx';
+import { observable, autorun } from 'mobx';
 import { fromPromise } from 'mobx-utils';
 import { observer } from 'mobx-react/native';
 
@@ -15,47 +15,49 @@ import userStore from './../stores/UserStore';
 @observer
 export default class SplashScreen extends Component {
     escolasPromise: any;
+    autorunDisposer: () => void;
     @observable selectedEscola: number = 0;
+
+    constructor(props: *) {
+        super(props);
+        this.autorunDisposer = autorun(this.whenHasEscola);
+    }
+
+    componentWillUnmount() {
+        this.autorunDisposer();
+    }
+
+    whenHasEscola = () => {
+        if (uiStore.appFinishInit && escolaStore.hasEscolaSelected) {
+            if (userStore.hasAuth) {
+                this._navigateTo(userStore.homeScreen);
+            } else {
+                this._navigateTo('InitialScreen', false);
+            }
+        }
+    };
 
     selectEscola = () => {
         if (this.selectedEscola) {
             const escola = this.escolasPromise.value[this.selectedEscola - 1];
             if (escola) {
-                escolaStore.selectEscola(escola.escola, escola.api).then(() => {
-                    this.forceUpdate();
-                });
+                escolaStore.selectEscola(escola.escola, escola.api);
             }
         } else {
             Alert.alert('Erro', 'Selecione uma escola');
         }
     };
 
-    componentWillMount() {
-        if (uiStore.appFinishInit && escolaStore.hasEscolaSelected) {
-            if (userStore.hasAuth) {
-                this._navigateTo(userStore.homeScreen);
-            } else {
-                this._navigateTo('InitialScreen');
-            }
+    _navigateTo = (routeName: string, reset = true) => {
+        if (reset) {
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName })],
+            });
+            this.props.navigation.dispatch(resetAction);
+        } else {
+            this.props.navigation.navigate(routeName);
         }
-    }
-
-    componentDidUpdate() {
-        if (uiStore.appFinishInit && escolaStore.hasEscolaSelected) {
-            if (userStore.hasAuth) {
-                this._navigateTo(userStore.homeScreen);
-            } else {
-                this._navigateTo('InitialScreen');
-            }
-        }
-    }
-
-    _navigateTo = (routeName: string) => {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName })],
-        });
-        this.props.navigation.dispatch(resetAction);
     };
 
     setValue = (value: any) => {
