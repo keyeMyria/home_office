@@ -101,8 +101,20 @@ export default class OcorrenciaScreen extends Component {
             const alunosSelected = this.alunosMap.values().filter(a => a._selected);
             const alunosLink = alunosSelected.map(a => a._selfLink);
             await service.one(ocorrencia.pk).all('alunos').put(alunosLink.join('\n'), true);
-            Alert.alert('Sucesso', 'Dados salvos com sucesso!');
-            navigate('CalendarScreen');
+            Alert.alert(
+                'Sucesso',
+                'Dados salvos com sucesso!',
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => {
+                            this.hideModal();
+                            navigate('HomeRouter');
+                        },
+                    },
+                ],
+                { cancelable: false },
+            );
         } catch (error) {
             logger.error(error);
             logger.warn('response', error.response);
