@@ -56,8 +56,6 @@ export default class LoginScreen extends Component {
     };
 
     handleBackAction = () => {
-        // TODO: Go back to SplashScreen not working
-
         escolaStore.clear();
         this.props.navigation.goBack();
     }
@@ -74,7 +72,7 @@ export default class LoginScreen extends Component {
                     position: 'absolute',
                     paddingLeft: 2,
                     zIndex: 20,
-                    top: 20,
+                    top: 30,
                     left: 20,
                 }}
               >

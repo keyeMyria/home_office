@@ -51,7 +51,7 @@ export default class AnalysisScreen extends Component {
               </View>
               <View style={{ marginBottom: 50 }}>
                 <H3>Ligue para: </H3>
-                <Link href="tel:0800-505-6565">0800-505-6565</Link>
+                <Link href="tel:0800-006-3050">0800-006-3050</Link>
               </View>
               {/* <Text>Nos envie mensagem aqui na plataforma</Text>
               <Item style={styles.item}>
