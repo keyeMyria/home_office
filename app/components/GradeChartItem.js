@@ -45,6 +45,14 @@ const COLOR_ARRAY = [
     'green',
     'red',
     'blue',
+    'orange',
+    'mediumturquoise',
+    'gray',
+    'brown',
+    'fuchsia',
+    'green',
+    'red',
+    'blue',
 ];
 
 /**
