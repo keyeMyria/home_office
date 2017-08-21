@@ -67,7 +67,11 @@ export default class LoginScreen extends Component {
     renderLoginButton() {
         const onPress = () => this.login();
         return (
-          <Button block onPress={onPress}>
+          <Button
+            block
+            onPress={onPress}
+            style={{ color: 'white' }}
+          >
             <Text>Entrar</Text>
           </Button>
         );
@@ -82,35 +86,41 @@ export default class LoginScreen extends Component {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <KeyboardAvoidingView style={styles.loginView}>
-              <Button
-                onPress={this.handleBackAction}
-                transparent
-                style={{
-                    backgroundColor: '#fff',
-                    position: 'absolute',
-                    paddingLeft: 2,
-                    zIndex: 20,
-                    top: 30,
-                    left: 20,
-                }}
-              >
-                <Icon
-                  name="chevron-left"
-                  style={{
-                      color: '#757575',
-                      fontSize: 28,
-                  }}
-                />
-                <Text style={{
-                    color: '#757575',
-                    fontWeight: 'bold',
-                    fontSize: 18,
-                    top: 2,
-                }}
-                >
-                    Voltar
-                </Text>
-              </Button>
+              {
+                    !uiStore.keyboardIsVisible ?
+
+                      <Button
+                        onPress={this.handleBackAction}
+                        transparent
+                        style={{
+                            backgroundColor: '#fff',
+                            position: 'absolute',
+                            paddingLeft: 2,
+                            zIndex: 20,
+                            top: 30,
+                            left: 20,
+                        }}
+                      >
+                        <Icon
+                          name="chevron-left"
+                          style={{
+                              color: '#757575',
+                              fontSize: 28,
+                          }}
+                        />
+                        <Text style={{
+                            color: '#757575',
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            top: 2,
+                        }}
+                        >
+                            Voltar
+                        </Text>
+                      </Button>
+
+                    : null
+                }
               {!uiStore.keyboardIsVisible && <View style={{ flex: 1 }} />}
               {!uiStore.keyboardIsVisible &&
                 <Thumbnail source={ICON_IMG} style={styles.loginImage} />}

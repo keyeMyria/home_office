@@ -9,6 +9,7 @@ import { observer } from 'mobx-react/native';
 import escolaStore from './../stores/EscolaStore';
 import facebookLogin from './../lib/facebookLogin';
 import userStore from './../stores/UserStore';
+import uiStore from './../stores/UiStore';
 
 @observer
 export default class LoginScreen extends Component {
@@ -64,35 +65,41 @@ export default class LoginScreen extends Component {
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <View style={styles.loginView}>
-              <Button
-                onPress={this.handleBackAction}
-                transparent
-                style={{
-                    backgroundColor: '#fff',
-                    position: 'absolute',
-                    paddingLeft: 2,
-                    zIndex: 20,
-                    top: 30,
-                    left: 20,
-                }}
-              >
-                <Icon
-                  name="chevron-left"
-                  style={{
-                      color: '#757575',
-                      fontSize: 28,
-                  }}
-                />
-                <Text style={{
-                    color: '#757575',
-                    fontWeight: 'bold',
-                    fontSize: 18,
-                    top: 2,
-                }}
-                >
-                    Voltar
-                </Text>
-              </Button>
+              {
+                    !uiStore.keyboardIsVisible ?
+
+                      <Button
+                        onPress={this.handleBackAction}
+                        transparent
+                        style={{
+                            backgroundColor: '#fff',
+                            position: 'absolute',
+                            paddingLeft: 2,
+                            zIndex: 20,
+                            top: 30,
+                            left: 20,
+                        }}
+                      >
+                        <Icon
+                          name="chevron-left"
+                          style={{
+                              color: '#757575',
+                              fontSize: 28,
+                          }}
+                        />
+                        <Text style={{
+                            color: '#757575',
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            top: 2,
+                        }}
+                        >
+                            Voltar
+                        </Text>
+                      </Button>
+
+                    : null
+                }
               <View style={{ flex: 1 }} />
               <Thumbnail source={ICON_IMG} style={styles.loginImage} />
               <View style={{ flex: 1 }} />
