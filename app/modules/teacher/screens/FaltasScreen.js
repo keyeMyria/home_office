@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import { observable, computed, autorun } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { observer } from 'mobx-react/native';
+import moment from 'moment';
 
 import { Falta, Turma, Aluno } from './../../../models';
 import TurmaService from './../../../services/TurmaService';
@@ -24,8 +25,8 @@ import type { ScreenShellProps } from './../../../components/ScreenShell';
 export default class FaltasScreen extends Component {
     cancelTurmaAutorun: *;
     cancelAlunosAutorun: *;
-
-    falta = new Falta({});
+    @observable falta: ?Falta = null;
+    @observable loading: boolean = false;
     @observable turmasMap: ObservableMap<Turma> = observable.map({});
     @observable alunosMap: ObservableMap<Aluno> = observable.map({});
 
@@ -33,6 +34,8 @@ export default class FaltasScreen extends Component {
     store = {
         ano: null,
         turma: null,
+        data: moment().startOf('day'),
+        disciplina: undefined,
     };
 
     constructor(props: *) {
@@ -45,6 +48,7 @@ export default class FaltasScreen extends Component {
         });
 
         this.cancelAlunosAutorun = autorun(() => {
+            if (this.lancamentoFaltasPorDisciplina && !this.store.disciplina) return;
             if (this.store.turma) {
                 this.fecthAlunos();
             }
@@ -68,21 +72,63 @@ export default class FaltasScreen extends Component {
     }
 
     async fecthAlunos() {
-        const turma = this.store.turma;
-        if (!turma) return;
+        const { turma, data, disciplina } = this.store;
+        if (!turma || !data) return;
+        const dataString = moment(data).format('YYYY-MM-DD');
         const service = new AlunoService();
-        const result = await service.findByTurma(turma.pk);
-        const alunos = Aluno.fromArray(result.alunos).map(t => [t.pk, t]);
+        const resultAlunos = await service.findByTurma(turma.pk);
+        const faltaService = new FaltaService();
+        let alunosId = [];
+        let result;
+        try {
+            if (this.lancamentoFaltasPorDisciplina && !!disciplina) {
+                console.warn('disciplina', disciplina.id, 'data', dataString);
+                result = await faltaService.findByDisciplinaAndData(disciplina.id, dataString);
+            } else {
+                result = await faltaService.findByData(dataString);
+            }
+            alunosId = result.alunos.map(a => a.id);
+            this.falta = new Falta(result);
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                this.falta = new Falta({});
+                this.falta.disciplina = disciplina;
+                this.falta.data = moment(data).startOf('day');
+            } else {
+                throw error;
+            }
+        }
+        const alunos = Aluno.fromArray(resultAlunos.alunos).map((t) => {
+            if (alunosId.indexOf(t.id) !== -1) {
+                t._selected = true; // eslint-disable-line
+            }
+            return [t.pk, t];
+        });
+
         this.alunosMap.replace(alunos);
     }
 
     async save() {
+        // const falta = this.falta;
+        // if (!falta.id) {
+        //     console.warn('Nova falta');
+        //     const faltaData = this.falta.toJS();
+        //     faltaData.data = moment(faltaData.data).format('YYYY-MM-DD');
+        //     console.warn('', faltaData);
+        // } else {
+        //     console.warn('Falta Já Existe');
+        // }
+
         const { navigate } = this.props.navigation;
         try {
             const service = new FaltaService();
-            const faltaData = this.falta.toJS();
-            const response = await service.post(faltaData);
-            const falta = new Falta(response);
+            let falta = this.falta;
+            if (!falta.id) {
+                const faltaData = this.falta.toJS();
+                faltaData.data = moment(faltaData.data).format('YYYY-MM-DD');
+                const response = await service.post(faltaData);
+                falta = new Falta(response);
+            }
             // $FlowFixMe
             const alunosSelected = this.alunosMap.values().filter(a => a._selected);
             const alunosLink = alunosSelected.map(a => a._selfLink);
@@ -100,14 +146,13 @@ export default class FaltasScreen extends Component {
     get canSave(): boolean {
         // const alunosSelected = this.alunosMap.values().filter(a => a._selected);
         // return !!(this.falta.data && this.falta.disciplina && alunosSelected.length);
-        return true;
+        return !!this.falta;
     }
 
     @computed
     get lancamentoFaltasPorDisciplina(): boolean {
         return escolaStore.getConfig('lancamentoFaltas') === 'POR_DISCIPLINA';
     }
-
 
     get screenShellProps(): ScreenShellProps {
         const { navigate } = this.props.navigation;
@@ -122,16 +167,17 @@ export default class FaltasScreen extends Component {
 
     render() {
         return (
-          <ScreenShell {...this.screenShellProps}>
-            <DatePickerField label="Data" store={this.falta} storeKey="data" />
+          <ScreenShell {...this.screenShellProps} loading={this.loading}>
+            <DatePickerField label="Data" store={this.store} storeKey="data" />
+            {this.lancamentoFaltasPorDisciplina &&
+                    createForeignKeyField(
+                        'Disciplina',
+                        professorStore.disciplinasMap,
+                        this.store,
+                        'disciplina',
+                    )}
             {createForeignKeyField('Ano', professorStore.anosMap, this.store, 'ano')}
             {createForeignKeyField('Turma', this.turmasMap, this.store, 'turma')}
-            {this.lancamentoFaltasPorDisciplina && createForeignKeyField(
-                    'Disciplina',
-                    professorStore.disciplinasMap,
-                    this.falta,
-                    'disciplina',
-                )}
             <StudentPicker alunos={this.alunosMap.values()} />
           </ScreenShell>
         );

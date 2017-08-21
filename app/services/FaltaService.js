@@ -7,7 +7,11 @@ export default class FaltaService extends CollectionService {
         super(Constants.FALTAS);
     }
 
-    findByData(data: Date) {
+    findByData(data: string) {
         return super.search({ data }, 'findByData');
+    }
+
+    findByDisciplinaAndData(id: number, data: string) {
+        return super.search({ id, data }, 'findByDisciplinaAndData');
     }
 }
