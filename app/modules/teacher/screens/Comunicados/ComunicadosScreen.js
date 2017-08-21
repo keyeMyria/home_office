@@ -13,15 +13,14 @@ import ComunicadosModal from './ComunicadosModal';
 
 import ScreenShell from '../../../../components/ScreenShell';
 import StudentPicker from '../../../../components/StudentPicker';
-import { DatePickerField, createForeignKeyField } from './../../../../components/mobx_fields';
+import { createForeignKeyField } from './../../../../components/mobx_fields';
 import type { ScreenShellProps } from '../../../../components/ScreenShell';
 
 @observer
 export default class ComunicadosScreen extends Component {
     cancelTurmaAutorun: *;
-    cancelAlunosAutorun: *;
 
-    comunicado = new Aviso({ tipo: 'COMUNICADO' });
+    comunicado = new Aviso({ tipo: 'COMUNICADO', data: new Date() });
     @observable turmasMap: ObservableMap<Turma> = observable.map({});
     @observable alunosMap: ObservableMap<Aluno> = observable.map({});
 
@@ -40,18 +39,13 @@ export default class ComunicadosScreen extends Component {
                 this.fecthTurmas();
             }
         });
+    }
 
-        this.cancelAlunosAutorun = autorun(() => {
-            if (this.store.turma) {
-                this.fecthAlunos();
-            }
-        });
-        // $FlowFixMe
-        // this.save = this.save.bind(this);
+    componentWillMount() {
+        this.fecthAlunos();
     }
 
     componentWillUnmount() {
-        this.cancelAlunosAutorun();
         this.cancelTurmaAutorun();
     }
 
@@ -65,22 +59,35 @@ export default class ComunicadosScreen extends Component {
     }
 
     async fecthAlunos() {
-        const turma = this.store.turma;
-        if (!turma) return;
         const service = new AlunoService();
-        const result = await service.findByTurma(turma.pk);
+        const result = await service.findByProfessor(professorStore.id);
         const alunos = Aluno.fromArray(result.alunos).map(t => [t.pk, t]);
         this.alunosMap.replace(alunos);
     }
 
     @computed
-    get alunosSelected(): Array<Aluno> {
-        return this.alunosMap.values().filter(a => a._selected);
+    get alunos(): Array<Aluno> {
+        const alunos = this.alunosMap.values();
+        const { ano, turma } = this.store;
+
+        return alunos.filter((a) => {
+            if (turma) {
+                return a.turma.id === turma.id;
+            } else if (ano) {
+                return a.turma.ano.id === ano.id;
+            }
+            return true;
+        });
+    }
+
+    @computed
+    get alunosSelecionados(): Array<Aluno> {
+        return this.alunos.filter(a => a._selected);
     }
 
     @computed
     get canSave(): boolean {
-        return !!(this.comunicado.data && this.alunosSelected.length);
+        return !!(this.comunicado.data && this.alunosSelecionados.length);
     }
 
     get screenShellProps(): ScreenShellProps {
@@ -105,14 +112,15 @@ export default class ComunicadosScreen extends Component {
     render() {
         return (
           <ScreenShell {...this.screenShellProps}>
-            <DatePickerField label="Data" store={this.comunicado} storeKey="data" />
             {createForeignKeyField('Ano', professorStore.anosMap, this.store, 'ano')}
-            {createForeignKeyField('Turma', this.turmasMap, this.store, 'turma')}
-            <StudentPicker alunos={this.alunosMap.values()} selectAll />
+            {createForeignKeyField('Turma', this.turmasMap, this.store, 'turma', {
+                disabled: !this.store.ano,
+            })}
+            <StudentPicker alunos={this.alunos} selectAll />
             <ComunicadosModal
               visible={this.store.modalVisible}
               comunicado={this.comunicado}
-              alunos={this.alunosMap.values()}
+              alunosSelecionados={this.alunosSelecionados}
               navigation={this.props.navigation}
               hide={this.hideModal}
             />

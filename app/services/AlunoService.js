@@ -18,4 +18,8 @@ export default class AlunoService extends CollectionService {
     findByEvento(id: number) {
         return super.search({ id }, 'findByEvento');
     }
+
+    findByProfessor(id: number) {
+        return super.search({ id }, 'findByProfessor');
+    }
 }

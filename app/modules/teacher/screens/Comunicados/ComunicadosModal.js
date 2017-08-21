@@ -18,6 +18,7 @@ import {
 import ScreenShell from './../../../../components/ScreenShell';
 import type { ScreenShellProps } from './../../../../components/ScreenShell';
 import { Aviso } from './../../../../models';
+import type { Aluno } from './../../../../models';
 import { createTextField } from './../../../../components/mobx_fields';
 import AvisoService from '../../../../services/AvisoService';
 
@@ -50,6 +51,7 @@ export default class ComunicadosModal extends Component {
         comunicado: Aviso,
         visible: boolean,
         hide(): void,
+        alunosSelecionados: Array<Aluno>
     };
 
     @observable
@@ -78,14 +80,13 @@ export default class ComunicadosModal extends Component {
         };
     }
 
-    toggleRoleSelection = (roleId) => {
+    toggleRoleSelection = (roleId: string) => {
         this.roles[roleId] = !this.roles[roleId];
     };
 
     async saveComunicado() {
-        const { comunicado, alunos } = this.props;
+        const { comunicado, alunosSelecionados } = this.props;
         const service = new AvisoService();
-        const alunosSelecionados = alunos.filter(aluno => aluno._selected);
         const alunosLinks = alunosSelecionados.map(aluno => aluno._selfLink);
 
         comunicado.roles = Object.keys(this.roles).filter(key => this.roles[key]);
