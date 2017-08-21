@@ -31,5 +31,8 @@ export default StackNavigator(
     },
     {
         headerMode: 'none',
+        navigationOptions: {
+            gesturesEnabled: false,
+        },
     },
 );
