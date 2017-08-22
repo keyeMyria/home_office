@@ -193,9 +193,12 @@ class UserStore {
         }
     }
 
-    checkUserRole(user) {
+    checkUserRole(user: any) {
         if (user.role === 'DIRETOR') {
-            Alert.alert('Erro', 'O aplicativo ainda não é suportado para seu tipo de usuário');
+            Alert.alert(
+                'Erro',
+                'O aplicativo não é suportado para o tipo de usuário de administração. Favor entrar com o professor master, caso deseje realizar lançamentos',
+            );
             return false;
         }
         return true;
