@@ -59,23 +59,10 @@ export default class ForeignKeyField extends Component {
         const entries = items
             .entries()
             .map(([key, model]) => <Picker.Item key={key} value={key} label={model.toString()} />);
-        if (placeholder) {
+        if (placeholder && entries.length) {
             return [<Picker.Item key="nil" value="nil" label={placeholder} />].concat(...entries);
         }
         return entries;
-    }
-
-    renderPicker() {
-        return (
-          <Picker
-            selectedValue={this.getValueFromStore()}
-            onValueChange={this.updateValue}
-            style={styles.picker}
-            {...this.getPickerProps()}
-          >
-            {this.renderPickerItems()}
-          </Picker>
-        );
     }
 
     render() {
@@ -88,9 +75,14 @@ export default class ForeignKeyField extends Component {
                 {label}
               </Label>
             </Item>
-            <Item style={styles.item}>
-              {this.renderPicker()}
-            </Item>
+            <Picker
+              selectedValue={this.getValueFromStore()}
+              onValueChange={this.updateValue}
+              style={styles.picker}
+              {...this.getPickerProps()}
+            >
+              {this.renderPickerItems()}
+            </Picker>
           </View>
         );
     }
@@ -116,18 +108,21 @@ export function createForeignKeyField(
 
 const styles = {
     item: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
         marginTop: 5,
         borderBottomWidth: 0,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'white',
     },
     itemLabel: {
         borderBottomWidth: 0,
     },
     picker: {
+        flex: 1,
         borderWidth: 1,
         borderColor: '#E0E0E0',
         borderRadius: 2,
-        alignSelf: 'stretch',
-        flex: 1,
+        backgroundColor: 'white',
+        marginTop: 7,
     },
 };
