@@ -1,6 +1,7 @@
 // @flow
 import { AsyncStorage, Alert } from 'react-native';
 import { observable, action, computed } from 'mobx';
+import jwtDecode from 'jwt-decode';
 
 import httpClient from './../lib/HttpClient';
 
@@ -176,6 +177,7 @@ class UserStore {
     }
 
     async loginToken(token: string) {
+        if (!this.checkUserRole(jwtDecode(token))) return;
         try {
             logger.warn('FACEBOOK JWT TOKEN', token);
             const userUrl = 'usuarios/search/findByJwtToken';
@@ -189,6 +191,14 @@ class UserStore {
             logger.warn(error);
             Alert.alert('Token Inválido', 'O token informado é inválido');
         }
+    }
+
+    checkUserRole(user) {
+        if (user.role === 'DIRETOR') {
+            Alert.alert('Erro', 'O aplicativo ainda não é suportado para seu tipo de usuário');
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -207,6 +217,8 @@ class UserStore {
             if (!token) {
                 return errorReturn;
             }
+            if (!this.checkUserRole(jwtDecode(token))) return errorReturn;
+
             const { data: user } = await httpClient.setToken(token).get(userUrl);
             return { token, user };
         } catch (error) {
@@ -215,10 +227,7 @@ class UserStore {
                 return errorReturn;
             }
             // eslint-disable-next-line no-undef
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.error(JSON.stringify(error, null, 2));
-            }
+            logger.error(JSON.stringify(error, null, 2));
             return errorReturn;
         }
     }
