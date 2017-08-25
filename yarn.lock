@@ -4051,6 +4051,10 @@ react-native-easy-grid@0.1.7:
   dependencies:
     lodash "^4.11.1"
 
+react-native-eventemitter@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-eventemitter/-/react-native-eventemitter-0.0.1.tgz#c9250a1ae2c61a44fe731ffe1463f506294b80be"
+
 react-native-fbsdk@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.6.1.tgz#268bdbda5a16f5341ca43e3fa1beb88801e35a92"
