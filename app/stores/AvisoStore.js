@@ -1,6 +1,7 @@
 // @flow
 import { observable } from 'mobx';
 import type { IObservableArray } from 'mobx';
+import BaseStore from './../lib/BaseStore';
 
 import AvisoService from './../services/AvisoService';
 import { Aviso } from './../models';
@@ -17,7 +18,7 @@ type avisosSearchApiReturn = {
     semanas: { [string]: Array<avisosItem> },
 };
 
-class AvisoStore {
+class AvisoStore extends BaseStore {
     _service = new AvisoService();
     userRole: string;
     @observable loading = true;

@@ -1,9 +1,10 @@
 // @flow
-import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 import type { AxiosXHRConfig, AxiosPromise } from 'axios';
+import EventEmitter from 'react-native-eventemitter';
+
+import logger from './logger';
 import CONFIG from './../../config';
-import uiStore from './../stores/UiStore';
 
 /**
  * Use this class to make all the http requests in the application;
@@ -18,7 +19,6 @@ class HttpClient {
     constructor() {
         this._axios.defaults.baseURL = this._baseUri;
         this._axios.defaults.headers.common['Content-Type'] = 'application/json';
-        this._getTokenFromAsyncStorage();
     }
 
     getUrl(...args: [string | number]): string {
@@ -31,23 +31,11 @@ class HttpClient {
         return this;
     }
 
-    /**
-     * Saves the token in AsyncStorage
-     */
-    async _saveTokenInAsyncStore() {
-        return AsyncStorage.setItem(CONFIG.ASYNC_STORE.TOKEN, this.token);
-    }
-
-    /**
-     * Retrieves the token saved in AsyncStorage
-     */
-    async _getTokenFromAsyncStorage() {
-        const token = await AsyncStorage.getItem(CONFIG.ASYNC_STORE.TOKEN);
-        if (token) {
-            this.token = token;
-            this._axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
+    errorHandler(error: any) {
+        if (this.token && error.response && error.response.code === 401) {
+            EventEmitter.emit('auth.invalid_token', {});
         }
-        uiStore.httpClientFinishInit = true;
+        logger.warn('HTTP CLIENT ERROR', error);
     }
 
     /**
@@ -56,36 +44,79 @@ class HttpClient {
     setToken(token: string): this {
         this.token = token;
         this._axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
-        this._saveTokenInAsyncStore();
+        return this;
+    }
+
+    /**
+     * Clears the token
+     */
+    clearToken(): this {
+        this.token = null;
+        this._axios.defaults.headers.common.Authorization = '';
         return this;
     }
 
     request(config: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.request(config);
+        try {
+            return this._axios.request(config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 
     get(url: string, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.get(url, config);
+        try {
+            return this._axios.get(url, config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 
     delete(url: string, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.delete(url, config);
+        try {
+            return this._axios.delete(url, config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 
     head(url: string, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.head(url, config);
+        try {
+            return this._axios.head(url, config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 
     post(url: string, data?: any, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.post(url, data, config);
+        try {
+            return this._axios.post(url, data, config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 
     put(url: string, data?: any, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.put(url, data, config);
+        try {
+            return this._axios.put(url, data, config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 
     patch(url: string, data?: any, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.patch(url, data, config);
+        try {
+            return this._axios.patch(url, data, config);
+        } catch (error) {
+            this.errorHandler(error);
+            throw error;
+        }
     }
 }
 

@@ -1,6 +1,10 @@
 // @flow
 import { observable, computed } from 'mobx';
 import { Dimensions, Keyboard, NetInfo } from 'react-native';
+import EventEmitter from 'react-native-eventemitter';
+
+import BaseStore from './../lib/BaseStore';
+
 import logger from './../lib/logger';
 
 type DimensionsChangeHandler = {
@@ -8,26 +12,30 @@ type DimensionsChangeHandler = {
     screen: { height: number, width: number },
 };
 
-class UiStore {
+class UiStore extends BaseStore {
     @observable screenWidth: number;
     @observable screenHeight: number;
     @observable windowWidth: number;
     @observable windowHeight: number;
     @observable hasInternet: boolean;
     @observable keyboardIsVisible: boolean;
-    @observable httpClientFinishInit: boolean = false;
     @observable userStoreFinishInit: boolean = false;
     @observable escolaStoreFinishInit: boolean = false;
 
     @computed
     get appFinishInit(): boolean {
-        return this.httpClientFinishInit && this.userStoreFinishInit && this.escolaStoreFinishInit;
+        return this.userStoreFinishInit && this.escolaStoreFinishInit;
     }
 
     constructor() {
+        super();
         this._setupDimensionsEvents();
         this._setupInternetEvents();
         this._setupKeyboardEvents();
+
+        EventEmitter.on('auth.user_loaded', () => {
+            this.userStoreFinishInit = true;
+        });
     }
 
     _setupDimensionsEvents() {

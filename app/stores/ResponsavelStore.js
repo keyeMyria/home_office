@@ -1,5 +1,8 @@
 // @flow
 import { observable, computed } from 'mobx';
+import EventEmitter from 'react-native-eventemitter';
+
+import BaseStore from './../lib/BaseStore';
 
 import ResponsavelService from './../services/ResponsavelService';
 import { Aluno, Responsavel } from './../models';
@@ -7,7 +10,7 @@ import { Aluno, Responsavel } from './../models';
 // Other Stores
 import alunoStore from './AlunoStore';
 
-class ResponsavelStore {
+class ResponsavelStore extends BaseStore {
     _service = new ResponsavelService();
     @observable id: ?number;
     @observable loading = true;
@@ -15,6 +18,15 @@ class ResponsavelStore {
     @observable alunos: Array<Aluno> = [];
     @observable alunoSelectedId: number;
     @observable error = false;
+
+    constructor() {
+        super();
+        EventEmitter.on('auth.authenticated', ({ userRole, userID }) => {
+            if (userRole === 'RESPONSAVEL') {
+                this.fetchResponsavel(userID);
+            }
+        });
+    }
 
     async fetchResponsavel(id: number) {
         try {

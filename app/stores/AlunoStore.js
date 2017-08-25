@@ -1,14 +1,17 @@
 // @flow
 import { observable } from 'mobx';
+import EventEmitter from 'react-native-eventemitter';
+
+import BaseStore from './../lib/BaseStore';
 
 import AlunoService from './../services/AlunoService';
-import { Aluno } from './../models';
+import { Aluno, Turma } from './../models';
 
 // Other Stores
 import eventoStore from './EventosStore';
 import avisoStore from './AvisoStore';
 
-class AlunoStore {
+class AlunoStore extends BaseStore {
     _service = new AlunoService();
     @observable id: number;
     @observable loading = false;
@@ -17,12 +20,23 @@ class AlunoStore {
     @observable avisos = [];
     @observable error = false;
 
+    constructor() {
+        super();
+        EventEmitter.on('auth.authenticated', ({ userRole, userID }) => {
+            if (userRole === 'ALUNO') {
+                this.fetchAluno(userID);
+            }
+        });
+    }
+
     async fetchAluno(id: number) {
         try {
             this.id = id;
             this.loading = true;
             const aluno = await this._service.one(this.id).get();
             this.aluno = new Aluno(aluno);
+            const turma = await this._service.one(this.id).all('turma').get();
+            this.aluno.turma = new Turma(turma);
             eventoStore.fecthEventosAluno(this.aluno);
             avisoStore.fecthAvisosAluno(this.id);
             this.notas = await this.fecthNotas();

@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import { NavigationActions } from 'react-navigation';
 import { Container, Content, Left, Body, Thumbnail, Text, ListItem, List, Icon } from 'native-base';
 import { observer } from 'mobx-react/native';
 
@@ -21,13 +20,7 @@ export default class DrawerMenu extends Component {
     };
 
     logout = () => {
-        const { navigation: { dispatch } } = this.props;
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'SplashScreen' })],
-        });
         userStore.logout();
-        dispatch(resetAction);
     };
 
     renderItems(item: DrawerMenuItemType, index: number) {
