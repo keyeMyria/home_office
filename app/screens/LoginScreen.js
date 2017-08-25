@@ -207,7 +207,7 @@ const styles = {
 };
 
 const LOGIN_MOCK = [
-    { name: 'PROFESSOR', username: 'professor', password: 'iogurte' },
+    { name: 'PROFESSOR', username: 'professor@ed.com', password: 'iogurte' },
     { name: 'RESPONSAVEL', username: 'responsavel', password: 'iogurte' },
     { name: 'ALUNO', username: 'aluno', password: 'iogurte' },
 ];
