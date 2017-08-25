@@ -1,6 +1,9 @@
 // @flow
 import { observable, computed, action } from 'mobx';
 import type { ObservableMap } from 'mobx';
+import EventEmitter from 'react-native-eventemitter';
+
+import BaseStore from './../lib/BaseStore';
 
 import ProfessorService from './../services/ProfessorService';
 import AnoService from './../services/AnoService';
@@ -12,7 +15,7 @@ import { Professor, Ano, Disciplina, Turma } from './../models';
 import eventoStore from './EventosStore';
 import avisoStore from './AvisoStore';
 
-class ProfessorStore {
+class ProfessorStore extends BaseStore {
     _service = new ProfessorService();
     @observable id: number;
     @observable loading = false;
@@ -22,6 +25,17 @@ class ProfessorStore {
     @observable anoSelectedId: number;
     @observable error = false;
     @observable errorMessage = '';
+
+    constructor() {
+        super();
+        EventEmitter.on('auth.authenticated', ({ userRole, userID }) => {
+            if (userRole === 'PROFESSOR') {
+                this.fetchProfessor(userID);
+            } else if (userRole === 'DIRETOR') {
+                this.fetchDiretor(userID);
+            }
+        });
+    }
 
     async fetchProfessor(id: number) {
         try {
@@ -44,14 +58,45 @@ class ProfessorStore {
         return this;
     }
 
-    async fetchAnos(id: number) {
-        const response = await new AnoService().findByProfessor(id);
+    async fetchDiretor(id: number) {
+        try {
+            this.id = id;
+            this.loading = true;
+            const professor = await this._service.one(this.id).get();
+            this.professor = new Professor(professor);
+            eventoStore.fecthEventosDiretor(id);
+            avisoStore.fecthAvisosDiretor(id);
+            await this.fetchAnos(id, true);
+            await this.fetchDisciplinas(id, true);
+            this.loading = false;
+        } catch (error) {
+            // eslint-disable-next-line no-undef
+            if (__DEV__) {
+                console.error(error); // eslint-disable-line no-console
+            }
+            this.error = true;
+        }
+        return this;
+    }
+
+    async fetchAnos(id: number, diretor = false) {
+        let response;
+        if (diretor) {
+            response = await new AnoService().get();
+        } else {
+            response = await new AnoService().findByProfessor(id);
+        }
         const anos = Ano.fromArray(response.anos).map(a => [a.id, new Ano(a)]);
         this.anosMap.replace(anos);
     }
 
-    async fetchDisciplinas(id: number) {
-        const response = await new DisciplinaService().findByProfessor(id);
+    async fetchDisciplinas(id: number, diretor = false) {
+        let response;
+        if (diretor) {
+            response = await new DisciplinaService().get();
+        } else {
+            response = await new DisciplinaService().findByProfessor(id);
+        }
         const disciplinas = Disciplina.fromArray(response.disciplinas).map(a => [
             a.id,
             new Disciplina(a),
@@ -59,11 +104,16 @@ class ProfessorStore {
         this.disciplinasMap.replace(disciplinas);
     }
 
-    async fetchTurmas(ano: number, disciplina: number) {
+    async fetchTurmas(ano: number, disciplina: number, diretor = false) {
         const service = new TurmaService();
-        const professor = this.id;
-        const resp = await service.findByAnoAndProfessorAndDisciplina(ano, professor, disciplina);
-        return Turma.fromArray(resp.turmas);
+        let response;
+        if (diretor) {
+            response = service.get();
+        } else {
+            const professor = this.id;
+            response = await service.findByAnoAndProfessorAndDisciplina(ano, professor, disciplina);
+        }
+        return Turma.fromArray(response.turmas);
     }
 
     @action

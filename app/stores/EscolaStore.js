@@ -3,6 +3,8 @@ import { AsyncStorage } from 'react-native';
 import { observable, computed, action } from 'mobx';
 import _ from 'lodash';
 
+import BaseStore from './../lib/BaseStore';
+
 import httpClient from './../lib/HttpClient';
 import logger from './../lib/logger';
 import CONFIG from './../../config';
@@ -24,7 +26,7 @@ type EscolaConfig = Array<EscolaConfigItem>;
 /**
  * Classe responsável pelo gerenciamento de escolas e configurações destas
  */
-class EscolaStore {
+class EscolaStore extends BaseStore {
     /**
      * URL base da escola selecionada
      */
@@ -75,6 +77,7 @@ class EscolaStore {
     }
 
     constructor() {
+        super();
         this._loadFromAsyncStorage();
     }
 

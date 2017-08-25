@@ -4,6 +4,8 @@ import { observable, action, computed } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { fromPromise } from 'mobx-utils';
 
+import BaseStore from './../lib/BaseStore';
+
 import logger from './../lib/logger';
 import EventoService from './../services/EventoService';
 import TarefaService from './../services/TarefaService';
@@ -11,7 +13,7 @@ import TarefaService from './../services/TarefaService';
 import { Evento, Topico } from './../models';
 import type { Aluno } from './../models';
 
-class EventoStore {
+class EventoStore extends BaseStore {
     _service = new EventoService();
     userRole: string;
     aluno: ?Aluno;
@@ -25,6 +27,7 @@ class EventoStore {
     @observable selectedEventTopics: any;
 
     constructor() {
+        super();
         const handleAppStateChange = (nextAppState) => {
             if (this.appState.match(/inactive|background/) && nextAppState === 'active') {
                 this.refresh();
