@@ -79,7 +79,7 @@ class AppAuth {
      * Removes the token from async storage
      */
     async removePersitedToken() {
-        return AsyncStorage.deleteItem(CONFIG.ASYNC_STORE.TOKEN, this.token);
+        return AsyncStorage.removeItem(CONFIG.ASYNC_STORE.TOKEN, this.token);
     }
 
     /**

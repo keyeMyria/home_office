@@ -1,12 +1,18 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image, ActivityIndicator, Alert } from 'react-native';
-import { Button, Text, Thumbnail, Picker } from 'native-base';
-import { NavigationActions } from 'react-navigation';
+import { View, Image, LayoutAnimation, KeyboardAvoidingView } from 'react-native';
+import { Thumbnail } from 'native-base';
+// import { NavigationActions } from 'react-navigation';
 
-import { observable, autorun } from 'mobx';
-import { fromPromise } from 'mobx-utils';
+import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
+
+import navigator from './../lib/navigator';
+
+import SelectSchool from './../components/login/SelectSchool';
+import SelectLoginMode from './../components/login/SelectLoginMode';
+import BackButton from './../components/login/BackButton';
+import LoginForm from './../components/login/LoginForm';
 
 import uiStore from './../stores/UiStore';
 import escolaStore from './../stores/EscolaStore';
@@ -14,130 +20,137 @@ import userStore from './../stores/UserStore';
 
 @observer
 export default class SplashScreen extends Component {
-    escolasPromise: any;
-    autorunDisposer: () => void;
-    @observable selectedEscola: number = 0;
+    disposerFinishInit: () => {};
+    disposerHasEscola: () => {};
+    disposerHasAuth: () => {};
 
-    constructor(props: *) {
+    state: {
+        hasEscola: boolean,
+        hasUser: boolean,
+        finishInit: boolean,
+        loginMode: ?string,
+        keyboardIsVisible: boolean,
+    };
+
+    constructor(props: any) {
         super(props);
-        this.autorunDisposer = autorun(this.whenHasEscola);
+        this.state = {
+            hasEscola: false,
+            hasUser: false,
+            finishInit: false,
+            loginMode: null,
+            keyboardIsVisible: false,
+        };
+    }
+
+    componentDidMount() {
+        this.disposerFinishInit = autorun(() => {
+            if (uiStore.appFinishInit !== this.state.finishInit) {
+                this.setState({ finishInit: uiStore.appFinishInit });
+            }
+            if (uiStore.keyboardIsVisible !== this.state.keyboardIsVisible) {
+                this.setState({ keyboardIsVisible: uiStore.keyboardIsVisible });
+            }
+        });
+
+        this.disposerHasEscola = autorun(() => {
+            if (escolaStore.hasEscolaSelected !== this.state.hasEscola) {
+                this.setState({ hasEscola: escolaStore.hasEscolaSelected });
+            }
+        });
+
+        this.disposerHasAuth = autorun(() => {
+            if (userStore.hasAuth) {
+                navigator.reset(userStore.homeScreen);
+            }
+        });
     }
 
     componentWillUnmount() {
-        this.autorunDisposer();
+        this.disposerFinishInit();
+        this.disposerHasEscola();
+        this.disposerHasAuth();
     }
 
-    whenHasEscola = () => {
-        if (uiStore.appFinishInit && escolaStore.hasEscolaSelected) {
-            if (userStore.hasAuth) {
-                this._navigateTo(userStore.homeScreen);
-            } else {
-                this._navigateTo('InitialScreen', false);
+    componentWillUpdate() {
+        LayoutAnimation.easeInEaseOut();
+    }
+
+    selectEscola = (escola: any) => {
+        escolaStore.selectEscola(escola.escola, escola.api);
+    };
+
+    selectLoginMode = (mode: string) => {
+        this.setState({ loginMode: mode });
+    };
+
+    renderSelectSchool() {
+        return <SelectSchool onSelectEscola={this.selectEscola} />;
+    }
+
+    renderSelectLoginMode() {
+        return <SelectLoginMode onPress={this.selectLoginMode} />;
+    }
+
+    renderLoginForm() {
+        return <LoginForm />;
+    }
+
+    facebookPress = () => {};
+
+    renderView() {
+        if (!this.state.finishInit) return null;
+
+        if (!this.state.hasEscola) {
+            return this.renderSelectSchool();
+        } else if (!this.state.loginMode) {
+            return this.renderSelectLoginMode();
+        } else if (!this.state.hasUser) {
+            switch (this.state.loginMode) {
+            case 'PASSWORD':
+                return this.renderLoginForm();
+            default:
+                break;
             }
         }
-    };
+        return null;
+    }
 
-    selectEscola = () => {
-        if (this.selectedEscola) {
-            const escola = this.escolasPromise.value[this.selectedEscola - 1];
-            if (escola) {
-                escolaStore.selectEscola(escola.escola, escola.api);
-            }
-        } else {
-            Alert.alert('Erro', 'Selecione uma escola');
+    handleBackButton = () => {
+        if (this.state.loginMode) {
+            this.setState({ loginMode: null });
+        } else if (this.state.hasEscola) {
+            escolaStore.clear();
         }
-    };
-
-    _navigateTo = (routeName: string, reset = true) => {
-        if (reset) {
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName })],
-            });
-            this.props.navigation.dispatch(resetAction);
-        } else {
-            this.props.navigation.navigate(routeName);
-        }
-    };
-
-    setValue = (value: any) => {
-        this.selectedEscola = value;
-    };
-
-    renderEscolaPicker = (escolas: Array<Object>) => {
-        if (escolas.length === 0) return this.renderError();
-        return (
-          <View style={{ backgroundColor: '#fff', padding: 15 }}>
-            <Picker
-              iosHeader="Selecione uma escola"
-              mode="dialog"
-              headerBackButtonText="Voltar"
-              selectedValue={this.selectedEscola}
-              onValueChange={this.setValue}
-              style={styles.picker}
-            >
-              {[{ escola: 'Selecionar escola...', api: '' }].concat(...escolas).map(
-                        ({ escola }, index) =>
-                            <Picker.Item key={index} value={index} label={escola} />, //eslint-disable-line
-                    )}
-            </Picker>
-            <Button block onPress={this.selectEscola}>
-              <Text>Prosseguir</Text>
-            </Button>
-          </View>
-        );
-    };
-
-    renderLoading = () =>
-      (<View style={{ backgroundColor: '#fff', alignItems: 'center', padding: 15 }}>
-        <ActivityIndicator size="large" />
-        <Text>Carregando</Text>
-      </View>);
-
-    renderError = () => {
-        const msg =
-            'Ocorreu um erro ao tentar acessar o servidor. \n\n Verifique sua conexão com a internet, ou entre em contato com o suporte.';
-
-        return (
-          <View style={{ backgroundColor: '#f00', padding: 10 }}>
-            <Text style={{ color: '#fff' }}>
-              {msg}
-            </Text>
-          </View>
-        );
-    };
-
-    loadEscolas = () => {
-        if (!this.escolasPromise) {
-            this.escolasPromise = fromPromise(escolaStore.getEscolas());
-        }
-
-        return this.escolasPromise.case({
-            pending: this.renderLoading,
-            rejected: this.renderError,
-            fulfilled: this.renderEscolaPicker,
-        });
     };
 
     render() {
-        let view = this.renderLoading;
-
-        if (uiStore.appFinishInit) {
-            if (!escolaStore.hasEscolaSelected) {
-                view = this.loadEscolas;
-            }
+        const keyboardIsVisible = this.state.keyboardIsVisible;
+        let logoStyles = styles.loginImage;
+        if (keyboardIsVisible) {
+            logoStyles = Object.assign({}, logoStyles, {
+                marginTop: 50,
+                width: logoStyles.width * 0.5,
+                height: logoStyles.height * 0.5,
+            });
         }
 
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <View style={styles.loginView}>
-              <Thumbnail source={ICON_IMG} style={styles.loginImage} />
-              {view()}
-            </View>
+            <KeyboardAvoidingView style={styles.loginView} mode="padding">
+              <BackButton onPress={this.handleBackButton} visible={this.state.hasEscola} />
+              {!keyboardIsVisible && <View style={{ flex: 1 }} />}
+              <Thumbnail source={ICON_IMG} style={logoStyles} />
+              <View style={{ flex: 1, paddingBottom: 15 }}>
+                {this.renderView()}
+              </View>
+            </KeyboardAvoidingView>
           </Image>
         );
     }
 }
+
+const deviceWidth = uiStore.windowWidth;
 
 const styles = {
     loginBackgroundImage: {
@@ -151,25 +164,24 @@ const styles = {
     loginView: {
         flex: 1,
         padding: 20,
+        // height: 568,
+        // borderWidth: 1,
     },
     loginImage: {
-        width: 240,
-        height: 195,
+        get width() {
+            if (deviceWidth < 360) return 180;
+            return 240;
+        },
+        get height() {
+            if (deviceWidth < 360) return 146;
+            return 195;
+        },
         alignSelf: 'center',
         marginBottom: 30,
-    },
-    haveAccount: {
-        alignSelf: 'center',
-        marginBottom: 10,
-    },
-    picker: {
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        borderRadius: 2,
-        marginBottom: 15,
-        alignSelf: 'stretch',
+        tintColor: '#fff',
+        zIndex: 10000,
     },
 };
 
-const BG_IMG = require('../img/bg.jpg');
+const BG_IMG = require('../img/bg.png');
 const ICON_IMG = require('../img/logo.png');

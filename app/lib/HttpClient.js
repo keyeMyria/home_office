@@ -35,7 +35,7 @@ class HttpClient {
         if (this.token && error.response && error.response.code === 401) {
             EventEmitter.emit('auth.invalid_token', {});
         }
-        logger.warn('HTTP CLIENT ERROR', error);
+        logger.warn('[HTTP] ERROR', JSON.stringify(error, null, 2));
     }
 
     /**
