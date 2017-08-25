@@ -69,6 +69,18 @@ class EventoStore extends BaseStore {
         }
     }
 
+    async fecthEventosDiretor() {
+        try {
+            this.userRole = 'PROFESSOR';
+            this.setLoading(true);
+            const eventos = await this._service.get();
+            this.setEventos(eventos.eventos);
+        } catch (error) {
+            logger.error(error);
+            this.setError(true);
+        }
+    }
+
     refresh() {
         switch (this.userRole) {
         case 'ALUNO':

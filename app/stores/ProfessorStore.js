@@ -62,8 +62,8 @@ class ProfessorStore extends BaseStore {
         try {
             this.id = id;
             this.loading = true;
-            const professor = await this._service.one(this.id).get();
-            this.professor = new Professor(professor);
+            // const professor = await this._service.one(this.id).get();
+            // this.professor = new Professor(professor);
             eventoStore.fecthEventosDiretor(id);
             avisoStore.fecthAvisosDiretor(id);
             await this.fetchAnos(id, true);

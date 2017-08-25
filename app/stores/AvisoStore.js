@@ -57,6 +57,18 @@ class AvisoStore extends BaseStore {
         }
     }
 
+    async fecthAvisosDiretor(professorId: number) {
+        try {
+            this.loading = true;
+            const avisos = await this._service.findByProfessor(professorId);
+            this.setAvisos(avisos);
+        } catch (error) {
+            this.error = true;
+            this.loading = false;
+            // TODO: setar uma setar uma mensagem de erro mais amigável
+        }
+    }
+
     /**
      * Set's the avisos property
      */
