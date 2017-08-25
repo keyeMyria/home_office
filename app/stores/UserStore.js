@@ -29,6 +29,10 @@ class UserStore extends BaseStore {
             this.setUser(payload);
             this.loading = false;
         });
+
+        EventEmitter.on('auth.invalid_token', () => {
+            this.logout();
+        });
     }
 
     @computed

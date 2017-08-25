@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import EventEmitter from 'react-native-eventemitter';
 import axios from 'axios';
 
+import navigator from './navigator';
 import httpClient from './HttpClient';
 import logger from './logger';
 import CONFIG from './../../config';
@@ -197,6 +198,7 @@ class AppAuth {
 
     async logout() {
         AsyncStorage.clear();
+        navigator.reset('SplashScreen');
         try {
             const id = this.decodeToken && this.decodeToken.id;
             if (id) {
