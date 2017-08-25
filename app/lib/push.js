@@ -2,6 +2,7 @@
 import { Platform } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
+import EventEmitter from 'react-native-eventemitter';
 
 import CONFIG from './../../config';
 import logger from './logger';
@@ -28,6 +29,17 @@ class PushHandler {
     _token: ?string;
     _endpointArn: ?string;
     _registerDone: boolean = false;
+
+    constructor() {
+        EventEmitter.on('auth.login_success', ({ payload }) => {
+            this.registerWithSNS(payload.endpointArn);
+        });
+
+        EventEmitter.on('auth.reload_endpoint_arn', ({ endpointArn }) => {
+            this.registerWithSNS(endpointArn);
+        });
+    }
+
 
     get APPLICATION_ARN(): string {
         const platform = Platform.OS;

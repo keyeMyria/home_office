@@ -1,6 +1,7 @@
 // @flow
 import { observable } from 'mobx';
 import type { IObservableArray } from 'mobx';
+import BaseStore from './../lib/BaseStore';
 
 import AvisoService from './../services/AvisoService';
 import { Aviso } from './../models';
@@ -17,7 +18,7 @@ type avisosSearchApiReturn = {
     semanas: { [string]: Array<avisosItem> },
 };
 
-class AvisoStore {
+class AvisoStore extends BaseStore {
     _service = new AvisoService();
     userRole: string;
     @observable loading = true;
@@ -45,6 +46,18 @@ class AvisoStore {
      * Populate the store with the 'Avisos' for the professor
      */
     async fecthAvisosProfessor(professorId: number) {
+        try {
+            this.loading = true;
+            const avisos = await this._service.findByProfessor(professorId);
+            this.setAvisos(avisos);
+        } catch (error) {
+            this.error = true;
+            this.loading = false;
+            // TODO: setar uma setar uma mensagem de erro mais amigável
+        }
+    }
+
+    async fecthAvisosDiretor(professorId: number) {
         try {
             this.loading = true;
             const avisos = await this._service.findByProfessor(professorId);

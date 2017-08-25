@@ -9,9 +9,11 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 // Theme
+import './app/stores';
 import { educareTheme } from './app/themes/educareTheme';
 
 import pushHandler from './app/lib/push';
+import navigator from './app/lib/navigator';
 import allReducers from './app/reducers';
 import AppRouter from './app/AppRouter';
 
@@ -27,7 +29,7 @@ class EducareApp extends Component {
         return (
           <Provider store={formStore}>
             <StyleProvider style={educareTheme}>
-              <AppRouter />
+              <AppRouter ref={nav => navigator.setContainer(nav)} />
             </StyleProvider>
           </Provider>
         );
