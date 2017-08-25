@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 // Theme
+import './app/stores';
 import { educareTheme } from './app/themes/educareTheme';
 
 import pushHandler from './app/lib/push';

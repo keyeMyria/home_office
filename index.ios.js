@@ -7,6 +7,7 @@ import codePush from 'react-native-code-push';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
+import './app/stores';
 import pushHandler from './app/lib/push';
 import allReducers from './app/reducers';
 
