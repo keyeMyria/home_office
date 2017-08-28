@@ -65,6 +65,9 @@ export default class SetDateForTarefa extends Component {
             return Promise.all(
                 this.eventos.map((evento) => {
                     evento.inicio = evento.fim; // eslint-disable-line no-param-reassign
+                    if (evento.pk) {
+                        return eventoService.one(evento.pk).put(evento.toJS());
+                    }
                     return eventoService.post(evento.toJS());
                 }),
             );

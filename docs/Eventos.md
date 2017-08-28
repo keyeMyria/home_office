@@ -117,3 +117,24 @@ Evento disparado quando o token é carregado da localStorage
 | token   | string | JWT token                  |
 | payload | object | Payload retornado no token |
 | userID  | number | ID do usuário logado       |
+
+
+<!-- ----------------------------------------------------------------------  -->
+### `auth.facebook_login_error`
+Evento disparado quando o token é carregado da localStorage
+
+#### Propriedades
+| Nome    | Tipo   | Descrição                                       |
+|---------|--------|-------------------------------------------------|
+| type    | string | `TOKEN`, `EMAIL_NOT_FOUND`, `CELULAR_NOT_FOUND` |
+
+
+<!-- ----------------------------------------------------------------------  -->
+### `auth.create_user_error`
+Evento disparado quando ocorre um erro ao criar novo usuário
+
+#### Propriedades
+| Nome    | Tipo   | Descrição              |
+|---------|--------|------------------------|
+| message | string | Mensagem de erro       |
+| status  | number | Código de retorno http |
