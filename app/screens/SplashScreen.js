@@ -106,7 +106,6 @@ export default class SplashScreen extends Component {
         this.disposerFinishInit();
         EventEmitter.off('auth.facebook_login_error', this.onFacebookError);
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-        console.warn('LKJLAKJDLKAJLKASJLDKJASLKDJASLKDJ');
     }
 
     componentWillUpdate() {
