@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, Alert, LayoutAnimation } from 'react-native';
+import { View, ActivityIndicator, Alert } from 'react-native';
 import { Button, Text, Picker } from 'native-base';
 
 import { observable } from 'mobx';
@@ -41,10 +41,6 @@ export default class SelectSchool extends Component {
             });
     }
 
-    componentWillUpdate() {
-        LayoutAnimation.easeInEaseOut();
-    }
-
     selectEscola = () => {
         if (this.selectedEscola) {
             const escola = this.state.escolas[this.selectedEscola - 1];
@@ -64,7 +60,7 @@ export default class SelectSchool extends Component {
     renderEscolaPicker = (escolas: Array<Object>) => {
         if (escolas.length === 0) return this.renderError();
         return (
-          <View style={{ backgroundColor: 'rgba(255,255,255,0.6)', padding: 15 }}>
+          <View style={{ padding: 15 }}>
             <Picker
               iosHeader="Selecione uma escola"
               mode="dialog"

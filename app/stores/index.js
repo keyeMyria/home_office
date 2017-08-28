@@ -19,14 +19,14 @@ export {
 };
 
 class RootStore {
-    alunoStore = alunoStore.setRootStore(this);
-    avisoStore = avisoStore.setRootStore(this);
-    escolaStore = escolaStore.setRootStore(this);
-    eventosStore = eventosStore.setRootStore(this);
-    professorStore = professorStore.setRootStore(this);
-    responsavelStore = responsavelStore.setRootStore(this);
-    uiStore = uiStore.setRootStore(this);
-    userStore = userStore.setRootStore(this);
+    aluno = alunoStore.setRootStore(this);
+    aviso = avisoStore.setRootStore(this);
+    escola = escolaStore.setRootStore(this);
+    eventos = eventosStore.setRootStore(this);
+    professor = professorStore.setRootStore(this);
+    responsavel = responsavelStore.setRootStore(this);
+    ui = uiStore.setRootStore(this);
+    user = userStore.setRootStore(this);
 }
 const rootStore = new RootStore();
 

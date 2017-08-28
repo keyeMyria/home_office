@@ -1,8 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image, LayoutAnimation, KeyboardAvoidingView } from 'react-native';
-import { Thumbnail } from 'native-base';
-// import { NavigationActions } from 'react-navigation';
+import {
+    View,
+    Image,
+    LayoutAnimation,
+    KeyboardAvoidingView,
+    ActivityIndicator,
+    BackHandler,
+} from 'react-native';
+import { Thumbnail, Text } from 'native-base';
+import EventEmitter from 'react-native-eventemitter';
+import _ from 'lodash';
 
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
@@ -13,23 +21,29 @@ import SelectSchool from './../components/login/SelectSchool';
 import SelectLoginMode from './../components/login/SelectLoginMode';
 import BackButton from './../components/login/BackButton';
 import LoginForm from './../components/login/LoginForm';
+import FacebookCelularForm from './../components/login/FacebookCelularForm';
+import CreateUserForm from './../components/login/CreateUserForm';
 
 import uiStore from './../stores/UiStore';
 import escolaStore from './../stores/EscolaStore';
 import userStore from './../stores/UserStore';
+import logger from './../lib/logger';
 
 @observer
 export default class SplashScreen extends Component {
     disposerFinishInit: () => {};
-    disposerHasEscola: () => {};
-    disposerHasAuth: () => {};
+    onFacebookError: () => {};
+
 
     state: {
         hasEscola: boolean,
         hasUser: boolean,
-        finishInit: boolean,
+        // finishInit: boolean,
         loginMode: ?string,
         keyboardIsVisible: boolean,
+        needTelefone: boolean,
+        screen: 'SPLASH' | 'ESCOLA' | 'MODE' | 'LOGIN' | 'FACEBOOK' | 'NEW_USER',
+        loading: boolean,
     };
 
     constructor(props: any) {
@@ -37,91 +51,156 @@ export default class SplashScreen extends Component {
         this.state = {
             hasEscola: false,
             hasUser: false,
-            finishInit: false,
+            // finishInit: false,
             loginMode: null,
             keyboardIsVisible: false,
+            needTelefone: false,
+            screen: 'SPLASH',
+            loading: false,
         };
     }
 
     componentDidMount() {
+        const onFacebookError = ({ type }) => {
+            if (type === 'EMAIL_NOT_FOUND') {
+                this.setState({ screen: 'FACEBOOK' });
+            }
+            this.setState({ loading: false });
+        };
+        EventEmitter.on('auth.facebook_login_error', onFacebookError);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        this.onFacebookError = onFacebookError;
+
         this.disposerFinishInit = autorun(() => {
-            if (uiStore.appFinishInit !== this.state.finishInit) {
-                this.setState({ finishInit: uiStore.appFinishInit });
-            }
-            if (uiStore.keyboardIsVisible !== this.state.keyboardIsVisible) {
-                this.setState({ keyboardIsVisible: uiStore.keyboardIsVisible });
-            }
-        });
+            try {
+                const state = {};
+                if (!uiStore.appFinishInit) return;
+                if (userStore.hasAuth) {
+                    navigator.reset(userStore.homeScreen);
+                    return;
+                }
 
-        this.disposerHasEscola = autorun(() => {
-            if (escolaStore.hasEscolaSelected !== this.state.hasEscola) {
-                this.setState({ hasEscola: escolaStore.hasEscolaSelected });
-            }
-        });
+                if (this.state.screen === 'SPLASH') {
+                    state.screen = 'MODE';
+                }
 
-        this.disposerHasAuth = autorun(() => {
-            if (userStore.hasAuth) {
-                navigator.reset(userStore.homeScreen);
+                if (uiStore.keyboardIsVisible !== this.state.keyboardIsVisible) {
+                    this.setState({ keyboardIsVisible: uiStore.keyboardIsVisible });
+                }
+
+                if (!escolaStore.hasEscolaSelected) {
+                    state.screen = 'ESCOLA';
+                } else if (this.state.screen === 'ESCOLA') {
+                    state.screen = 'MODE';
+                }
+
+                if (!_.isEmpty(state)) this.setState(state);
+            } catch (error) {
+                logger.warn('', error);
+                logger.error(error);
             }
         });
     }
 
     componentWillUnmount() {
         this.disposerFinishInit();
-        this.disposerHasEscola();
-        this.disposerHasAuth();
+        EventEmitter.off('auth.facebook_login_error', this.onFacebookError);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        console.warn('LKJLAKJDLKAJLKASJLDKJASLKDJASLKDJ');
     }
 
     componentWillUpdate() {
         LayoutAnimation.easeInEaseOut();
     }
 
-    selectEscola = (escola: any) => {
-        escolaStore.selectEscola(escola.escola, escola.api);
-    };
-
-    selectLoginMode = (mode: string) => {
-        this.setState({ loginMode: mode });
-    };
+    shouldComponentUpdate(newProps: any, newState: any) {
+        if (newProps === this.props && newState === this.state) return false;
+        return !_.isEqual(newProps, this.props) || !_.isEqual(newState, this.state);
+    }
 
     renderSelectSchool() {
-        return <SelectSchool onSelectEscola={this.selectEscola} />;
+        const selectEscola = (escola: any) => {
+            escolaStore.selectEscola(escola.escola, escola.api);
+        };
+        return <SelectSchool onSelectEscola={selectEscola} />;
     }
 
     renderSelectLoginMode() {
-        return <SelectLoginMode onPress={this.selectLoginMode} />;
+        const selectLoginMode = (mode: string) => {
+            if (mode === 'FACEBOOK') {
+                userStore.loginFacebook();
+                this.setState({ loading: true });
+            } else if (mode === 'PASSWORD') {
+                this.setState({ screen: 'LOGIN' });
+            } else if (mode === 'NEW_USER') {
+                this.setState({ screen: 'NEW_USER' });
+            }
+        };
+        return <SelectLoginMode onPress={selectLoginMode} />;
     }
 
     renderLoginForm() {
         return <LoginForm />;
     }
 
-    facebookPress = () => {};
+    renderLoading() {
+        return (
+          <View
+            style={{
+                backgroundColor: 'rgba(255,255,255,0.6)',
+                alignItems: 'center',
+                padding: 15,
+            }}
+          >
+            <ActivityIndicator size="large" />
+            <Text>Carregando</Text>
+          </View>
+        );
+    }
+
+    renderFacebookCelular() {
+        return <FacebookCelularForm onSubmit={this.facebookWithTelefonePress} />;
+    }
+
+    renderNewUser() {
+        const onSubmit = data => userStore.newUser(data);
+        return <CreateUserForm onSubmit={onSubmit} />;
+    }
+
+    facebookWithTelefonePress = (telefone: string) => {
+        userStore.loginFacebook(telefone);
+        this.setState({ loading: true });
+    };
 
     renderView() {
-        if (!this.state.finishInit) return null;
+        const screen = this.state.screen;
+        if (this.state.loading) return this.renderLoading();
 
-        if (!this.state.hasEscola) {
-            return this.renderSelectSchool();
-        } else if (!this.state.loginMode) {
-            return this.renderSelectLoginMode();
-        } else if (!this.state.hasUser) {
-            switch (this.state.loginMode) {
-            case 'PASSWORD':
-                return this.renderLoginForm();
-            default:
-                break;
-            }
-        }
+        if (screen === 'SPLASH') return null;
+        if (screen === 'ESCOLA') return this.renderSelectSchool();
+        if (screen === 'MODE') return this.renderSelectLoginMode();
+        if (screen === 'LOGIN') return this.renderLoginForm();
+        if (screen === 'FACEBOOK') return this.renderFacebookCelular();
+        if (screen === 'NEW_USER') return this.renderNewUser();
         return null;
     }
 
     handleBackButton = () => {
-        if (this.state.loginMode) {
-            this.setState({ loginMode: null });
-        } else if (this.state.hasEscola) {
+        const screen = this.state.screen;
+        if (screen === 'LOGIN') {
+            this.setState({ screen: 'MODE' });
+            return true;
+        } else if (screen === 'MODE') {
             escolaStore.clear();
+            return true;
+        } else if (screen === 'NEW_USER') {
+            this.setState({ screen: 'MODE' });
+            return true;
+        } else if (screen === 'FACEBOOK') {
+            this.setState({ screen: 'MODE' });
+            return true;
         }
+        return false;
     };
 
     render() {
@@ -134,14 +213,18 @@ export default class SplashScreen extends Component {
                 height: logoStyles.height * 0.5,
             });
         }
-
+        // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <KeyboardAvoidingView style={styles.loginView} mode="padding">
-              <BackButton onPress={this.handleBackButton} visible={this.state.hasEscola} />
+              <BackButton
+                onPress={this.handleBackButton}
+                visible={this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'}
+              />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Thumbnail source={ICON_IMG} style={logoStyles} />
-              <View style={{ flex: 1, paddingBottom: 15 }}>
+              {!keyboardIsVisible && <View style={{ flex: 1 }} />}
+              <View style={{ paddingBottom: 15 }}>
                 {this.renderView()}
               </View>
             </KeyboardAvoidingView>
@@ -164,8 +247,8 @@ const styles = {
     loginView: {
         flex: 1,
         padding: 20,
+        justifyContent: 'space-between',
         // height: 568,
-        // borderWidth: 1,
     },
     loginImage: {
         get width() {

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import navigator from './navigator';
 import httpClient from './HttpClient';
+import facebookLogin from './facebookLogin';
 import logger from './logger';
 import CONFIG from './../../config';
 
@@ -29,6 +30,7 @@ export type DecodedToken = {
 class AppAuth {
     token: ?string;
     decodeToken: ?DecodedToken;
+    facebookToken: ?string;
     userUrl: string = 'usuarios/search/findByJwtToken';
 
     constructor() {
@@ -40,6 +42,10 @@ class AppAuth {
      */
     get authUrl(): string {
         return CONFIG.API.AUTH_URL;
+    }
+
+    get createUserUrl(): string {
+        return `${CONFIG.API.BASE_URL}usuarios/registrar/`;
     }
 
     /**
@@ -90,12 +96,13 @@ class AppAuth {
         if (token) {
             this.setToken(token);
             if (this.decodeToken) {
+                this.emitAuthenticated();
                 EventEmitter.emit('auth.user_loaded', {
                     token: this.token,
                     payload: this.decodeToken,
+                    // $FlowFixMe
                     userID: this.decodeToken.id,
                 });
-                this.emitAuthenticated();
             }
             this.reloadEndpointARN();
         }
@@ -112,7 +119,7 @@ class AppAuth {
     emitLoginError(error: any, loginType: string = 'PASSWORD') {
         const code = (error.response && error.response.code) || 0;
         let message = (error.response && error.response.data.message) || error.message;
-        if (error.response && error.response.code === 401) {
+        if (error.response && error.response.status === 401) {
             message = 'O usuário ou senha informada são inválidos';
         }
         if (!message) {
@@ -126,6 +133,7 @@ class AppAuth {
     }
 
     emitLoginSuccess() {
+        this.emitAuthenticated();
         if (this.token && this.decodeToken) {
             EventEmitter.emit('auth.login_success', {
                 token: this.token,
@@ -133,7 +141,6 @@ class AppAuth {
                 userID: this.decodeToken.id,
             });
         }
-        this.emitAuthenticated();
     }
 
     emitAuthenticated() {
@@ -144,6 +151,33 @@ class AppAuth {
                 userID: this.decodeToken.id,
                 userRole: this.decodeToken.role,
             });
+        }
+    }
+
+    emitCreateUserError(error: any, code?: number) {
+        const erros = {
+            404: {
+                message:
+                    '[CNU-004] Não foi possível encontrar o seu e-mail ou telefone na base de dados',
+            },
+            409: {
+                message: '[CNU-005] Senha já cadastrada',
+            },
+            400: {
+                message: '[CNU-006] Ocorreu um erro ao tentar criar o usuário',
+            },
+            HTTP: {
+                message: '[CNU-003] Ocorreu um erro ao tentar criar o usuário',
+            },
+        };
+
+        if (error.response) {
+            const message = erros[error.response.status] || erros.HTTP;
+            const status = error.response;
+            EventEmitter.emit('auth.create_user_error', { message, status });
+        } else {
+            const message = `[${code || 'CNU-000'}] Ocorreu um erro ao tentar criar o usuário`;
+            EventEmitter.emit('auth.create_user_error', { message, status: 0 });
         }
     }
 
@@ -166,12 +200,12 @@ class AppAuth {
             return { token, payload, userID };
         } catch (error) {
             this.emitLoginError(error);
-            logger.error(JSON.stringify(error, null, 2));
+            logger.warn(JSON.stringify(error, null, 2));
             return null;
         }
     }
 
-    async loginFacebook(token: string) {
+    loginToken(token: string) {
         logger.log(`[AUTH] JWT-TOKEN (FACEBOOK): "${token}"`);
         if (!token) {
             this.emitLoginError({ message: 'API não retornou um token' }, 'FACEBOOK');
@@ -182,6 +216,31 @@ class AppAuth {
         const userID = this.decodeToken && this.decodeToken.id;
         this.emitLoginSuccess();
         return { token, payload, userID };
+    }
+
+    async loginFacebook(celular: ?string) {
+        if (!this.facebookToken) {
+            this.facebookToken = await facebookLogin.login();
+        }
+        if (!this.facebookToken) {
+            EventEmitter.emit('auth.facebook_login_error', { type: 'TOKEN' });
+            return;
+        }
+        if (celular) {
+            const token = await facebookLogin.sendTokenToServer(this.facebookToken, celular);
+            if (!token) {
+                EventEmitter.emit('auth.facebook_login_error', { type: 'CELULAR_NOT_FOUND' });
+                return;
+            }
+            this.loginToken(token);
+        } else {
+            const token = await facebookLogin.sendTokenToServer(this.facebookToken);
+            if (!token) {
+                EventEmitter.emit('auth.facebook_login_error', { type: 'EMAIL_NOT_FOUND' });
+                return;
+            }
+            this.loginToken(token);
+        }
     }
 
     async reloadEndpointARN() {
@@ -210,6 +269,26 @@ class AppAuth {
             logger.warn('Não foi possivél remover o arn do usuário');
         }
         httpClient.clearToken();
+    }
+
+    async createNewUser(data: { celular: string, email: string, senha: string }) {
+        if (!data) {
+            this.emitCreateUserError({}, 'CNU-002');
+            return;
+        }
+        const { celular, email, senha } = data;
+        const password = senha;
+        try {
+            const response = await axios.patch(`${this.createUserUrl}${celular}`, {
+                email,
+                password,
+            });
+            const token = response.data && response.data.token;
+            this.setToken(token);
+            this.emitLoginSuccess();
+        } catch (error) {
+            this.emitCreateUserError(error);
+        }
     }
 }
 

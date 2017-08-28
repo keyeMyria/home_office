@@ -65,7 +65,14 @@ export default class LoginScreen extends Component {
         return (
           <Item style={styles.loginInput}>
             <Icon active name="mail-outline" />
-            <Input placeholder="Email" value={this.store.username} onChangeText={onChange} />
+            <Input
+              placeholder="Email"
+              value={this.store.username}
+              onChangeText={onChange}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+            />
           </Item>
         );
     }
