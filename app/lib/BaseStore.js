@@ -3,6 +3,9 @@ export default class BaseStore {
 
     setRootStore(rootStore) {
         this.rootStore = rootStore;
+        if (typeof this.init === 'function') {
+            this.init();
+        }
         return this;
     }
 }

@@ -15,6 +15,7 @@ export default class TextField extends Component {
         cast?: string => *,
         customInput: Class<Component<*, *, *>>,
         multiline?: boolean,
+        icon: ?string;
     };
 
     static defaultProps = {
@@ -22,6 +23,7 @@ export default class TextField extends Component {
         cast: val => val,
         customInput: Input,
         multiline: false,
+        icon: null,
     };
 
     /**

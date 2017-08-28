@@ -1,143 +1,238 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Image, ActivityIndicator, Alert } from 'react-native';
-import { Button, Text, Thumbnail, Picker } from 'native-base';
-import { NavigationActions } from 'react-navigation';
+import {
+    View,
+    Image,
+    LayoutAnimation,
+    KeyboardAvoidingView,
+    ActivityIndicator,
+    BackHandler,
+} from 'react-native';
+import { Thumbnail, Text } from 'native-base';
+import EventEmitter from 'react-native-eventemitter';
+import _ from 'lodash';
 
-import { observable, autorun } from 'mobx';
-import { fromPromise } from 'mobx-utils';
+import { autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
+
+import navigator from './../lib/navigator';
+
+import SelectSchool from './../components/login/SelectSchool';
+import SelectLoginMode from './../components/login/SelectLoginMode';
+import BackButton from './../components/login/BackButton';
+import LoginForm from './../components/login/LoginForm';
+import FacebookCelularForm from './../components/login/FacebookCelularForm';
+import CreateUserForm from './../components/login/CreateUserForm';
 
 import uiStore from './../stores/UiStore';
 import escolaStore from './../stores/EscolaStore';
 import userStore from './../stores/UserStore';
+import logger from './../lib/logger';
 
 @observer
 export default class SplashScreen extends Component {
-    escolasPromise: any;
-    autorunDisposer: () => void;
-    @observable selectedEscola: number = 0;
+    disposerFinishInit: () => {};
+    onFacebookError: () => {};
 
-    constructor(props: *) {
+
+    state: {
+        hasEscola: boolean,
+        hasUser: boolean,
+        // finishInit: boolean,
+        loginMode: ?string,
+        keyboardIsVisible: boolean,
+        needTelefone: boolean,
+        screen: 'SPLASH' | 'ESCOLA' | 'MODE' | 'LOGIN' | 'FACEBOOK' | 'NEW_USER',
+        loading: boolean,
+    };
+
+    constructor(props: any) {
         super(props);
-        this.autorunDisposer = autorun(this.whenHasEscola);
+        this.state = {
+            hasEscola: false,
+            hasUser: false,
+            // finishInit: false,
+            loginMode: null,
+            keyboardIsVisible: false,
+            needTelefone: false,
+            screen: 'SPLASH',
+            loading: false,
+        };
+    }
+
+    componentDidMount() {
+        const onFacebookError = ({ type }) => {
+            if (type === 'EMAIL_NOT_FOUND') {
+                this.setState({ screen: 'FACEBOOK' });
+            }
+            this.setState({ loading: false });
+        };
+        EventEmitter.on('auth.facebook_login_error', onFacebookError);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        this.onFacebookError = onFacebookError;
+
+        this.disposerFinishInit = autorun(() => {
+            try {
+                const state = {};
+                if (!uiStore.appFinishInit) return;
+                if (userStore.hasAuth) {
+                    navigator.reset(userStore.homeScreen);
+                    return;
+                }
+
+                if (this.state.screen === 'SPLASH') {
+                    state.screen = 'MODE';
+                }
+
+                if (uiStore.keyboardIsVisible !== this.state.keyboardIsVisible) {
+                    this.setState({ keyboardIsVisible: uiStore.keyboardIsVisible });
+                }
+
+                if (!escolaStore.hasEscolaSelected) {
+                    state.screen = 'ESCOLA';
+                } else if (this.state.screen === 'ESCOLA') {
+                    state.screen = 'MODE';
+                }
+
+                if (!_.isEmpty(state)) this.setState(state);
+            } catch (error) {
+                logger.warn('', error);
+                logger.error(error);
+            }
+        });
     }
 
     componentWillUnmount() {
-        this.autorunDisposer();
+        this.disposerFinishInit();
+        EventEmitter.off('auth.facebook_login_error', this.onFacebookError);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
     }
 
-    whenHasEscola = () => {
-        if (uiStore.appFinishInit && escolaStore.hasEscolaSelected) {
-            if (userStore.hasAuth) {
-                this._navigateTo(userStore.homeScreen);
-            } else {
-                this._navigateTo('InitialScreen', false);
+    componentWillUpdate() {
+        LayoutAnimation.easeInEaseOut();
+    }
+
+    shouldComponentUpdate(newProps: any, newState: any) {
+        if (newProps === this.props && newState === this.state) return false;
+        return !_.isEqual(newProps, this.props) || !_.isEqual(newState, this.state);
+    }
+
+    renderSelectSchool() {
+        const selectEscola = (escola: any) => {
+            escolaStore.selectEscola(escola.escola, escola.api);
+        };
+        return <SelectSchool onSelectEscola={selectEscola} />;
+    }
+
+    renderSelectLoginMode() {
+        const selectLoginMode = (mode: string) => {
+            if (mode === 'FACEBOOK') {
+                userStore.loginFacebook();
+                this.setState({ loading: true });
+            } else if (mode === 'PASSWORD') {
+                this.setState({ screen: 'LOGIN' });
+            } else if (mode === 'NEW_USER') {
+                this.setState({ screen: 'NEW_USER' });
             }
-        }
-    };
+        };
+        return <SelectLoginMode onPress={selectLoginMode} />;
+    }
 
-    selectEscola = () => {
-        if (this.selectedEscola) {
-            const escola = this.escolasPromise.value[this.selectedEscola - 1];
-            if (escola) {
-                escolaStore.selectEscola(escola.escola, escola.api);
-            }
-        } else {
-            Alert.alert('Erro', 'Selecione uma escola');
-        }
-    };
+    renderLoginForm() {
+        return <LoginForm />;
+    }
 
-    _navigateTo = (routeName: string, reset = true) => {
-        if (reset) {
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName })],
-            });
-            this.props.navigation.dispatch(resetAction);
-        } else {
-            this.props.navigation.navigate(routeName);
-        }
-    };
-
-    setValue = (value: any) => {
-        this.selectedEscola = value;
-    };
-
-    renderEscolaPicker = (escolas: Array<Object>) => {
-        if (escolas.length === 0) return this.renderError();
+    renderLoading() {
         return (
-          <View style={{ backgroundColor: '#fff', padding: 15 }}>
-            <Picker
-              iosHeader="Selecione uma escola"
-              mode="dialog"
-              headerBackButtonText="Voltar"
-              selectedValue={this.selectedEscola}
-              onValueChange={this.setValue}
-              style={styles.picker}
-            >
-              {[{ escola: 'Selecionar escola...', api: '' }].concat(...escolas).map(
-                        ({ escola }, index) =>
-                            <Picker.Item key={index} value={index} label={escola} />, //eslint-disable-line
-                    )}
-            </Picker>
-            <Button block onPress={this.selectEscola}>
-              <Text>Prosseguir</Text>
-            </Button>
+          <View
+            style={{
+                backgroundColor: 'rgba(255,255,255,0.6)',
+                alignItems: 'center',
+                padding: 15,
+            }}
+          >
+            <ActivityIndicator size="large" />
+            <Text>Carregando</Text>
           </View>
         );
+    }
+
+    renderFacebookCelular() {
+        return <FacebookCelularForm onSubmit={this.facebookWithTelefonePress} />;
+    }
+
+    renderNewUser() {
+        const onSubmit = data => userStore.newUser(data);
+        return <CreateUserForm onSubmit={onSubmit} />;
+    }
+
+    facebookWithTelefonePress = (telefone: string) => {
+        userStore.loginFacebook(telefone);
+        this.setState({ loading: true });
     };
 
-    renderLoading = () =>
-      (<View style={{ backgroundColor: '#fff', alignItems: 'center', padding: 15 }}>
-        <ActivityIndicator size="large" />
-        <Text>Carregando</Text>
-      </View>);
+    renderView() {
+        const screen = this.state.screen;
+        if (this.state.loading) return this.renderLoading();
 
-    renderError = () => {
-        const msg =
-            'Ocorreu um erro ao tentar acessar o servidor. \n\n Verifique sua conexão com a internet, ou entre em contato com o suporte.';
+        if (screen === 'SPLASH') return null;
+        if (screen === 'ESCOLA') return this.renderSelectSchool();
+        if (screen === 'MODE') return this.renderSelectLoginMode();
+        if (screen === 'LOGIN') return this.renderLoginForm();
+        if (screen === 'FACEBOOK') return this.renderFacebookCelular();
+        if (screen === 'NEW_USER') return this.renderNewUser();
+        return null;
+    }
 
-        return (
-          <View style={{ backgroundColor: '#f00', padding: 10 }}>
-            <Text style={{ color: '#fff' }}>
-              {msg}
-            </Text>
-          </View>
-        );
-    };
-
-    loadEscolas = () => {
-        if (!this.escolasPromise) {
-            this.escolasPromise = fromPromise(escolaStore.getEscolas());
+    handleBackButton = () => {
+        const screen = this.state.screen;
+        if (screen === 'LOGIN') {
+            this.setState({ screen: 'MODE' });
+            return true;
+        } else if (screen === 'MODE') {
+            escolaStore.clear();
+            return true;
+        } else if (screen === 'NEW_USER') {
+            this.setState({ screen: 'MODE' });
+            return true;
+        } else if (screen === 'FACEBOOK') {
+            this.setState({ screen: 'MODE' });
+            return true;
         }
-
-        return this.escolasPromise.case({
-            pending: this.renderLoading,
-            rejected: this.renderError,
-            fulfilled: this.renderEscolaPicker,
-        });
+        return false;
     };
 
     render() {
-        let view = this.renderLoading;
-
-        if (uiStore.appFinishInit) {
-            if (!escolaStore.hasEscolaSelected) {
-                view = this.loadEscolas;
-            }
+        const keyboardIsVisible = this.state.keyboardIsVisible;
+        let logoStyles = styles.loginImage;
+        if (keyboardIsVisible) {
+            logoStyles = Object.assign({}, logoStyles, {
+                marginTop: 50,
+                width: logoStyles.width * 0.5,
+                height: logoStyles.height * 0.5,
+            });
         }
-
+        // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <View style={styles.loginView}>
-              <Thumbnail source={ICON_IMG} style={styles.loginImage} />
-              {view()}
-            </View>
+            <KeyboardAvoidingView style={styles.loginView} mode="padding">
+              <BackButton
+                onPress={this.handleBackButton}
+                visible={this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'}
+              />
+              {!keyboardIsVisible && <View style={{ flex: 1 }} />}
+              <Thumbnail source={ICON_IMG} style={logoStyles} />
+              {!keyboardIsVisible && <View style={{ flex: 1 }} />}
+              <View style={{ paddingBottom: 15 }}>
+                {this.renderView()}
+              </View>
+            </KeyboardAvoidingView>
           </Image>
         );
     }
 }
+
+const deviceWidth = uiStore.windowWidth;
 
 const styles = {
     loginBackgroundImage: {
@@ -151,25 +246,24 @@ const styles = {
     loginView: {
         flex: 1,
         padding: 20,
+        justifyContent: 'space-between',
+        // height: 568,
     },
     loginImage: {
-        width: 240,
-        height: 195,
+        get width() {
+            if (deviceWidth < 360) return 180;
+            return 240;
+        },
+        get height() {
+            if (deviceWidth < 360) return 146;
+            return 195;
+        },
         alignSelf: 'center',
         marginBottom: 30,
-    },
-    haveAccount: {
-        alignSelf: 'center',
-        marginBottom: 10,
-    },
-    picker: {
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        borderRadius: 2,
-        marginBottom: 15,
-        alignSelf: 'stretch',
+        tintColor: '#fff',
+        zIndex: 10000,
     },
 };
 
-const BG_IMG = require('../img/bg.jpg');
+const BG_IMG = require('../img/bg.png');
 const ICON_IMG = require('../img/logo.png');

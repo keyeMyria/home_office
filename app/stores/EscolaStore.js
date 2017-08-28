@@ -2,6 +2,7 @@
 import { AsyncStorage } from 'react-native';
 import { observable, computed, action } from 'mobx';
 import _ from 'lodash';
+import EventEmitter from 'react-native-eventemitter';
 
 import BaseStore from './../lib/BaseStore';
 
@@ -69,6 +70,8 @@ class EscolaStore extends BaseStore {
         this.escolaBaseURL = undefined;
         this.escolaNome = undefined;
         this.escolaConfig = undefined;
+
+        AsyncStorage.clear();
     }
 
     @computed
@@ -79,6 +82,9 @@ class EscolaStore extends BaseStore {
     constructor() {
         super();
         this._loadFromAsyncStorage();
+        EventEmitter.on('auth.logout', () => {
+            this.clear();
+        });
     }
 
     async _saveToAsyncStorage() {

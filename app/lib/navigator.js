@@ -11,6 +11,7 @@ function setContainer(container: Object) {
 }
 
 function reset(routeName: string, params?: NavigationParams) {
+    if (!_container) return;
     _container.dispatch(
         NavigationActions.reset({
             index: 0,
@@ -26,6 +27,7 @@ function reset(routeName: string, params?: NavigationParams) {
 }
 
 function navigate(routeName: string, params?: NavigationParams) {
+    if (!_container) return;
     _container.dispatch(
         NavigationActions.navigate({
             type: 'Navigation/NAVIGATE',
@@ -36,6 +38,7 @@ function navigate(routeName: string, params?: NavigationParams) {
 }
 
 function navigateDeep(actions: { routeName: string, params?: NavigationParams }[]) {
+    if (!_container) return;
     _container.dispatch(
         actions.reduceRight(
             (prevAction, action): any =>

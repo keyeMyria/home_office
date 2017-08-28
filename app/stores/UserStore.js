@@ -33,6 +33,18 @@ class UserStore extends BaseStore {
         EventEmitter.on('auth.invalid_token', () => {
             this.logout();
         });
+
+        EventEmitter.on('auth.facebook_login_error', ({ type }) => {
+            if (type === 'TOKEN') {
+                Alert.alert(
+                    'Erro no Login',
+                    '[FBL-001] Não foi possivél realizar o login com facebook',
+                );
+            } else if (type === 'CELULAR_NOT_FOUND') {
+                Alert.alert('Erro no Login', '[FBL-002] O celular informado não está cadastrado');
+            }
+            this.loading = false;
+        });
     }
 
     @computed
@@ -107,9 +119,21 @@ class UserStore extends BaseStore {
     }
 
     @action
-    loginToken(token: string) {
+    loginFacebook(celular: ?string) {
         this.loading = true;
-        auth.loginFacebook(token);
+        auth.loginFacebook(celular);
+    }
+
+    @action
+    newUser(data: { celular: string, email: string, senha: string }) {
+        if (!data) {
+            Alert.alert(
+                'Erro no Login',
+                '[CNU-001] Ocorreu um erro ao tentar criar o usuário',
+            );
+            return;
+        }
+        auth.createNewUser(data);
     }
 }
 
