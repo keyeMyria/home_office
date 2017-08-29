@@ -203,8 +203,10 @@ export default class SplashScreen extends Component {
     };
 
     render() {
-        const keyboardIsVisible = this.state.keyboardIsVisible;
+        const { keyboardIsVisible, screen } = this.state;
         let logoStyles = styles.loginImage;
+        let backButtonVisible = this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH';
+
         if (keyboardIsVisible) {
             logoStyles = Object.assign({}, logoStyles, {
                 marginTop: 50,
@@ -212,16 +214,19 @@ export default class SplashScreen extends Component {
                 height: logoStyles.height * 0.5,
             });
         }
+        if (keyboardIsVisible && screen === 'NEW_USER') {
+            logoStyles = Object.assign({}, logoStyles, {
+                display: 'none',
+            });
+            backButtonVisible = false;
+        }
         // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <KeyboardAvoidingView style={styles.loginView} mode="padding">
-              <BackButton
-                onPress={this.handleBackButton}
-                visible={this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'}
-              />
+              <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
-              <Thumbnail source={ICON_IMG} style={logoStyles} />
+              <Thumbnail square source={ICON_IMG} style={logoStyles} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <View style={{ paddingBottom: 15 }}>
                 {this.renderView()}
@@ -245,7 +250,7 @@ const styles = {
     },
     loginView: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 20,
         justifyContent: 'space-between',
         // height: 568,
     },
@@ -265,5 +270,5 @@ const styles = {
     },
 };
 
-const BG_IMG = require('../img/bg.png');
+const BG_IMG = require('../img/bg_gradient.png');
 const ICON_IMG = require('../img/logo.png');

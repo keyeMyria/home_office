@@ -23,11 +23,11 @@ export default class BackButton extends Component {
           <Button
             onPress={onPress}
             small={small}
-            bordered
+            transparent
             light
             style={{ ...styles.button, display: visible ? 'flex' : 'none' }}
           >
-            <Icon name="chevron-left" style={styles.icon} />
+            <Icon name="arrow-back" style={styles.icon} />
             <Text style={styles.text}>Voltar</Text>
           </Button>
         );
@@ -38,8 +38,8 @@ const styles = {
     button: {
         position: 'absolute',
         zIndex: 20,
-        top: Platform.OS === 'ios' ? 30 : 15,
-        left: 15,
+        top: Platform.OS === 'ios' ? 20 : 15,
+        left: 0,
     },
     icon: {
         color: '#fff',
