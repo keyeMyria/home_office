@@ -217,20 +217,21 @@ export default class SplashScreen extends Component {
             });
         }
         const isIphone5 = Dimensions.get('window').width < 360 && Platform.OS === 'ios';
-        let keyboardVerticalOffset = 0;
+        let viewStyle = { paddingBottom: 15 };
+
         if (keyboardIsVisible && isIphone5) {
-            keyboardVerticalOffset = 50;
+            viewStyle = { paddingBottom: 15, marginTop: -50 };
         }
 
         // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <KeyboardAvoidingView style={styles.loginView} mode="height" keyboardVerticalOffset={keyboardVerticalOffset} >
+            <KeyboardAvoidingView style={styles.loginView} mode="height" >
               <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Thumbnail square source={ICON_IMG} style={logoStyles} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
-              <View style={{ paddingBottom: 15 }}>
+              <View style={viewStyle}>
                 {this.renderView()}
               </View>
             </KeyboardAvoidingView>
