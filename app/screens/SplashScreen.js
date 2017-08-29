@@ -204,24 +204,21 @@ export default class SplashScreen extends Component {
     };
 
     render() {
-        const { keyboardIsVisible, screen } = this.state;
+        const { keyboardIsVisible } = this.state;
         let logoStyles = styles.loginImage;
-        let backButtonVisible = this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH';
+        const backButtonVisible = this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH';
 
         if (keyboardIsVisible) {
             logoStyles = Object.assign({}, logoStyles, {
-                marginTop: 50,
+                marginTop: 20,
                 width: logoStyles.width * 0.5,
                 height: logoStyles.height * 0.5,
             });
         }
-        if (keyboardIsVisible && screen === 'NEW_USER') {
-            backButtonVisible = false;
-        }
         // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <KeyboardAvoidingView style={styles.loginView} mode="padding">
+            <KeyboardAvoidingView style={styles.loginView} mode="height">
               <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Thumbnail square source={ICON_IMG} style={logoStyles} />
