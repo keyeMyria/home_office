@@ -7,6 +7,7 @@ import {
     KeyboardAvoidingView,
     ActivityIndicator,
     BackHandler,
+    Platform,
 } from 'react-native';
 import { Thumbnail, Text } from 'native-base';
 import EventEmitter from 'react-native-eventemitter';
@@ -215,9 +216,6 @@ export default class SplashScreen extends Component {
             });
         }
         if (keyboardIsVisible && screen === 'NEW_USER') {
-            logoStyles = Object.assign({}, logoStyles, {
-                display: 'none',
-            });
             backButtonVisible = false;
         }
         // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
@@ -244,7 +242,12 @@ const styles = {
         flex: 1,
         alignSelf: 'stretch',
         flexDirection: 'row',
-        alignItems: 'center',
+        get alignItems() {
+            if (Platform.OS === 'ios') {
+                return 'flex-start';
+            }
+            return 'center';
+        },
         width: null,
         height: null,
     },

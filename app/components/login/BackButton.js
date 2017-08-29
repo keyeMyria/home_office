@@ -23,7 +23,7 @@ export default class BackButton extends Component {
           <Button
             onPress={onPress}
             small={small}
-            transparent
+            bordered
             light
             style={{ ...styles.button, display: visible ? 'flex' : 'none' }}
           >
