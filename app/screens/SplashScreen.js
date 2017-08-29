@@ -8,6 +8,7 @@ import {
     ActivityIndicator,
     BackHandler,
     Platform,
+    Dimensions,
 } from 'react-native';
 import { Thumbnail, Text } from 'native-base';
 import EventEmitter from 'react-native-eventemitter';
@@ -215,10 +216,16 @@ export default class SplashScreen extends Component {
                 height: logoStyles.height * 0.5,
             });
         }
+        const isIphone5 = Dimensions.get('window').width < 360 && Platform.OS === 'ios';
+        let keyboardVerticalOffset = 0;
+        if (keyboardIsVisible && isIphone5) {
+            keyboardVerticalOffset = 50;
+        }
+
         // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <KeyboardAvoidingView style={styles.loginView} mode="height">
+            <KeyboardAvoidingView style={styles.loginView} mode="height" keyboardVerticalOffset={keyboardVerticalOffset} >
               <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Thumbnail square source={ICON_IMG} style={logoStyles} />
