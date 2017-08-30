@@ -69,11 +69,14 @@ export default class LancarNotasScreen extends Component {
         const { navigate } = this.props.navigation;
 
         const notasSavePromise = this.alunosAndNotas.map(([nota]) => {
-            if (!nota.id) {
-                return this._notaService.post(nota.toJS());
+            if ((nota.pontuacao || nota.pontuacao === 0)) {
+                if (!nota.id) {
+                    return this._notaService.post(nota.toJS());
+                }
+                nota.lancado = true; // eslint-disable-line no-param-reassign
+                return this._notaService.one(nota.id).patch(nota.toJS());
             }
-            nota.lancado = true; // eslint-disable-line no-param-reassign
-            return this._notaService.one(nota.id).patch(nota.toJS());
+            return null;
         });
         this.notasSavePromise = fromPromise(Promise.all(notasSavePromise));
         this.notasSavePromise.promise

@@ -21,13 +21,16 @@ export default class StudentGrid extends Component {
     renderInput() {
         const { taskType, nota } = this.props;
         const isProva = taskType === 'PROVA';
-        const value = nota.pontuacao ? String(nota.pontuacao) : '';
+        const value = nota.pontuacao || nota.pontuacao === 0 ? String(nota.pontuacao) : '';
         if (isProva) {
             return (
               <Input
                 placeholder="Nota"
                 style={styles.input()}
-                onChangeText={val => (nota.pontuacao = Number(val))}
+                onChangeText={(val) => {
+                    if (val.trim() !== '') nota.pontuacao = Number(val);
+                    else nota.pontuacao = null;
+                }}
                 keyboardType="numeric"
                 value={value}
               />
