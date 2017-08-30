@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Icon } from 'native-base';
+import { List, Icon, Text } from 'native-base';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { View, Image } from 'react-native';
 
 import ActionButton from 'react-native-action-button';
 
@@ -21,6 +22,8 @@ import ScreenShell from './../../components/ScreenShell';
 import CalendarWeek from './../../components/calendar/CalendarWeek';
 import CalendarModal from './../../components/calendar/CalendarModal';
 import BubbleMenu from './../../components/BubbleMenu';
+
+const emptyEventsImg = require('../../img/blankCalendar.png');
 
 @observer
 export default class CalendarScreen extends Component {
@@ -65,11 +68,34 @@ export default class CalendarScreen extends Component {
           <ScreenShell {...this.screenShellProps}>
             <BubbleMenu />
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
-            <List agendaList>
-              {this.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}
-              {this.renderWeek('Semanas Atual', isThisWeek)}
-              {this.renderWeek('Próxima Semana', isNextWeek)}
-            </List>
+            {
+                this.eventos.length ?
+                  <List agendaList>
+                    {this.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}
+                    {this.renderWeek('Semanas Atual', isThisWeek)}
+                    {this.renderWeek('Próxima Semana', isNextWeek)}
+                  </List>
+                :
+                  <View style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      alignSelf: 'stretch',
+                  }}
+                  >
+                    <Image
+                      source={emptyEventsImg}
+                      style={{
+                          width: 50,
+                          height: 50,
+                          margin: 15,
+                      }}
+                    />
+                    <Text>
+                      Nenhuma atividade cadastrada.
+                    </Text>
+                  </View>
+              }
           </ScreenShell>
         );
     }

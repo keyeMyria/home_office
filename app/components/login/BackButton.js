@@ -16,7 +16,7 @@ export default class BackButton extends Component {
 
     render() {
         const { onPress, visible } = this.props;
-        const small = Dimensions.get('window').width < 360;
+        const small = Dimensions.get('window').width < 361;
         if (!visible && Platform.OS === 'ios') return null;
 
         return (
@@ -27,7 +27,7 @@ export default class BackButton extends Component {
             light
             style={{ ...styles.button, display: visible ? 'flex' : 'none' }}
           >
-            <Icon name="chevron-left" style={styles.icon} />
+            <Icon name="arrow-back" style={styles.icon} />
             <Text style={styles.text}>Voltar</Text>
           </Button>
         );
@@ -38,8 +38,9 @@ const styles = {
     button: {
         position: 'absolute',
         zIndex: 20,
-        top: Platform.OS === 'ios' ? 30 : 15,
+        top: Platform.OS === 'ios' ? 25 : 15,
         left: 15,
+        paddingLeft: 0,
     },
     icon: {
         color: '#fff',

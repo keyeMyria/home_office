@@ -7,6 +7,8 @@ import {
     KeyboardAvoidingView,
     ActivityIndicator,
     BackHandler,
+    Platform,
+    Dimensions,
 } from 'react-native';
 import { Thumbnail, Text } from 'native-base';
 import EventEmitter from 'react-native-eventemitter';
@@ -188,45 +190,59 @@ export default class SplashScreen extends Component {
         const screen = this.state.screen;
         if (screen === 'LOGIN') {
             this.setState({ screen: 'MODE' });
-            return true;
         } else if (screen === 'MODE') {
             escolaStore.clear();
-            return true;
         } else if (screen === 'NEW_USER') {
             this.setState({ screen: 'MODE' });
-            return true;
         } else if (screen === 'FACEBOOK') {
             this.setState({ screen: 'MODE' });
-            return true;
         }
-        return false;
+        return true;
     };
 
     render() {
-        const keyboardIsVisible = this.state.keyboardIsVisible;
+        const { keyboardIsVisible } = this.state;
         let logoStyles = styles.loginImage;
+        const backButtonVisible = this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH';
+
         if (keyboardIsVisible) {
             logoStyles = Object.assign({}, logoStyles, {
-                marginTop: 50,
+                marginTop: 20,
                 width: logoStyles.width * 0.5,
                 height: logoStyles.height * 0.5,
             });
         }
-        // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
+        const isIphone5 = Dimensions.get('window').width < 360 && Platform.OS === 'ios';
+        const viewStyle = { paddingBottom: 15 };
+
+        if (keyboardIsVisible && isIphone5) {
+            // viewStyle = { paddingBottom: 15, marginTop: -50 };
+            logoStyles = Object.assign({}, logoStyles, {
+                marginTop: 0,
+                width: logoStyles.width * 0.1,
+                height: logoStyles.height * 0.1,
+                opacity: 0,
+            });
+        }
+        const RootView = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+        const rootViewProps = Platform.OS === 'ios' ? {
+            style: styles.loginView,
+            mode: 'height',
+        } : {
+            style: styles.loginView,
+        };
+
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <KeyboardAvoidingView style={styles.loginView} mode="padding">
-              <BackButton
-                onPress={this.handleBackButton}
-                visible={this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'}
-              />
+            <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
+            <RootView {...rootViewProps} >
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
-              <Thumbnail source={ICON_IMG} style={logoStyles} />
+              <Thumbnail square source={ICON_IMG} style={logoStyles} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
-              <View style={{ paddingBottom: 15 }}>
+              <View style={viewStyle}>
                 {this.renderView()}
               </View>
-            </KeyboardAvoidingView>
+            </RootView>
           </Image>
         );
     }
@@ -239,23 +255,27 @@ const styles = {
         flex: 1,
         alignSelf: 'stretch',
         flexDirection: 'row',
-        alignItems: 'center',
+        get alignItems() {
+            if (Platform.OS === 'ios') {
+                return 'flex-start';
+            }
+            return 'center';
+        },
         width: null,
         height: null,
     },
     loginView: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 20,
         justifyContent: 'space-between',
-        // height: 568,
     },
     loginImage: {
         get width() {
-            if (deviceWidth < 360) return 180;
+            if (deviceWidth < 361) return 180;
             return 240;
         },
         get height() {
-            if (deviceWidth < 360) return 146;
+            if (deviceWidth < 361) return 146;
             return 195;
         },
         alignSelf: 'center',
@@ -265,5 +285,5 @@ const styles = {
     },
 };
 
-const BG_IMG = require('../img/bg.png');
+const BG_IMG = require('../img/bg_gradient.png');
 const ICON_IMG = require('../img/logo.png');
