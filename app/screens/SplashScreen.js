@@ -217,10 +217,15 @@ export default class SplashScreen extends Component {
             });
         }
         const isIphone5 = Dimensions.get('window').width < 360 && Platform.OS === 'ios';
-        let viewStyle = { paddingBottom: 15 };
+        const viewStyle = { paddingBottom: 15 };
 
         if (keyboardIsVisible && isIphone5) {
-            viewStyle = { paddingBottom: 15, marginTop: -50 };
+            // viewStyle = { paddingBottom: 15, marginTop: -50 };
+            logoStyles = Object.assign({}, logoStyles, {
+                marginTop: 0,
+                width: logoStyles.width * 0.1,
+                height: logoStyles.height * 0.1,
+            });
         }
 
         // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
