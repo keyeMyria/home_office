@@ -190,18 +190,14 @@ export default class SplashScreen extends Component {
         const screen = this.state.screen;
         if (screen === 'LOGIN') {
             this.setState({ screen: 'MODE' });
-            return true;
         } else if (screen === 'MODE') {
             escolaStore.clear();
-            return true;
         } else if (screen === 'NEW_USER') {
             this.setState({ screen: 'MODE' });
-            return true;
         } else if (screen === 'FACEBOOK') {
             this.setState({ screen: 'MODE' });
-            return true;
         }
-        return false;
+        return true;
     };
 
     render() {
@@ -225,21 +221,28 @@ export default class SplashScreen extends Component {
                 marginTop: 0,
                 width: logoStyles.width * 0.1,
                 height: logoStyles.height * 0.1,
+                opacity: 0,
             });
         }
+        const RootView = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+        const rootViewProps = Platform.OS === 'ios' ? {
+            style: styles.loginView,
+            mode: 'height',
+        } : {
+            style: styles.loginView,
+        };
 
-        // this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH'
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
-            <KeyboardAvoidingView style={styles.loginView} mode="height" >
-              <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
+            <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
+            <RootView {...rootViewProps} >
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Thumbnail square source={ICON_IMG} style={logoStyles} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <View style={viewStyle}>
                 {this.renderView()}
               </View>
-            </KeyboardAvoidingView>
+            </RootView>
           </Image>
         );
     }
@@ -265,15 +268,14 @@ const styles = {
         flex: 1,
         paddingHorizontal: 20,
         justifyContent: 'space-between',
-        // height: 568,
     },
     loginImage: {
         get width() {
-            if (deviceWidth < 360) return 180;
+            if (deviceWidth < 361) return 180;
             return 240;
         },
         get height() {
-            if (deviceWidth < 360) return 146;
+            if (deviceWidth < 361) return 146;
             return 195;
         },
         alignSelf: 'center',

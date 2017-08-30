@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { NativeModules } from 'react-native';
+import { NativeModules, BackHandler, Platform } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { StyleProvider } from 'native-base';
 import moment from 'moment';
@@ -21,6 +21,11 @@ import StudentHomeRouter from './modules/student/AppRouter';
 const { UIManager } = NativeModules;
 if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+// Prevent app for close with android back button;
+if (Platform.OS === 'android') {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
 }
 
 // Configure moment locale

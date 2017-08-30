@@ -16,7 +16,7 @@ export default class BackButton extends Component {
 
     render() {
         const { onPress, visible } = this.props;
-        const small = Dimensions.get('window').width < 360;
+        const small = Dimensions.get('window').width < 361;
         if (!visible && Platform.OS === 'ios') return null;
 
         return (
@@ -38,8 +38,9 @@ const styles = {
     button: {
         position: 'absolute',
         zIndex: 20,
-        top: Platform.OS === 'ios' ? 20 : 15,
-        left: 0,
+        top: Platform.OS === 'ios' ? 25 : 15,
+        left: 15,
+        paddingLeft: 0,
     },
     icon: {
         color: '#fff',
