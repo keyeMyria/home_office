@@ -172,7 +172,7 @@ class AppAuth {
         };
 
         if (error.response) {
-            const message = erros[error.response.status] || erros.HTTP;
+            const message = (erros[error.response.status] || erros.HTTP).message;
             const status = error.response;
             EventEmitter.emit('auth.create_user_error', { message, status });
         } else {
