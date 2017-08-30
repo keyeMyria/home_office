@@ -65,20 +65,6 @@ export default class PickerField extends Component {
         }
         return entries;
     }
-
-    renderPicker() {
-        return (
-          <Picker
-            selectedValue={this.getValueFromStore()}
-            onValueChange={this.updateValue}
-            style={styles.picker}
-            {...this.getPickerProps()}
-          >
-            {this.renderPickerItems()}
-          </Picker>
-        );
-    }
-
     render() {
         const { label } = this.props;
 
@@ -89,9 +75,14 @@ export default class PickerField extends Component {
                 {label}
               </Label>
             </Item>
-            <Item style={styles.item}>
-              {this.renderPicker()}
-            </Item>
+            <Picker
+              selectedValue={this.getValueFromStore()}
+              onValueChange={this.updateValue}
+              style={styles.picker}
+              {...this.getPickerProps()}
+            >
+              {this.renderPickerItems()}
+            </Picker>
           </View>
         );
     }
@@ -111,18 +102,21 @@ export function createPickerField(
 
 const styles = {
     item: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
         marginTop: 5,
         borderBottomWidth: 0,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'white',
     },
     itemLabel: {
         borderBottomWidth: 0,
     },
     picker: {
+        flex: 1,
         borderWidth: 1,
         borderColor: '#E0E0E0',
         borderRadius: 2,
-        alignSelf: 'stretch',
-        flex: 1,
+        backgroundColor: 'white',
+        marginTop: 7,
     },
 };
