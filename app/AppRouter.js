@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { NativeModules } from 'react-native';
+import { NativeModules, BackHandler, Platform } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { StyleProvider } from 'native-base';
 import moment from 'moment';
@@ -12,9 +12,6 @@ import pushHandler from './lib/push';
 import { educareTheme } from './themes/educareTheme';
 
 // Screens
-import LoginScreen from './screens/LoginScreen';
-import InitialScreen from './screens/InitialScreen';
-import CreateUserScreen from './screens/CreateUserScreen';
 import SplashScreen from './screens/SplashScreen';
 import ParentHomeRouter from './modules/parent/AppRouter';
 import TeacherHomeRouter from './modules/teacher/AppRouter';
@@ -26,6 +23,11 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+// Prevent app for close with android back button;
+if (Platform.OS === 'android') {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+}
+
 // Configure moment locale
 moment.locale('pt-br');
 pushHandler.configureNotifications();
@@ -33,9 +35,6 @@ pushHandler.configureNotifications();
 const AppRouter = StackNavigator(
     {
         SplashScreen: { screen: SplashScreen },
-        InitialScreen: { screen: InitialScreen },
-        LoginScreen: { screen: LoginScreen },
-        CreateUserScreen: { screen: CreateUserScreen },
         TeacherHomeRouter: { screen: TeacherHomeRouter },
         ParentHomeRouter: { screen: ParentHomeRouter },
         StudentHomeRouter: { screen: StudentHomeRouter },

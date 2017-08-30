@@ -25,8 +25,6 @@ export default {
         SENDER_ID: '447786875542',
     },
     LOGIN: {
-        // BG_IMG: require('./app/img/bg.jpg'), // eslint-disable-line global-require
-        // ICON_IMG: require('./app/img/logo.png'), // eslint-disable-line global-require
     },
     API: {
         DOMAIN: 'https://escola.educarebox.com/',
