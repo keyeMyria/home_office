@@ -158,7 +158,7 @@ class AppAuth {
         const erros = {
             404: {
                 message:
-                    '[CNU-004] Não foi possível encontrar o seu e-mail ou telefone na base de dados',
+                    '[CNU-004] Não foi possível encontrar o seu e-mail ou telefone na base de dados. Entre em contato com a escola para que ela corrija seus dados cadastrados',
             },
             409: {
                 message: '[CNU-005] Senha já cadastrada',
