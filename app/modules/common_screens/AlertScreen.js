@@ -53,7 +53,7 @@ export default class AlertScreen extends Component {
                     }}
                   />
                   <Text>
-                      Nenhuma aviso cadastrado.
+                      Nenhum aviso cadastrado.
                     </Text>
                 </View>
 
