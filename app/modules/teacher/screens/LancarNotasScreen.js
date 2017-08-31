@@ -69,7 +69,9 @@ export default class LancarNotasScreen extends Component {
         const { navigate } = this.props.navigation;
 
         const notasSavePromise = this.alunosAndNotas.map(([nota]) => {
-            if ((nota.pontuacao || nota.pontuacao === 0)) {
+            const pontuacao = nota.pontuacao ? Number(nota.pontuacao) : null;
+
+            if ((pontuacao || pontuacao === 0)) {
                 if (!nota.id) {
                     return this._notaService.post(nota.toJS());
                 }

@@ -28,7 +28,8 @@ export default class StudentGrid extends Component {
                 placeholder="Nota"
                 style={styles.input()}
                 onChangeText={(val) => {
-                    if (val.trim() !== '') nota.pontuacao = Number(val);
+                    const cleanValue = val.trim().replace(',', '.');
+                    if (cleanValue.trim() !== '') nota.pontuacao = cleanValue;
                     else nota.pontuacao = null;
                 }}
                 keyboardType="numeric"
