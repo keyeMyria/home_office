@@ -19,7 +19,12 @@ export default class CalendarItem extends Component {
         const { item, onPress } = this.props;
         return (
           <ListItem onPress={() => onPress(item)}>
-            <Grid>
+            <Grid style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'stretch',
+            }}
+            >
               <Col style={styles.tipoAbbrCol(item.tarefa.color)}>
                 <Row>
                   <Text style={styles.gridRowText}>
@@ -57,11 +62,9 @@ export default class CalendarItem extends Component {
 // Styles
 const styles = {
     gridColumn: {
-        height: 55,
         alignItems: 'center',
     },
     gridColumnAlignLeft: {
-        height: 55,
         alignItems: 'flex-start',
     },
     gridRowText: {
