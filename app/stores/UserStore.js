@@ -95,6 +95,11 @@ class UserStore extends BaseStore {
         return this.user ? this.user.sub : '';
     }
 
+    @computed
+    get isProfessor(): boolean {
+        return !!this.user && this.user.role === 'PROFESSOR';
+    }
+
     /**
      * Set the user for the store
      */
@@ -127,10 +132,7 @@ class UserStore extends BaseStore {
     @action
     newUser(data: { celular: string, email: string, senha: string }) {
         if (!data) {
-            Alert.alert(
-                'Erro no Login',
-                '[CNU-001] Ocorreu um erro ao tentar criar o usuário',
-            );
+            Alert.alert('Erro no Login', '[CNU-001] Ocorreu um erro ao tentar criar o usuário');
             return;
         }
         auth.createNewUser(data);

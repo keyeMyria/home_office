@@ -2,9 +2,13 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ListItem, Grid, Row, Col, Text } from 'native-base';
+import { observer } from 'mobx-react/native';
+
+import rootStore from './../../stores';
 
 import type { Evento } from '../../models';
 
+@observer
 export default class CalendarItem extends Component {
     props: {
         item: Evento,
@@ -12,19 +16,23 @@ export default class CalendarItem extends Component {
     };
 
     static defaultProps = {
+        // $FlowFixMe
         onPress: () => {},
     };
 
     render() {
         const { item, onPress } = this.props;
+
+        const infoText = rootStore.user.isProfessor
+            ? `${item.turmaAno} - ${item.infoText}`
+            : item.infoText;
+
         return (
           <ListItem onPress={() => onPress(item)}>
             <Grid>
               <Col style={styles.tipoAbbrCol(item.tarefa.color)}>
                 <Row>
-                  <Text style={styles.gridRowText}>
-                    {item.tarefa.abbr}
-                  </Text>
+                  <Text style={styles.gridRowText}>{item.tarefa.abbr}</Text>
                 </Row>
               </Col>
               <Col style={styles.diaSemana}>
@@ -36,16 +44,12 @@ export default class CalendarItem extends Component {
               </Col>
               <Col style={styles.dataHora}>
                 <Row>
-                  <Text style={styles.gridRowText}>
-                    {item.fim.format('(DD/MMM)')}
-                  </Text>
+                  <Text style={styles.gridRowText}>{item.fim.format('(DD/MMM)')}</Text>
                 </Row>
               </Col>
               <Col size={100} style={styles.infoText}>
                 <View style={{ alignItems: 'flex-start' }}>
-                  <Text style={styles.gridRowText}>
-                    {item.infoText}
-                  </Text>
+                  <Text style={styles.gridRowText}>{infoText}</Text>
                 </View>
               </Col>
             </Grid>

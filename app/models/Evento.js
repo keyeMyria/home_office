@@ -19,7 +19,7 @@ export default class Evento extends models.Model {
     tarefa: Tarefa;
     turma: Turma;
 
-    static fromSearchArray(eventos: Array<Object>): Array<Eventos> {
+    static fromSearchArray(eventos: Array<Object>): Array<Evento> {
         return eventos.map((data) => {
             // eslint-disable-next-line no-param-reassign
             data.tarefa.disciplina = data.disciplina;
@@ -41,6 +41,10 @@ export default class Evento extends models.Model {
             }
         }
         super(data);
+    }
+
+    get turmaAno(): string {
+        return `${this.turma.ano.abreviacao}(${this.turma.titulo})`;
     }
 
     get infoText(): string {

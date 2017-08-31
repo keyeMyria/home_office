@@ -7,6 +7,7 @@ import type { NavigationParams, NavigationRoute } from 'react-navigation';
 let _container; // eslint-disable-line
 
 function setContainer(container: Object) {
+    if (!container) return;
     _container = container;
 }
 
