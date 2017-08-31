@@ -113,7 +113,7 @@ export default class CalendarModal extends Component {
           <LoadingModal loading={this.loading}>
             <View style={localStyles.modalContent}>
               {this.renderItem('Data', 'event.dataFormatada')}
-              {this.renderItem('Turma', 'event.turma.titulo')}
+              {this.renderItem('Turma', 'event.turmaAno')}
               {this.renderItem('Nota', 'event.tarefa.valor', ' Pontos')}
               {this.renderItem('Tempo Aprox.', 'event.duracaoTextModal')}
               {this.renderItem('Detalhes', 'event.tarefa.detalhes')}

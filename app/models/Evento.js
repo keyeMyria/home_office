@@ -44,7 +44,7 @@ export default class Evento extends models.Model {
     }
 
     get turmaAno(): string {
-        return `${this.turma.ano.abreviacao}(${this.turma.titulo})`;
+        return `${this.turma.ano.abreviacao} "${this.turma.titulo}"`;
     }
 
     get infoText(): string {
