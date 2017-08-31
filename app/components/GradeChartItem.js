@@ -1,80 +1,71 @@
+// @flow
+
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import _ from 'lodash';
+
+export type GradeChartItemProps = $PropertyType<GradeChartItem, 'props'>;
 
 export default class GradeChartItem extends Component {
-    render() {
-        const { disciplina, acumulado, total } = this.props.grade;
+    props: {
+        grade: {
+            disciplina: { titulo: string },
+            acumulado: number,
+            total: number,
+        },
+    };
 
-        const percent = total ? acumulado / total : 0;
-        const percentText = percent ? `${Math.floor(percent * 100)}%` : '';
-        const points = `${total}/${acumulado}`;
-        const width = { width: getWidth(percent) };
-        const color = { backgroundColor: getColor(disciplina.id) };
+    get percent(): number {
+        const { acumulado, total } = this.props.grade;
+        return total ? _.clamp(acumulado / total, 0, 1) : 0;
+    }
+
+    get percentText(): string {
+        return this.percent ? `${Math.floor(this.percent * 100)}%` : '';
+    }
+
+    get pointsText(): string {
+        const { acumulado, total } = this.props.grade;
+        return `${acumulado.toFixed(0)}/${total.toFixed(0)}`;
+    }
+
+    get width(): { width: number } {
+        const total = Dimensions.get('window').width - 100;
+        const w = Math.floor(total * this.percent) || 0;
+        const width = w && _.clamp(w, 15, total);
+        return { width };
+    }
+
+    get color(): { backgroundColor: string } {
+        let backgroundColor = 'rgb(158, 0, 0)'; // Vermelho (Bordô)
+
+        if (this.percent >= 0.7) {
+            backgroundColor = 'rgb(0,180,0)'; // Verde
+        } else if (this.percent >= 0.6) {
+            backgroundColor = 'rgb(255,255,0)'; // Amerelo
+        } else if (this.percent >= 0.5) {
+            backgroundColor = 'rgb(255, 50, 0)'; // Laranja
+        }
+        return { backgroundColor };
+    }
+
+    render() {
+        const { disciplina } = this.props.grade;
 
         return (
           <View style={styles.gradeContainer}>
             <View style={styles.gradeLeftContainer}>
-              <Text style={styles.diciplineName}>
-                {disciplina.titulo}
-              </Text>
-              <Text style={styles.diciplinePoints}>
-                {points}
-              </Text>
+              <Text style={styles.diciplineName}>{disciplina.titulo}</Text>
+              <Text style={styles.diciplinePoints}>{this.pointsText}</Text>
             </View>
             <View style={styles.chartBarContainer}>
-              <View style={[styles.chartBar, width, color]}>
-                <Text style={styles.percentText}>
-                  {percentText}
-                </Text>
+              <View style={[styles.chartBar, this.width, this.color]}>
+                <Text style={styles.percentText}>{this.percentText}</Text>
               </View>
             </View>
           </View>
         );
     }
-}
-
-/**
- * Array with the color for each discipline
- */
-const COLOR_ARRAY = [
-    'orange',
-    'mediumturquoise',
-    'gray',
-    'brown',
-    'fuchsia',
-    'green',
-    'red',
-    'blue',
-    'orange',
-    'mediumturquoise',
-    'gray',
-    'brown',
-    'fuchsia',
-    'green',
-    'red',
-    'blue',
-];
-
-/**
- * Returns the width of the bar
- * to prevent invisible bars, the minimum bar width is fixed in 10%
- *
- * @param {number} percent
- */
-function getWidth(percent: number): number {
-    const total = Dimensions.get('window').width - 100;
-    const width = Math.floor(total * percent);
-    if (width === 0) return 0;
-    return width < 15 ? 15 : width;
-}
-
-/**
- *  Returns the color of each dicipline
- *
- * @param {number} id
- */
-function getColor(id: number): string {
-    return COLOR_ARRAY[id - 1] || 'gray';
 }
 
 const styles = StyleSheet.create({
@@ -106,7 +97,8 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     percentText: {
-        color: '#fff',
+        color: 'rgba(0,0,0,0.87)',
         textAlign: 'center',
+        fontWeight: 'bold',
     },
 });
