@@ -10,7 +10,7 @@ import type Evento from '../models/Evento';
 import type Nota from '../models/Nota';
 
 @observer
-export default class StudentGrid extends Component {
+export default class tStudentGrid extends Component {
     props: {
         aluno: Aluno,
         evento: Evento,
@@ -20,9 +20,9 @@ export default class StudentGrid extends Component {
 
     renderInput() {
         const { taskType, nota } = this.props;
-        const isProva = taskType === 'PROVA';
+        const needsInput = ['PROVA', 'TRABALHO'].includes(taskType);
         const value = nota.pontuacao || nota.pontuacao === 0 ? String(nota.pontuacao) : '';
-        if (isProva) {
+        if (needsInput) {
             return (
               <Input
                 placeholder="Nota"
