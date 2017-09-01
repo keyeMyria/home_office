@@ -257,6 +257,7 @@ const localStyles = {
     modalItens: {
         flexDirection: 'row',
         alignItems: 'flex-start',
+        flexWrap: 'wrap',
     },
     button: {
         alignSelf: 'auto',
