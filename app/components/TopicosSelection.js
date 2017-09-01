@@ -16,14 +16,28 @@ type TopicoItemProps = {
 };
 
 const TopicoItem = observer(
-    ({ topico, isChild = false, isOpen = false, onPress, hasChild }: TopicoItemProps) => {
-        // eslint-disable-next-line no-param-reassign, no-return-assign
-        const onSelect = () => (topico._selected = !topico._selected);
+    ({
+        topico,
+        isChild = false,
+        isOpen = false,
+        subTopicos = [],
+        onPress,
+        hasChild,
+    }: TopicoItemProps) => {
+        const onSelect = () => {
+            // eslint-disable-next-line no-param-reassign, no-return-assign
+            topico._selected = !topico._selected;
+
+            subTopicos.forEach((subTopico) => {
+                // eslint-disable-next-line no-param-reassign, no-return-assign
+                subTopico._selected = topico._selected;
+            });
+        };
 
         const style = {
             height: 'auto',
             flexDirection: 'row',
-            marginLeft: isChild ? 60 : 0,
+            marginLeft: isChild ? 40 : 0,
             alignItems: 'center',
             justifyContent: 'flex-start',
             borderBottomColor: '#ddd',
@@ -31,7 +45,14 @@ const TopicoItem = observer(
             padding: 10,
         };
 
-        const iconName = isOpen ? 'keyboard-arrow-down' : 'keyboard-arrow-right';
+        let iconName = isChild ? 'subdirectory-arrow-right' : 'chevron-right';
+
+        if (hasChild && !isOpen) {
+            iconName = 'expand-more';
+        } else if (hasChild && isOpen) {
+            iconName = 'expand-less';
+        }
+
         // $FlowFixMe
         const listPress = isChild || !onPress ? onSelect : () => onPress(topico.pk);
 
@@ -41,16 +62,12 @@ const TopicoItem = observer(
             style={style}
             icon
           >
-            {
-                !isChild && hasChild ?
-                  <Icon
-                    name={iconName}
-                  />
-                : null
-            }
+            <Icon
+              name={iconName}
+            />
             <Text style={{
                 flex: 1,
-                paddingLeft: isChild ? 0 : 20,
+                paddingLeft: isChild ? 10 : 20,
                 paddingRight: 20,
             }}
             >
@@ -94,6 +111,8 @@ export default class TopicosSelection extends Component {
 
     renderTopicsSelection() {
         const topicos = this.props.topicos;
+        topicos.sort((a, b) => a.topico.id - b.topico.id);
+
         const mapFunc = ({ topico, subtopicos }) => {
             const isOpen = this.openTopics.includes(topico.pk);
             const isEmpty = !subtopicos.length;
@@ -110,6 +129,7 @@ export default class TopicosSelection extends Component {
                       onPress={this.toogleOpenTopic}
                       isOpen={isOpen}
                       hasChild={!isEmpty}
+                      subTopicos={subtopicos}
                     />
                     {this.renderSubTopics(subtopicos)}
                   </View>
@@ -121,6 +141,7 @@ export default class TopicosSelection extends Component {
               onPress={this.toogleOpenTopic}
               topico={topico}
               hasChild={!isEmpty}
+              subTopicos={subtopicos}
             />
             );
         };
