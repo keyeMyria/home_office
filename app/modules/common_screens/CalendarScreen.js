@@ -92,7 +92,7 @@ export default class CalendarScreen extends Component {
                       }}
                     />
                     <Text>
-                      Nenhuma atividade cadastrada.
+                        Nenhuma atividade cadastrada pelo colégio.
                     </Text>
                   </View>
               }

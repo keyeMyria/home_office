@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { ListItem, Body, Right, CheckBox, Text, Left, Icon, List } from 'native-base';
+import { ListItem, CheckBox, Text, Icon, List } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
@@ -16,33 +16,67 @@ type TopicoItemProps = {
 };
 
 const TopicoItem = observer(
-    ({ topico, isChild = false, isOpen = false, onPress }: TopicoItemProps) => {
-        // eslint-disable-next-line no-param-reassign, no-return-assign
-        const onSelect = () => (topico._selected = !topico._selected);
+    ({
+        topico,
+        isChild = false,
+        isOpen = false,
+        subTopicos = [],
+        onPress,
+        hasChild,
+    }: TopicoItemProps) => {
+        const onSelect = () => {
+            // eslint-disable-next-line no-param-reassign, no-return-assign
+            topico._selected = !topico._selected;
 
-        const style = isChild ? { marginLeft: 60 } : {};
-        const iconName = isOpen ? 'keyboard-arrow-down' : 'keyboard-arrow-right';
+            subTopicos.forEach((subTopico) => {
+                // eslint-disable-next-line no-param-reassign, no-return-assign
+                subTopico._selected = topico._selected;
+            });
+        };
+
+        const style = {
+            height: 'auto',
+            flexDirection: 'row',
+            marginLeft: isChild ? 40 : 0,
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            borderBottomColor: '#ddd',
+            borderBottomWidth: 0.5,
+            padding: 10,
+        };
+
+        let iconName = isChild ? 'subdirectory-arrow-right' : 'chevron-right';
+
+        if (hasChild && !isOpen) {
+            iconName = 'expand-more';
+        } else if (hasChild && isOpen) {
+            iconName = 'expand-less';
+        }
+
         // $FlowFixMe
         const listPress = isChild || !onPress ? onSelect : () => onPress(topico.pk);
 
         return (
-          <ListItem onPress={listPress} icon style={style}>
-            {!isChild &&
-            <Left>
-              <Icon name={iconName} />
-            </Left>}
-            <Body>
-              <Text>
-                {topico.titulo}
-              </Text>
-            </Body>
-            <Right>
-              <CheckBox
-                checked={topico._selected}
-                style={{ marginRight: 20 }}
-                onPress={onSelect}
-              />
-            </Right>
+          <ListItem
+            onPress={listPress}
+            style={style}
+            icon
+          >
+            <Icon
+              name={iconName}
+            />
+            <Text style={{
+                flex: 1,
+                paddingLeft: isChild ? 10 : 20,
+                paddingRight: 20,
+            }}
+            >
+              {topico.titulo}
+            </Text>
+            <CheckBox
+              checked={topico._selected}
+              onPress={onSelect}
+            />
           </ListItem>
         );
     },
@@ -77,6 +111,8 @@ export default class TopicosSelection extends Component {
 
     renderTopicsSelection() {
         const topicos = this.props.topicos;
+        topicos.sort((a, b) => a.topico.id - b.topico.id);
+
         const mapFunc = ({ topico, subtopicos }) => {
             const isOpen = this.openTopics.includes(topico.pk);
             const isEmpty = !subtopicos.length;
@@ -88,12 +124,26 @@ export default class TopicosSelection extends Component {
             if (isOpen) {
                 return (
                   <View key={topico.pk}>
-                    <TopicoItem topico={topico} onPress={this.toogleOpenTopic} />
+                    <TopicoItem
+                      topico={topico}
+                      onPress={this.toogleOpenTopic}
+                      isOpen={isOpen}
+                      hasChild={!isEmpty}
+                      subTopicos={subtopicos}
+                    />
                     {this.renderSubTopics(subtopicos)}
                   </View>
                 );
             }
-            return <TopicoItem key={topico.pk} onPress={this.toogleOpenTopic} topico={topico} />;
+
+            return (<TopicoItem
+              key={topico.pk}
+              onPress={this.toogleOpenTopic}
+              topico={topico}
+              hasChild={!isEmpty}
+              subTopicos={subtopicos}
+            />
+            );
         };
 
         return topicos.map(mapFunc);

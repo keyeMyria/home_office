@@ -1,3 +1,5 @@
+// @flow
+
 import alunoStore from './AlunoStore';
 import avisoStore from './AvisoStore';
 import escolaStore from './EscolaStore';
