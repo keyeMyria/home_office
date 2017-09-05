@@ -64,16 +64,20 @@ export default class CalendarScreen extends Component {
     }
 
     render() {
+        const semanasAnteriores = this.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek);
+        const semanaAtual = this.renderWeek('Semanas Atual', isThisWeek);
+        const proximaSemana = this.renderWeek('Próxima Semana', isNextWeek);
+
         return (
           <ScreenShell {...this.screenShellProps}>
             <BubbleMenu />
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
             {
-                this.eventos.length ?
+                (semanasAnteriores || semanaAtual || proximaSemana) ?
                   <List agendaList>
-                    {this.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek)}
-                    {this.renderWeek('Semanas Atual', isThisWeek)}
-                    {this.renderWeek('Próxima Semana', isNextWeek)}
+                    {semanasAnteriores}
+                    {semanaAtual}
+                    {proximaSemana}
                   </List>
                 :
                   <View style={{

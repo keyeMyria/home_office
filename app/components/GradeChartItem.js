@@ -10,14 +10,31 @@ export default class GradeChartItem extends Component {
     props: {
         grade: {
             disciplina: { titulo: string },
-            acumulado: number,
-            total: number,
+            acumulado: any,
+            total: any,
         },
     };
 
+    get sumAcumulado(): number {
+        const { acumulado } = this.props.grade;
+        return _.reduce(
+            acumulado,
+            (result, value) => (value ? value + result : result),
+            0,
+        );
+    }
+
+    get sumTotal(): number {
+        const { total } = this.props.grade;
+        return _.reduce(
+            total,
+            (result, value) => (value ? value + result : result),
+            0,
+        );
+    }
+
     get percent(): number {
-        const { acumulado, total } = this.props.grade;
-        return total ? _.clamp(acumulado / total, 0, 1) : 0;
+        return this.sumTotal ? _.clamp(this.sumAcumulado / this.sumTotal, 0, 1) : 0;
     }
 
     get percentText(): string {
@@ -25,8 +42,7 @@ export default class GradeChartItem extends Component {
     }
 
     get pointsText(): string {
-        const { acumulado, total } = this.props.grade;
-        return `${acumulado.toFixed(0)}/${total.toFixed(0)}`;
+        return `${this.sumAcumulado.toFixed(0)}/${this.sumTotal.toFixed(0)}`;
     }
 
     get width(): { width: number } {
