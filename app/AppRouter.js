@@ -9,6 +9,7 @@ import 'moment/locale/pt-br';
 import './stores';
 import navigator from './lib/navigator';
 import pushHandler from './lib/push';
+import logger from './lib/logger';
 import { educareTheme } from './themes/educareTheme';
 
 // Screens
@@ -48,10 +49,15 @@ const AppRouter = StackNavigator(
 );
 
 export default class EducareApp extends Component {
+    setContainer(nav) {
+        logger.assert(!!nav, 'Navigation container reference was not saved');
+        navigator.setContainer(nav);
+    }
+
     render() {
         return (
           <StyleProvider style={educareTheme}>
-            <AppRouter ref={nav => navigator.setContainer(nav)} />
+            <AppRouter ref={this.setContainer} />
           </StyleProvider>
         );
     }

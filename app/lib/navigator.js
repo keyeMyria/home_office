@@ -12,46 +12,52 @@ function setContainer(container: Object) {
 }
 
 function reset(routeName: string, params?: NavigationParams) {
-    if (!_container) return;
-    _container.dispatch(
-        NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
-                    type: 'Navigation/NAVIGATE',
-                    routeName,
-                    params,
-                }),
-            ],
-        }),
-    );
+    requestAnimationFrame(() => {
+        if (!_container) return;
+        _container.dispatch(
+            NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({
+                        type: 'Navigation/NAVIGATE',
+                        routeName,
+                        params,
+                    }),
+                ],
+            }),
+        );
+    });
 }
 
 function navigate(routeName: string, params?: NavigationParams) {
-    if (!_container) return;
-    _container.dispatch(
-        NavigationActions.navigate({
-            type: 'Navigation/NAVIGATE',
-            routeName,
-            params,
-        }),
-    );
+    requestAnimationFrame(() => {
+        if (!_container) return;
+        _container.dispatch(
+            NavigationActions.navigate({
+                type: 'Navigation/NAVIGATE',
+                routeName,
+                params,
+            }),
+        );
+    });
 }
 
 function navigateDeep(actions: { routeName: string, params?: NavigationParams }[]) {
-    if (!_container) return;
-    _container.dispatch(
-        actions.reduceRight(
-            (prevAction, action): any =>
-                NavigationActions.navigate({
-                    type: 'Navigation/NAVIGATE',
-                    routeName: action.routeName,
-                    params: action.params,
-                    action: prevAction,
-                }),
-            undefined,
-        ),
-    );
+    requestAnimationFrame(() => {
+        if (!_container) return;
+        _container.dispatch(
+            actions.reduceRight(
+                (prevAction, action): any =>
+                    NavigationActions.navigate({
+                        type: 'Navigation/NAVIGATE',
+                        routeName: action.routeName,
+                        params: action.params,
+                        action: prevAction,
+                    }),
+                undefined,
+            ),
+        );
+    });
 }
 
 function getCurrentRoute(): NavigationRoute | null {

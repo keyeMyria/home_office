@@ -1,6 +1,7 @@
 {
     "globals": {
-        "__DEV__": true
+        "__DEV__": true,
+        "requestAnimationFrame": true
     },
     "extends": [
         "airbnb",
