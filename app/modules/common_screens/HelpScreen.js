@@ -53,6 +53,9 @@ export default class AnalysisScreen extends Component {
                 <H3>Ligue para: </H3>
                 <Link href="tel:0800-006-3050">0800-006-3050</Link>
               </View>
+              <View style={{ marginBottom: 50 }}>
+                <Text>Versão: 1.2.1</Text>
+              </View>
               {/* <Text>Nos envie mensagem aqui na plataforma</Text>
               <Item style={styles.item}>
                 <Input placeholder="Digite aqui..." multiline style={styles.input} />
