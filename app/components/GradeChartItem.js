@@ -34,7 +34,7 @@ export default class GradeChartItem extends Component {
     }
 
     get pointsText(): string {
-        return `${this.sumAcumulado.toFixed(0)}/${this.sumTotal.toFixed(0)}`;
+        return this.sumTotal && this.sumAcumulado ? `${this.sumAcumulado.toFixed(0)}/${this.sumTotal.toFixed(0)}` : '';
     }
 
     get width(): { width: number } {

@@ -42,7 +42,7 @@ export default class ExerciciosScreen extends Component {
             leftPress: () => goBack(),
             navigate,
             title: 'Exercícios',
-            rightText: '> Datas',
+            rightText: 'Datas',
             rightPress: this.showNextScreen,
             showRight: this.isComplete,
         };
