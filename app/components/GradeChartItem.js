@@ -17,20 +17,12 @@ export default class GradeChartItem extends Component {
 
     get sumAcumulado(): number {
         const { acumulado } = this.props.grade;
-        return _.reduce(
-            acumulado,
-            (result, value) => (value ? value + result : result),
-            0,
-        );
+        return acumulado['0'];
     }
 
     get sumTotal(): number {
         const { total } = this.props.grade;
-        return _.reduce(
-            total,
-            (result, value) => (value ? value + result : result),
-            0,
-        );
+        return total['0'];
     }
 
     get percent(): number {
