@@ -90,7 +90,7 @@ const styles = {
     infoText: {
         alignItems: 'flex-start',
         justifyContent: 'center',
-        paddingHorizontal: 10,
+        padding: 10,
     },
     get dataHora() {
         return {

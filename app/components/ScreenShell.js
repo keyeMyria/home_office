@@ -100,11 +100,12 @@ export default class ScreenShell extends Component {
         const { navigate, title, padder, leftIcon, leftPress, fab: Fab, fabProps } = this.props;
         const _leftPress = leftPress || (() => navigate('DrawerOpen'));
         const hitSlop = { top: 20, left: 20, bottom: 20, right: 20 };
+        const wrappedPress = (...args) => requestAnimationFrame(() => _leftPress(...args));
         return (
           <Container>
             <Header appHeader>
               <Left>
-                <Touchable hitSlop={hitSlop} onPress={_leftPress}>
+                <Touchable hitSlop={hitSlop} onPress={wrappedPress}>
                   <Icon name={leftIcon} />
                 </Touchable>
               </Left>

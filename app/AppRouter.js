@@ -49,7 +49,7 @@ const AppRouter = StackNavigator(
 );
 
 export default class EducareApp extends Component {
-    setContainer(nav) {
+    setContainer(nav: any) {
         logger.assert(!!nav, 'Navigation container reference was not saved');
         navigator.setContainer(nav);
     }
