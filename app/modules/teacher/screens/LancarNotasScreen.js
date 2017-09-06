@@ -48,7 +48,8 @@ export default class LancarNotasScreen extends Component {
 
         return {
             navigate,
-            title: selectedTask.tarefa.tipo === 'PROVA' ? 'Lançar Notas' : 'Lançar Entrega',
+            title: (selectedTask.tarefa.tipo === 'PROVA' || selectedTask.tarefa.tipo === 'TRABALHO') ?
+                'Lançar Notas' : 'Não Entregues',
             loading: eventoStore.loading,
             rightText: 'Salvar',
             rightPress: this.saveStudentsTask,

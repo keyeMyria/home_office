@@ -1,7 +1,7 @@
 // @flow
 /* eslint no-return-assign: 0 */
 import React, { Component } from 'react';
-import { ListItem, Left, Body, Right, Text, CheckBox, Input, Thumbnail, View } from 'native-base';
+import { ListItem, Text, CheckBox, Input, Thumbnail, View } from 'native-base';
 
 import { observer } from 'mobx-react/native';
 
@@ -55,38 +55,30 @@ export default class tStudentGrid extends Component {
             avatar
             style={{
                 flexDirection: 'row',
-                alignContent: 'flex-start',
-                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
                 height: 70,
+                padding: 5,
+                paddingRight: 15,
+                paddingLeft: 5,
+                borderBottomColor: '#ccc',
+                borderBottomWidth: 0.5,
+                marginRight: 25,
             }}
           >
-            <Left>
-              <Thumbnail small source={aluno.imageSource} />
-            </Left>
-            <Body style={{
-                flex: 4,
+            <Thumbnail small source={aluno.imageSource} />
+            <View style={{
+                flex: 1,
                 flexDirection: 'column',
-                justifyContent: 'flex-end',
-                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingLeft: 20,
             }}
             >
-              <View style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-              }}
-              >
-                <Text type="number">
-                  {`${aluno.nome} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
-                </Text>
-              </View>
-            </Body>
-            <Right style={{
-                flex: 2,
-            }}
-            >
-              {this.renderInput()}
-            </Right>
+              <Text type="number">
+                {`${aluno.nome} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
+              </Text>
+            </View>
+            {this.renderInput()}
           </ListItem>
         );
     }
