@@ -111,11 +111,12 @@ const styles = {
     },
     input: function input() {
         return {
+            alignSelf: 'flex-end',
             borderWidth: 1,
             borderColor: '#E0E0E0',
             borderRadius: 2,
             marginTop: 0,
-            width: 80,
+            maxWidth: 80,
             padding: 5,
             marginLeft: 10,
             ...this.gridRowText,

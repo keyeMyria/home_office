@@ -24,7 +24,7 @@ export default class ForeignKeyField extends Component {
         iosHeader: 'Selecione',
         headerBackButtonText: 'Voltar',
         mode: 'dialog',
-        placeholder: '-- Selecione --',
+        placeholder: 'Selecione',
     };
 
     /**
@@ -121,6 +121,7 @@ const styles = {
         flex: 1,
         borderWidth: 1,
         borderColor: '#E0E0E0',
+        alignSelf: 'stretch',
         borderRadius: 2,
         backgroundColor: 'white',
         marginTop: 7,

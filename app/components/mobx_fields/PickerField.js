@@ -22,7 +22,7 @@ export default class PickerField extends Component {
         iosHeader: 'Selecione',
         headerBackButtonText: 'Voltar',
         mode: 'dialog',
-        placeholder: '-- Selecione --',
+        placeholder: 'Selecione',
     };
 
     /**
@@ -114,6 +114,7 @@ const styles = {
     picker: {
         flex: 1,
         borderWidth: 1,
+        alignSelf: 'stretch',
         borderColor: '#E0E0E0',
         borderRadius: 2,
         backgroundColor: 'white',

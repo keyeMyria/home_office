@@ -54,7 +54,7 @@ export default class ExerciciosScreen extends Component {
             moment(new Date(time * 60000)).utc().format('HH:mm'),
         ]);
         return createPickerField('Tempo Aproximado', items, this.exercicio, 'duracao', {
-            placeholder: '',
+            placeholder: 'Selecione',
         });
     }
 
