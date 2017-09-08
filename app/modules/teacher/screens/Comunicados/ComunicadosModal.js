@@ -146,8 +146,8 @@ export default class ComunicadosModal extends Component {
                             ))
                     }
               </List>
-              {createTextField('Título', comunicado, 'titulo', { style: { marginBottom: 10 } })}
-              {createTextField('Mensagem', comunicado, 'detalhes', { multiline: true })}
+              {createTextField('Título', comunicado, 'titulo', { style: { marginBottom: 10, maxLength: 25 } })}
+              {createTextField('Mensagem', comunicado, 'detalhes', { multiline: true, maxLength: 2000 })}
             </ScreenShell>
           </Modal>
         );

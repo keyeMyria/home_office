@@ -93,6 +93,7 @@ export default class ExamScreen extends Component {
           <ScreenShell {...this.screenShellProps}>
             {createTextField('Título', this.prova, 'titulo', {
                 placeholder: 'Título da Prova...',
+                maxLength: 25,
             })}
             {createForeignKeyField('Ano', professorStore.anosMap, this.prova, 'ano')}
             {createForeignKeyField(

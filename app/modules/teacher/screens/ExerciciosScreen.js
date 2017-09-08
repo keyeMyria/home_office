@@ -63,6 +63,7 @@ export default class ExerciciosScreen extends Component {
           <ScreenShell {...this.screenShellProps}>
             {createTextField('Título', this.exercicio, 'titulo', {
                 placeholder: 'Título do Exercício...',
+                maxLength: 25,
             })}
             {createForeignKeyField('Ano', professorStore.anosMap, this.exercicio, 'ano')}
             {createForeignKeyField(

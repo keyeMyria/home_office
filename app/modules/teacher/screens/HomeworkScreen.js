@@ -69,6 +69,7 @@ export default class HomeworkScreen extends Component {
           <ScreenShell {...this.screenShellProps}>
             {createTextField('Título', this.trabalho, 'titulo', {
                 placeholder: 'Título do Trabalho...',
+                maxLength: 25,
             })}
             {createForeignKeyField('Ano', professorStore.anosMap, this.trabalho, 'ano')}
             {createForeignKeyField(

@@ -51,7 +51,7 @@ export default class OcorrenciaModal extends Component {
           >
             <ScreenShell {...this.screenShellProps}>
               {createPickerField('Motivo', this.motivos, ocorrencia, 'tipo')}
-              {createTextField('Comentários', ocorrencia, 'detalhes')}
+              {createTextField('Comentários', ocorrencia, 'detalhes', { multiline: true, maxLength: 2000 })}
             </ScreenShell>
           </Modal>
         );
