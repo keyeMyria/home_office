@@ -40,6 +40,16 @@ class PushHandler {
         });
     }
 
+    plataformIsCorrect(endpoint: string): boolean {
+        const isAndroid = Platform.OS === 'android';
+        const isGCM = endpoint.indexOf('endpoint/GCM') !== -1;
+        if (isAndroid && isGCM) return true;
+
+        const isIos = !isAndroid;
+        const isAPNS = endpoint.indexOf('endpoint/APNS') !== -1;
+        if (isIos && isAPNS) return true;
+        return false;
+    }
 
     get APPLICATION_ARN(): string {
         const platform = Platform.OS;
@@ -66,6 +76,12 @@ class PushHandler {
 
         if (createNeeded) {
             logger.log('[SNS] No platform endpoint ARN is stored; need to call createEndpoint');
+            endpointArn = await this.createPlatformEndpoint();
+            createNeeded = false;
+        } else if (!this.plataformIsCorrect(endpointArn)) {
+            logger.log(
+                    '[SNS] Platform endpoint ARN is stored; but is for another plataform, need to call createEndpoint',
+                );
             endpointArn = await this.createPlatformEndpoint();
             createNeeded = false;
         }
