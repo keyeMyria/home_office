@@ -53,7 +53,7 @@ export default class AlertScreen extends Component {
                     }}
                   />
                   <Text>
-                      Nenhum aviso cadastrado.
+                      Nenhum aviso cadastrado pelo colégio.
                     </Text>
                 </View>
 
