@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, View, TouchableOpacity } from 'react-native';
 import { Text, Thumbnail, Button } from 'native-base';
 
 import { observer } from 'mobx-react/native';
@@ -43,11 +43,11 @@ function SchoolYearItem(props) {
 function BubbleMenuItem(props) {
     const { item, onPress } = props;
     return (
-      <TouchableWithoutFeedback onPress={onPress}>
+      <TouchableOpacity onPress={onPress}>
         <View>
           {item}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
 }
 
@@ -87,7 +87,7 @@ export default class BubbleMenu extends Component {
                 active = id === responsavelStore.alunoSelectedId;
             }
             const item = <StudentItem name={nome} active={active} source={aluno.imageSource} />;
-            const onPress = () => responsavelStore.selectAluno(id);
+            const onPress = () => requestAnimationFrame(() => responsavelStore.selectAluno(id));
             return <BubbleMenuItem key={id} item={item} onPress={onPress} />;
         };
         if (responsavelStore.loading) return null;
@@ -99,7 +99,9 @@ export default class BubbleMenu extends Component {
             PROFESSOR: this.renderSchoolYear,
             RESPONSAVEL: this.renderStudent,
             ALUNO: undefined, // Prevent the the rendering
+            DIRETOR: this.renderSchoolYear,
         };
+
         const renderItens = roleMap[userStore.role];
 
         if (!renderItens) return null;
