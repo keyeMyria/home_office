@@ -2,27 +2,34 @@
 
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { observer } from 'mobx-react/native';
 import _ from 'lodash';
 
 export type GradeChartItemProps = $PropertyType<GradeChartItem, 'props'>;
 
+@observer
 export default class GradeChartItem extends Component {
     props: {
         grade: {
             disciplina: { titulo: string },
-            acumulado: any,
+            acumulado: {[number]: number},
             total: any,
+        },
+        filtro: {
+            bimestre: number
         },
     };
 
     get sumAcumulado(): number {
-        const { acumulado } = this.props.grade;
-        return acumulado['0'];
+        const { grade, filtro } = this.props;
+        const index = (filtro && filtro.bimestre) || 0;
+        return grade.acumulado[index];
     }
 
     get sumTotal(): number {
-        const { total } = this.props.grade;
-        return total['0'];
+        const { grade, filtro } = this.props;
+        const index = (filtro && filtro.bimestre) || 0;
+        return grade.total[index];
     }
 
     get percent(): number {
@@ -108,5 +115,6 @@ const styles = StyleSheet.create({
         color: 'rgba(0,0,0,0.87)',
         textAlign: 'center',
         fontWeight: 'bold',
+        backgroundColor: 'transparent',
     },
 });
