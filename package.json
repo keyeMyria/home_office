@@ -26,6 +26,7 @@
     "react-native": "0.45.1",
     "react-native-action-button": "^2.7.2",
     "react-native-code-push": "3.0.1-beta",
+    "react-native-drawer": "^2.5.0",
     "react-native-eventemitter": "0.0.1",
     "react-native-fbsdk": "0.6.1",
     "react-native-masked-text": "^1.5.3",
