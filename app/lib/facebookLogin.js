@@ -36,6 +36,10 @@ class FacebookLogin {
         }
     }
 
+    logout() {
+        LoginManager.logOut();
+    }
+
     async sendTokenToServer(token: string, celular?: string): Promise<?string> {
         try {
             if (celular) {
