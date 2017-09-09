@@ -24,6 +24,7 @@ export type ScreenShellProps = {
     title: string,
     padder?: boolean,
     rightText?: string,
+    rightIcon?: string,
     rightPress?: () => any,
     showRight?: boolean,
     loading?: boolean,
@@ -69,6 +70,7 @@ export default class ScreenShell extends Component {
         leftPress: undefined,
         fab: null,
         fabProps: {},
+        showRight: true,
         style: {
             flex: 1,
         },
@@ -80,17 +82,15 @@ export default class ScreenShell extends Component {
      * only renders the
      */
     renderRight() {
-        const { rightText, rightPress, showRight } = this.props;
-        if (!showRight || !rightText) return <Right />;
+        const { rightText, rightPress, showRight, rightIcon } = this.props;
+        if (!showRight || !(rightText || rightIcon)) return <Right />;
 
         const onPress = rightPress || emptyFunc;
 
         return (
           <Right>
             <Touchable onPress={onPress}>
-              <Text>
-                {rightText}
-              </Text>
+              {!rightIcon ? <Text>{rightText}</Text> : <Icon name={rightIcon} />}
             </Touchable>
           </Right>
         );
@@ -110,16 +110,12 @@ export default class ScreenShell extends Component {
                 </Touchable>
               </Left>
               <Body>
-                <Title>
-                  {title}
-                </Title>
+                <Title>{title}</Title>
               </Body>
               {this.renderRight()}
             </Header>
             <LoadingModal loading={this.props.loading}>
-              <Content padder={padder}>
-                {this.props.children}
-              </Content>
+              <Content padder={padder}>{this.props.children}</Content>
             </LoadingModal>
             {Fab ? <Fab navigate={navigate} {...fabProps} /> : null}
           </Container>
