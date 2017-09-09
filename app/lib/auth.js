@@ -23,6 +23,7 @@ export type DecodedToken = {
     imagem: ?string, // Avatar do usuário
     celular: string, // Celular do usuário
     nome: string, // Nome do usuário
+    sobrenome: string;
     id: number, // ID do usuário
     exp: number, // Timestamp da expiração do token
 };
@@ -257,6 +258,7 @@ class AppAuth {
 
     async logout() {
         AsyncStorage.clear();
+        facebookLogin.logout();
         navigator.reset('SplashScreen');
         try {
             const id = this.decodeToken && this.decodeToken.id;

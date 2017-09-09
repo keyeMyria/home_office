@@ -46,7 +46,7 @@ export default class DrawerMenu extends Component {
               </Left>
               <Body>
                 <Text>
-                  {userStore.nome}
+                  {userStore.nomeCompleto}
                 </Text>
                 <Text profileInfo>
                   {userStore.email}

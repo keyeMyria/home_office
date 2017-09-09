@@ -75,7 +75,7 @@ export default class tStudentGrid extends Component {
             }}
             >
               <Text type="number">
-                {`${aluno.nome} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
+                {`${aluno.nomeCompleto} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
               </Text>
             </View>
             {this.renderInput()}

@@ -31,7 +31,7 @@ const StudentItem = observer((props: { aluno: Aluno }) => {
         </Left>
         <Body>
           <Text>
-            {aluno.nome}
+            {aluno.nomeCompleto}
           </Text>
         </Body>
         <Right>

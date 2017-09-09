@@ -19,6 +19,7 @@ import type ChatGroup from './ChatGroup';
 @models.register('Aluno', {
     id: models.PrimaryKey(),
     nome: models.String(),
+    sobrenome: models.String(),
     email: models.String(),
     password: models.String(),
     imagem: models.String(),
@@ -42,6 +43,7 @@ import type ChatGroup from './ChatGroup';
 export default class Aluno extends models.Model {
     id: number;
     nome: string;
+    sobrenome: string;
     email: string;
     password: string;
     imagem: string;
@@ -69,6 +71,10 @@ export default class Aluno extends models.Model {
 
     get imageSource(): Object {
         return avatar(this.imagem);
+    }
+
+    get nomeCompleto(): string {
+        return `${this.nome} ${this.sobrenome || ''}`.trim();
     }
 
     toString(): string {

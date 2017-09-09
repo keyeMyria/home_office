@@ -87,7 +87,17 @@ class UserStore extends BaseStore {
 
     @computed
     get nome(): string {
-        return this.user ? this.user.nome : '';
+        return (this.user && this.user.nome) || '';
+    }
+
+    @computed
+    get sobrenome(): string {
+        return (this.user && this.user.sobrenome) || '';
+    }
+
+    @computed
+    get nomeCompleto(): string {
+        return `${this.nome} ${this.sobrenome}`.trim();
     }
 
     @computed

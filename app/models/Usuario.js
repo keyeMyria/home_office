@@ -8,6 +8,7 @@ type Role = 'ALUNO' | 'RESPONSAVEL' | 'PROFESSOR';
 
 @models.register('Usuario', {
     nome: models.String(),
+    sobrenome: models.String(),
     email: models.String(),
     imagem: models.String(),
     enabled: models.Boolean(),
@@ -21,6 +22,7 @@ type Role = 'ALUNO' | 'RESPONSAVEL' | 'PROFESSOR';
 })
 export default class Usuario extends models.Model {
     nome: string;
+    sobrenome: string;
     email: string;
     imagem: string;
     enabled: boolean;
@@ -31,4 +33,8 @@ export default class Usuario extends models.Model {
     chats: Array<Chat>;
     chatGroups: Array<ChatGroup>;
     endpointArn: string;
+
+    get nomeCompleto() {
+        return `${this.nome} ${this.sobrenome}`;
+    }
 }
