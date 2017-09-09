@@ -1,5 +1,5 @@
 // @flow
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import EventEmitter from 'react-native-eventemitter';
@@ -7,6 +7,19 @@ import EventEmitter from 'react-native-eventemitter';
 import CONFIG from './../../config';
 import logger from './logger';
 import httpClient from './HttpClient';
+
+export type NotificationDataType = {
+    title: string,
+    message: string,
+};
+
+export type NotificationType = {
+    foreground: boolean,
+    userInteraction: boolean,
+    message: string,
+    title: string,
+    data: NotificationDataType,
+};
 
 type AttributesResponseData = {
     Attributes: {
@@ -80,8 +93,8 @@ class PushHandler {
             createNeeded = false;
         } else if (!this.plataformIsCorrect(endpointArn)) {
             logger.log(
-                    '[SNS] Platform endpoint ARN is stored; but is for another plataform, need to call createEndpoint',
-                );
+                '[SNS] Platform endpoint ARN is stored; but is for another plataform, need to call createEndpoint',
+            );
             endpointArn = await this.createPlatformEndpoint();
             createNeeded = false;
         }
@@ -169,8 +182,13 @@ class PushHandler {
         logger.log(`[SNS] Device Token: "${token.token}"`);
     };
 
-    onNotification = (notification: any) => {
+    onNotification = (notification: NotificationType) => {
         logger.log('[SNS] Notification received', notification);
+        if (notification.foreground) {
+            const title = notification.title || 'Notificação';
+            const message = notification.message;
+            Alert.alert(title, message);
+        }
     };
 
     configureNotifications(): void {
