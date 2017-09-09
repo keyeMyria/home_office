@@ -3,6 +3,7 @@ import { observable, computed } from 'mobx';
 import EventEmitter from 'react-native-eventemitter';
 
 import BaseStore from './../lib/BaseStore';
+import logger from './../lib/logger';
 
 import ResponsavelService from './../services/ResponsavelService';
 import { Aluno, Responsavel } from './../models';
@@ -40,21 +41,21 @@ class ResponsavelStore extends BaseStore {
             }
             this.loading = false;
         } catch (error) {
-            console.error(error); // eslint-disable-line no-console
+            logger.error(error);
             this.error = true;
         }
         return this;
     }
 
     selectAluno(id: number) {
+        if (this.alunoSelectedId === id) return;
         const aluno = this.alunos.find(a => a.id === id);
         if (aluno) {
+            alunoStore.loading = true;
             this.alunoSelectedId = id;
             alunoStore.setAluno(aluno);
-            // eslint-disable-next-line no-undef
-        } else if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.error(`Student with id ${id} not found in responsavelStore`);
+        } else {
+            logger.error(`Student with id ${id} not found in responsavelStore`);
         }
     }
 
