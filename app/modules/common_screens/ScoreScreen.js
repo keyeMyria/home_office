@@ -61,7 +61,7 @@ export default class ScoreScreen extends Component {
     }
 
     renderSegmentedControl() {
-        const label = _.capitalize(escolaStore.getConfig('nomePeriodo') || 'bimestre');
+        const label = _.capitalize(escolaStore.getConfig('nomePeriodo') || 'bimestre').substr(0, 3);
         const num = escolaStore.getConfig('numeroPeriodos') || 4;
         const items = _.range(0, num + 1).map((n) => {
             const _label = n === 0 ? 'Total' : `${n}º ${label}`;
