@@ -18,9 +18,7 @@ function StudentItem(props) {
     return (
       <View style={styles.bubbleMenuItemView}>
         <Thumbnail source={source} style={activeStyle} />
-        <Text style={styles.bubbleMenuItemText}>
-          {props.name}
-        </Text>
+        <Text style={styles.bubbleMenuItemText}>{props.name}</Text>
       </View>
     );
 }
@@ -28,13 +26,10 @@ function StudentItem(props) {
 function SchoolYearItem(props) {
     const { active, name } = props;
     const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
-
     return (
-      <View style={styles.bubbleMenuItemView}>
+      <View style={{ ...styles.bubbleMenuItemView, borderWidth: 0 }}>
         <Button disabled={!active} style={activeStyle}>
-          <Text>
-            {name}
-          </Text>
+          <Text>{name}</Text>
         </Button>
       </View>
     );
@@ -44,9 +39,7 @@ function BubbleMenuItem(props) {
     const { item, onPress } = props;
     return (
       <TouchableOpacity onPress={onPress}>
-        <View>
-          {item}
-        </View>
+        <View>{item}</View>
       </TouchableOpacity>
     );
 }
@@ -110,7 +103,7 @@ export default class BubbleMenu extends Component {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            style={styles.bubbleMenuView}
+            style={{ ...styles.bubbleMenuView, borderWidth: 0 }}
           >
             {renderItens()}
           </ScrollView>
