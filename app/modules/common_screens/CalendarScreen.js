@@ -1,9 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Icon, Text } from 'native-base';
+import { List, Icon } from 'native-base';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
-import { View, Image } from 'react-native';
 
 import ActionButton from 'react-native-action-button';
 
@@ -13,37 +12,36 @@ import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../lib/dates';
 import type { Evento } from './../../models';
 
 // Store
-import eventoStore from './../../stores/EventosStore';
-import userStore from './../../stores/UserStore';
-import professorStore from './../../stores/ProfessorStore';
+import rootStore from './../../stores';
 
 // Components
 import ScreenShell from './../../components/ScreenShell';
+import EmptyScreen from './../../components/EmptyScreen';
 import CalendarWeek from './../../components/calendar/CalendarWeek';
 import CalendarModal from './../../components/calendar/CalendarModal';
 import BubbleMenu from './../../components/BubbleMenu';
 
-const emptyEventsImg = require('../../img/blankCalendar.png');
+const emptyEventsImg = require('./../../img/calendar_empty.png');
 
 @observer
 export default class CalendarScreen extends Component {
-    showModal = (ev: Evento) => eventoStore.selectEvento(ev);
-    hideModal = () => eventoStore.selectEvento();
+    showModal = (ev: Evento) => rootStore.eventos.selectEvento(ev);
+    hideModal = () => rootStore.eventos.selectEvento();
 
     @computed
     get eventos(): Array<Evento> {
-        if (this.isProfessor) {
-            const anoSelected = professorStore.anoSelectedId;
+        if (rootStore.user.isProfessor) {
+            const anoSelected = rootStore.professor.anoSelectedId;
             if (anoSelected) {
-                return eventoStore.eventos.filter(ev => ev.turma.ano.id === anoSelected);
+                return rootStore.eventos.eventos.filter(ev => ev.turma.ano.id === anoSelected);
             }
         }
-        return eventoStore.eventos;
+        return rootStore.eventos.eventos;
     }
 
     @computed
     get isProfessor(): boolean {
-        return userStore.role === 'PROFESSOR';
+        return rootStore.user.isProfessor;
     }
 
     renderWeek(titulo: string, filter: Date => boolean) {
@@ -58,48 +56,41 @@ export default class CalendarScreen extends Component {
             navigate,
             title: 'Agenda',
             padder: false,
-            loading: eventoStore.loading,
-            fab: this.isProfessor ? Fab : null,
+            loading: rootStore.eventos.loading && !rootStore.eventos.eventos.length,
+            fab: rootStore.user.isProfessor ? Fab : null,
+            refreshControl: {
+                refreshing: rootStore.eventos.loading,
+                onRefresh: () => rootStore.eventos.refresh(),
+            },
         };
     }
 
     render() {
-        const semanasAnteriores = this.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek);
+        const semanasAnteriores = rootStore.user.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek);
         const semanaAtual = this.renderWeek('Semanas Atual', isThisWeek);
         const proximaSemana = this.renderWeek('Próxima Semana', isNextWeek);
 
+        const hasEventos = !!(semanasAnteriores || semanaAtual || proximaSemana);
+
+        const content = hasEventos ? (
+          <List agendaList>
+            {semanasAnteriores}
+            {semanaAtual}
+            {proximaSemana}
+          </List>
+        ) : (
+          <EmptyScreen
+            title="Ops! Nenhuma Atividade"
+            text="Nenhuma atividade cadastrada para os próximos dias"
+            image={emptyEventsImg}
+          />
+        );
+
         return (
-          <ScreenShell {...this.screenShellProps}>
+          <ScreenShell {...this.screenShellProps} emptyScreen={!hasEventos}>
             <BubbleMenu />
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
-            {
-                (semanasAnteriores || semanaAtual || proximaSemana) ?
-                  <List agendaList>
-                    {semanasAnteriores}
-                    {semanaAtual}
-                    {proximaSemana}
-                  </List>
-                :
-                  <View style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      alignSelf: 'stretch',
-                  }}
-                  >
-                    <Image
-                      source={emptyEventsImg}
-                      style={{
-                          width: 50,
-                          height: 50,
-                          margin: 15,
-                      }}
-                    />
-                    <Text>
-                        Nenhuma atividade cadastrada pelo colégio.
-                    </Text>
-                  </View>
-              }
+            {content}
           </ScreenShell>
         );
     }

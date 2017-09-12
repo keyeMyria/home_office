@@ -153,9 +153,10 @@ const styles = {
         borderWidth: 2,
     },
     bubbleMenuView: {
-        backgroundColor: '#FAFAFA',
+        backgroundColor: 'transparent',
         borderWidth: 1,
         borderColor: '#E0E0E0',
+        flexGrow: 0,
     },
     gridColumn: {
         height: 55,
