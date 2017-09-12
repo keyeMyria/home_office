@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, RefreshControl } from 'react-native';
 import { Container, Header, Left, Right, Icon, Title, Content, Body, Text } from 'native-base';
 import { observer } from 'mobx-react/native';
 import LoadingModal from './LoadingModal';
@@ -31,8 +31,10 @@ export type ScreenShellProps = {
     children?: any,
     leftIcon?: string,
     leftPress?: () => any,
+    refreshControl?: any,
     fab?: *,
     fabProps?: *,
+    emptyScreen?: *,
 };
 
 /**
@@ -74,6 +76,7 @@ export default class ScreenShell extends Component {
         style: {
             flex: 1,
         },
+        emptyScreen: false,
     };
 
     /**
@@ -97,10 +100,32 @@ export default class ScreenShell extends Component {
     }
 
     render() {
-        const { navigate, title, padder, leftIcon, leftPress, fab: Fab, fabProps } = this.props;
+        const {
+            navigate,
+            title,
+            padder,
+            leftIcon,
+            leftPress,
+            fab: Fab,
+            fabProps,
+            emptyScreen,
+        } = this.props;
         const _leftPress = leftPress || (() => navigate('DrawerOpen'));
         const hitSlop = { top: 30, left: 30, bottom: 30, right: 30 };
         const wrappedPress = (...args) => requestAnimationFrame(() => _leftPress(...args));
+        const refreshControl = this.props.refreshControl;
+        const contentProps = refreshControl
+            ? {
+                refreshControl: (
+                  <RefreshControl
+                    refreshing={refreshControl.refreshing}
+                    onRefresh={refreshControl.onRefresh}
+                  />
+                  ),
+            }
+            : {};
+        const OutterContainer = emptyScreen ? Container : Content;
+        const backGround = emptyScreen ? { style: { backgroundColor: 'rgb(239, 239, 239)' } } : {};
         return (
           <Container>
             <Header appHeader>
@@ -115,7 +140,9 @@ export default class ScreenShell extends Component {
               {this.renderRight()}
             </Header>
             <LoadingModal loading={this.props.loading}>
-              <Content padder={padder}>{this.props.children}</Content>
+              <OutterContainer padder={padder} {...contentProps} {...backGround}>
+                {this.props.children}
+              </OutterContainer>
             </LoadingModal>
             {Fab ? <Fab navigate={navigate} {...fabProps} /> : null}
           </Container>
