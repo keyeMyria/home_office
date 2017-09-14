@@ -40,19 +40,15 @@ export default class CalendarItem extends Component {
                   <Text style={styles.gridRowText}>{item.tarefa.abbr}</Text>
                 </Row>
               </Col>
-              <Col style={styles.diaSemana}>
-                <Row>
-                  <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
-                    {item.dayOfWeek}
-                  </Text>
-                </Row>
+              <Col style={styles.data}>
+                <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
+                  {item.dayOfWeek}
+                </Text>
+                <Text style={styles.gridRowText}>
+                  {item.fim.format('DD / MMM')}
+                </Text>
               </Col>
-              <Col style={styles.dataHora}>
-                <Row>
-                  <Text style={styles.gridRowText}>{item.fim.format('(DD/MMM)')}</Text>
-                </Row>
-              </Col>
-              <Col size={100} style={styles.infoText}>
+              <Col style={styles.infoText}>
                 <View style={{ alignItems: 'flex-start' }}>
                   <Text style={styles.gridRowText}>{infoText}</Text>
                 </View>
@@ -81,21 +77,17 @@ const styles = {
             width: 30,
         };
     },
-    get diaSemana(): Object {
-        return {
-            ...this.gridColumn,
-            width: 30,
-        };
+    data: {
+        flex: 0,
+        flexDirection: 'column',
+        padding: 12,
+        paddingRight: 0,
     },
     infoText: {
+        flex: 2,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        padding: 10,
-    },
-    get dataHora() {
-        return {
-            ...this.gridColumn,
-            width: 60,
-        };
+        padding: 12,
+        paddingRight: 0,
     },
 };
