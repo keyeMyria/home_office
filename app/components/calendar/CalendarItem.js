@@ -45,7 +45,7 @@ export default class CalendarItem extends Component {
                   {item.dayOfWeek}
                 </Text>
                 <Text style={styles.gridRowText}>
-                  {item.fim.format('DD / MMM')}
+                  {item.fim.format('DD/MMM')}
                 </Text>
               </Col>
               <Col style={styles.infoText}>
