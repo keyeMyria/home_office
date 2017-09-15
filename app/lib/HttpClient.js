@@ -31,11 +31,12 @@ class HttpClient {
         return this;
     }
 
-    errorHandler(error: any) {
-        if (this.token && error.response && error.response.code === 401) {
+    errorHandler = (error: any) => {
+        if (this.token && error.response && error.response.status === 401) {
+            logger.error('[HTTP CLIENT] Invalid token (401)');
             EventEmitter.emit('auth.invalid_token', {});
         }
-        logger.warn('[HTTP] ERROR', JSON.stringify(error, null, 2));
+        return Promise.reject(error);
     }
 
     /**
@@ -57,52 +58,31 @@ class HttpClient {
     }
 
     request(config: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.request(config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.request(config).catch(this.errorHandler);
     }
 
     get(url: string, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.get(url, config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.get(url, config).catch(this.errorHandler);
     }
 
     delete(url: string, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.delete(url, config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.delete(url, config).catch(this.errorHandler);
     }
 
     head(url: string, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.head(url, config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.head(url, config).catch(this.errorHandler);
     }
 
     post(url: string, data?: any, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.post(url, data, config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.post(url, data, config).catch(this.errorHandler);
     }
 
     put(url: string, data?: any, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.put(url, data, config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.put(url, data, config).catch(this.errorHandler);
     }
 
     patch(url: string, data?: any, config?: AxiosXHRConfig<any>): AxiosPromise<any> {
-        return this._axios.patch(url, data, config).catch((err) => {
-            this.errorHandler(err);
-            throw err;
-        });
+        return this._axios.patch(url, data, config).catch(this.errorHandler);
     }
 }
 
