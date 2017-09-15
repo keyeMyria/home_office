@@ -41,7 +41,7 @@ class ResponsavelStore extends BaseStore {
             }
             this.loading = false;
         } catch (error) {
-            logger.error(error);
+            logger.warn(error);
             this.error = true;
         }
         return this;

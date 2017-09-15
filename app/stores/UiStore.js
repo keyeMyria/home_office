@@ -21,6 +21,9 @@ class UiStore extends BaseStore {
     @observable keyboardIsVisible: boolean;
     @observable userStoreFinishInit: boolean = false;
     @observable escolaStoreFinishInit: boolean = false;
+    @observable codePushUpToDate: boolean = false;
+    @observable codePushStatus: string = '';
+    @observable codePushDownloadPercent: number = 0;
 
     @computed
     get appFinishInit(): boolean {
@@ -74,7 +77,7 @@ class UiStore extends BaseStore {
                 this.hasInternet = isConected;
             });
         } catch (error) {
-            logger.log('UiStore._setupInternetEvents', error);
+            logger.error('UiStore._setupInternetEvents', error);
         }
     }
 }

@@ -4,6 +4,7 @@ import type { ObservableMap } from 'mobx';
 import EventEmitter from 'react-native-eventemitter';
 
 import BaseStore from './../lib/BaseStore';
+import logger from './../lib/logger';
 
 import ProfessorService from './../services/ProfessorService';
 import AnoService from './../services/AnoService';
@@ -49,10 +50,7 @@ class ProfessorStore extends BaseStore {
             await this.fetchDisciplinas(id);
             this.loading = false;
         } catch (error) {
-            // eslint-disable-next-line no-undef
-            if (__DEV__) {
-                console.error(error); // eslint-disable-line no-console
-            }
+            logger.log(error);
             this.error = true;
         }
         return this;
@@ -70,10 +68,7 @@ class ProfessorStore extends BaseStore {
             await this.fetchDisciplinas(id, true);
             this.loading = false;
         } catch (error) {
-            // eslint-disable-next-line no-undef
-            if (__DEV__) {
-                console.error(error); // eslint-disable-line no-console
-            }
+            logger.log(error);
             this.error = true;
         }
         return this;

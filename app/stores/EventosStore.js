@@ -66,6 +66,7 @@ class EventoStore extends BaseStore {
         } catch (error) {
             logger.error(error);
             this.setError(true);
+            this.setLoading(false);
         }
     }
 
@@ -78,6 +79,7 @@ class EventoStore extends BaseStore {
         } catch (error) {
             logger.error(error);
             this.setError(true);
+            this.setLoading(false);
         }
     }
 

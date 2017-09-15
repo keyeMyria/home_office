@@ -11,7 +11,7 @@ export default class HomeTabNavigator extends Component {
         return (
           <Footer>
             <FooterTab footerTabNavigation>
-              <Button active={index === 0} onPress={() => navigate('CalendarScreen')}>
+              <Button active={index === 0} onPress={() => navigate('HomeRouter')}>
                 <Icon name="event-note" />
                 <Text>Agenda</Text>
               </Button>
