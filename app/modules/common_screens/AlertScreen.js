@@ -1,17 +1,15 @@
 // @flow
 import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
-import { View, Image } from 'react-native';
-import { Text } from 'native-base';
-
 // Store
 import avisoStore from './../../stores/AvisoStore';
 
 import ScreenShell from './../../components/ScreenShell';
+import EmptyScreen from './../../components/EmptyScreen';
 import CardAlert from './../../components/CardAlert';
 import BubbleMenu from './../../components/BubbleMenu';
 
-const emptyEventsImg = require('../../img/blankCalendar.png');
+const emptyEventsImg = require('../../img/calendar_empty.png');
 
 @observer
 export default class AlertScreen extends Component {
@@ -28,36 +26,17 @@ export default class AlertScreen extends Component {
     render() {
         const alerts = avisoStore.avisos || [];
         return (
-          <ScreenShell {...this.screenShellProps}>
+          <ScreenShell {...this.screenShellProps} emptyScreen={!alerts.length}>
             <BubbleMenu />
-            {
-                alerts.length ?
-
-                alerts.map(aviso => <CardAlert key={aviso.id} alert={aviso} />)
-
-                :
-
-                <View style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'stretch',
-                }}
-                >
-                  <Image
-                    source={emptyEventsImg}
-                    style={{
-                        width: 50,
-                        height: 50,
-                        margin: 15,
-                    }}
+            {alerts.length ? (
+                    alerts.map(aviso => <CardAlert key={aviso.id} alert={aviso} />)
+                ) : (
+                  <EmptyScreen
+                    title="Ops! Nenhum Aviso"
+                    text="Nenhum aviso cadastrado pelo colégio"
+                    image={emptyEventsImg}
                   />
-                  <Text>
-                      Nenhum aviso cadastrado pelo colégio.
-                    </Text>
-                </View>
-
-                }
+                )}
           </ScreenShell>
         );
     }
