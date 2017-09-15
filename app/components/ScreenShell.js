@@ -86,13 +86,21 @@ export default class ScreenShell extends Component {
      */
     renderRight() {
         const { rightText, rightPress, showRight, rightIcon } = this.props;
-        if (!showRight || !(rightText || rightIcon)) return <Right />;
-
+        const hitSlop = { top: 30, left: 30, bottom: 30, right: 30 };
         const onPress = rightPress || emptyFunc;
 
+        if (!showRight || !(rightText || rightIcon)) return <Right />;
+
         return (
-          <Right>
-            <Touchable onPress={onPress}>
+          <Right style={{
+              flex: 0,
+              paddingLeft: 20,
+          }}
+          >
+            <Touchable
+              onPress={onPress}
+              hitSlop={hitSlop}
+            >
               {!rightIcon ? <Text>{rightText}</Text> : <Icon name={rightIcon} />}
             </Touchable>
           </Right>
@@ -128,13 +136,22 @@ export default class ScreenShell extends Component {
         const backGround = emptyScreen ? { style: { backgroundColor: 'rgb(239, 239, 239)' } } : {};
         return (
           <Container>
-            <Header appHeader>
-              <Left>
+            <Header
+              appHeader
+            >
+              <Left style={{
+                  flex: 0,
+                  paddingRight: 20,
+              }}
+              >
                 <Touchable hitSlop={hitSlop} onPress={wrappedPress}>
                   <Icon name={leftIcon} />
                 </Touchable>
               </Left>
-              <Body>
+              <Body style={{
+                  flex: 1,
+              }}
+              >
                 <Title>{title}</Title>
               </Body>
               {this.renderRight()}

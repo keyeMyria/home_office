@@ -27,7 +27,10 @@ export default class CalendarWeek extends Component {
         if (!Array.isArray(items)) return null;
         return (
           <View>
-            <Separator>
+            <Separator style={{
+                paddingLeft: 30,
+            }}
+            >
               <Text>
                 {label}
               </Text>
