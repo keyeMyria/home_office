@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { computed, autorun } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { Alert } from 'react-native';
 
 import professorStore from '../../../stores/ProfessorStore';
 import escolaStore from '../../../stores/EscolaStore';
@@ -51,16 +52,19 @@ export default class ExamScreen extends Component {
         });
     };
 
+    missingInfoAlert = () => {
+        Alert.alert('Favor preencher todos os campos.');
+    };
+
     @computed
     get isComplete(): boolean {
-        // return !!(
-        //     this.prova.ano &&
-        //     this.prova.bimestre &&
-        //     this.prova.disciplina &&
-        //     this.prova.titulo &&
-        //     this.prova.valor
-        // );
-        return true;
+        return !!(
+            this.prova.ano &&
+            this.prova.bimestre &&
+            this.prova.disciplina &&
+            this.prova.titulo &&
+            this.prova.valor
+        );
     }
 
     renderPeriodo() {
@@ -82,9 +86,11 @@ export default class ExamScreen extends Component {
             leftPress: () => goBack(),
             navigate,
             title: 'Prova',
-            rightText: '> Datas',
-            rightPress: this.showNextScreen,
-            showRight: this.isComplete,
+            rightText: 'Datas',
+            showRight: true,
+            rightPress: this.isComplete
+                ? this.showNextScreen
+                : this.missingInfoAlert,
         };
     }
 

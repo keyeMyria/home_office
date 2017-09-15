@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
 import { computed } from 'mobx';
+import { Alert } from 'react-native';
 
 import _ from 'lodash';
 
@@ -27,16 +28,19 @@ export default class HomeworkScreen extends Component {
         navigate('SetDateForTarefa', { tarefa: this.trabalho, service: new TrabalhoService() });
     };
 
+    missingInfoAlert = () => {
+        Alert.alert('Favor preencher todos os campos.');
+    };
+
     @computed
     get isComplete(): boolean {
-        // return !!(
-        //     this.trabalho.ano &&
-        //     this.trabalho.bimestre &&
-        //     this.trabalho.disciplina &&
-        //     this.trabalho.titulo &&
-        //     this.trabalho.valor
-        // );
-        return true;
+        return !!(
+            this.trabalho.ano &&
+            this.trabalho.bimestre &&
+            this.trabalho.disciplina &&
+            this.trabalho.titulo &&
+            this.trabalho.valor
+        );
     }
 
     get screenShellProps(): * {
@@ -46,9 +50,11 @@ export default class HomeworkScreen extends Component {
             leftPress: () => goBack(),
             navigate,
             title: 'Trabalhos',
-            rightText: '> Datas',
-            rightPress: this.showNextScreen,
-            showRight: this.isComplete,
+            rightText: 'Datas',
+            showRight: true,
+            rightPress: this.isComplete
+                ? this.showNextScreen
+                : this.missingInfoAlert,
         };
     }
 

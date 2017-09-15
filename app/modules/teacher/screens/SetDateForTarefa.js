@@ -147,7 +147,7 @@ export default class SetDateForTarefa extends Component {
             leftIcon: 'arrow-back',
             leftPress: () => goBack(),
             navigate,
-            title: 'Selecionar datas',
+            title: 'Selecionar Datas',
             rightText: 'Salvar',
             rightPress: this.save.bind(this),
             showRight: this.isComplete,
