@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import { DrawerNavigator, TabNavigator } from 'react-navigation';
+import { DrawerNavigator, TabNavigator, StackNavigator } from 'react-navigation';
 
 // Components
 import AppNavigator from './AppNavigator';
@@ -17,9 +17,23 @@ import {
 
 import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../common_screens';
 
-const HomeRouter = TabNavigator(
+const EventosRouter = StackNavigator(
     {
         CalendarScreen: { screen: CalendarScreen },
+        HomeworkScreen: { screen: HomeworkScreen },
+        ProvasScreen: { screen: ProvasScreen },
+        ExerciciosScreen: { screen: ExerciciosScreen },
+        LancarNotasScreen: { screen: LancarNotasScreen },
+        SetDateForTarefa: { screen: SetDateForTarefa },
+    },
+    {
+        headerMode: 'none',
+    },
+);
+
+const HomeRouter = TabNavigator(
+    {
+        EventosRouter: { screen: EventosRouter },
         // ExerciseScreen: { screen: ExerciseScreen },
         AlertScreen: { screen: AlertScreen },
         // ExamScreen: { screen: ExamScreen },
@@ -34,14 +48,8 @@ export default DrawerNavigator(
     {
         HomeRouter: { screen: HomeRouter },
         ComunicadosScreen: { screen: ComunicadosScreen },
-        // SelectClassScreen: { screen: SelectClassScreen },
-        HomeworkScreen: { screen: HomeworkScreen },
-        ProvasScreen: { screen: ProvasScreen },
-        ExerciciosScreen: { screen: ExerciciosScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
-        LancarNotasScreen: { screen: LancarNotasScreen },
-        SetDateForTarefa: { screen: SetDateForTarefa },
         FaltasScreen: { screen: FaltasScreen },
         OcorrenciasScreen: { screen: OcorrenciasScreen },
     },
