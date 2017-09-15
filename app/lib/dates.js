@@ -18,3 +18,8 @@ export function isAfterNextWeek(date: Date | string): boolean {
 export function isBeforeThisWeek(date: Date | string): boolean {
     return moment(date).isBefore(moment().startOf('week'));
 }
+
+export function isBeforeNextWeek(date: Date | string): boolean {
+    const nextWeek = moment().add(1, 'weeks');
+    return moment(date).isBefore(nextWeek);
+}
