@@ -12,9 +12,10 @@ import {
     H3,
     // Item,
     // Input,
-    // Button,
+    Button,
     Text,
 } from 'native-base';
+import codePush from 'react-native-code-push';
 
 const Link = (props) => {
     const onPress = () => Linking.openURL(props.href);
@@ -26,6 +27,30 @@ const Link = (props) => {
 };
 
 export default class AnalysisScreen extends Component {
+    state = {
+        binVersion: '',
+        codePushVersion: '',
+    };
+
+    codePushPress() {
+        codePush.sync({
+            updateDialog: true,
+            installMode: codePush.InstallMode.IMMEDIATE,
+        });
+        console.warn('codepush');
+    }
+
+    componentWillMount() {
+        codePush.getUpdateMetadata(codePush.UpdateState.LATEST).then((pack) => {
+            if (pack) {
+                this.setState({
+                    binVersion: pack.appVersion,
+                    codePushVersion: pack.label,
+                });
+            }
+        });
+    }
+
     render() {
         const { navigate } = this.props.navigation;
 
@@ -45,7 +70,7 @@ export default class AnalysisScreen extends Component {
             <Content padder>
               <View style={{ marginBottom: 25 }}>
                 <H3>Envie email para:</H3>
-                <Link href="mailto:assistencia@educare.digital">
+                <Link href="mailto:contato@educare.digital">
                             assistencia@educare.digital
                         </Link>
               </View>
@@ -54,15 +79,12 @@ export default class AnalysisScreen extends Component {
                 <Link href="tel:0800-006-3050">0800-006-3050</Link>
               </View>
               <View style={{ marginBottom: 50 }}>
-                <Text>Versão: 1.2.1</Text>
+                <Text>Versão Binário: {this.state.binVersion}</Text>
+                <Text>Versão Código: {this.state.codePushVersion}</Text>
               </View>
-              {/* <Text>Nos envie mensagem aqui na plataforma</Text>
-              <Item style={styles.item}>
-                <Input placeholder="Digite aqui..." multiline style={styles.input} />
-              </Item>
-              <Button primary style={styles.button}>
-                <Text>Enviar mensagem</Text>
-              </Button> */}
+              <Button style={styles.button} onPress={this.codePushPress}>
+                <Text>Forçar Atualização</Text>
+              </Button>
             </Content>
           </Container>
         );

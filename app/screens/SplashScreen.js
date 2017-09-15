@@ -25,6 +25,7 @@ import BackButton from './../components/login/BackButton';
 import LoginForm from './../components/login/LoginForm';
 import FacebookCelularForm from './../components/login/FacebookCelularForm';
 import CreateUserForm from './../components/login/CreateUserForm';
+import CodePushStatus from './../components/login/CodePushStatus';
 
 import uiStore from './../stores/UiStore';
 import escolaStore from './../stores/EscolaStore';
@@ -36,7 +37,6 @@ export default class SplashScreen extends Component {
     disposerFinishInit: () => {};
     onFacebookError: () => {};
 
-
     state: {
         hasEscola: boolean,
         hasUser: boolean,
@@ -44,8 +44,10 @@ export default class SplashScreen extends Component {
         loginMode: ?string,
         keyboardIsVisible: boolean,
         needTelefone: boolean,
-        screen: 'SPLASH' | 'ESCOLA' | 'MODE' | 'LOGIN' | 'FACEBOOK' | 'NEW_USER',
+        screen: 'SPLASH' | 'ESCOLA' | 'MODE' | 'LOGIN' | 'FACEBOOK' | 'NEW_USER' | 'CODE_PUSH',
         loading: boolean,
+        codePushStatus: string,
+        codePushDownloadPercent: number,
     };
 
     constructor(props: any) {
@@ -53,7 +55,6 @@ export default class SplashScreen extends Component {
         this.state = {
             hasEscola: false,
             hasUser: false,
-            // finishInit: false,
             loginMode: null,
             keyboardIsVisible: false,
             needTelefone: false,
@@ -76,6 +77,15 @@ export default class SplashScreen extends Component {
         this.disposerFinishInit = autorun(() => {
             try {
                 const state = {};
+                // if (!uiStore.codePushUpToDate) {
+                if (!uiStore.codePushUpToDate) {
+                    this.setState({
+                        screen: 'CODE_PUSH',
+                        codePushStatus: uiStore.codePushStatus,
+                        codePushDownloadPercent: uiStore.codePushDownloadPercent,
+                    });
+                    return;
+                }
                 if (!uiStore.appFinishInit) return;
                 if (userStore.hasAuth) {
                     navigator.reset(userStore.homeScreen);
@@ -168,6 +178,15 @@ export default class SplashScreen extends Component {
         return <CreateUserForm onSubmit={onSubmit} />;
     }
 
+    renderCodePush() {
+        return (
+          <CodePushStatus
+            percent={this.state.codePushDownloadPercent}
+            status={this.state.codePushStatus}
+          />
+        );
+    }
+
     facebookWithTelefonePress = (telefone: string) => {
         userStore.loginFacebook(telefone);
         this.setState({ loading: true });
@@ -183,6 +202,7 @@ export default class SplashScreen extends Component {
         if (screen === 'LOGIN') return this.renderLoginForm();
         if (screen === 'FACEBOOK') return this.renderFacebookCelular();
         if (screen === 'NEW_USER') return this.renderNewUser();
+        if (screen === 'CODE_PUSH') return this.renderCodePush();
         return null;
     }
 
@@ -203,7 +223,10 @@ export default class SplashScreen extends Component {
     render() {
         const { keyboardIsVisible } = this.state;
         let logoStyles = styles.loginImage;
-        const backButtonVisible = this.state.screen !== 'ESCOLA' && this.state.screen !== 'SPLASH';
+        const backButtonVisible =
+            this.state.screen !== 'ESCOLA' &&
+            this.state.screen !== 'SPLASH' &&
+            this.state.screen !== 'CODE_PUSH';
 
         if (keyboardIsVisible) {
             logoStyles = Object.assign({}, logoStyles, {
@@ -224,24 +247,20 @@ export default class SplashScreen extends Component {
                 opacity: 0,
             });
         }
-        const RootView = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-        const rootViewProps = Platform.OS === 'ios' ? {
-            style: styles.loginView,
-            mode: 'height',
-        } : {
-            style: styles.loginView,
-        };
+        const RootView = Platform.select({ ios: KeyboardAvoidingView, android: View });
+        const rootViewProps = Platform.select({
+            ios: { style: styles.loginView, mode: 'height' },
+            android: { style: styles.loginView },
+        });
 
         return (
           <Image source={BG_IMG} style={styles.loginBackgroundImage}>
             <BackButton onPress={this.handleBackButton} visible={backButtonVisible} />
-            <RootView {...rootViewProps} >
+            <RootView {...rootViewProps}>
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
               <Thumbnail square source={ICON_IMG} style={logoStyles} />
               {!keyboardIsVisible && <View style={{ flex: 1 }} />}
-              <View style={viewStyle}>
-                {this.renderView()}
-              </View>
+              <View style={viewStyle}>{this.renderView()}</View>
             </RootView>
           </Image>
         );

@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { NativeModules, BackHandler, Platform } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { StyleProvider } from 'native-base';
+import codePush from 'react-native-code-push';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 
-import './stores';
+import rootStore from './stores';
 import navigator from './lib/navigator';
 import pushHandler from './lib/push';
 import logger from './lib/logger';
@@ -52,6 +53,15 @@ export default class EducareApp extends Component {
     setContainer(nav: any) {
         logger.assert(!!nav, 'Navigation container reference was not saved');
         navigator.setContainer(nav);
+    }
+
+    codePushStatusDidChange(status: *) {
+        rootStore.ui.codePushStatus = status;
+        rootStore.ui.codePushUpToDate = status === codePush.SyncStatus.UP_TO_DATE;
+    }
+
+    codePushDownloadDidProgress(progress: *) {
+        rootStore.ui.codePushDownloadPercent = progress.receivedBytes / progress.totalBytes;
     }
 
     render() {
