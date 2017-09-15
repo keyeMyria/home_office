@@ -91,7 +91,8 @@ export default class ScreenShell extends Component {
         return (
           <Right style={{
               flex: 0,
-              paddingLeft: 20,
+              paddingLeft: 15,
+              paddingRight: 10,
           }}
           >
             <Touchable

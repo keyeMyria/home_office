@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
+import { Alert } from 'react-native';
 
 import _ from 'lodash';
 import moment from 'moment';
@@ -29,10 +30,13 @@ export default class ExerciciosScreen extends Component {
         navigate('SetDateForTarefa', { tarefa: this.exercicio, service: new ExercicioService() });
     };
 
+    missingInfoAlert = () => {
+        Alert.alert('Favor preencher todos os campos.');
+    };
+
     @computed
     get isComplete(): boolean {
-        // return !!(this.exercicio.ano && this.exercicio.disciplina && this.exercicio.titulo);
-        return true;
+        return !!(this.exercicio.ano && this.exercicio.disciplina && this.exercicio.titulo);
     }
 
     get screenShellProps(): * {
@@ -43,8 +47,10 @@ export default class ExerciciosScreen extends Component {
             navigate,
             title: 'Exercícios',
             rightText: 'Datas',
-            rightPress: this.showNextScreen,
-            showRight: this.isComplete,
+            showRight: true,
+            rightPress: this.isComplete
+                ? this.showNextScreen
+                : this.missingInfoAlert,
         };
     }
 
