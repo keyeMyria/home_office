@@ -110,6 +110,26 @@ class UserStore extends BaseStore {
         return !!this.user && this.user.role === 'PROFESSOR';
     }
 
+    @computed
+    get isDiretor(): boolean {
+        return !!this.user && this.user.role === 'DIRETOR';
+    }
+
+    @computed
+    get isAluno(): boolean {
+        return !!this.user && this.user.role === 'ALUNO';
+    }
+
+    @computed
+    get isResponsavel(): boolean {
+        return !!this.user && this.user.role === 'RESPONSAVEL';
+    }
+
+    @computed
+    get canAddActivity(): boolean {
+        return this.isDiretor || this.isProfessor;
+    }
+
     /**
      * Set the user for the store
      */

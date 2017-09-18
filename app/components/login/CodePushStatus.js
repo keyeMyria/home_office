@@ -8,7 +8,7 @@ const statusToTextMap = {
     [codePush.SyncStatus.UP_TO_DATE]: 'Carrengando Aplicativo',
     [codePush.SyncStatus.DOWNLOADING_PACKAGE]: 'Carregando Dados',
     [codePush.SyncStatus.INSTALLING_UPDATE]: 'Salvando Dados',
-    [codePush.SyncStatus.UNKNOWN_ERROR]: 'Parece que você está sem internet',
+    [codePush.SyncStatus.UNKNOWN_ERROR]: 'Parece que você está sem Internet',
 };
 
 const maxProgressValue = Dimensions.get('window').width - 70;
@@ -67,5 +67,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#fff',
         marginTop: 20,
+        textAlign: 'center',
     },
 });

@@ -25,15 +25,18 @@ const HomeRouter = TabNavigator(
     },
 );
 
+const screenWidth = Dimensions.get('window').width;
+const drawerWidth = screenWidth > 376 ? 320 : screenWidth - 56;
+
 export default DrawerNavigator(
     {
-        HomeRouter: { screen: HomeRouter },
+        HomeRouter: { screen: HomeRouter, headerMode: 'float' },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
     },
     {
         headerMode: 'none',
-        drawerWidth: Dimensions.get('window').width * 0.85,
+        drawerWidth,
         contentComponent: AppNavigator,
     },
 );
