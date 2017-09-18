@@ -184,9 +184,10 @@ class PushHandler {
 
     onNotification = (notification: NotificationType) => {
         logger.log('[SNS] Notification received', notification);
+        if (!notification) return;
         if (notification.foreground) {
             const title = notification.title || 'Notificação';
-            const message = notification.message;
+            const message = notification.message || '';
             Alert.alert(title, message);
         }
     };
