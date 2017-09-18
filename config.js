@@ -38,9 +38,9 @@ export default {
     },
     AGENDA: {
         tipoColorMap: {
-            TRABALHO: '#808080',
-            PROVA: '#E57373',
-            EXERCICIO: '#64B5F6',
+            TRABALHO: '#A5D6A7',
+            PROVA: '#CE93D8',
+            EXERCICIO: '#80DEEA',
             LISTA_ONLINE: '#FFF176',
         },
         tipoAbbrMap: {
@@ -52,7 +52,7 @@ export default {
         tipoNameMap: {
             TRABALHO: 'Trabalho',
             PROVA: 'Prova',
-            EXERCICIO: 'Exercício',
+            EXERCICIO: 'Dever',
             LISTA_ONLINE: 'Lista Online',
         },
     },
