@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Modal, View, Alert, ScrollView } from 'react-native';
+import { Modal, View, Alert, ScrollView, LayoutAnimation, Platform } from 'react-native';
 import { H3, Label, Text, Button, Icon } from 'native-base';
 
 import { computed, toJS } from 'mobx';
@@ -52,14 +52,18 @@ export default class CalendarModal extends Component {
         return [];
     }
 
+    componentWillReact() {
+        if (Platform.os === 'ios') {
+            LayoutAnimation.easeInEaseOut();
+        }
+    }
+
     renderHeader() {
         if (this.loading) return null;
 
         return (
           <View style={localStyles.modalHeader}>
-            <H3>
-              {_.get(this.event, 'tarefa.titulo') || '<Título>'}
-            </H3>
+            <H3>{_.get(this.event, 'tarefa.titulo') || '<Título>'}</H3>
           </View>
         );
     }
@@ -72,9 +76,7 @@ export default class CalendarModal extends Component {
         return (
           <View style={localStyles.modalItens}>
             <Label>{`${label}: `}</Label>
-            <Text>
-              {`${value}`}
-            </Text>
+            <Text>{`${value}`}</Text>
           </View>
         );
     }
@@ -85,14 +87,12 @@ export default class CalendarModal extends Component {
           <View style={localStyles.topicsView}>
             <Label>Tópicos: </Label>
             <View style={{ marginLeft: 25, alignSelf: 'stretch' }}>
-              {this.topics.map(t =>
-                (<View key={t.id} style={{ flexDirection: 'row', marginTop: 10 }}>
+              {this.topics.map(t => (
+                <View key={t.id} style={{ flexDirection: 'row', marginTop: 10 }}>
                   <Icon name="content-paste" style={{ fontSize: 20 }} />
-                  <Text style={localStyles.topicText}>
-                    {t.titulo}
-                  </Text>
-                </View>),
-                    )}
+                  <Text style={localStyles.topicText}>{t.titulo}</Text>
+                </View>
+                    ))}
             </View>
           </View>
         );
@@ -101,9 +101,7 @@ export default class CalendarModal extends Component {
     renderButton(label: string, callback: any => void, bordered: boolean = true) {
         return (
           <Button bordered={bordered} block onPress={callback} style={localStyles.button}>
-            <Text>
-              {label}
-            </Text>
+            <Text>{label}</Text>
           </Button>
         );
     }
@@ -111,19 +109,19 @@ export default class CalendarModal extends Component {
     renderContent() {
         const { tarefa } = eventoStore.selectedEvent || {};
         const eventType = tarefa ? tarefa.tipo : '';
-        const dateString = eventType === 'EXERCICIO' ||
-            eventType === 'TRABALHO' ? 'Entrega' : 'Data';
+        const dateString =
+            eventType === 'EXERCICIO' || eventType === 'TRABALHO' ? 'Entrega' : 'Data';
 
         return (
           <LoadingModal loading={this.loading}>
-            <View style={localStyles.modalContent}>
+            <ScrollView style={localStyles.modalContent}>
               {this.renderItem(`${dateString}`, 'event.dataFormatada')}
               {this.renderItem('Turma', 'event.turmaAno')}
               {this.renderItem('Nota', 'event.tarefa.valor', ' Pontos')}
               {this.renderItem('Tempo Aprox.', 'event.duracaoTextModal')}
               {this.renderItem('Detalhes', 'event.tarefa.detalhes')}
               {this.renderTopics()}
-            </View>
+            </ScrollView>
           </LoadingModal>
         );
     }
@@ -182,12 +180,13 @@ export default class CalendarModal extends Component {
 
         return (
           <View style={localStyles.modalFooter}>
-            {isProfessor &&
+            {isProfessor && (
             <View style={localStyles.modalFooterButtonsContainer}>
               {this.renderButton('Excluir', this.deleteEvent.bind(this))}
               {/* {this.renderButton('Editar', this.editEvent.bind(this))}  */}
               {this.renderButton('Lançar', this.fillEventInformation.bind(this))}
-            </View>}
+            </View>
+                )}
             <View style={localStyles.modalFooterButtonsContainer}>
               {/* {isProfessor &&
                         this.renderButton('Lançar', this.fillEventInformation.bind(this))} */}
@@ -208,11 +207,11 @@ export default class CalendarModal extends Component {
         return (
           <Modal {...modalOptions}>
             <View style={localStyles.modalBackdrop}>
-              <ScrollView contentContainerStyle={localStyles.modalContainer}>
+              <View style={localStyles.modalContainer}>
                 {this.renderHeader()}
                 {this.renderContent()}
                 {this.renderFooter()}
-              </ScrollView>
+              </View>
             </View>
           </Modal>
         );
@@ -230,12 +229,11 @@ const localStyles = {
         paddingBottom: 20,
     },
     modalContainer: {
-        alignSelf: 'stretch',
         get marginHorizontal() {
             return 20;
         },
         padding: 20,
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         minHeight: 100,
     },
     modalHeader: {
@@ -249,6 +247,7 @@ const localStyles = {
         textAlign: 'center',
     },
     modalContent: {
+        maxHeight: 250,
     },
     modalFooter: {
         paddingTop: 10,
