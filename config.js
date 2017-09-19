@@ -38,15 +38,21 @@ export default {
     },
     AGENDA: {
         tipoColorMap: {
-            TRABALHO: '#A5D6A7',
-            PROVA: '#CE93D8',
-            EXERCICIO: '#80DEEA',
+            TRABALHO: '#74D108',
+            PROVA: 'rgb(231,76,60)',
+            EXERCICIO: '#673AB7',
             LISTA_ONLINE: '#FFF176',
+        },
+        tipoTextColorMap: {
+            TRABALHO: 'rgba(0, 0, 0, 0.75)',
+            PROVA: 'rgba(255, 255, 255, .95)',
+            EXERCICIO: 'rgba(255, 255, 255, .95)',
+            LISTA_ONLINE: 'rgba(255, 255, 255, .95)',
         },
         tipoAbbrMap: {
             TRABALHO: 'T',
             PROVA: 'P',
-            EXERCICIO: 'E',
+            EXERCICIO: 'D',
             LISTA_ONLINE: 'L',
         },
         tipoNameMap: {

@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { ListItem, Grid, Row, Col, Text } from 'native-base';
 import { observer } from 'mobx-react/native';
 
+import CONFIG from './../../../config';
 import rootStore from './../../stores';
 
 import type { Evento } from '../../models';
@@ -27,26 +28,29 @@ export default class CalendarItem extends Component {
             ? `${item.turmaAno} - ${item.infoText}`
             : item.infoText;
 
+        const textColor = CONFIG.AGENDA.tipoTextColorMap[item.tarefa.tipo];
+
         return (
           <ListItem onPress={() => onPress(item)}>
-            <Grid style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'stretch',
-            }}
+            <Grid
+              style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'stretch',
+              }}
             >
               <Col style={styles.tipoAbbrCol(item.tarefa.color)}>
                 <Row>
-                  <Text style={styles.gridRowText}>{item.tarefa.abbr}</Text>
+                  <Text style={{ ...styles.gridRowText, color: textColor }}>
+                    {item.tarefa.abbr}
+                  </Text>
                 </Row>
               </Col>
               <Col style={styles.data}>
                 <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
                   {item.dayOfWeek}
                 </Text>
-                <Text style={styles.gridRowText}>
-                  {item.fim.format('DD/MMM')}
-                </Text>
+                <Text style={styles.gridRowText}>{item.fim.format('DD/MMM')}</Text>
               </Col>
               <Col style={styles.infoText}>
                 <View style={{ alignItems: 'flex-start' }}>
