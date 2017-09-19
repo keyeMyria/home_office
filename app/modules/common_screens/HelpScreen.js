@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { Linking, View, Platform, AsyncStorage, Alert, Dimensions } from 'react-native';
-import { Text, List, ListItem, Left, Body, Icon } from 'native-base';
+import { Text, List, ListItem, Left, Body } from 'native-base';
 import codePush from 'react-native-code-push';
 import _ from 'lodash';
 
 import ScreenShell from './../../components/ScreenShell';
 import logger from './../../lib/logger';
 
+// eslint-disable-next-line
+import IconFA from 'react-native-vector-icons/FontAwesome';
+
 const CONTATO_INFO = [
     {
-        icon: 'mail',
+        icon: 'envelope',
         display: 'contato@educare.digital',
         url: 'mailto:contato@educare.digital',
         helpText: 'Enviar e-mail',
@@ -18,17 +21,24 @@ const CONTATO_INFO = [
         icon: 'phone',
         display: '0800-006-3050',
         url: 'tel:08000063050',
-        helpText: 'Ligue para nosso 0800',
+        helpText: 'Iniciar Chamada',
     },
     {
-        icon: 'message',
+        icon: 'whatsapp',
         display: '+55 31 7574-2891',
         url: 'https://api.whatsapp.com/send?phone=553175742891',
-        helpText: 'Entre em contato via whatsapp',
+        helpText: 'Abrir no WhatsApp',
     },
 ];
 
-const DEVICE_SIZE = `${Dimensions.get('window').width}x${Dimensions.get('window').height} (dp)`;
+function humanFileSize(size) {
+    const i = Math.floor(Math.log(size) / Math.log(1024));
+    return `${(size / (1024 ** i)).toFixed(2) * 1} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`;
+}
+
+const DEVICE_SIZE = `${Dimensions.get('window').width.toFixed(0)}x${Dimensions.get(
+    'window',
+).height.toFixed(0)} (dp)`;
 
 export default class AnalysisScreen extends Component {
     state = {
@@ -82,7 +92,7 @@ export default class AnalysisScreen extends Component {
                     { label: 'Descrição', value: _.get(pack, 'description') || 'N/A' },
                     { label: 'Key Deploy', value: _.get(pack, 'deploymentKey') || 'N/A' },
                     { label: 'Hash do Pacote', value: _.get(pack, 'packageHash') || 'N/A' },
-                    { label: 'Tamanho do Pacote', value: _.get(pack, 'packageSize') || 'N/A' },
+                    { label: 'Tamanho do Pacote', value: humanFileSize(_.get(pack, 'packageSize')) || 'N/A' },
                 ],
             );
             this.setState({ supportInfo });
@@ -93,7 +103,7 @@ export default class AnalysisScreen extends Component {
         return (
           <ListItem icon onPress={_.partial(this.openLink, item.url)} key={`contato-${index}`}>
             <Left>
-              <Icon name={item.icon} />
+              <IconFA name={item.icon} size={24} style={{ width: 24, textAlign: 'center' }} />
             </Left>
             <Body>
               <Text>{item.display}</Text>
