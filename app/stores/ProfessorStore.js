@@ -18,6 +18,7 @@ import avisoStore from './AvisoStore';
 
 class ProfessorStore extends BaseStore {
     _service = new ProfessorService();
+    isDiretor = false;
     @observable id: number;
     @observable loading = false;
     @observable professor: ?Professor;
@@ -60,12 +61,11 @@ class ProfessorStore extends BaseStore {
         try {
             this.id = id;
             this.loading = true;
-            // const professor = await this._service.one(this.id).get();
-            // this.professor = new Professor(professor);
+            this.isDiretor = true;
             eventoStore.fecthEventosDiretor(id);
             avisoStore.fecthAvisosDiretor(id);
-            await this.fetchAnos(id, true);
-            await this.fetchDisciplinas(id, true);
+            await this.fetchAnos(id);
+            await this.fetchDisciplinas(id);
             this.loading = false;
         } catch (error) {
             logger.log(error);
@@ -74,9 +74,9 @@ class ProfessorStore extends BaseStore {
         return this;
     }
 
-    async fetchAnos(id: number, diretor = false) {
+    async fetchAnos(id: number) {
         let response;
-        if (diretor) {
+        if (this.isDiretor) {
             response = await new AnoService().get();
         } else {
             response = await new AnoService().findByProfessor(id);
@@ -85,9 +85,9 @@ class ProfessorStore extends BaseStore {
         this.anosMap.replace(anos);
     }
 
-    async fetchDisciplinas(id: number, diretor = false) {
+    async fetchDisciplinas(id: number) {
         let response;
-        if (diretor) {
+        if (this.isDiretor) {
             response = await new DisciplinaService().get();
         } else {
             response = await new DisciplinaService().findByProfessor(id);
@@ -99,11 +99,11 @@ class ProfessorStore extends BaseStore {
         this.disciplinasMap.replace(disciplinas);
     }
 
-    async fetchTurmas(ano: number, disciplina: number, diretor = false) {
+    async fetchTurmas(ano: number, disciplina: number) {
         const service = new TurmaService();
         let response;
-        if (diretor) {
-            response = service.get();
+        if (this.isDiretor) {
+            response = await service.findByAno(ano);
         } else {
             const professor = this.id;
             response = await service.findByAnoAndProfessorAndDisciplina(ano, professor, disciplina);

@@ -68,7 +68,12 @@ export default class OcorrenciaScreen extends Component {
         const ano = this.store.ano;
         if (!ano) return;
         const service = new TurmaService();
-        const result = await service.findByAnoAndProfessor(ano.pk, professorStore.id);
+        let result;
+        if (professorStore.isDiretor) {
+            result = await service.findByAno(ano.pk);
+        } else {
+            result = await service.findByAnoAndProfessor(ano.pk, professorStore.id);
+        }
         const turmas = Turma.fromArray(result.turmas).map(t => [t.pk, t]);
         this.turmasMap.replace(turmas);
     }

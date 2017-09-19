@@ -20,7 +20,7 @@ export {
     userStore,
 };
 
-class RootStore {
+export class RootStore {
     aluno = alunoStore.setRootStore(this);
     aviso = avisoStore.setRootStore(this);
     escola = escolaStore.setRootStore(this);

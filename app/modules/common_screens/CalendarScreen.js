@@ -39,11 +39,6 @@ export default class CalendarScreen extends Component {
         return rootStore.eventos.eventos;
     }
 
-    @computed
-    get isProfessor(): boolean {
-        return rootStore.user.isProfessor;
-    }
-
     renderWeek(titulo: string, filter: Date => boolean) {
         const items = this.eventos.filter(ev => filter(ev.fim));
         if (!items.length) return null;
@@ -57,7 +52,7 @@ export default class CalendarScreen extends Component {
             title: 'Agenda',
             padder: false,
             loading: rootStore.eventos.loading && !rootStore.eventos.eventos.length,
-            fab: rootStore.user.isProfessor ? Fab : null,
+            fab: rootStore.user.canAddActivity ? Fab : null,
             refreshControl: {
                 refreshing: rootStore.eventos.loading,
                 onRefresh: () => rootStore.eventos.refresh(),
@@ -108,7 +103,7 @@ function Fab({ navigate }) {
     const iconStyle = { color: '#fff', fontSize: 24 };
 
     return (
-      <ActionButton buttonColor="rgba(231,76,60,1)">
+      <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(255,255,255,0.75)">
         <ActionButton.Item {...items[0]}>
           <Icon name="assignment-turned-in" style={iconStyle} />
         </ActionButton.Item>
