@@ -1,7 +1,7 @@
 image: node:8
 pipelines:
-  branches:
-    master:
+  tags:
+    ios-*:
       - step:
           caches:
             - node
@@ -9,5 +9,13 @@ pipelines:
             - yarn install
             - yarn global add code-push-cli
             - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
-            - code-push release-react EducareBox-iOS ios
-            - code-push release-react EducareBox-Android android
+            - code-push release-react EducareBox-iOS ios --targetBinaryVersion 1.x.x --description `git describe --abbrev=0 --tags`
+    android-*:
+      - step:
+          caches:
+            - node
+          script:
+            - yarn install
+            - yarn global add code-push-cli
+            - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
+            - code-push release-react EducareBox-Android android --targetBinaryVersion 1.x.x --description `git describe --abbrev=0 --tags`
