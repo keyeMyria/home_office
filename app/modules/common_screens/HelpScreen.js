@@ -33,7 +33,8 @@ const CONTATO_INFO = [
 
 function humanFileSize(size) {
     const i = Math.floor(Math.log(size) / Math.log(1024));
-    return `${(size / (1024 ** i)).toFixed(2) * 1} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`;
+    // eslint-disable-next-line no-restricted-properties
+    return `${(size / Math.pow(1024, i)).toFixed(2) * 1} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`;
 }
 
 const DEVICE_SIZE = `${Dimensions.get('window').width.toFixed(0)}x${Dimensions.get(
