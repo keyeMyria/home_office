@@ -5,7 +5,7 @@ import DrawerMenu from '../../components/DrawerMenu';
 export default class AppNavigator extends Component {
     get items() {
         return [
-            { title: 'Visão Geral', icon: 'home', route: 'HomeRouter' },
+            { title: 'Agenda', icon: 'home', route: 'HomeRouter' },
             // { title: 'Mensagens', icon: 'question-answer', route: 'MessageScreen' },
             // { title: 'Enviar feedback', icon: 'announcement', route: 'FeedBackScreen' },
             { title: 'Ajuda', icon: 'help', route: 'HelpScreen' },
