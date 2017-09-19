@@ -3,8 +3,9 @@ import { AsyncStorage } from 'react-native';
 import jwtDecode from 'jwt-decode';
 import EventEmitter from 'react-native-eventemitter';
 import axios from 'axios';
+import codePush from 'react-native-code-push';
 
-import navigator from './navigator';
+// import navigator from './navigator';
 import httpClient from './HttpClient';
 import facebookLogin from './facebookLogin';
 import logger from './logger';
@@ -257,20 +258,21 @@ class AppAuth {
     }
 
     async logout() {
-        AsyncStorage.clear();
-        facebookLogin.logout();
-        navigator.reset('SplashScreen');
-        try {
-            const id = this.decodeToken && this.decodeToken.id;
-            if (id) {
-                await httpClient.patch(`usuarios/${id}`, { endpointArn: null });
-            }
-            EventEmitter.emit('auth.logout', { oldToken: this.token });
-        } catch (error) {
-            logger.warn('[AUTH] LOGOUT ERROR', error);
-            logger.warn('Não foi possivél remover o arn do usuário');
-        }
+        await AsyncStorage.clear();
+        await facebookLogin.logout();
+        // navigator.reset('SplashScreen');
         httpClient.clearToken();
+        codePush.restartApp();
+        // try {
+        //     const id = this.decodeToken && this.decodeToken.id;
+        //     if (id) {
+        //         await httpClient.patch(`usuarios/${id}`, { endpointArn: null });
+        //     }
+        //     EventEmitter.emit('auth.logout', { oldToken: this.token });
+        // } catch (error) {
+        //     logger.warn('[AUTH] LOGOUT ERROR', error);
+        //     logger.warn('Não foi possivél remover o arn do usuário');
+        // }
     }
 
     async createNewUser(data: { celular: string, email: string, senha: string }) {
