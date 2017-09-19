@@ -11,5 +11,15 @@
     "eslint.autoFixOnSave": true,
     "files.associations": {
         "*.js": "javascriptreact"
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/build": true,
+        "ios/Frameworks": true,
+        "flow-typed": true,
+        "android/.gradle": true,
+        "android/gradle": true,
+        "*.map": true,
+        "*.ttf": true
     }
 }
