@@ -121,7 +121,9 @@ export default class SplashScreen extends Component {
     }
 
     componentWillUpdate() {
-        LayoutAnimation.easeInEaseOut();
+        if (Platform.OS === 'ios') {
+            LayoutAnimation.easeInEaseOut();
+        }
     }
 
     shouldComponentUpdate(newProps: any, newState: any) {

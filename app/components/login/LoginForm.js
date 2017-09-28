@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, Keyboard, LayoutAnimation, ActivityIndicator } from 'react-native';
+import { View, Keyboard, LayoutAnimation, ActivityIndicator, Platform } from 'react-native';
 import { Form, Item, Input, Button, Text, ActionSheet, Icon } from 'native-base';
 
 import { observable, autorun } from 'mobx';
@@ -40,7 +40,9 @@ export default class LoginScreen extends Component {
     }
 
     componentWillUpdate() {
-        LayoutAnimation.easeInEaseOut();
+        if (Platform.OS === 'ios') {
+            LayoutAnimation.easeInEaseOut();
+        }
     }
 
     /**
