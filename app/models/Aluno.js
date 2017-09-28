@@ -69,6 +69,22 @@ export default class Aluno extends models.Model {
     // Used for selecting alunos in StudentPicker Component
     @observable _selected: boolean = false;
 
+    static findByAno(id: number) {
+        return this.search({ id }, 'findByAno');
+    }
+
+    static findByTurma(id: number) {
+        return this.search({ id }, 'findByTurma');
+    }
+
+    static findByEvento(id: number) {
+        return this.search({ id }, 'findByEvento');
+    }
+
+    static findByProfessor(id: number) {
+        return this.search({ id }, 'findByProfessor');
+    }
+
     get imageSource(): Object {
         return avatar(this.imagem);
     }

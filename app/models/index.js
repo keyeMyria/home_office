@@ -27,8 +27,10 @@ import Topico from './Topico';
 import Trabalho from './Trabalho';
 import Turma from './Turma';
 import Usuario from './Usuario';
+import Aula from './Aula';
 
 export {
+    Aula,
     Alternativa,
     Aluno,
     Ano,

@@ -21,6 +21,31 @@ export default class Turma extends models.Model {
     responsabilidades: Array<Responsabilidade>;
     alunos: Array<Aluno>;
 
+    static findByAnoAndProfessorAndDisciplina(ano: number, professor: number, disciplina: number) {
+        return this.search({ ano, professor, disciplina }, 'findByAnoAndProfessorAndDisciplina');
+    }
+
+    static findByProfessor(id: number) {
+        return this.search({ id }, 'findByProfessor');
+    }
+
+    static findByAnoAndProfessor(ano: number, professor: number) {
+        return this.search({ ano, professor }, 'findByAnoAndProfessor');
+    }
+
+    static findByAno(id: number) {
+        return this.search({ id }, 'findByAno');
+    }
+
+    static findByAnoAndCurrentUser(ano: number) {
+        const user = global.currentUser;
+        if (user.role === 'PROFESSOR') {
+            return this.findByAnoAndProfessor(ano, user.id);
+        }
+        return this.findByAno(ano);
+    }
+
+
     toString(): string {
         return this.titulo || '';
     }
