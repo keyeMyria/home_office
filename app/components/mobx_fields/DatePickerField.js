@@ -50,7 +50,7 @@ export default class DatePickerField extends Component {
      */
     updateValue = (val: string) => {
         const { store, storeKey } = this.props;
-        _.set(store, storeKey, val);
+        _.set(store, storeKey, val && moment(val));
     };
 
     /**
@@ -119,7 +119,10 @@ const styles = {
         marginTop: 5,
         paddingHorizontal: 15,
         height: 46,
-        borderWidth: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
         backgroundColor: '#FFFFFF',
         borderColor: '#E0E0E0',
         borderRadius: 2,

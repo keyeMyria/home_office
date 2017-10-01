@@ -1,16 +1,17 @@
 // @flow
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Picker, Text } from 'native-base';
+import { Picker, Item, Label } from 'native-base';
 import type { ObservableMap } from 'mobx';
 import { observer } from 'mobx-react/native';
 import _ from 'lodash';
+import type BaseModel from './../../lib/models/BaseModel';
 
 @observer
 export default class ForeignKeyField extends Component {
     props: {
         label: string,
-        items: ObservableMap<*>,
+        items: ObservableMap<BaseModel>,
         store: *,
         placeholder: string,
         storeKey: string,
@@ -56,13 +57,17 @@ export default class ForeignKeyField extends Component {
     };
 
     renderPickerItems() {
-        const { items, emptyLabel } = this.props;
+        const { items, placeholder, emptyLabel } = this.props;
         const entries = items
             .entries()
             .map(([key, model]) => <Picker.Item key={key} value={key} label={model.toString()} />);
 
         if (entries.length && emptyLabel) {
             return [<Picker.Item key="nil" value="nil" label={emptyLabel} />].concat(...entries);
+        }
+
+        if (placeholder && entries.length && !emptyLabel) {
+            return [<Picker.Item key="nil" value="nil" label={placeholder} />].concat(...entries);
         }
 
         return entries;
@@ -72,11 +77,16 @@ export default class ForeignKeyField extends Component {
         const { label } = this.props;
 
         return (
-          <View style={styles.container}>
-            <Text style={styles.itemLabel}>{label}</Text>
+          <View>
+            <Item stackedLabel style={styles.itemLabel}>
+              <Label>
+                {label}
+              </Label>
+            </Item>
             <Picker
               selectedValue={this.getValueFromStore()}
               onValueChange={this.updateValue}
+              style={styles.picker}
               {...this.getPickerProps()}
             >
               {this.renderPickerItems()}
@@ -113,23 +123,15 @@ const styles = {
         backgroundColor: 'white',
     },
     itemLabel: {
-        color: '#999',
-    },
-    container: {
-        flex: 1,
-        borderWidth: 1,
-        justifyContent: 'space-between',
-        borderColor: '#E0E0E0',
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: 2,
-        backgroundColor: '#fff',
-        marginTop: 7,
-        paddingLeft: 16,
+        borderBottomWidth: 0,
     },
     picker: {
         flex: 1,
-        borderWidth: 0,
-        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        alignSelf: 'stretch',
+        borderRadius: 2,
+        backgroundColor: 'white',
+        marginTop: 7,
     },
 };

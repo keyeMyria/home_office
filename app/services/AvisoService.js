@@ -14,4 +14,8 @@ export default class AvisoService extends CollectionService {
     findByProfessor(id: number, page: number = 0) {
         return super.search({ id, page }, 'findByProfessor');
     }
+
+    findByDiretor() {
+        return super.search({}, 'findByDiretor');
+    }
 }

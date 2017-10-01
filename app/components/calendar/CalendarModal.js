@@ -176,7 +176,7 @@ export default class CalendarModal extends Component {
     renderFooter() {
         if (this.loading) return null;
         const role = userStore.role || 'ALUNO';
-        const isProfessor = role === 'PROFESSOR';
+        const isProfessor = role === 'PROFESSOR' || role === 'DIRETOR';
 
         return (
           <View style={localStyles.modalFooter}>

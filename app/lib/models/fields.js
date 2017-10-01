@@ -19,6 +19,10 @@ export function Array() {
     return (value: *) => value;
 }
 
+export function ObjectType() {
+    return (value: *) => value;
+}
+
 export function ForeignKey(Type: *) {
     if (!Type) {
         throw Error('models.ForeignKey, deve receber uma string ou Classe');

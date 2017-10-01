@@ -28,6 +28,7 @@ class UserStore extends BaseStore {
         EventEmitter.on('auth.authenticated', ({ payload }) => {
             this.setUser(payload);
             this.loading = false;
+            global.currentUser = payload;
         });
 
         EventEmitter.on('auth.invalid_token', () => {

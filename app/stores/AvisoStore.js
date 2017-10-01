@@ -57,10 +57,10 @@ class AvisoStore extends BaseStore {
         }
     }
 
-    async fecthAvisosDiretor(professorId: number) {
+    async fecthAvisosDiretor() {
         try {
             this.loading = true;
-            const avisos = await this._service.findByProfessor(professorId);
+            const avisos = await this._service.findByDiretor();
             this.setAvisos(avisos);
         } catch (error) {
             this.error = true;

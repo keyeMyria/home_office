@@ -19,7 +19,7 @@ import { observer } from 'mobx-react/native';
 
 import type { Aluno } from './../models';
 
-const StudentItem = observer((props: { aluno: Aluno }) => {
+const StudentItem: React$Component<{ aluno: Aluno }, *, *> = observer((props: { aluno: Aluno }) => {
     const { aluno } = props;
     const onPress = () => {
         aluno._selected = !aluno._selected;
@@ -51,10 +51,12 @@ export default class StudentPicker extends Component {
         alunos: Array<Aluno>,
         /** If True shows a selectAll button */
         selectAll?: boolean,
+        StudentItemComponent: React$Component<{ aluno: Aluno }, any, any>,
     };
 
     static defaultProps = {
         selectAll: false,
+        StudentItemComponent: StudentItem,
     };
 
     selectAll = () => {
@@ -65,11 +67,12 @@ export default class StudentPicker extends Component {
     };
 
     render() {
-        const { alunos } = this.props;
-        const mapFunc = aluno => <StudentItem key={aluno.pk} aluno={aluno} />;
+        const { alunos, StudentItemComponent } = this.props;
+        // $FlowFixMe
+        const mapFunc = aluno => <StudentItemComponent key={aluno.pk} aluno={aluno} />;
 
         return (
-          <View>
+          <View style={{ marginBottom: 48 }}>
             <Item stackedLabel style={{ flexDirection: 'row', marginTop: 25 }}>
               <Label>Selecione os Alunos:</Label>
               <View style={{ flex: 1 }} />

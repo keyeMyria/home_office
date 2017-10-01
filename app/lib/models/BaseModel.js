@@ -1,6 +1,7 @@
 // @flow
 import { observable } from 'mobx';
 import CONFIG from './../../../config';
+import { CollectionService } from './../services';
 
 const ModelSymbol = '@@BaseModelInstance'; // JsCore does not support true Symbol
 
@@ -15,6 +16,18 @@ export default class BaseModel {
 
     static fromArray(data: Array<Object>): Array<this> {
         return data.map(d => new this(d));
+    }
+
+    static search(params: { [string]: any }, funcName: string) {
+        return new CollectionService(this.collectionName)
+            .search(params, funcName)
+            .then(results => this.fromArray(results[this.collectionName]));
+    }
+
+    static all() {
+        return new CollectionService(this.collectionName)
+        .get()
+        .then(results => this.fromArray(results[this.collectionName]));
     }
 
     // eslint-disable-next-line consistent-return
@@ -73,4 +86,5 @@ export default class BaseModel {
         }
         return null;
     }
+
 }
