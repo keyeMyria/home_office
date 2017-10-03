@@ -3,8 +3,11 @@ import codePush from 'react-native-code-push';
 
 import AppRouter from './app/AppRouter';
 
+import CONFIG from './config';
+
 const EducareApp = codePush({
     installMode: codePush.InstallMode.IMMEDIATE,
+    deploymentKey: CONFIG.CODE_PUSH.androidKey,
 })(AppRouter);
 
 AppRegistry.registerComponent('educare', () => EducareApp);

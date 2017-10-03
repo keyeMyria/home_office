@@ -24,6 +24,25 @@ export default {
         },
         SENDER_ID: '447786875542',
     },
+    CODE_PUSH: {
+        isDev: false,
+        IOS: {
+            DEV: 'fcBnEn6lTDi0x_vcCd8wc9ESOdDn5d3fb5cc-f2fc-4c4f-8353-0a5e5213f3e3',
+            PROD: 'PJxXYvB0EUGhAOr6xAmcybgpsUxX5d3fb5cc-f2fc-4c4f-8353-0a5e5213f3e3',
+        },
+        ANDROID: {
+            DEV: 'g2Lk-5jTM7g6_zvqOE9ERvSpO7cJ5d3fb5cc-f2fc-4c4f-8353-0a5e5213f3e3',
+            PROD: 'E4Uk9azyqXw3CtXwJAWh0JerD_Is5d3fb5cc-f2fc-4c4f-8353-0a5e5213f3e3',
+        },
+        get iosKey() {
+            if (this.isDev || __DEV__) return this.IOS.DEV;
+            return this.IOS.PROD;
+        },
+        get androidKey() {
+            if (this.isDev || __DEV__) return this.ANDROID.DEV;
+            return this.ANDROID.PROD;
+        },
+    },
     LOGIN: {},
     API: {
         DOMAIN: 'https://escola.educarebox.com/',

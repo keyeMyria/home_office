@@ -4,6 +4,7 @@ import { Text, List, ListItem, Left, Body } from 'native-base';
 import codePush from 'react-native-code-push';
 import _ from 'lodash';
 
+import CONFIG from './../../../config';
 import ScreenShell from './../../components/ScreenShell';
 import logger from './../../lib/logger';
 
@@ -67,6 +68,22 @@ export default class AnalysisScreen extends Component {
         });
     }
 
+    codePushChangeDeploy() {
+        codePush.sync({
+            updateDialog: {
+                title: 'Versão de Testes',
+                optionalIgnoreButtonLabel: 'Cancelar',
+                optionalInstallButtonLabel: 'Continuar',
+                optionalUpdateMessage: 'Se continuar você ira mudar para a versão de testes',
+            },
+            installMode: codePush.InstallMode.IMMEDIATE,
+            deploymentKey: Platform.select({
+                ios: CONFIG.CODE_PUSH.IOS.DEV,
+                android: CONFIG.CODE_PUSH.ANDROID.DEV,
+            }),
+        });
+    }
+
     clearStorageAndRestart() {
         Alert.alert(
             'Tem Certeza?',
@@ -93,7 +110,10 @@ export default class AnalysisScreen extends Component {
                     { label: 'Descrição', value: _.get(pack, 'description') || 'N/A' },
                     { label: 'Key Deploy', value: _.get(pack, 'deploymentKey') || 'N/A' },
                     { label: 'Hash do Pacote', value: _.get(pack, 'packageHash') || 'N/A' },
-                    { label: 'Tamanho do Pacote', value: humanFileSize(_.get(pack, 'packageSize')) || 'N/A' },
+                    {
+                        label: 'Tamanho do Pacote',
+                        value: humanFileSize(_.get(pack, 'packageSize')) || 'N/A',
+                    },
                 ],
             );
             this.setState({ supportInfo });
@@ -143,7 +163,7 @@ export default class AnalysisScreen extends Component {
               <ListItem itemDivider>
                 <Text>Utilitários</Text>
               </ListItem>
-              <ListItem onPress={this.codePushPress}>
+              <ListItem onPress={this.codePushPress} onLongPress={this.codePushChangeDeploy}>
                 <Text>Forçar Atualização</Text>
               </ListItem>
               <ListItem onPress={this.clearStorageAndRestart}>
