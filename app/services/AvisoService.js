@@ -15,12 +15,7 @@ export default class AvisoService extends CollectionService {
         return super.search({ id, page }, 'findByProfessor');
     }
 
-<<<<<<< HEAD
     findByDiretor(page: number = 0) {
         return super.search({ page }, 'findByDiretor');
-=======
-    findByDiretor() {
-        return super.search({}, 'findByDiretor');
->>>>>>> Fix for DIRETOR user role
     }
 }
