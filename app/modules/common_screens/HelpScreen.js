@@ -65,6 +65,10 @@ export default class AnalysisScreen extends Component {
         codePush.sync({
             updateDialog: true,
             installMode: codePush.InstallMode.IMMEDIATE,
+            deploymentKey: Platform.select({
+                ios: CONFIG.CODE_PUSH.iosKey,
+                android: CONFIG.CODE_PUSH.androidKey,
+            }),
         });
     }
 
@@ -84,6 +88,22 @@ export default class AnalysisScreen extends Component {
         });
     }
 
+    onLongPress = () => {
+        Alert.alert(
+            'Tem Certeza?',
+            'Você ira mudar para a versão de testes',
+            [
+                { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        this.codePushChangeDeploy();
+                    },
+                },
+            ],
+        );
+    }
+
     clearStorageAndRestart() {
         Alert.alert(
             'Tem Certeza?',
@@ -101,7 +121,7 @@ export default class AnalysisScreen extends Component {
     }
 
     componentWillMount() {
-        codePush.getUpdateMetadata(codePush.UpdateState.LATEST).then((pack) => {
+        codePush.getUpdateMetadata(codePush.UpdateState.RUNNING).then((pack) => {
             if (!pack) return;
             const supportInfo = this.state.supportInfo.concat(
                 ...[
@@ -163,7 +183,7 @@ export default class AnalysisScreen extends Component {
               <ListItem itemDivider>
                 <Text>Utilitários</Text>
               </ListItem>
-              <ListItem onPress={this.codePushPress} onLongPress={this.codePushChangeDeploy}>
+              <ListItem onPress={this.codePushPress} onLongPress={this.onLongPress}>
                 <Text>Forçar Atualização</Text>
               </ListItem>
               <ListItem onPress={this.clearStorageAndRestart}>
