@@ -3,7 +3,7 @@
 import { CollectionService, Constants } from './../lib/services';
 import logger from './../lib/logger';
 
-logger.warn('Services is DEPRECATED', __filename);
+logger.warn('Services is DEPRECATED');
 
 export default class ListaOnlineService extends CollectionService {
     constructor() {
