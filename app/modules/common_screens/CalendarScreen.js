@@ -30,7 +30,7 @@ export default class CalendarScreen extends Component {
 
     @computed
     get eventos(): Array<Evento> {
-        if (rootStore.user.isProfessor) {
+        if (rootStore.user.isProfessor || rootStore.user.isDiretor) {
             const anoSelected = rootStore.professor.anoSelectedId;
             if (anoSelected) {
                 return rootStore.eventos.eventos.filter(ev => ev.turma.ano.id === anoSelected);
@@ -61,7 +61,7 @@ export default class CalendarScreen extends Component {
     }
 
     render() {
-        const semanasAnteriores = rootStore.user.isProfessor && this.renderWeek('Semanas Anteriores', isBeforeThisWeek);
+        const semanasAnteriores = (rootStore.user.isProfessor || rootStore.user.isDiretor) && this.renderWeek('Semanas Anteriores', isBeforeThisWeek);
         const semanaAtual = this.renderWeek('Semanas Atual', isThisWeek);
         const proximaSemana = this.renderWeek('Próxima Semana', isNextWeek);
 
@@ -97,7 +97,7 @@ function Fab({ navigate }) {
     const items = [
         { buttonColor: '#1C7FE2', title: 'Prova', onPress: goTo('ProvasScreen') },
         { buttonColor: '#1C7FE2', title: 'Trabalho', onPress: goTo('HomeworkScreen') },
-        { buttonColor: '#1C7FE2', title: 'Exercício', onPress: goTo('ExerciciosScreen') },
+        { buttonColor: '#1C7FE2', title: 'Dever', onPress: goTo('ExerciciosScreen') },
     ];
 
     const iconStyle = { color: '#fff', fontSize: 24 };
