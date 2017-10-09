@@ -43,12 +43,9 @@ const DEVICE_SIZE = `${Dimensions.get('window').width.toFixed(0)}x${Dimensions.g
 ).height.toFixed(0)} (dp)`;
 
 export default class AnalysisScreen extends Component {
+    clickCount = 0;
     state = {
         supportInfo: [
-            Platform.select({
-                ios: { label: 'Versão iOS', value: Platform.Version },
-                android: { label: 'Android API Version', value: Platform.Version },
-            }),
             { label: 'Dimensões Dispositivo', value: DEVICE_SIZE },
         ],
     };
@@ -59,6 +56,10 @@ export default class AnalysisScreen extends Component {
         } else {
             logger.warn(`Não é possível abrir a URL: "${url}"`);
         }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalCancel);
     }
 
     codePushPress() {
@@ -88,21 +89,25 @@ export default class AnalysisScreen extends Component {
         });
     }
 
-    onLongPress = () => {
-        Alert.alert(
-            'Tem Certeza?',
-            'Você ira mudar para a versão de testes',
-            [
-                { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        this.codePushChangeDeploy();
-                    },
+    onVersionClick = () => {
+        if (this.clickCount < 10) {
+            this.clickCount = this.clickCount + 1;
+            clearTimeout(this.intervalCancel);
+            this.intervalCancel = setTimeout(() => {
+                this.clickCount = 0;
+            }, 1000);
+            return;
+        }
+        Alert.alert('Tem Certeza?', 'Você ira mudar para a versão de testes', [
+            { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
+            {
+                text: 'OK',
+                onPress: () => {
+                    this.codePushChangeDeploy();
                 },
-            ],
-        );
-    }
+            },
+        ]);
+    };
 
     clearStorageAndRestart() {
         Alert.alert(
@@ -178,6 +183,17 @@ export default class AnalysisScreen extends Component {
               {CONTATO_INFO.map(this.renderContactInfo, this)}
               <ListItem itemDivider>
                 <Text>Informações de Suporte</Text>
+              </ListItem>
+              <ListItem onPress={this.onVersionClick}>
+                <Body>
+                  <Text>{Platform.Version}</Text>
+                  <Text note>
+                    {Platform.select({
+                        ios: 'Versão iOS',
+                        android: 'Versão API Android',
+                    })}
+                  </Text>
+                </Body>
               </ListItem>
               {this.state.supportInfo.map(this.renderSupportInfo, this)}
               <ListItem itemDivider>
