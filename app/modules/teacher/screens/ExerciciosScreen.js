@@ -45,7 +45,7 @@ export default class ExerciciosScreen extends Component {
             leftIcon: 'arrow-back',
             leftPress: () => goBack(),
             navigate,
-            title: 'Exercícios',
+            title: 'Dever',
             rightText: 'Datas',
             showRight: true,
             rightPress: this.isComplete

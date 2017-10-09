@@ -15,22 +15,10 @@ export default class HomeTabNavigator extends Component {
                 <Icon name="event-note" />
                 <Text>Agenda</Text>
               </Button>
-              {/* <Button active={index === 1} onPress={() => navigate('ExerciseScreen')}>
-                <Icon name="tune" />
-                <Text>Exercícios</Text>
-              </Button> */}
               <Button active={index === 1} onPress={() => navigate('AlertScreen')}>
                 <Icon name="notifications" />
                 <Text>Avisos</Text>
               </Button>
-              {/* <Button active={index === 3} onPress={() => navigate('ExamScreen')}>
-                <Icon name="assignment-turned-in" />
-                <Text>Provas</Text>
-              </Button> */}
-              {/* <Button active={index === 4} onPress={() => navigate('HomeworkScreen')}>
-                <Icon name="library-books" />
-                <Text>Trabalhos</Text>
-              </Button> */}
             </FooterTab>
           </Footer>
         );
