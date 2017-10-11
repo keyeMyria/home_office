@@ -10,7 +10,7 @@ import logger from './../lib/logger';
 import EventoService from './../services/EventoService';
 import TarefaService from './../services/TarefaService';
 
-import { Evento, Topico } from './../models';
+import { Evento, Tarefa } from './../models';
 import type { Aluno } from './../models';
 
 class EventoStore extends BaseStore {
@@ -24,7 +24,7 @@ class EventoStore extends BaseStore {
     @observable error = false;
     @observable selectedEvent: ?Evento;
     @observable selectedEventLancar: ?Evento;
-    @observable selectedEventTopics: any;
+    @observable selectedEventTarefa: any;
 
     constructor() {
         super();
@@ -42,63 +42,45 @@ class EventoStore extends BaseStore {
         return this.eventosMap.values();
     }
 
-    async fecthEventosAluno(aluno: Aluno) {
+    async fetchEventos({ aluno, professorId }: {aluno?: Aluno, professorId?: number | string}) {
         try {
-            this.aluno = aluno;
-            this.userRole = 'ALUNO';
             this.setLoading(true);
-            const eventos = await this._service.findByTurma(aluno.turma.id);
-            this.setEventos(eventos.eventos);
+            let eventos;
+            if (aluno || this.userRole === 'ALUNO') {
+                eventos = await Evento.findByTurma(aluno.turma.id || this.aluno.turma.id);
+            } else if (professorId || this.userRole === 'PROFESSOR') {
+                eventos = await Evento.findByProfessor(professorId || this.professorId);
+            } else {
+                eventos = await Evento.all();
+            }
+            this.setEventos(eventos);
         } catch (error) {
             logger.error(error);
-            this.setError(true);
             this.setLoading(false);
+            this.setError(true);
         }
     }
 
-    async fecthEventosProfessor(professorId: number) {
-        try {
-            this.professorId = professorId;
-            this.userRole = 'PROFESSOR';
-            this.setLoading(true);
-            const eventos = await this._service.findByProfessor(professorId);
-            this.setEventos(eventos.eventos);
-        } catch (error) {
-            logger.error(error);
-            this.setError(true);
-            this.setLoading(false);
-        }
+    fecthEventosAluno(aluno: Aluno) {
+        this.aluno = aluno;
+        this.userRole = 'ALUNO';
+        return this.fetchEventos({ aluno });
     }
 
-    async fecthEventosDiretor() {
-        try {
-            this.userRole = 'PROFESSOR';
-            this.setLoading(true);
-            const eventos = await this._service.get();
-            this.setEventos(eventos.eventos);
-        } catch (error) {
-            logger.error(error);
-            this.setError(true);
-            this.setLoading(false);
-        }
+    fecthEventosProfessor(professorId: number) {
+        this.professorId = professorId;
+        this.userRole = 'PROFESSOR';
+        return this.fetchEventos({ professorId });
     }
 
+    fecthEventosDiretor() {
+        this.userRole = 'DIRETOR';
+        this.fetchEventos({});
+    }
+
+    @action
     refresh() {
-        switch (this.userRole) {
-        case 'ALUNO':
-            if (this.aluno) {
-                this.fecthEventosAluno(this.aluno);
-            }
-
-            break;
-        case 'PROFESSOR':
-            if (this.professorId) {
-                this.fecthEventosProfessor(this.professorId);
-            }
-            break;
-        default:
-            break;
-        }
+        this.fetchEventos();
     }
 
     async deleteEvent() {
@@ -126,8 +108,7 @@ class EventoStore extends BaseStore {
 
     @action
     setEventos(eventos: Array<Object>) {
-        const _eventos: Array<Evento> = Evento.fromSearchArray(eventos);
-        this.eventosMap.replace(_eventos.map(ev => [ev.id, ev]));
+        this.eventosMap.replace(eventos.map(ev => [ev.id, ev]));
         this.loading = false;
     }
 
@@ -135,14 +116,7 @@ class EventoStore extends BaseStore {
     selectEvento = (ev: ?Evento): void => {
         this.selectedEvent = ev;
         if (this.selectedEvent) {
-            this.selectedEventTopics = fromPromise(
-                new TarefaService()
-                    .one(this.selectedEvent.tarefa.id)
-                    .get()
-                    .then(tarefa => tarefa.link.topicos.get())
-                    .then(t => t.topicos)
-                    .then(t => t.map(m => new Topico(m))),
-            );
+            this.selectedEventTarefa = fromPromise(Tarefa.getOne(this.selectedEvent.tarefa.id));
         }
     };
 

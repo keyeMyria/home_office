@@ -38,6 +38,18 @@ export default class Tarefa extends models.Model {
     topicos: Array<Topico>;
     ano: Ano;
 
+    static findByAnoAndProfessor(ano: number, professor: number) {
+        return this.search({ ano, professor }, 'findByAnoAndProfessor');
+    }
+
+    static findByAnoAndDisciplina(ano: number, disciplina: number) {
+        return this.search({ ano, disciplina }, 'findByAnoAndDisciplina');
+    }
+
+    static findByEvento(evento: number) {
+        return this.search({ evento }, 'findByEvento');
+    }
+
     get pontosText(): string {
         return this.valor ? `${this.valor} pontos - ` : '';
     }

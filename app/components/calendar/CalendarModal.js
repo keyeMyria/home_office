@@ -12,7 +12,7 @@ import _ from 'lodash';
 import userStore from './../../stores/UserStore';
 import eventoStore from './../../stores/EventosStore';
 
-import type { Evento, Topico } from './../../models';
+import type { Evento, Topico, Tarefa } from './../../models';
 import LoadingModal from './../LoadingModal';
 
 @observer
@@ -38,18 +38,26 @@ export default class CalendarModal extends Component {
 
     @computed
     get loading(): boolean {
-        if (eventoStore.selectedEventTopics) {
-            return eventoStore.selectedEventTopics.state === 'pending';
+        if (eventoStore.selectedEventTarefa) {
+            return eventoStore.selectedEventTarefa.state === 'pending';
         }
         return true;
     }
 
     @computed
     get topics(): Array<Topico> {
-        if (eventoStore.selectedEventTopics && eventoStore.selectedEventTopics.value) {
-            return eventoStore.selectedEventTopics.value;
+        if (eventoStore.selectedEventTarefa && eventoStore.selectedEventTarefa.value) {
+            return eventoStore.selectedEventTarefa.value.topicos;
         }
         return [];
+    }
+
+    @computed
+    get tarefa(): Tarefa {
+        if (eventoStore.selectedEventTarefa && eventoStore.selectedEventTarefa.value) {
+            return eventoStore.selectedEventTarefa.value;
+        }
+        return {};
     }
 
     componentWillReact() {
@@ -117,9 +125,9 @@ export default class CalendarModal extends Component {
             <ScrollView style={localStyles.modalContent}>
               {this.renderItem(`${dateString}`, 'event.dataFormatada')}
               {this.renderItem('Turma', 'event.turmaAno')}
-              {this.renderItem('Nota', 'event.tarefa.valor', ' Pontos')}
+              {this.renderItem('Nota', 'tarefa.valor', ' Pontos')}
               {this.renderItem('Tempo Aprox.', 'event.duracaoTextModal')}
-              {this.renderItem('Detalhes', 'event.tarefa.detalhes')}
+              {this.renderItem('Detalhes', 'tarefa.detalhes')}
               {this.renderTopics()}
             </ScrollView>
           </LoadingModal>

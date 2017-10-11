@@ -29,6 +29,26 @@ export default class Evento extends models.Model {
         });
     }
 
+    static findByProfessor(id: number) {
+        return this.search({ id }, 'findByProfessor');
+    }
+
+    static findByTarefa(id: number) {
+        return this.search({ id }, 'findByTarefa');
+    }
+
+    static findByTarefaAndTurma(tarefa: number, turma: number) {
+        return this.search({ tarefa, turma }, 'findByTarefaAndTurma');
+    }
+
+    static findByAnoAndProfessor(ano: number, professor: number) {
+        return this.search({ ano, professor }, 'findByAnoAndProfessor');
+    }
+
+    static findByTurma(id: number) {
+        return this.search({ id }, 'findByTurma');
+    }
+
     constructor(data: Object | Array<any>): Evento | Array<Evento> {
         if (data && !Array.isArray(data)) {
             if (data.disciplina) {

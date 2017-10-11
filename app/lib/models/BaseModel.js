@@ -26,8 +26,15 @@ export default class BaseModel {
 
     static all() {
         return new CollectionService(this.collectionName)
-        .get()
-        .then(results => this.fromArray(results[this.collectionName]));
+            .get()
+            .then(results => this.fromArray(results[this.collectionName]));
+    }
+
+    static getOne(id) {
+        return new CollectionService(this.collectionName)
+            .one(id)
+            .get()
+            .then(results => new this(results));
     }
 
     // eslint-disable-next-line consistent-return
@@ -86,5 +93,4 @@ export default class BaseModel {
         }
         return null;
     }
-
 }
