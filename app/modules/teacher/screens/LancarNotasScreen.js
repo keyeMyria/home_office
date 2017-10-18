@@ -21,6 +21,8 @@ import { Evento, Aluno, Nota } from '../../../models';
 
 @observer
 export default class LancarNotasScreen extends Component {
+    static navigationOptions = { tabBarVisible: false };
+
     _alunoService = new AlunoService();
     _notaService = new NotaService();
 
@@ -41,20 +43,22 @@ export default class LancarNotasScreen extends Component {
     }
 
     get screenShellProps(): Object {
-        const { navigate } = this.props.navigation;
+        const { navigate, goBack } = this.props.navigation;
 
         // $FlowFixMe
         const selectedTask: Evento = eventoStore.selectedEventLancar;
 
         return {
             navigate,
-            title: (selectedTask.tarefa.tipo === 'PROVA' || selectedTask.tarefa.tipo === 'TRABALHO') ?
-                'Lançar Notas' : 'Não Entregues',
+            title:
+                selectedTask.tarefa.tipo === 'PROVA' || selectedTask.tarefa.tipo === 'TRABALHO'
+                    ? 'Lançar Notas'
+                    : 'Não Entregues',
             loading: eventoStore.loading,
             rightText: 'Salvar',
             rightPress: this.saveStudentsTask,
             leftIcon: 'arrow-back',
-            leftPress: () => navigate('CalendarScreen'),
+            leftPress: () => goBack(),
             showRight: true,
             padder: false,
             style: {
@@ -72,7 +76,7 @@ export default class LancarNotasScreen extends Component {
         const notasSavePromise = this.alunosAndNotas.map(([nota]) => {
             const pontuacao = nota.pontuacao ? Number(nota.pontuacao) : null;
 
-            if ((pontuacao || pontuacao === 0)) {
+            if (pontuacao || pontuacao === 0) {
                 if (!nota.id) {
                     return this._notaService.post(nota.toJS());
                 }
@@ -158,9 +162,7 @@ export default class LancarNotasScreen extends Component {
         return (
           <ScreenShell {...this.screenShellProps}>
             <LoadingModal loading={this.isSaving} text={savingText}>
-              <View>
-                {alunosAndNotas.map(this.renderStudentGrid, this)}
-              </View>
+              <View>{alunosAndNotas.map(this.renderStudentGrid, this)}</View>
             </LoadingModal>
           </ScreenShell>
         );
