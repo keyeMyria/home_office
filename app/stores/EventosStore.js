@@ -42,7 +42,7 @@ class EventoStore extends BaseStore {
         return this.eventosMap.values();
     }
 
-    async fetchEventos({ aluno, professorId }: {aluno?: Aluno, professorId?: number | string}) {
+    async fetchEventos({ aluno, professorId }: { aluno?: Aluno, professorId?: number | string }) {
         try {
             this.setLoading(true);
             let eventos;
@@ -80,7 +80,13 @@ class EventoStore extends BaseStore {
 
     @action
     refresh() {
-        this.fetchEventos();
+        this.fetchEventos({});
+    }
+
+    @action
+    addEventos(eventos: Array<Evento>): void {
+        // $FlowFixMe
+        this.eventosMap.merge(eventos.map(ev => [ev.id, ev]));
     }
 
     async deleteEvent() {

@@ -1,35 +1,21 @@
 // @flow
-// import ExerciseScreen from './ExerciseScreen';
+
 import FaltasScreen from './FaltasScreen';
-// import OccurrenceScreen from './OccurrenceScreen';
-// import SelectClassScreen from './SelectClassScreen';
-// import OccurrenceReasonScreen from './OccurrenceReasonScreen';
-// import ExamScreen from './ExamScreen';
-import HomeworkScreen from './HomeworkScreen';
 import SetDateForTarefa from './SetDateForTarefa';
-import ExerciciosScreen from './ExerciciosScreen';
-// import SelectQuestionScreen from './SelectQuestionScreen';
 import ComunicadosScreen from './Comunicados/ComunicadosScreen';
-import OcorrenciasScreen from './Ocorrencias/OcorrenciasScreen';
+import NovaOcorrenciasScreen from './Ocorrencias/NovaOcorrenciasScreen';
+import EditarOcorrenciasScreen from './Ocorrencias/EditarOcorrenciasScreen';
+import ListOcorrenciaScreen from './Ocorrencias/ListOcorrenciaScreen';
 import LancarNotasScreen from './LancarNotasScreen';
-import ProvasScreen from './ProvasScreen';
+import TarefasScreen from './TarefasScreen';
 
 export {
-    // ExerciseScreen,
-    // HistoryScreen,
     FaltasScreen,
-    // OccurrenceScreen,
-    // SelectClassScreen,
-    // OccurrenceReasonScreen,
-    // ExamScreen,
-    HomeworkScreen,
-    // AnalysisScreen,
     SetDateForTarefa,
-    // ExerciseConfigurationScreen,
-    // SelectQuestionScreen,
     ComunicadosScreen,
     LancarNotasScreen,
-    OcorrenciasScreen,
-    ProvasScreen,
-    ExerciciosScreen,
+    TarefasScreen,
+    ListOcorrenciaScreen,
+    NovaOcorrenciasScreen,
+    EditarOcorrenciasScreen,
 };

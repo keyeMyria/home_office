@@ -1,5 +1,6 @@
 // @flow
 import * as models from './../lib/models';
+import { CollectionService } from './../lib/services';
 import type Evento from './Evento';
 import type Nota from './Nota';
 import type Disciplina from './Disciplina';
@@ -8,7 +9,14 @@ import type Ano from './Ano';
 
 import CONFIG from '../../config';
 
-type TipoTarefa = 'TRABALHO' | 'PROVA' | 'EXERCICIO' | 'LISTA_ONLINE';
+const TIPOS = {
+    TRABALHO: 'TRABALHO',
+    PROVA: 'PROVA',
+    EXERCICIO: 'EXERCICIO',
+    LISTA_ONLINE: 'LISTA_ONLINE',
+};
+
+type TipoTarefa = $Keys<typeof TIPOS>;
 
 @models.register('Tarefa', {
     id: models.PrimaryKey(),
@@ -37,6 +45,19 @@ export default class Tarefa extends models.Model {
     disciplina: Disciplina;
     topicos: Array<Topico>;
     ano: Ano;
+
+    static tipos = TIPOS;
+
+    static getTarefaLabel(tipo: TipoTarefa): string {
+        const labels = {
+            [TIPOS.PROVA]: 'Prova',
+            [TIPOS.EXERCICIO]: 'Dever',
+            [TIPOS.TRABALHO]: 'Trabalho',
+            [TIPOS.LISTA_ONLINE]: 'Lista Online',
+        };
+
+        return labels[tipo];
+    }
 
     static findByAnoAndProfessor(ano: number, professor: number) {
         return this.search({ ano, professor }, 'findByAnoAndProfessor');
@@ -75,5 +96,26 @@ export default class Tarefa extends models.Model {
      */
     get nomeTipo(): string {
         return CONFIG.AGENDA.tipoNameMap[this.tipo];
+    }
+
+    /**
+     * Retorna o service que será usado para os collections
+     */
+    _getCollectionService() {
+        let collectionName = this.constructor.collectionName;
+        if (this.tipo) {
+            collectionName = `${this.tipo}S`.toLowerCase();
+        }
+        return new CollectionService(collectionName);
+    }
+
+    validate() {
+        const basic = this.titulo && this.disciplina && this.ano;
+        if (!basic) return false;
+        if (this.tipo !== Tarefa.tipos.EXERCICIO) {
+            const extra = this.bimestre && this.valor;
+            if (!extra) return false;
+        }
+        return true;
     }
 }

@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { List, Icon } from 'native-base';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
+import _ from 'lodash';
+import moment from 'moment';
 
 import ActionButton from 'react-native-action-button';
 
-import { isThisWeek, isNextWeek, isBeforeThisWeek } from './../../lib/dates';
+import { Tarefa } from './../../models';
 
 // Types
 import type { Evento } from './../../models';
@@ -39,8 +41,30 @@ export default class CalendarScreen extends Component {
         return rootStore.eventos.eventos;
     }
 
-    renderWeek(titulo: string, filter: Date => boolean) {
-        const items = this.eventos.filter(ev => filter(ev.fim));
+    @computed
+    get eventosGroup(): any {
+        const startOfThisWeek = moment()
+            .startOf('week')
+            .valueOf();
+        const startOfNextWeek = moment()
+            .add(1, 'weeks')
+            .startOf('week')
+            .valueOf();
+        const endOfNextWeek = moment()
+            .add(1, 'weeks')
+            .endOf('week')
+            .valueOf();
+
+        return _.groupBy(this.eventos, (ev) => {
+            const date = new Date(ev.fim).getTime();
+            if (date < startOfThisWeek) return 'semanasAnteriores';
+            if (date < startOfNextWeek) return 'semanaAtual';
+            if (date < endOfNextWeek) return 'proximaSemana';
+            return 'proximasSemanas';
+        });
+    }
+
+    renderWeek(titulo: string, items: Array<Evento>) {
         if (!items.length) return null;
         return <CalendarWeek label={titulo} items={items} onPress={this.showModal} />;
     }
@@ -61,9 +85,12 @@ export default class CalendarScreen extends Component {
     }
 
     render() {
-        const semanasAnteriores = (rootStore.user.isProfessor || rootStore.user.isDiretor) && this.renderWeek('Semanas Anteriores', isBeforeThisWeek);
-        const semanaAtual = this.renderWeek('Semanas Atual', isThisWeek);
-        const proximaSemana = this.renderWeek('Próxima Semana', isNextWeek);
+        const canViewPastEvents = rootStore.user.isProfessor || rootStore.user.isDiretor;
+        const semanasAnteriores =
+            canViewPastEvents &&
+            this.renderWeek('Semanas Anteriores', this.eventosGroup.semanasAnteriores);
+        const semanaAtual = this.renderWeek('Semanas Atual', this.eventosGroup.semanaAtual);
+        const proximaSemana = this.renderWeek('Próxima Semana', this.eventosGroup.proximaSemana);
 
         const hasEventos = !!(semanasAnteriores || semanaAtual || proximaSemana);
 
@@ -92,13 +119,11 @@ export default class CalendarScreen extends Component {
 }
 
 function Fab({ navigate }) {
-    const goTo = name => () => navigate(name);
-
-    const items = [
-        { buttonColor: '#1C7FE2', title: 'Prova', onPress: goTo('ProvasScreen') },
-        { buttonColor: '#1C7FE2', title: 'Trabalho', onPress: goTo('HomeworkScreen') },
-        { buttonColor: '#1C7FE2', title: 'Dever', onPress: goTo('ExerciciosScreen') },
-    ];
+    const items = [Tarefa.tipos.PROVA, Tarefa.tipos.TRABALHO, Tarefa.tipos.EXERCICIO].map(tipo => ({
+        buttonColor: '#1C7FE2',
+        title: Tarefa.getTarefaLabel(tipo),
+        onPress: () => navigate('TarefasScreen', { tipo }),
+    }));
 
     const iconStyle = { color: '#fff', fontSize: 24 };
 
