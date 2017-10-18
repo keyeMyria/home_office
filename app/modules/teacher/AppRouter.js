@@ -71,8 +71,8 @@ const HomeRouter = TabNavigator(
 
 export default DrawerNavigator(
     {
-        OcorrenciasRouter: { screen: OcorrenciasRouter },
         HomeRouter: { screen: HomeRouter },
+        OcorrenciasRouter: { screen: OcorrenciasRouter },
         ComunicadosScreen: { screen: ComunicadosScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
