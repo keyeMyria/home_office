@@ -34,8 +34,14 @@ export function register(name: string | [string], fields: Object) {
         target.name = nameSingular;
         target.collectionName = pluralName || `${nameSingular.toLowerCase()}s`;
         target.fields = fields;
+        target.relatedFields = [];
 
         Object.keys(fields).forEach((key) => {
+            const field = fields[key];
+            if (field.related) {
+                target.relatedFields.push(key);
+            }
+
             Object.defineProperty(target.prototype, key, {
                 get() {
                     return this._data$[key];

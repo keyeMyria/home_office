@@ -30,13 +30,18 @@ export function ForeignKey(Type: *) {
 
     let Model = Type;
 
-    return (value: *) => {
+    const func = (value: *) => {
         if (!value) return null;
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }
         return new Model(value);
     };
+
+    func.related = true;
+    func.relatedType = 'ForeignKey';
+    func.relatedModel = () => (typeof Model === 'string' ? getModel(Model) : Model);
+    return func;
 }
 
 export function ManyToMany(Type: *) {
@@ -45,14 +50,19 @@ export function ManyToMany(Type: *) {
     }
     let Model = Type;
 
-    return (value: *) => {
+    const func = (value: *) => {
         if (!value) return undefined;
 
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }
-        return new Model(value);
+        return Model.fromArray(value);
     };
+
+    func.related = true;
+    func.relatedType = 'ManyToMany';
+    func.relatedModel = () => (typeof Model === 'string' ? getModel(Model) : Model);
+    return func;
 }
 
 export function OneToMany(Type: *) {
@@ -61,17 +71,23 @@ export function OneToMany(Type: *) {
     }
     let Model = Type;
 
-    return (value: *) => {
+    const func = (value: *) => {
         if (!value) return undefined;
         if (typeof Model === 'string') {
             Model = getModel(Model);
         }
-        return new Model(value);
+        return Model.fromArray(value);
     };
+
+    func.related = true;
+    func.relatedType = 'OneToMany';
+    func.relatedModel = () => (typeof Model === 'string' ? getModel(Model) : Model);
+
+    return func;
 }
 
 export function Date() {
-    return (value: *) => value ? moment(value) : moment().startOf('day');
+    return (value: *) => (value ? moment(value) : moment().startOf('day'));
 }
 
 export function PrimaryKey() {

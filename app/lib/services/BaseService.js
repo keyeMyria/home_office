@@ -1,6 +1,8 @@
 // @flow
-import _ from 'underscore';
+import _ from 'lodash';
 import httpClient from './../../lib/HttpClient';
+
+type LinkObject = { [string]: { href: string, templated?: boolean } };
 
 /**
  * BASE SERVICE
@@ -84,31 +86,30 @@ export default class BaseService {
     }
 
     // HELPERS
-
-    _parseLinks(obj: any) {
-        const result = {};
-
-        _.map(_.keys(obj), (key) => {
+    _parseLinks(obj: LinkObject): { [string]: BaseService } {
+        return Object.keys(obj).reduce((result, key) => {
             const value = obj[key];
-            result[key] = new CollectionService(value.href);
-        });
-
-        return result;
+            let href = obj[key].href;
+            if (value.templated) {
+                href = href.replace(/{\?[\w,]+}/, '');
+            }
+            return Object.assign(result, { [key]: new CollectionService(href) });
+        }, {});
     }
 
     _parseObject(obj: any): any {
         const result = {};
 
-        _.map(_.keys(obj), (key) => {
+        _.forEach(_.keys(obj), (key) => {
             const value = obj[key];
 
             if (key === '_embedded') {
                 Object.assign(result, this._parseObject(value));
             } else if (key === '_links') {
                 result.link = this._parseLinks(value);
-            } else if (_.isArray(value)) {
+            } else if (Array.isArray(value)) {
                 result[key] = [];
-                _.each(value, (val, index) => {
+                value.forEach((val, index) => {
                     result[key][index] = _.isObject(val) ? this._parseObject(val) : val;
                 });
             } else {
