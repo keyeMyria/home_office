@@ -1,25 +1,66 @@
 // @flow
 import moment from 'moment';
+import _ from 'lodash';
 
-export function isThisWeek(date: Date | string): boolean {
-    return moment(date).isSame(new Date(), 'week');
+const DATES = {
+    startOfThisWeek: moment().startOf('week').valueOf(),
+    endOfThisWeek: moment().endOf('week').valueOf(),
+    startOfNextWeek: moment().add(1, 'weeks').startOf('week').valueOf(),
+    endOfNextWeek: moment().add(1, 'weeks').endOf('week').valueOf(),
+};
+
+function updateCaches() {
+    DATES.startOfThisWeek = moment().startOf('week').valueOf();
+    DATES.endOfThisWeek = moment().endOf('week').valueOf();
+    DATES.startOfNextWeek = moment().add(1, 'weeks').startOf('week').valueOf();
+    DATES.endOfNextWeek = moment().add(1, 'weeks').endOf('week').valueOf();
 }
 
-export function isNextWeek(date: Date | string): boolean {
-    const nextWeek = moment().add(1, 'weeks');
-    return moment(date).isSame(nextWeek, 'week');
+const updateCachesThrottle = _.throttle(updateCaches, 1000);
+
+function isThisWeek(date: Date | string): boolean {
+    const time = new Date(date).getTime();
+    return time > DATES.startOfThisWeek && time < DATES.endOfThisWeek;
 }
 
-export function isAfterNextWeek(date: Date | string): boolean {
-    const end = moment().add(1, 'weeks').endOf('week');
-    return moment(date).isAfter(end);
+function isNextWeek(date: Date | string): boolean {
+    const time = new Date(date).getTime();
+    return time > DATES.startOfNextWeek && time < DATES.endOfNextWeek;
 }
 
-export function isBeforeThisWeek(date: Date | string): boolean {
-    return moment(date).isBefore(moment().startOf('week'));
+function isAfterNextWeek(date: Date | string): boolean {
+    return new Date(date).getTime() > DATES.endOfNextWeek;
 }
 
-export function isBeforeNextWeek(date: Date | string): boolean {
-    const nextWeek = moment().add(1, 'weeks');
-    return moment(date).isBefore(nextWeek);
+function isBeforeThisWeek(date: Date | string): boolean {
+    return new Date(date).getTime() < DATES.startOfThisWeek;
 }
+
+function isBeforeNextWeek(date: Date | string): boolean {
+    return new Date(date).getTime() < DATES.startOfNextWeek;
+}
+
+const dates = {
+    get isThisWeek() {
+        updateCachesThrottle();
+        return isThisWeek;
+    },
+    get isNextWeek() {
+        updateCachesThrottle();
+        return isNextWeek;
+    },
+    get isAfterNextWeek() {
+        updateCachesThrottle();
+        return isAfterNextWeek;
+    },
+    get isBeforeThisWeek() {
+        updateCachesThrottle();
+        return isBeforeThisWeek;
+    },
+    get isBeforeNextWeek() {
+        updateCachesThrottle();
+        return isBeforeNextWeek;
+    },
+};
+
+module.exports = dates;
