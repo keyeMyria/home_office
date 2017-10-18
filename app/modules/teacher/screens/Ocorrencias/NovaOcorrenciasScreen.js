@@ -13,6 +13,7 @@ import OcorrenciaService from './../../../../services/OcorrenciaService';
 import professorStore from './../../../../stores/ProfessorStore';
 
 import logger from './../../../../lib/logger';
+import dialog from './../../../../lib/dialog';
 
 import ScreenShell from './../../../../components/ScreenShell';
 import StudentPicker from './../../../../components/StudentPicker';
@@ -21,7 +22,7 @@ import type { ScreenShellProps } from './../../../../components/ScreenShell';
 import OcorrenciaModal from './OcorrenciaModal';
 
 @observer
-export default class OcorrenciaScreen extends Component {
+export default class NovaOcorrenciaScreen extends Component {
     cancelTurmaAutorun: *;
     cancelAlunosAutorun: *;
 
@@ -96,30 +97,15 @@ export default class OcorrenciaScreen extends Component {
     };
 
     async save() {
-        const { navigate } = this.props.navigation;
+        const { goBack } = this.props.navigation;
         try {
-            const service = new OcorrenciaService();
-            const ocorrenciaData = this.ocorrencia.toJS();
-            const response = await service.post(ocorrenciaData);
-            const ocorrencia = new Ocorrencia(response);
-            // $FlowFixMe
             const alunosSelected = this.alunosMap.values().filter(a => a._selected);
-            const alunosLink = alunosSelected.map(a => a._selfLink);
-            await service.one(ocorrencia.pk).all('alunos').put(alunosLink.join('\n'), true);
-            Alert.alert(
-                'Sucesso',
-                'Dados salvos com sucesso!',
-                [
-                    {
-                        text: 'Ok',
-                        onPress: () => {
-                            this.hideModal();
-                            navigate('HomeRouter');
-                        },
-                    },
-                ],
-                { cancelable: false },
-            );
+            await this.ocorrencia.save();
+            await this.ocorrencia.saveRelated('alunos', alunosSelected);
+            dialog.success('Dados salvos com sucesso!', () => {
+                this.hideModal();
+                goBack();
+            });
         } catch (error) {
             logger.error(error);
             logger.warn('response', error.response);
@@ -133,13 +119,15 @@ export default class OcorrenciaScreen extends Component {
     }
 
     get screenShellProps(): ScreenShellProps {
-        const { navigate } = this.props.navigation;
+        const { navigate, goBack } = this.props.navigation;
         return {
             navigate,
-            title: 'Ocorrências',
+            title: 'Nova Ocorrência',
             rightPress: this.showModal,
             rightText: 'Próximo',
             showRight: this.canSave,
+            leftIcon: 'arrow-back',
+            leftPress: () => goBack(),
         };
     }
 
