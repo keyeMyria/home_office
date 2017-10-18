@@ -153,25 +153,7 @@ export default class CalendarModal extends Component {
     };
 
     editEvent() {
-        const eventType = eventoStore.selectedEvent;
-
-        switch (eventType) {
-        case 'TRABALHO':
-            this.props.navigate('ExerciseScreen');
-            break;
-        case 'PROVA':
-            this.props.navigate('ExamScreen');
-            break;
-        case 'EXERCICIO':
-            this.props.navigate('ExerciseScreen');
-            break;
-        case 'LISTA_ONLINE':
-            this.props.navigate('ExerciseScreen');
-            break;
-        default:
-            break;
-        }
-
+        this.props.navigate('TarefasScreen', { tarefa: this.tarefa });
         this.props.onClose();
     }
 
@@ -191,13 +173,11 @@ export default class CalendarModal extends Component {
             {isProfessor && (
             <View style={localStyles.modalFooterButtonsContainer}>
               {this.renderButton('Excluir', this.deleteEvent.bind(this))}
-              {/* {this.renderButton('Editar', this.editEvent.bind(this))}  */}
-              {this.renderButton('Lançar', this.fillEventInformation.bind(this))}
+              {this.renderButton('Editar', this.editEvent.bind(this))}
             </View>
                 )}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {/* {isProfessor &&
-                        this.renderButton('Lançar', this.fillEventInformation.bind(this))} */}
+              {this.renderButton('Lançar', this.fillEventInformation.bind(this))}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>

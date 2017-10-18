@@ -24,6 +24,11 @@ const TopicoItem = observer(
         onPress,
         hasChild,
     }: TopicoItemProps) => {
+        const subtopicosSelected = subTopicos.filter(t => t._selected);
+        const allSelected =
+            subTopicos.length > 0 && subtopicosSelected.length === subTopicos.length;
+        const someSelected = !allSelected && !!subtopicosSelected.length;
+
         const onSelect = () => {
             // eslint-disable-next-line no-param-reassign, no-return-assign
             topico._selected = !topico._selected;
@@ -37,7 +42,7 @@ const TopicoItem = observer(
         const style = {
             height: 'auto',
             flexDirection: 'row',
-            marginLeft: isChild ? 40 : 0,
+            marginLeft: isChild ? 15 : 0,
             alignItems: 'center',
             justifyContent: 'flex-start',
             borderBottomColor: '#ddd',
@@ -56,27 +61,38 @@ const TopicoItem = observer(
         // $FlowFixMe
         const listPress = isChild || !onPress ? onSelect : () => onPress(topico.pk);
 
+        let selected = topico._selected;
+        let checkBoxStyle = {};
+        if (someSelected || allSelected) {
+            selected = true;
+        }
+        if (someSelected && !allSelected) {
+            checkBoxStyle = {
+                backgroundColor: 'rgba(0,0,0,.57)',
+                borderColor: 'transparent',
+            };
+        }
+
         return (
-          <ListItem
-            onPress={listPress}
-            style={style}
-            icon
-          >
+          <ListItem onPress={listPress} style={style} icon>
             <Icon
               name={iconName}
+              style={{
+                  fontSize: isChild ? 18 : 30,
+                  color: 'rgba(0,0,0,.57)',
+              }}
             />
-            <Text style={{
-                flex: 1,
-                paddingLeft: isChild ? 10 : 20,
-                paddingRight: 20,
-            }}
+            <Text
+              style={{
+                  flex: 1,
+                  paddingLeft: isChild ? 20 : 10,
+                  paddingRight: 10,
+                  fontSize: 14,
+              }}
             >
               {topico.titulo}
             </Text>
-            <CheckBox
-              checked={topico._selected}
-              onPress={onSelect}
-            />
+            <CheckBox checked={selected} onPress={onSelect} style={checkBoxStyle} />
           </ListItem>
         );
     },
@@ -136,13 +152,14 @@ export default class TopicosSelection extends Component {
                 );
             }
 
-            return (<TopicoItem
-              key={topico.pk}
-              onPress={this.toogleOpenTopic}
-              topico={topico}
-              hasChild={!isEmpty}
-              subTopicos={subtopicos}
-            />
+            return (
+              <TopicoItem
+                key={topico.pk}
+                onPress={this.toogleOpenTopic}
+                topico={topico}
+                hasChild={!isEmpty}
+                subTopicos={subtopicos}
+              />
             );
         };
 
@@ -150,10 +167,6 @@ export default class TopicosSelection extends Component {
     }
 
     render() {
-        return (
-          <List>
-            {this.renderTopicsSelection()}
-          </List>
-        );
+        return <List>{this.renderTopicsSelection()}</List>;
     }
 }

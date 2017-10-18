@@ -4,12 +4,12 @@ import { View, Alert, ActivityIndicator } from 'react-native';
 import { Text } from 'native-base';
 import { observer } from 'mobx-react/native';
 import { computed, observable } from 'mobx';
+import { NavigationActions } from 'react-navigation';
 
 import { Evento } from './../../../models';
-import type { Topico } from './../../../models';
+import type { Ano, Disciplina, Tarefa } from './../../../models';
 import logger from './../../../lib/logger';
-import EventoService from './../../../services/EventoService';
-import type { CollectionService } from './../../../lib/services';
+import dialog from './../../../lib/dialog';
 
 // Stores
 import professorStore from './../../../stores/ProfessorStore';
@@ -20,120 +20,90 @@ import ScreenShell from '../../../components/ScreenShell';
 
 @observer
 export default class SetDateForTarefa extends Component {
+    static navigationOptions = { tabBarVisible: false };
+
     @observable loading: boolean = true;
     @observable saving: boolean = false;
     @observable eventos: Array<Evento> = [];
 
-    async saveTarefa() {
+    get tarefa(): Tarefa | void {
         try {
-            const { params } = this.props.navigation.state;
-            const service: CollectionService = params.service;
-            const tarefa = params.tarefa;
-            const method = tarefa.pk ? 'put' : 'post';
-            // $FlowFixMe
-            const resp = await service[method](tarefa.toJS());
-            if (method === 'post') {
-                tarefa.id = resp.id; // eslint-disable-line no-param-reassign
-            }
-            return tarefa;
-        } catch (error) {
-            logger.warn('Error Object', error);
-            Alert.alert('Erro', '[SDFT-01] Não foi possível salvar a tarefa');
-            throw error;
-        }
-    }
-
-    async saveTopicos(tarefa: *) {
-        try {
-            const { params } = this.props.navigation.state;
-            const service: CollectionService = params.service;
-            const topicos: void | Array<Topico> = params.topicos;
-            if (topicos && topicos.length) {
-                const topicosLink = topicos.map(t => t._selfLink);
-                await service.one(tarefa.id).all('topicos').put(topicosLink.join('\n'), true);
-            }
-        } catch (error) {
-            logger.warn('Error Object', error);
-            Alert.alert('Erro', '[SDFT-02] Não foi possível salvar a tarefa');
-            throw error;
-        }
-    }
-
-    async saveEventos() {
-        try {
-            const eventoService = new EventoService();
-            return Promise.all(
-                this.eventos.map((evento) => {
-                    evento.inicio = evento.fim; // eslint-disable-line no-param-reassign
-                    if (evento.pk) {
-                        return eventoService.one(evento.pk).put(evento.toJS());
-                    }
-                    return eventoService.post(evento.toJS());
-                }),
-            );
-        } catch (error) {
-            logger.warn('Error Object', error);
-            Alert.alert('Erro', '[SDFT-03] Não foi possível salvar a tarefa');
-            throw error;
-        }
-    }
-
-    async save() {
-        try {
-            const { params } = this.props.navigation.state;
-            if (!params) return;
-            const { navigate } = this.props.navigation;
-            const tarefa = await this.saveTarefa();
-            await this.saveTopicos(tarefa);
-            await this.saveEventos();
-
-            Alert.alert(
-                'Sucesso',
-                'Dados salvos com sucesso',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => {
-                            eventosStore.refresh();
-                            navigate('HomeRouter');
-                        },
-                    },
-                ],
-                { cancelable: false },
-            );
+            return this.props.navigation.state.params.tarefa;
         } catch (error) {
             logger.error(error);
-            logger.warn('Error Response', error.response);
-            logger.warn('Error Request', error.request);
-            Alert.alert('Erro', '[SDFT-03] Não foi possível salvar a tarefa');
+            return undefined;
+        }
+    }
+
+    async saveTarefa() {
+        try {
+            this.loading = true;
+            const { params } = this.props.navigation.state;
+            if (!params) return;
+
+            const tarefa = params.tarefa;
+            await tarefa.save();
+            if (params.topicos) {
+                await tarefa.saveRelated('topicos', params.topicos);
+            }
+            const saveEventosPromises = this.eventos.map((ev) => {
+                ev.inicio = ev.fim; // eslint-disable-line no-param-reassign
+                ev.tarefa = tarefa; // eslint-disable-line no-param-reassign
+                return ev.save({ reloadData: false });
+            });
+            await Promise.all(saveEventosPromises);
+            dialog.success('A atividade foi salva com sucesso!', () => {
+                eventosStore.refresh();
+                this.backToAgenda();
+            });
+        } catch (error) {
+            this.loading = false;
+            logger.error('Error Object', error);
+            // throw error;
+            Alert.alert('Erro', '[SDFT-01] Não foi possível salvar a atividade');
+        }
+    }
+
+    backToAgenda = () => {
+        const { params } = this.props.navigation.state;
+        this.props.navigation.dispatch(NavigationActions.back({ key: params.screen }));
+    };
+
+    save = () => {
+        this.saveTarefa().catch(err => logger.warn('error', err));
+    };
+
+    async loadTurmas(ano: Ano, disciplina: Disciplina) {
+        try {
+            if (this.tarefa && this.tarefa.isNew()) {
+                const turmas = await professorStore.fetchTurmas(ano.pk, disciplina.pk);
+                turmas.forEach((turma) => {
+                    this.eventos.push(
+                        new Evento({
+                            turma,
+                            tarefa: this.tarefa,
+                        }),
+                    );
+                });
+            } else if (this.tarefa && this.tarefa.id) {
+                const eventos = await Evento.findByTarefa(this.tarefa.id);
+                this.eventos.push(...eventos);
+            }
+            this.loading = false;
+        } catch (error) {
+            logger.error(error);
+            this.loading = false;
         }
     }
 
     /**
      * Load turmas
      */
-    componentDidMount() {
+    componentWillMount() {
         const { params } = this.props.navigation.state;
-        if (params) {
-            const ano = params.tarefa.ano;
-            const disciplina = params.tarefa.disciplina;
-            professorStore
-                .fetchTurmas(ano.pk, disciplina.pk)
-                .then((turmas) => {
-                    turmas.forEach((t) => {
-                        const evento = new Evento({});
-                        evento.turma = t;
-                        evento.tarefa = params.tarefa;
-                        this.eventos.push(evento);
-                    });
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    logger.error(err);
-                    logger.warn(err);
-                });
-        }
+        if (!params || !this.tarefa) return;
+        this.loading = true;
+        this.loadTurmas(this.tarefa.ano, this.tarefa.disciplina);
     }
 
     @computed
@@ -149,7 +119,7 @@ export default class SetDateForTarefa extends Component {
             navigate,
             title: 'Selecionar Datas',
             rightText: 'Salvar',
-            rightPress: this.save.bind(this),
+            rightPress: this.save,
             showRight: this.isComplete,
         };
     }
@@ -163,21 +133,20 @@ export default class SetDateForTarefa extends Component {
         return (
           <View style={style}>
             <ActivityIndicator size="large" />
-            <Text>
-              {text}
-            </Text>
+            <Text>{text}</Text>
           </View>
         );
     }
+
     renderDates() {
-        const dates = this.eventos.map((ev, idx) =>
-          (<DatePickerField
+        const dates = this.eventos.map((ev, idx) => (
+          <DatePickerField
             key={ev.turma.id}
             label={`Turma ${ev.turma.titulo}`}
             store={this.eventos}
             storeKey={`[${idx}.fim]`}
-          />),
-        );
+          />
+        ));
         return dates;
     }
 

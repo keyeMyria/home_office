@@ -27,11 +27,20 @@ class TopicoStore {
         return this.topicosMap.values().filter(t => t._selected);
     }
 
-    async fetchTopicos(disciplina: number, ano: number) {
+    async fetchTopicos(disciplina: number, ano: number, selecionados: Array<number> = []) {
         try {
             const response = await new TopicoService().findByDisciplinaAndAno(disciplina, ano);
-            const topicos = Topico.fromArray(response.topicos).map(t => [t.pk, t]);
-            this.topicosMap.replace(topicos);
+            const topicos = Topico.fromArray(response.topicos);
+            if (selecionados.length > 0) {
+                topicos.forEach((topico) => {
+                    // eslint-disable-next-line no-bitwise
+                    if (~selecionados.indexOf(topico.id)) {
+                        // eslint-disable-next-line no-param-reassign
+                        topico._selected = true;
+                    }
+                });
+            }
+            this.topicosMap.replace(topicos.map(t => [t.pk, t]));
         } catch (error) {
             logger.error(error);
             logger.warn('error.response', error.response);
