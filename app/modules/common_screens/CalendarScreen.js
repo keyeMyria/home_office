@@ -52,7 +52,11 @@ export default class CalendarScreen extends Component {
 
     setRef(ref: SectionList) {
         this.listRef = ref;
-        if (this.listRef && typeof this.listRef.scrollToLocation === 'function' && rootStore.user.canAddActivity) {
+        if (
+            this.listRef &&
+            typeof this.listRef.scrollToLocation === 'function' &&
+            rootStore.user.canAddActivity
+        ) {
             this.listRef.scrollToLocation({
                 sectionIndex: 1,
                 itemIndex: 0,
@@ -61,6 +65,7 @@ export default class CalendarScreen extends Component {
     }
 
     render() {
+        const { navigate } = this.props.navigation;
         const emptyScreen = (
           <EmptyScreen
             title="Ops! Nenhuma Atividade"
@@ -68,10 +73,9 @@ export default class CalendarScreen extends Component {
             image={emptyEventsImg}
           />
         );
-        // getItemHeight: (rowData: any, sectionIndex: number, rowIndex: number) => number,
-        // getSeparatorHeight?: (sectionIndex: number, rowIndex: number) => number,
-        // getSectionHeaderHeight?: (sectionIndex: number) => number,
-        // getSectionFooterHeight?: (sectionIndex: number) => number,
+
+        const renderItem = ({ item }) => <CalendarItem item={item} onPress={this.showModal} />;
+        const renderSectionHeader = ({ section }) => <CalendarWeek label={section.title} />;
 
         return (
           <Container>
@@ -80,12 +84,8 @@ export default class CalendarScreen extends Component {
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
             <LoadingModal loading={rootStore.eventos.loading}>
               <SectionList
-                renderItem={({ item }) => (
-                  <CalendarItem item={item} onPress={this.showModal} />
-                        )}
-                renderSectionHeader={({ section }) => (
-                  <CalendarWeek label={section.title} />
-                        )}
+                renderItem={renderItem}
+                renderSectionHeader={renderSectionHeader}
                 sections={rootStore.eventos.eventosSections}
                 initialNumToRender={10}
                 stickySectionHeadersEnabled
@@ -98,7 +98,7 @@ export default class CalendarScreen extends Component {
                 ref={ref => this.setRef(ref)}
               />
             </LoadingModal>
-            {rootStore.user.canAddActivity ? <Fab /> : null}
+            {rootStore.user.canAddActivity ? <Fab navigate={navigate} /> : null}
           </Container>
         );
     }
