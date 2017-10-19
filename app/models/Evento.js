@@ -74,17 +74,17 @@ export default class Evento extends models.Model {
 
     get getBimestreText(): string {
         if (this.tarefa.bimestre) {
-            return `${this.tarefa.bimestre}ºBimestre`;
+            return `- ${this.tarefa.bimestre}º Bimestre`;
         }
         return '';
     }
 
     get tituloText(): string {
-        return this.tarefa.titulo ? `${this.tarefa.titulo} - ` : '';
+        return this.tarefa.titulo ? `${this.tarefa.titulo} ` : '';
     }
 
     get duracaoText(): string {
-        return this.duracaoTextModal && `${this.duracaoTextModal} - `;
+        return this.duracaoTextModal && `- ${this.duracaoTextModal} `;
     }
 
     get duracaoTextModal(): string {

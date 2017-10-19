@@ -1,16 +1,15 @@
 // @flow
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import { ListItem, Grid, Row, Col, Text } from 'native-base';
-import { observer } from 'mobx-react/native';
+import React, { PureComponent } from 'react';
+import { View, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
+import { Text } from 'native-base';
 
 import CONFIG from './../../../config';
 import rootStore from './../../stores';
-
 import type { Evento } from '../../models';
 
-@observer
-export default class CalendarItem extends Component {
+const Touch = Platform.select({ ios: TouchableOpacity, android: TouchableNativeFeedback });
+
+export default class CalendarItem extends PureComponent {
     props: {
         item: Evento,
         onPress: Evento => void,
@@ -21,50 +20,73 @@ export default class CalendarItem extends Component {
         onPress: () => {},
     };
 
-    render() {
-        const { item, onPress } = this.props;
+    onPress = () => {
+        this.props.onPress(this.props.item);
+    };
 
-        const infoText = rootStore.user.isProfessor
-            ? `${item.turmaAno} - ${item.infoText}`
-            : item.infoText;
+    getInfoText() {
+        if (rootStore.user.canAddActivity) {
+            return `${this.props.item.turmaAno} - ${this.props.item.infoText}`;
+        }
+        return this.props.item.infoText;
+    }
+
+    render() {
+        const { item } = this.props;
+
+        const infoText = this.getInfoText();
 
         const textColor = CONFIG.AGENDA.tipoTextColorMap[item.tarefa.tipo];
+        const labelColor = CONFIG.AGENDA.tipoColorMap[item.tarefa.tipo];
 
         return (
-          <ListItem onPress={() => onPress(item)}>
-            <Grid
-              style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  alignItems: 'stretch',
-              }}
-            >
-              <Col style={styles.tipoAbbrCol(item.tarefa.color)}>
-                <Row>
-                  <Text style={{ ...styles.gridRowText, color: textColor }}>
-                    {item.tarefa.abbr}
-                  </Text>
-                </Row>
-              </Col>
-              <Col style={styles.data}>
-                <Text style={{ ...styles.gridRowText, fontSize: 16 }}>
-                  {item.dayOfWeek}
+          <Touch onPress={this.onPress}>
+            <View style={styles.grid}>
+              <View style={[styles.labelCollumn, { backgroundColor: labelColor }]}>
+                <Text style={{ ...styles.gridRowText, color: textColor }}>
+                  {item.tarefa.abbr}
                 </Text>
-                <Text style={styles.gridRowText}>{item.fim.format('DD/MMM')}</Text>
-              </Col>
-              <Col style={styles.infoText}>
-                <View style={{ alignItems: 'flex-start' }}>
-                  <Text style={styles.gridRowText}>{infoText}</Text>
+              </View>
+              <View style={{ flexDirection: 'column', flex: 1 }}>
+                <View style={styles.grid}>
+                  <View style={styles.data}>
+                    <Text style={{ fontSize: 16, textAlign: 'center' }}>
+                      {item.dayOfWeek}
+                    </Text>
+                    <Text style={styles.gridRowText}>{item.fim.format('DD/MMM')}</Text>
+                  </View>
+                  <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
+                    <Text style={styles.gridRowText}>{infoText}</Text>
+                  </View>
                 </View>
-              </Col>
-            </Grid>
-          </ListItem>
+                <View style={styles.divider} />
+              </View>
+            </View>
+          </Touch>
         );
     }
 }
 
 // Styles
 const styles = {
+    grid: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        backgroundColor: '#fff',
+        height: 70,
+    },
+    divider: {
+        height: 1,
+        backgroundColor: '#ddd',
+        alignSelf: 'stretch',
+    },
+    labelCollumn: {
+        backgroundColor: '#ddd',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+    },
     gridColumn: {
         alignItems: 'center',
     },
@@ -84,8 +106,9 @@ const styles = {
     data: {
         flex: 0,
         flexDirection: 'column',
-        padding: 12,
-        paddingRight: 0,
+        paddingHorizontal: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     infoText: {
         flex: 2,

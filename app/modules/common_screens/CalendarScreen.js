@@ -1,14 +1,15 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Icon } from 'native-base';
+import { Icon, Container } from 'native-base';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react/native';
-import _ from 'lodash';
-import moment from 'moment';
+import { SectionList } from 'react-native';
 
 import ActionButton from 'react-native-action-button';
 
 import { Tarefa } from './../../models';
+
+import getItemLayout from './../../lib/getItemLayout';
 
 // Types
 import type { Evento } from './../../models';
@@ -17,16 +18,20 @@ import type { Evento } from './../../models';
 import rootStore from './../../stores';
 
 // Components
-import ScreenShell from './../../components/ScreenShell';
+import Header from './../../components/Header';
 import EmptyScreen from './../../components/EmptyScreen';
+import CalendarItem from './../../components/calendar/CalendarItem';
 import CalendarWeek from './../../components/calendar/CalendarWeek';
 import CalendarModal from './../../components/calendar/CalendarModal';
+import LoadingModal from './../../components/LoadingModal';
 import BubbleMenu from './../../components/BubbleMenu';
 
 const emptyEventsImg = require('./../../img/calendar_empty.png');
 
 @observer
 export default class CalendarScreen extends Component {
+    listRef: SectionList;
+
     showModal = (ev: Evento) => rootStore.eventos.selectEvento(ev);
     hideModal = () => rootStore.eventos.selectEvento();
 
@@ -41,79 +46,60 @@ export default class CalendarScreen extends Component {
         return rootStore.eventos.eventos;
     }
 
-    @computed
-    get eventosGroup(): any {
-        const startOfThisWeek = moment()
-            .startOf('week')
-            .valueOf();
-        const startOfNextWeek = moment()
-            .add(1, 'weeks')
-            .startOf('week')
-            .valueOf();
-        const endOfNextWeek = moment()
-            .add(1, 'weeks')
-            .endOf('week')
-            .valueOf();
+    leftPress = () => {
+        this.props.navigation.navigate('DrawerOpen');
+    };
 
-        return _.groupBy(this.eventos, (ev) => {
-            const date = new Date(ev.fim).getTime();
-            if (date < startOfThisWeek) return 'semanasAnteriores';
-            if (date < startOfNextWeek) return 'semanaAtual';
-            if (date < endOfNextWeek) return 'proximaSemana';
-            return 'proximasSemanas';
-        });
-    }
-
-    renderWeek(titulo: string, items: Array<Evento>) {
-        if (!items.length) return null;
-        return <CalendarWeek label={titulo} items={items} onPress={this.showModal} />;
-    }
-
-    get screenShellProps(): Object {
-        const { navigate } = this.props.navigation;
-        return {
-            navigate,
-            title: 'Agenda',
-            padder: false,
-            loading: rootStore.eventos.loading && !rootStore.eventos.eventos.length,
-            fab: rootStore.user.canAddActivity ? Fab : null,
-            refreshControl: {
-                refreshing: rootStore.eventos.loading,
-                onRefresh: () => rootStore.eventos.refresh(),
-            },
-        };
+    setRef(ref: SectionList) {
+        this.listRef = ref;
+        if (this.listRef && typeof this.listRef.scrollToLocation === 'function' && rootStore.user.canAddActivity) {
+            this.listRef.scrollToLocation({
+                sectionIndex: 1,
+                itemIndex: 0,
+            });
+        }
     }
 
     render() {
-        const canViewPastEvents = rootStore.user.isProfessor || rootStore.user.isDiretor;
-        const semanasAnteriores =
-            canViewPastEvents &&
-            this.renderWeek('Semanas Anteriores', this.eventosGroup.semanasAnteriores);
-        const semanaAtual = this.renderWeek('Semanas Atual', this.eventosGroup.semanaAtual);
-        const proximaSemana = this.renderWeek('Próxima Semana', this.eventosGroup.proximaSemana);
-
-        const hasEventos = !!(semanasAnteriores || semanaAtual || proximaSemana);
-
-        const content = hasEventos ? (
-          <List agendaList>
-            {semanasAnteriores}
-            {semanaAtual}
-            {proximaSemana}
-          </List>
-        ) : (
+        const emptyScreen = (
           <EmptyScreen
             title="Ops! Nenhuma Atividade"
             text="Nenhuma atividade cadastrada para os próximos dias"
             image={emptyEventsImg}
           />
         );
+        // getItemHeight: (rowData: any, sectionIndex: number, rowIndex: number) => number,
+        // getSeparatorHeight?: (sectionIndex: number, rowIndex: number) => number,
+        // getSectionHeaderHeight?: (sectionIndex: number) => number,
+        // getSectionFooterHeight?: (sectionIndex: number) => number,
 
         return (
-          <ScreenShell {...this.screenShellProps} emptyScreen={!hasEventos}>
+          <Container>
+            <Header title="Agenda" leftIcon="menu" leftPress={this.leftPress} />
             <BubbleMenu />
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />
-            {content}
-          </ScreenShell>
+            <LoadingModal loading={rootStore.eventos.loading}>
+              <SectionList
+                renderItem={({ item }) => (
+                  <CalendarItem item={item} onPress={this.showModal} />
+                        )}
+                renderSectionHeader={({ section }) => (
+                  <CalendarWeek label={section.title} />
+                        )}
+                sections={rootStore.eventos.eventosSections}
+                initialNumToRender={10}
+                stickySectionHeadersEnabled
+                ListEmptyComponent={emptyScreen}
+                keyExtractor={ev => ev.id}
+                getItemLayout={getItemLayout({
+                    getItemHeight: () => 70,
+                    getSectionHeaderHeight: () => 38,
+                })}
+                ref={ref => this.setRef(ref)}
+              />
+            </LoadingModal>
+            {rootStore.user.canAddActivity ? <Fab /> : null}
+          </Container>
         );
     }
 }

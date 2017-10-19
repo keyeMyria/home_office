@@ -72,7 +72,7 @@ export default class Tarefa extends models.Model {
     }
 
     get pontosText(): string {
-        return this.valor ? `${this.valor} pontos - ` : '';
+        return this.valor ? `- ${this.valor} pontos ` : '';
     }
 
     /**

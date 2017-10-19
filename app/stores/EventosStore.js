@@ -3,6 +3,8 @@ import { AppState } from 'react-native';
 import { observable, action, computed } from 'mobx';
 import type { ObservableMap } from 'mobx';
 import { fromPromise } from 'mobx-utils';
+import moment from 'moment';
+import _ from 'lodash';
 
 import BaseStore from './../lib/BaseStore';
 
@@ -87,6 +89,56 @@ class EventoStore extends BaseStore {
     addEventos(eventos: Array<Evento>): void {
         // $FlowFixMe
         this.eventosMap.merge(eventos.map(ev => [ev.id, ev]));
+    }
+
+    @computed
+    get eventosSections(): any {
+        const startOfThisWeek = moment()
+            .startOf('week')
+            .valueOf();
+        const startOfNextWeek = moment()
+            .add(1, 'weeks')
+            .startOf('week')
+            .valueOf();
+        const endOfNextWeek = moment()
+            .add(1, 'weeks')
+            .endOf('week')
+            .valueOf();
+
+        const eventosGroup = _.groupBy(this.eventos, (ev) => {
+            if (
+                this.rootStore.user.canAddActivity &&
+                this.rootStore.professor.anoSelectedId &&
+                ev.turma.ano.id !== this.rootStore.professor.anoSelectedId
+            ) {
+                return 'oculto';
+            }
+            const date = new Date(ev.fim).getTime();
+            if (date < startOfThisWeek) return 'semanasAnteriores';
+            if (date < startOfNextWeek) return 'semanaAtual';
+            if (date < endOfNextWeek) return 'proximaSemana';
+            return 'proximasSemanas';
+        });
+        const sections = [];
+        if (this.rootStore.user.canAddActivity && eventosGroup.semanasAnteriores) {
+            sections.push({
+                data: eventosGroup.semanasAnteriores,
+                title: 'Semanas Anteriores',
+            });
+        }
+        if (eventosGroup.semanaAtual) {
+            sections.push({
+                data: eventosGroup.semanaAtual,
+                title: 'Semana Atual',
+            });
+        }
+        if (eventosGroup.proximaSemana) {
+            sections.push({
+                data: eventosGroup.proximaSemana,
+                title: 'Próxima semana',
+            });
+        }
+        return sections;
     }
 
     async deleteEvent() {

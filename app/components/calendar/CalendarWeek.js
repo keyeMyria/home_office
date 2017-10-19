@@ -1,42 +1,36 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Separator, Text } from 'native-base';
 
-import type { Evento } from './../../models';
 // Components
-import CalendarItem from './CalendarItem';
-
-export default class CalendarWeek extends Component {
+export default class CalendarWeek extends PureComponent {
     props: {
-        onPress?: Evento => void,
-        items?: Array<Evento>,
-        label?: string,
+        label: string,
     };
 
     static defaultProps = {
-        onPress: (evento) => {
-            console.warn('', evento); // eslint-disable-line no-console
-        },
-        items: [],
         label: '',
     };
 
+    shouldComponentUpdate(nextProps) {
+        return nextProps.label !== this.props.label;
+    }
+
     render() {
-        const { items, label, onPress } = this.props;
-        if (!Array.isArray(items)) return null;
+        const { label } = this.props;
         return (
           <View>
-            <Separator style={{
-                paddingLeft: 30,
-            }}
-            >
-              <Text>
-                {label}
-              </Text>
+            <Separator style={styles.separator}>
+              <Text>{label}</Text>
             </Separator>
-            {items.map(item => <CalendarItem key={item.id} item={item} onPress={onPress} />)}
           </View>
         );
     }
 }
+
+const styles = {
+    separator: {
+        paddingLeft: 30,
+    },
+};
