@@ -42,29 +42,41 @@ export default class OcorrenciaCard extends Component {
         );
     }
 
-    onCardPress= () => {
+    onCardPress = () => {
         this.setState({ showButtons: !this.state.showButtons });
         LayoutAnimation.easeInEaseOut();
-    }
+    };
 
     render() {
         const { ocorrencia } = this.props;
+        const alunos = ocorrencia.alunos && ocorrencia.alunos.map
+            ? ocorrencia.alunos.map(a => a.nomeCompleto).join(', ')
+            : '';
 
         return (
           <Card style={{ flex: 0 }}>
             <CardItem onPress={this.onCardPress} button>
               <Body>
                 {this.renderDate()}
-                <Text style={{ marginTop: 15, fontWeight: 'bold' }}>{ocorrencia.tipoName}</Text>
-                <Text note numberOfLines={3}>{ocorrencia.detalhes}</Text>
+                <Text style={{ marginTop: 15, fontWeight: 'bold' }}>
+                  {ocorrencia.tipoName}
+                </Text>
+                <Text note numberOfLines={3}>
+                  {ocorrencia.detalhes}
+                </Text>
                 <Text style={{ fontWeight: 'bold', marginTop: 10 }}>Alunos:</Text>
-                <Text note>{ocorrencia.alunos.map(a => a.nomeCompleto).join(', ')}</Text>
+                <Text note>{alunos}</Text>
               </Body>
             </CardItem>
             {this.state.showButtons && (
             <CardItem>
               <Right style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                <Button small bordered style={{ marginRight: 10 }} onPress={this.onEdit}>
+                <Button
+                  small
+                  bordered
+                  style={{ marginRight: 10 }}
+                  onPress={this.onEdit}
+                >
                   <Text>Editar</Text>
                 </Button>
                 <Button small bordered onPress={this.onDelete}>

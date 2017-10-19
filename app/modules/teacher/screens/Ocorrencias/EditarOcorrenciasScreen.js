@@ -45,6 +45,10 @@ export default class EditarOcorrenciaScreen extends Component {
     save = async () => {
         const { goBack } = this.props.navigation;
         try {
+            await this.ocorrencia.saveRelated(
+                'alunos',
+                this.ocorrencia.alunos.filter(a => a._selected),
+            );
             await this.ocorrencia.save();
             dialog.success('Dados salvos com sucesso!', () => goBack());
         } catch (error) {
@@ -81,7 +85,7 @@ export default class EditarOcorrenciaScreen extends Component {
                 multiline: true,
                 maxLength: 2000,
             })}
-            <StudentPicker alunos={this.ocorrencia.alunos} />
+            <StudentPicker alunos={this.ocorrencia.alunos || []} />
           </ScreenShell>
         );
     }
