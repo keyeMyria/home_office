@@ -13,6 +13,8 @@ import CONFIG from './../../config';
 
 export type Role = 'ALUNO' | 'RESPONSAVEL' | 'PROFESSOR' | 'DIRETOR';
 
+const SUPPORTED_ROLES = ['ALUNO', 'RESPONSAVEL', 'PROFESSOR', 'DIRETOR'];
+
 export type DecodedToken = {
     sub: string, // Email do aluno
     audience: string,
@@ -24,7 +26,7 @@ export type DecodedToken = {
     imagem: ?string, // Avatar do usuário
     celular: string, // Celular do usuário
     nome: string, // Nome do usuário
-    sobrenome: string;
+    sobrenome: string,
     id: number, // ID do usuário
     exp: number, // Timestamp da expiração do token
 };
@@ -193,6 +195,11 @@ class AppAuth {
             logger.log(`[AUTH] JWT-TOKEN (PASSWORD): "${token}"`);
             if (!token) {
                 this.emitLoginError({ message: 'API não retornou um token' });
+                return null;
+            }
+            const decodeToken: DecodedToken = jwtDecode(token);
+            if (SUPPORTED_ROLES.indexOf(decodeToken.role) === -1) {
+                this.emitLoginError({ message: 'Tipo de usuário não suportado' });
                 return null;
             }
             this.setToken(token);
