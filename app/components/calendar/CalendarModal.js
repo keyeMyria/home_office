@@ -177,7 +177,7 @@ export default class CalendarModal extends Component {
             </View>
                 )}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {this.renderButton('Lançar', this.fillEventInformation.bind(this))}
+              {isProfessor && this.renderButton('Lançar', this.fillEventInformation.bind(this))}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>
