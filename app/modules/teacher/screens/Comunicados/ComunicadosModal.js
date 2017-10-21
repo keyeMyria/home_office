@@ -37,7 +37,7 @@ function RoleItem(props) {
           </Text>
         </Body>
         <Right>
-          <CheckBox checked={role.selected} />
+          <CheckBox checked={role.selected} onPress={onPress} />
         </Right>
       </ListItem>
     );
