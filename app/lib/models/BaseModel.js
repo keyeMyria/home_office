@@ -174,9 +174,13 @@ export default class BaseModel {
         const result = {};
         const fields = this.constructor.fields;
         Object.keys(fields).forEach((key) => {
-            if (fields[key].related && fields.relatedType !== 'ForeignKey') return;
+            if (fields[key].related && fields[key].relatedType !== 'ForeignKey') return;
             if (this._data$[key] !== undefined) {
                 const value = this._data$[key];
+                if (typeof fields[key].toJS === 'function') {
+                    result[key] = fields[key].toJS(value);
+                    return;
+                }
                 if (value && value[ModelSymbol]) {
                     result[key] = (value && value._selfLink) || undefined;
                 } else {
