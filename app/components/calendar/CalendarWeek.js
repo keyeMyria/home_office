@@ -13,10 +13,6 @@ export default class CalendarWeek extends PureComponent {
         label: '',
     };
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.label !== this.props.label;
-    }
-
     render() {
         const { label } = this.props;
         return (
