@@ -87,7 +87,17 @@ export function OneToMany(Type: *) {
 }
 
 export function Date() {
-    return (value: *) => (value ? moment(value) : moment().startOf('day'));
+    const func = (value: *) => (value ? moment(value) : moment().startOf('day'));
+    func.toJS = value => moment(value).format('YYYY-MM-DD');
+
+    return func;
+}
+
+export function DateTime() {
+    const func = (value: *) => (value ? moment(value) : moment().startOf('day'));
+    func.toJS = value => new global.Date(value).toJSON();
+
+    return func;
 }
 
 export function PrimaryKey() {
