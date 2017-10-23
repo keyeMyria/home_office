@@ -7,7 +7,7 @@ pipelines:
             - yarn install
             - yarn global add code-push-cli
             - "sed -i -e 's/isDev: false/isDev: true/' config.js"
-            - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
+            - code-push login --accessKey 91002e2a343714875d64821314f8a30c5cbc7fa1
             - code-push release-react EducareBox-Android android -d Develop --targetBinaryVersion "*" --des develop_$BITBUCKET_BUILD_NUMBER --noDuplicateReleaseError
             - code-push release-react EducareBox-iOS ios -d Develop --targetBinaryVersion "*" --des develop_$BITBUCKET_BUILD_NUMBER --noDuplicateReleaseError
   tags:
@@ -18,7 +18,7 @@ pipelines:
           script:
             - yarn install
             - yarn global add code-push-cli
-            - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
+            - code-push login --accessKey 91002e2a343714875d64821314f8a30c5cbc7fa1
             - code-push release-react EducareBox-iOS ios --targetBinaryVersion 1.x.x --description $BITBUCKET_TAG
     android-*:
       - step:
@@ -27,5 +27,5 @@ pipelines:
           script:
             - yarn install
             - yarn global add code-push-cli
-            - code-push login --accessKey 315aa6b8cba255ebec45808378c4d05f7d029789
+            - code-push login --accessKey 91002e2a343714875d64821314f8a30c5cbc7fa1
             - code-push release-react EducareBox-Android android --targetBinaryVersion 1.x.x --description $BITBUCKET_TAG
