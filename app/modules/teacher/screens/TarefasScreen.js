@@ -27,7 +27,7 @@ export default class ExamScreen extends Component {
     constructor(props: any) {
         super(props);
         const tarefa: Tarefa | void = _.get(props, 'navigation.state.params.tarefa');
-        const tipo: TipoTarefa | void = _.get(props, 'navigation.state.params.tarefa');
+        const tipo: TipoTarefa | void = _.get(props, 'navigation.state.params.tipo');
         if (tarefa) {
             this.tarefa = tarefa;
         }
