@@ -52,15 +52,18 @@ export default class CalendarScreen extends Component {
 
     setRef(ref: SectionList) {
         this.listRef = ref;
+        const hasSemanaAtual = !!rootStore.eventos.eventosSections[1];
         if (
             this.listRef &&
             typeof this.listRef.scrollToLocation === 'function' &&
-            rootStore.user.canAddActivity
+            rootStore.user.canAddActivity &&
+            hasSemanaAtual
         ) {
             this.listRef.scrollToLocation({
                 sectionIndex: 1,
                 itemIndex: 0,
             });
+            this.listRef.recordInteraction();
         }
     }
 
