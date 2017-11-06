@@ -3,6 +3,8 @@ import * as models from './../lib/models';
 import type Tarefa from './Tarefa';
 import type Turma from './Turma';
 
+import httpClient from './../lib/HttpClient';
+
 @models.register('Evento', {
     id: models.PrimaryKey(),
     inicio: models.Date(),
@@ -47,6 +49,14 @@ export default class Evento extends models.Model {
 
     static findByTurma(id: number) {
         return this.search({ id }, 'findByTurma');
+    }
+
+    static mine(week: number, ano?: number, aluno?: number) {
+        const params = { week, ano, aluno };
+        return httpClient
+            // $FlowFixMe
+            .get(`${this.collectionName}/search/mine`, { params })
+            .then(resp => resp.data);
     }
 
     constructor(data: Object | Array<any>): Evento | Array<Evento> {
