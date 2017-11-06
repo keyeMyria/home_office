@@ -33,11 +33,11 @@ class HttpClient {
 
     errorHandler = (error: any) => {
         if (this.token && error.response && error.response.status === 401) {
-            logger.error('[HTTP CLIENT] Invalid token (401)');
+            logger.error(`[HTTP CLIENT] Invalid token (401) [${error.config.url}]`);
             EventEmitter.emit('auth.invalid_token', {});
         }
         return Promise.reject(error);
-    }
+    };
 
     /**
      * Saves the token to use in future requests;
