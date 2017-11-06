@@ -19,10 +19,9 @@ export default class CalendarDay extends PureComponent {
     static defaultProps = {
         items: [],
         day: 'day',
-        groupByDay: false,
     };
 
-    renderWithoutDay() {
+    renderItems() {
         const { items, onPress } = this.props;
         return (
           <View style={styles.eventContainer}>
@@ -31,26 +30,20 @@ export default class CalendarDay extends PureComponent {
         );
     }
 
-    renderWithDay() {
+    render() {
         const { day } = this.props;
         const momentDate = moment(day);
-
         return (
           <View style={styles.container}>
+            {CONFIG.AGENDA.groupByDay && (
             <View style={styles.dayNameView}>
               <Text style={styles.dayText}>{momentDate.format('DD')}</Text>
               <Text style={styles.weekDayText}>{momentDate.format('ddd')}</Text>
             </View>
-            {this.renderWithoutDay()}
+                )}
+            {this.renderItems()}
           </View>
         );
-    }
-
-    render() {
-        if (CONFIG.AGENDA.groupByDay) {
-            return this.renderWithDay();
-        }
-        return this.renderWithoutDay();
     }
 }
 
