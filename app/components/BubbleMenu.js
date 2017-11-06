@@ -1,6 +1,7 @@
 // @flow
-import React, { Component } from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
+/* eslint react/no-multi-comp: 0 */
+import React, { Component, PureComponent } from 'react';
+import { ScrollView, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text, Thumbnail, Button } from 'native-base';
 
 import { observer } from 'mobx-react/native';
@@ -11,102 +12,121 @@ import responsavelStore from './../stores/ResponsavelStore';
 
 import { styles } from '../themes/educareTheme';
 
-function StudentItem(props) {
-    const { active, source } = props;
-    const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
+class StudentItem extends PureComponent {
+    onPress = () => {
+        this.props.onPress(this.props.id);
+    };
 
-    return (
-      <View style={styles.bubbleMenuItemView}>
-        <Thumbnail source={source} style={activeStyle} />
-        <Text style={styles.bubbleMenuItemText}>{props.name}</Text>
-      </View>
-    );
+    render() {
+        const { active, source, name } = this.props;
+        const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
+
+        return (
+          <TouchableOpacity onPress={this.onPress}>
+            <View style={styles.bubbleMenuItemView}>
+              <Thumbnail source={source} style={activeStyle} />
+              <Text style={styles.bubbleMenuItemText}>{name}</Text>
+            </View>
+          </TouchableOpacity>
+        );
+    }
 }
 
-function SchoolYearItem(props) {
-    const { active, name } = props;
-    const activeStyle = active ? styles.bubbleMenuItemActive : styles.bubbleMenuItemInactive;
-    return (
-      <View style={{ ...styles.bubbleMenuItemView, borderWidth: 0 }}>
-        <Button disabled={!active} style={activeStyle}>
-          <Text>{name}</Text>
-        </Button>
-      </View>
-    );
-}
+class SchoolYearItem extends PureComponent {
+    onPress = () => {
+        this.props.onPress(this.props.id);
+    };
 
-function BubbleMenuItem(props) {
-    const { item, onPress } = props;
-    return (
-      <TouchableOpacity onPress={onPress}>
-        <View>{item}</View>
-      </TouchableOpacity>
-    );
+    render() {
+        const { active, name } = this.props;
+        return (
+          <Button
+            bordered={!active}
+            style={{ borderRadius: 30, marginHorizontal: 5 }}
+            onPress={this.onPress}
+          >
+            <Text style={{ fontSize: 15 }}>{name}</Text>
+          </Button>
+        );
+    }
 }
 
 @observer
 export default class BubbleMenu extends Component {
-    renderSchoolYear() {
-        const schoolYearItem = (
-          <SchoolYearItem name="Todos" active={!professorStore.anoSelectedId} />
-        );
-        const bubbleMenuItem = (
-          <BubbleMenuItem
-            key={0}
-            item={schoolYearItem}
-            onPress={() => professorStore.selectAno(0)}
+    onAnoPress = (id: number) => {
+        requestAnimationFrame(() => professorStore.selectAno(id));
+    };
+
+    onStudentPress = (id: number) => {
+        requestAnimationFrame(() => responsavelStore.selectAluno(id));
+    };
+
+    renderSchoolYear(ano: any) {
+        let active = false;
+        if (professorStore.anoSelectedId) {
+            active = ano.id === professorStore.anoSelectedId;
+        }
+
+        return (
+          <SchoolYearItem
+            key={ano.id}
+            id={ano.id}
+            name={ano.abreviacao}
+            active={active}
+            onPress={this.onAnoPress}
           />
         );
-
-        const mapFunc = (ano) => {
-            let active = false;
-            if (professorStore.anoSelectedId) {
-                active = ano.id === professorStore.anoSelectedId;
-            }
-            const item = <SchoolYearItem name={ano.abreviacao} active={active} />;
-            const onPress = () => professorStore.selectAno(ano.id);
-            return <BubbleMenuItem key={ano.id} item={item} onPress={onPress} />;
-        };
-        if (professorStore.loading) return null;
-        const items = professorStore.anos.map(mapFunc);
-        return [bubbleMenuItem].concat(...items);
     }
 
-    renderStudent() {
-        const mapFunc = (aluno, index) => {
-            const { nome, id } = aluno;
-            let active = index === 0;
-            if (responsavelStore.alunoSelectedId) {
-                active = id === responsavelStore.alunoSelectedId;
-            }
-            const item = <StudentItem name={nome} active={active} source={aluno.imageSource} />;
-            const onPress = () => requestAnimationFrame(() => responsavelStore.selectAluno(id));
-            return <BubbleMenuItem key={id} item={item} onPress={onPress} />;
-        };
-        if (responsavelStore.loading) return null;
-        return responsavelStore.alunos.map(mapFunc);
+    renderStudent(aluno: any, idx: number) {
+        const { nome, id } = aluno;
+        let active = idx === 0;
+        if (responsavelStore.alunoSelectedId) {
+            active = id === responsavelStore.alunoSelectedId;
+        }
+        return (
+          <StudentItem
+            key={id}
+            id={id}
+            name={nome}
+            active={active}
+            source={aluno.imageSource}
+            onPress={this.onStudentPress}
+          />
+        );
+    }
+
+    renderItems() {
+        if (userStore.isResponsavel) {
+            if (responsavelStore.loading) return null;
+            return responsavelStore.alunos.map(this.renderStudent, this);
+        } else if (userStore.canAddActivity) {
+            if (professorStore.loading) return null;
+            return professorStore.anos.map(this.renderSchoolYear, this);
+        }
+        return null;
     }
 
     render() {
-        const roleMap = {
-            PROFESSOR: this.renderSchoolYear,
-            RESPONSAVEL: this.renderStudent,
-            ALUNO: undefined, // Prevent the the rendering
-            DIRETOR: this.renderSchoolYear,
-        };
-
-        const renderItens = roleMap[userStore.role];
-
-        if (!renderItens) return null;
-
+        if (userStore.isAluno) return null;
         return (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ ...styles.bubbleMenuView, borderWidth: 0 }}
-          >
-            {renderItens()}
-          </ScrollView>
+          <View style={localStyles.container}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {this.renderItems()}
+            </ScrollView>
+          </View>
         );
     }
 }
+
+const localStyles = StyleSheet.create({
+    container: {
+        borderWidth: 0,
+        shadowRadius: 3,
+        shadowOffset: { height: 1 },
+        shadowOpacity: 0.24,
+        paddingVertical: 10,
+        elevation: 2,
+        backgroundColor: 'rgba(245,245,245, 1)',
+    },
+});
