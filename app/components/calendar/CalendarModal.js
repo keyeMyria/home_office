@@ -31,8 +31,8 @@ export default class CalendarModal extends Component {
     }
 
     @computed
-    get event(): number {
-        return eventoStore.selectedEvent || 0;
+    get event(): ?Object {
+        return eventoStore.selectedEventObj || null;
     }
 
     @computed
@@ -167,10 +167,10 @@ export default class CalendarModal extends Component {
         return (
           <LoadingModal loading={this.loading}>
             <ScrollView style={localStyles.modalContent}>
-              {this.renderItem(`${dateString}`, 'event.dataFormatada')}
-              {this.renderItem('Turma', 'event.turmaAno')}
+              {this.renderItem(`${dateString}`, 'event.fim')}
+              {this.renderItem('Turma', 'event.turma_e_ano')}
               {this.renderItem('Valor', 'tarefa.valor', ' Pontos')}
-              {this.renderItem('T. Aprox.', 'event.duracaoTextModal')}
+              {this.renderItem('T. Aprox.', 'event.duracao')}
               {this.renderDetalhes()}
               {this.renderTopics()}
             </ScrollView>
