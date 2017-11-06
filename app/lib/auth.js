@@ -37,10 +37,6 @@ class AppAuth {
     facebookToken: ?string;
     userUrl: string = 'usuarios/search/findByJwtToken';
 
-    constructor() {
-        this.loadToken();
-    }
-
     /**
      * Returns the url used to autenticate users
      */

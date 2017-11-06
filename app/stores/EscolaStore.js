@@ -5,6 +5,7 @@ import _ from 'lodash';
 import EventEmitter from 'react-native-eventemitter';
 
 import BaseStore from './../lib/BaseStore';
+import auth from './../lib/auth';
 
 import httpClient from './../lib/HttpClient';
 import logger from './../lib/logger';
@@ -111,7 +112,7 @@ class EscolaStore extends BaseStore {
             this.escolaNome = escolaNome;
             this.escolaConfig = JSON.parse(escolaConfig);
         }
-
+        auth.loadToken();
         this.finishInit = true;
         uiStore.escolaStoreFinishInit = true;
     }
