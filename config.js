@@ -55,6 +55,7 @@ export default {
         },
     },
     AGENDA: {
+        groupByDay: true,
         tipoColorMap: {
             TRABALHO: '#74D108',
             PROVA: 'rgb(231,76,60)',
