@@ -45,9 +45,9 @@ class ProfessorStore extends BaseStore {
             this.loading = true;
             const professor = await this._service.one(this.id).get();
             this.professor = new Professor(professor);
+            await this.fetchAnos(id);
             eventoStore.fecthEventosProfessor(id);
             avisoStore.fecthAvisosProfessor(id);
-            await this.fetchAnos(id);
             await this.fetchDisciplinas(id);
             this.loading = false;
         } catch (error) {
@@ -62,9 +62,9 @@ class ProfessorStore extends BaseStore {
             this.id = id;
             this.loading = true;
             this.isDiretor = true;
+            await this.fetchAnos(id);
             eventoStore.fecthEventosDiretor(id);
             avisoStore.fecthAvisosDiretor(id);
-            await this.fetchAnos(id);
             await this.fetchDisciplinas(id);
             this.loading = false;
         } catch (error) {
@@ -83,6 +83,9 @@ class ProfessorStore extends BaseStore {
         }
         const anos = Ano.fromArray(response.anos).map(a => [a.id, new Ano(a)]);
         this.anosMap.replace(anos);
+        if (this.anosMap.size) {
+            this.anoSelectedId = this.anosMap.values()[0].id;
+        }
     }
 
     async fetchDisciplinas(id: number) {
@@ -114,6 +117,7 @@ class ProfessorStore extends BaseStore {
     @action
     selectAno = (id: number) => {
         this.anoSelectedId = id;
+        this.rootStore.eventos.refresh();
     };
 
     @computed
