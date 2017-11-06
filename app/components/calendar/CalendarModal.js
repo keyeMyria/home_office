@@ -1,26 +1,25 @@
 // @flow
 import React, { Component } from 'react';
-import { Modal, View, Alert, ScrollView, LayoutAnimation, Platform } from 'react-native';
-import { H3, Label, Text, Button, Icon } from 'native-base';
-
+import { Modal, View, ScrollView, LayoutAnimation, Platform } from 'react-native';
+import { H3, Text, Button } from 'native-base';
 import { computed, toJS } from 'mobx';
 import { observer } from 'mobx-react/native';
-
 import _ from 'lodash';
-
-// Store
 import userStore from './../../stores/UserStore';
-import eventoStore from './../../stores/EventosStore';
-
-import type { Evento, Topico, Tarefa } from './../../models';
+import type { Topico, Tarefa } from './../../models';
 import LoadingModal from './../LoadingModal';
+import dialog from './../../lib/dialog';
+import eventoStore from './../../stores/EventosStore';
+import CONFIG from './../../../config';
+
+type Props = {
+    onClose: void => void,
+    navigate(x: string, p?: { [string]: any }): void,
+};
 
 @observer
 export default class CalendarModal extends Component {
-    props: {
-        onClose: void => void,
-        navigate: string => void,
-    };
+    props: Props;
 
     static defaultProps = {
         onClose: () => {},
@@ -32,30 +31,30 @@ export default class CalendarModal extends Component {
     }
 
     @computed
-    get event(): Evento {
-        return eventoStore.selectedEvent || {};
+    get event(): number {
+        return eventoStore.selectedEvent || 0;
     }
 
     @computed
     get loading(): boolean {
-        if (eventoStore.selectedEventTarefa) {
-            return eventoStore.selectedEventTarefa.state === 'pending';
+        if (eventoStore.selectedTarefa) {
+            return eventoStore.selectedTarefa.state === 'pending';
         }
         return true;
     }
 
     @computed
     get topics(): Array<Topico> {
-        if (eventoStore.selectedEventTarefa && eventoStore.selectedEventTarefa.value) {
-            return eventoStore.selectedEventTarefa.value.topicos;
+        if (eventoStore.selectedTarefa && eventoStore.selectedTarefa.value) {
+            return eventoStore.selectedTarefa.value.topicos;
         }
         return [];
     }
 
     @computed
-    get tarefa(): Tarefa {
-        if (eventoStore.selectedEventTarefa && eventoStore.selectedEventTarefa.value) {
-            return eventoStore.selectedEventTarefa.value;
+    get tarefa(): Tarefa | Object {
+        if (eventoStore.selectedTarefa && eventoStore.selectedTarefa.value) {
+            return eventoStore.selectedTarefa.value;
         }
         return {};
     }
@@ -66,12 +65,18 @@ export default class CalendarModal extends Component {
         }
     }
 
+    get labelColor(): string {
+        const tipo = _.get(this.tarefa, 'tipo');
+        return CONFIG.AGENDA.tipoColorMap[tipo] || 'pink';
+    }
+
     renderHeader() {
         if (this.loading) return null;
-
         return (
-          <View style={localStyles.modalHeader}>
-            <H3>{_.get(this.event, 'tarefa.titulo') || '<Título>'}</H3>
+          <View style={{ ...localStyles.modalHeader, backgroundColor: this.labelColor }}>
+            <H3 style={{ textAlign: 'center', color: '#fff' }}>
+              {_.get(this.tarefa, 'titulo') || '<Título>'}
+            </H3>
           </View>
         );
     }
@@ -83,8 +88,23 @@ export default class CalendarModal extends Component {
         }
         return (
           <View style={localStyles.modalItens}>
-            <Label>{`${label}: `}</Label>
-            <Text>{`${value}`}</Text>
+            <View style={{ alignItems: 'flex-end', width: 80 }}>
+              <Text style={{ color: 'rgba(0, 0, 0, 0.57)' }}>{label}: </Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: 'bold' }}>{value}</Text>
+            </View>
+          </View>
+        );
+    }
+
+    renderDetalhes() {
+        const value = _.get(this, 'tarefa.detalhes');
+        if (!value) return null;
+        return (
+          <View style={localStyles.topicsView}>
+            <Text style={{ color: 'rgba(0,0,0,.57)', fontWeight: 'bold' }}>Detalhes: </Text>
+            <Text style={localStyles.topicText}>{value}</Text>
           </View>
         );
     }
@@ -93,11 +113,14 @@ export default class CalendarModal extends Component {
         if (!this.topics || !this.topics.length) return null;
         return (
           <View style={localStyles.topicsView}>
-            <Label>Tópicos: </Label>
-            <View style={{ marginLeft: 25, alignSelf: 'stretch' }}>
+            <Text style={{ color: 'rgba(0,0,0,.57)', fontWeight: 'bold' }}>Tópicos: </Text>
+            <View style={{ alignSelf: 'stretch' }}>
               {this.topics.map(t => (
-                <View key={t.id} style={{ flexDirection: 'row', marginTop: 10 }}>
-                  <Icon name="content-paste" style={{ fontSize: 20 }} />
+                <View
+                  key={t.id}
+                  style={{ marginLeft: 10, flexDirection: 'row', marginTop: 10 }}
+                >
+                  {/* <Icon name="content-paste" style={{ fontSize: 20 }} /> */}
                   <Text style={localStyles.topicText}>{t.titulo}</Text>
                 </View>
                     ))}
@@ -106,16 +129,37 @@ export default class CalendarModal extends Component {
         );
     }
 
-    renderButton(label: string, callback: any => void, bordered: boolean = true) {
+    renderButton(
+        label: string,
+        callback: any => any,
+        bordered: boolean = true,
+        options: any = {},
+    ) {
+        const stylesOptions = options.style || {};
+
+        const props = {
+            dark: true,
+            block: true,
+            bordered,
+            ...options,
+            style: {
+                ...localStyles.button,
+                borderColor: bordered ? this.labelColor : null,
+                backgroundColor: bordered ? 'transparent' : this.labelColor,
+                ...stylesOptions,
+            },
+            onPress: callback,
+        };
+
         return (
-          <Button bordered={bordered} block onPress={callback} style={localStyles.button}>
-            <Text>{label}</Text>
+          <Button {...props}>
+            <Text style={{ color: bordered ? this.labelColor : '#fff' }}>{label}</Text>
           </Button>
         );
     }
 
     renderContent() {
-        const { tarefa } = eventoStore.selectedEvent || {};
+        const tarefa = this.tarefa;
         const eventType = tarefa ? tarefa.tipo : '';
         const dateString =
             eventType === 'EXERCICIO' || eventType === 'TRABALHO' ? 'Entrega' : 'Data';
@@ -125,31 +169,20 @@ export default class CalendarModal extends Component {
             <ScrollView style={localStyles.modalContent}>
               {this.renderItem(`${dateString}`, 'event.dataFormatada')}
               {this.renderItem('Turma', 'event.turmaAno')}
-              {this.renderItem('Nota', 'tarefa.valor', ' Pontos')}
-              {this.renderItem('Tempo Aprox.', 'event.duracaoTextModal')}
-              {this.renderItem('Detalhes', 'tarefa.detalhes')}
+              {this.renderItem('Valor', 'tarefa.valor', ' Pontos')}
+              {this.renderItem('T. Aprox.', 'event.duracaoTextModal')}
+              {this.renderDetalhes()}
               {this.renderTopics()}
             </ScrollView>
           </LoadingModal>
         );
     }
 
-    async confirmDeleteAction() {
-        await eventoStore.deleteEvent();
-        this.props.onClose();
-    }
-
-    deleteEvent = (): any => {
-        // Works on both iOS and Android
-        Alert.alert(
-            'Atenção!',
-            'Tem certeza que quer deletar o evento?',
-            [
-                { text: 'Cancelar', onPress: () => {}, style: 'cancel' },
-                { text: 'OK', onPress: () => this.confirmDeleteAction() },
-            ],
-            { cancelable: true },
-        );
+    deleteEvent = async () => {
+        const confirm = await dialog.confirm('Tem certeza que quer deletar o evento?');
+        if (confirm) {
+            this.props.onClose();
+        }
     };
 
     editEvent() {
@@ -177,7 +210,8 @@ export default class CalendarModal extends Component {
             </View>
                 )}
             <View style={localStyles.modalFooterButtonsContainer}>
-              {isProfessor && this.renderButton('Lançar', this.fillEventInformation.bind(this))}
+              {isProfessor &&
+                        this.renderButton('Lançar', this.fillEventInformation.bind(this))}
               {this.renderButton('Voltar', this.props.onClose, false)}
             </View>
           </View>
@@ -220,15 +254,18 @@ const localStyles = {
         get marginHorizontal() {
             return 20;
         },
-        padding: 20,
         backgroundColor: '#fff',
         minHeight: 100,
+        borderRadius: 8,
     },
     modalHeader: {
         alignItems: 'center',
-        paddingBottom: 10,
+        padding: 24,
         marginBottom: 10,
         borderColor: '#E0E0E0',
+        backgroundColor: 'pink',
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
     },
     modalHeaderTitle: {
         fontWeight: 'bold',
@@ -236,10 +273,10 @@ const localStyles = {
     },
     modalContent: {
         maxHeight: 250,
+        padding: 24,
     },
     modalFooter: {
-        paddingTop: 10,
-        marginTop: 15,
+        padding: 24,
     },
     modalFooterButtonsContainer: {
         marginHorizontal: -5,
@@ -261,11 +298,13 @@ const localStyles = {
             ...this.modalItens,
             flexDirection: 'column',
             marginVertical: 15,
+            paddingBottom: 24,
         };
     },
     topicText: {
         flex: 1,
         marginLeft: 5,
         flexWrap: 'wrap',
+        fontSize: 14,
     },
 };
