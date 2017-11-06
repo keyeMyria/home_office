@@ -10,15 +10,27 @@ const Touchable = Platform.select({
 
 const hitSlop = { top: 30, left: 30, bottom: 30, right: 30 };
 
+type Props = {
+    /** Titulo da página */
+    title: string,
+    /** Icone que sera exibido à esquerda do titulo */
+    leftIcon: string,
+    /** Callback que é chamado quando o usuário clica no botão da esquerda */
+    leftPress: () => void,
+    /** Texto que será exibido como um botão à direita */
+    rightText?: string,
+    /** Icone que será exibido como botão à direta, tem precedencia sobre o texto */
+    rightIcon?: string,
+    /**
+     * Callback chamado quando o usuário clica no elemento à direita independente,
+     * deste ser um texto ou icone.
+     */
+    rightPress?: () => void,
+};
+
 export default class HeaderComponent extends PureComponent {
-    props: {
-        title: string,
-        leftIcon: string,
-        leftPress: () => void,
-        rightText?: string,
-        rightIcon?: string,
-        rightPress?: () => void,
-    };
+
+    props: Props;
 
     static defaultProps = {
         title: 'Title is not defined',
@@ -38,7 +50,11 @@ export default class HeaderComponent extends PureComponent {
         return (
           <View style={styles.right}>
             <Touchable onPress={rightPress} hitSlop={hitSlop}>
-              {!rightIcon ? <Text>{rightText}</Text> : <Icon name={rightIcon} />}
+              {!rightIcon ? (
+                <Text style={styles.rightText}>{rightText}</Text>
+                    ) : (
+                      <Icon name={rightIcon} style={styles.rightIcon} />
+                    )}
             </Touchable>
           </View>
         );
@@ -92,5 +108,15 @@ const styles = {
     },
     right: {
         flex: 0,
+        paddingRight: 9,
+    },
+    rightText: {
+        color: '#fff',
+    },
+    rightIcon: {
+        color: '#fff',
+        width: 30,
+        height: 30,
+        fontSize: 28,
     },
 };
