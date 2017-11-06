@@ -1,32 +1,31 @@
 // @flow
 import { AppState } from 'react-native';
-import { observable, action, computed } from 'mobx';
-import type { ObservableMap } from 'mobx';
+import { observable, action } from 'mobx';
 import { fromPromise } from 'mobx-utils';
 import moment from 'moment';
-import _ from 'lodash';
 
 import BaseStore from './../lib/BaseStore';
 
 import logger from './../lib/logger';
-import EventoService from './../services/EventoService';
-import TarefaService from './../services/TarefaService';
 
 import { Evento, Tarefa } from './../models';
 import type { Aluno } from './../models';
 
 class EventoStore extends BaseStore {
-    _service = new EventoService();
     userRole: string;
     aluno: ?Aluno;
     professorId: ?number;
     appState: string = AppState.currentState || '';
+    @observable currentWeek = moment().week();
+    @observable prevWeek: number = 0;
     @observable loading = true;
-    @observable eventosMap: ObservableMap<Evento> = observable.map({});
+    @observable refreshIndicator = false;
+    @observable eventos: Array<any> = observable.shallowArray();
+    @observable prevEventosLenght: number = 0;
     @observable error = false;
-    @observable selectedEvent: ?Evento;
+    @observable selectedEvent: ?number;
     @observable selectedEventLancar: ?Evento;
-    @observable selectedEventTarefa: any;
+    @observable selectedTarefa: any;
 
     constructor() {
         super();
@@ -39,113 +38,73 @@ class EventoStore extends BaseStore {
         AppState.addEventListener('change', handleAppStateChange);
     }
 
-    @computed
-    get eventos(): Array<Evento> {
-        return this.eventosMap.values();
+    @action
+    setEventos(newEventos: any, nextWeek: number, refresh: boolean = false) {
+        if (refresh) {
+            // $FlowFixMe
+            this.eventos.replace(newEventos);
+            this.prevEventosLenght = 0;
+        } else if (this.eventos.length === 0 || nextWeek >= this.currentWeek) {
+            this.prevEventosLenght = this.eventos.length;
+            this.eventos.push(...newEventos);
+        } else {
+            this.prevEventosLenght = this.eventos.length;
+            this.eventos.unshift(...newEventos);
+        }
+        this.prevWeek = this.currentWeek;
+        this.currentWeek = nextWeek;
+        this.loading = false;
+        this.refreshIndicator = false;
+        this.error = true;
     }
 
-    async fetchEventos({ aluno, professorId }: { aluno?: Aluno, professorId?: number | string }) {
+    async fetchEventos(week?: number, refresh: boolean = false, refreshIndicator: boolean = false) {
         try {
-            this.setLoading(true);
-            let eventos;
-            if (aluno || this.userRole === 'ALUNO') {
-                eventos = await Evento.findByTurma(aluno.turma.id || this.aluno.turma.id);
-            } else if (professorId || this.userRole === 'PROFESSOR') {
-                eventos = await Evento.findByProfessor(professorId || this.professorId);
+            const hasAno = this.rootStore.user.canAddActivity;
+            const nextWeek = week || this.currentWeek;
+            const ano = hasAno ? this.rootStore.professor.anoSelectedId : undefined;
+            const aluno = this.aluno ? this.aluno.id : undefined;
+            if (refreshIndicator) {
+                this.refreshIndicator = true;
             } else {
-                eventos = await Evento.all();
+                this.loading = true;
             }
-            this.setEventos(eventos);
+            const newEventos = await Evento.mine(nextWeek, ano, aluno);
+            this.setEventos(newEventos, nextWeek, refresh);
         } catch (error) {
             logger.error(error);
-            this.setLoading(false);
-            this.setError(true);
+            this.loading = false;
+            this.error = true;
         }
     }
 
     fecthEventosAluno(aluno: Aluno) {
         this.aluno = aluno;
         this.userRole = 'ALUNO';
-        return this.fetchEventos({ aluno });
+        return this.refresh();
     }
 
     fecthEventosProfessor(professorId: number) {
         this.professorId = professorId;
         this.userRole = 'PROFESSOR';
-        return this.fetchEventos({ professorId });
+        return this.refresh();
     }
 
     fecthEventosDiretor() {
         this.userRole = 'DIRETOR';
-        this.fetchEventos({});
+        return this.refresh();
     }
 
     @action
     refresh() {
-        this.fetchEventos({});
-    }
-
-    @action
-    addEventos(eventos: Array<Evento>): void {
-        // $FlowFixMe
-        this.eventosMap.merge(eventos.map(ev => [ev.id, ev]));
-    }
-
-    @computed
-    get eventosSections(): any {
-        const startOfThisWeek = moment()
-            .startOf('week')
-            .valueOf();
-        const startOfNextWeek = moment()
-            .add(1, 'weeks')
-            .startOf('week')
-            .valueOf();
-        const endOfNextWeek = moment()
-            .add(1, 'weeks')
-            .endOf('week')
-            .valueOf();
-
-        const eventosGroup = _.groupBy(this.eventos, (ev) => {
-            if (
-                this.rootStore.user.canAddActivity &&
-                this.rootStore.professor.anoSelectedId &&
-                ev.turma.ano.id !== this.rootStore.professor.anoSelectedId
-            ) {
-                return 'oculto';
-            }
-            const date = new Date(ev.fim).getTime();
-            if (date < startOfThisWeek) return 'semanasAnteriores';
-            if (date < startOfNextWeek) return 'semanaAtual';
-            if (date < endOfNextWeek) return 'proximaSemana';
-            return 'proximasSemanas';
-        });
-        const sections = [];
-        if (this.rootStore.user.canAddActivity && eventosGroup.semanasAnteriores) {
-            sections.push({
-                data: eventosGroup.semanasAnteriores,
-                title: 'Semanas Anteriores',
-            });
-        }
-        if (eventosGroup.semanaAtual) {
-            sections.push({
-                data: eventosGroup.semanaAtual,
-                title: 'Semana Atual',
-            });
-        }
-        if (eventosGroup.proximaSemana) {
-            sections.push({
-                data: eventosGroup.proximaSemana,
-                title: 'Próxima semana',
-            });
-        }
-        return sections;
+        this.fetchEventos(moment().week(), true);
     }
 
     async deleteEvent() {
-        const event = this.selectedEvent;
+        const tarefa = this.selectedTarefa.value;
         try {
-            if (event && event.tarefa && event.tarefa.id) {
-                await new TarefaService().delete(event.tarefa.id);
+            if (tarefa && tarefa.id) {
+                await tarefa.delete();
                 this.refresh();
             }
         } catch (error) {
@@ -165,22 +124,11 @@ class EventoStore extends BaseStore {
     }
 
     @action
-    setEventos(eventos: Array<Object>) {
-        this.eventosMap.replace(eventos.map(ev => [ev.id, ev]));
-        this.loading = false;
-    }
-
-    @action
-    selectEvento = (ev: ?Evento): void => {
-        this.selectedEvent = ev;
-        if (this.selectedEvent) {
-            this.selectedEventTarefa = fromPromise(Tarefa.getOne(this.selectedEvent.tarefa.id));
+    selectEvento = (ev: ?any): void => {
+        this.selectedEvent = ev ? ev.id : 0;
+        if (ev) {
+            this.selectedTarefa = fromPromise(Tarefa.getOne(ev.id_tarefa));
         }
-    };
-
-    @action
-    deleteEventAction = (id: number): void => {
-        this.eventosMap.delete(`${id}`);
     };
 }
 
