@@ -24,6 +24,7 @@ class EventoStore extends BaseStore {
     @observable prevEventosLenght: number = 0;
     @observable error = false;
     @observable selectedEvent: ?number;
+    @observable selectedEventObj: ?Object = null;
     @observable selectedEventLancar: ?Evento;
     @observable selectedTarefa: any;
 
@@ -126,6 +127,7 @@ class EventoStore extends BaseStore {
     @action
     selectEvento = (ev: ?any): void => {
         this.selectedEvent = ev ? ev.id : 0;
+        this.selectedEventObj = ev || null;
         if (ev) {
             this.selectedTarefa = fromPromise(Tarefa.getOne(ev.id_tarefa));
         }
