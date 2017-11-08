@@ -159,17 +159,21 @@ export default class CalendarModal extends Component {
     }
 
     renderContent() {
+        if (!this.event) return null;
+
         const tarefa = this.tarefa;
         const eventType = tarefa ? tarefa.tipo : '';
         const dateString =
             eventType === 'EXERCICIO' || eventType === 'TRABALHO' ? 'Entrega' : 'Data';
 
+        const data = `${this.event.fim}`.split('-').reverse().join('/');
         return (
           <LoadingModal loading={this.loading}>
             <ScrollView style={localStyles.modalContent}>
-              {this.renderItem(`${dateString}`, 'event.fim')}
+              {this.renderItem(`${dateString}`, data, '', false)}
+              {this.renderItem('Disciplina', 'event.disciplina')}
               {this.renderItem('Turma', 'event.turma_e_ano')}
-              {this.renderItem('Valor', 'tarefa.valor', ' Pontos')}
+              {this.renderItem('Valor', 'event.valor', ' Pontos')}
               {this.renderItem('T. Aprox.', 'event.duracao')}
               {this.renderDetalhes()}
               {this.renderTopics()}
