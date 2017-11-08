@@ -4,9 +4,12 @@ import React, { PureComponent } from 'react';
 import { Icon, Button, Text } from 'native-base';
 import { SectionList, View } from 'react-native';
 import { autorun } from 'mobx';
+import _ from 'lodash';
+import moment from 'moment';
 import getItemLayout from './../../lib/getItemLayout';
 
 import eventoStore from './../../stores/EventosStore';
+import userStore from './../../stores/UserStore';
 
 // Components
 import EmptyScreen from './../EmptyScreen';
@@ -80,14 +83,15 @@ export default class CalendarScreen extends PureComponent {
     }
 
     get initialIndex(): number {
-        if (eventoStore.currentWeek === eventoStore.prevWeek) {
-            if (this.props.data.length === 4) {
-                return this.props.data.reduce((p, c, i, a) => {
-                    if (i > a.length - 3) return p;
-                    return p + 1 + c.data.length;
-                }, 1);
+        const thisWeek = moment().week();
+        const thisWeekIndex = _.findIndex(this.props.data, s => s.week === thisWeek);
+        if (thisWeekIndex !== -1) {
+            let initialIndex = userStore.canAddActivity ? 1 : 0;
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < thisWeekIndex; i++) {
+                initialIndex += 1 + this.props.data[i].data.length;
             }
-            return this.props.data.reduce((p, c) => p + 1 + c.data.length, 0);
+            return initialIndex;
         }
         return 0;
     }
@@ -109,13 +113,15 @@ export default class CalendarScreen extends PureComponent {
 
     render() {
         const initialIndex = this.initialIndex;
+        const isProfessor = userStore.canAddActivity;
+
         return (
           <SectionList
             ref={ref => (this.list = ref)}
             style={{ zIndex: -1 }}
             renderItem={this.renderItem}
             sections={this.props.data}
-            onRefresh={this.props.backFourWeeks}
+            onRefresh={isProfessor ? this.props.backFourWeeks : undefined}
             stickySectionHeadersEnabled
             initialScrollIndex={initialIndex}
             refreshing={this.state.loading}
@@ -123,7 +129,7 @@ export default class CalendarScreen extends PureComponent {
             keyExtractor={day => day.dia}
             renderSectionHeader={this.renderSectionHeader}
             getItemLayout={this.itemLayout}
-            ListHeaderComponent={this.renderTop}
+            ListHeaderComponent={isProfessor ? this.renderTop : undefined}
           />
         );
     }
