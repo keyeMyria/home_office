@@ -37,8 +37,8 @@ export default class CalendarDay extends PureComponent {
           <View style={styles.container}>
             {CONFIG.AGENDA.groupByDay && (
             <View style={styles.dayNameView}>
-              <Text style={styles.weekDayText}>{momentDate.format('ddd')}</Text>
               <Text style={styles.dayText}>{momentDate.format('DD')}</Text>
+              <Text style={styles.weekDayText}>{momentDate.format('ddd')}</Text>
             </View>
                 )}
             {this.renderItems()}
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     dayText: {
-        fontSize: 14,
+        fontSize: 28,
         fontFamily: 'Roboto',
     },
     weekDayText: {
-        fontSize: 28,
+        fontSize: 16,
         fontFamily: 'Roboto',
     },
 });
