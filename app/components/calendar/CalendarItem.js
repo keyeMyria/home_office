@@ -62,7 +62,7 @@ export default class CalendarItem extends PureComponent {
         );
     }
 
-    /**
+    /** ,
      * Renderiza o texto da esquerda
      */
     renderLefttext() {
@@ -70,7 +70,7 @@ export default class CalendarItem extends PureComponent {
         return (
           <View style={styles.leftTextContainer}>
             <Text style={styles.styleTitulo} numberOfLines={1} ellipsizeMode="tail">
-              <Text style={{ color: this.labelColor }}>{_.capitalize(item.tipo)}</Text>
+              <Text style={{ color: this.labelColor }}>{CONFIG.AGENDA.tipoNameMap[item.tipo]}</Text>
               {` de ${_.capitalize(item.disciplina)}`}
             </Text>
             <Text style={styles.gridRowText} numberOfLines={1} ellipsizeMode="tail">
