@@ -71,11 +71,12 @@ export default class CalendarModal extends Component {
     }
 
     renderHeader() {
-        if (this.loading) return null;
+        if (this.loading || !this.event) return null;
+        const item = this.event;
         return (
           <View style={{ ...localStyles.modalHeader, backgroundColor: this.labelColor }}>
             <H3 style={{ textAlign: 'center', color: '#fff' }}>
-              {_.get(this.tarefa, 'titulo') || '<Título>'}
+              {`${CONFIG.AGENDA.tipoNameMap[item.tipo]} de ${_.capitalize(item.disciplina)}`}
             </H3>
           </View>
         );
@@ -170,6 +171,7 @@ export default class CalendarModal extends Component {
         return (
           <LoadingModal loading={this.loading}>
             <ScrollView style={localStyles.modalContent}>
+              {this.renderItem('Título', 'event.titulo_tarefa')}
               {this.renderItem(`${dateString}`, data, '', false)}
               {this.renderItem('Disciplina', 'event.disciplina')}
               {this.renderItem('Turma', 'event.turma_e_ano')}
