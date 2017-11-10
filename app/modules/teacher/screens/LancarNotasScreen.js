@@ -1,23 +1,23 @@
 // @flow
 import React, { Component } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 
 import { observable, computed } from 'mobx';
 import { fromPromise } from 'mobx-utils';
 import { observer } from 'mobx-react/native';
+import _ from 'lodash';
 
 import logger from './../../../lib/logger';
 
 // Store
-import eventoStore from '../../../stores/EventosStore';
+// import eventoStore from '../../../stores/EventosStore';
 
 import StudentGrid from '../../../components/StudentGrid';
 import ScreenShell from '../../../components/ScreenShell';
-import LoadingModal from '../../../components/LoadingModal';
 
 import { AlunoService, NotaService } from '../../../services';
 
-import { Evento, Aluno, Nota } from '../../../models';
+import { Aluno, Nota, Tarefa } from '../../../models';
 
 @observer
 export default class LancarNotasScreen extends Component {
@@ -29,12 +29,21 @@ export default class LancarNotasScreen extends Component {
     @observable alunosAndNotas: Array<[Nota, Aluno]> = [];
     @observable notasSavePromise: any;
 
-    @computed
-    get taskType(): string {
-        if (eventoStore.selectedEventLancar && eventoStore.selectedEventLancar.tarefa) {
-            return eventoStore.selectedEventLancar.tarefa.tipo;
-        }
-        return 'PROVA';
+    constructor(props: any) {
+        console.warn('params', props.navigation.state.params);
+        super(props);
+    }
+
+    get evento(): Object | void {
+        return _.get(this.props, 'navigation.state.params.evento');
+    }
+
+    get tarefa(): Tarefa | void {
+        return _.get(this.props, 'navigation.state.params.tarefa');
+    }
+
+    get taskType(): string | void {
+        return this.tarefa && this.tarefa.tipo;
     }
 
     @computed
@@ -42,19 +51,19 @@ export default class LancarNotasScreen extends Component {
         return !!this.notasSavePromise && this.notasSavePromise.state === 'pending';
     }
 
+    get titulo(): string {
+        if (this.taskType === 'PROVA' || this.taskType === 'TRABALHO') {
+            return 'Lançar Notas';
+        }
+        return 'Não Entregues';
+    }
+
     get screenShellProps(): Object {
         const { navigate, goBack } = this.props.navigation;
 
-        // $FlowFixMe
-        const selectedTask: Evento = eventoStore.selectedEventLancar;
-
         return {
             navigate,
-            title:
-                selectedTask.tarefa.tipo === 'PROVA' || selectedTask.tarefa.tipo === 'TRABALHO'
-                    ? 'Lançar Notas'
-                    : 'Não Entregues',
-            loading: eventoStore.loading,
+            title: this.titulo,
             rightText: 'Salvar',
             rightPress: this.saveStudentsTask,
             leftIcon: 'arrow-back',
@@ -97,16 +106,16 @@ export default class LancarNotasScreen extends Component {
             });
     };
 
-    async getNotaByAluno(event: Evento, aluno: Aluno): Promise<[Nota, Aluno]> {
+    async getNotaByAluno(eventID: number, tarefa: Tarefa, aluno: Aluno): Promise<[Nota, Aluno]> {
         try {
-            const nota = await this._notaService.findByEventoAndAluno(event.id, aluno.id);
+            const nota = await this._notaService.findByEventoAndAluno(eventID, aluno.id);
             return [new Nota(nota), aluno];
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 const nota = new Nota({});
                 nota.aluno = aluno;
-                nota.disciplina = event.tarefa.disciplina;
-                nota.tarefa = event.tarefa;
+                nota.disciplina = tarefa.disciplina;
+                nota.tarefa = tarefa;
                 nota.lancado = true;
                 return [nota, aluno];
             }
@@ -114,12 +123,12 @@ export default class LancarNotasScreen extends Component {
         }
     }
 
-    async loadAlunos(event: Evento) {
+    async loadAlunos(eventID: number, tarefa: Tarefa) {
         try {
-            const response = await this._alunoService.findByEvento(event.id);
+            const response = await this._alunoService.findByEvento(eventID);
             const alunos = Aluno.fromArray(response.alunos);
             const promises = await Promise.all(
-                alunos.map(aluno => this.getNotaByAluno(event, aluno)),
+                alunos.map(aluno => this.getNotaByAluno(eventID, tarefa, aluno)),
             );
             this.alunosAndNotas = promises;
         } catch (error) {
@@ -129,24 +138,24 @@ export default class LancarNotasScreen extends Component {
     }
 
     componentWillMount() {
-        const event: ?Evento = eventoStore.selectedEventLancar;
-        if (event) {
+        const eventID: ?number = this.evento && this.evento.id;
+        const tarefa = this.tarefa;
+        if (eventID && tarefa) {
             try {
-                this.loadAlunos(event);
+                this.loadAlunos(eventID, tarefa);
             } catch (error) {
-                logger.error(`No event found for event ${event.id}`);
+                logger.error(`No event found for event ${eventID}`);
             }
         }
     }
 
     renderStudentGrid([nota, aluno]: [Nota, Aluno]) {
-        const event = eventoStore.selectedEventLancar;
-        if (event) {
+        if (this.evento) {
             return (
               <StudentGrid
                 key={aluno.id}
                 aluno={aluno}
-                evento={event}
+                evento={this.evento}
                 taskType={this.taskType}
                 nota={nota}
               />
@@ -157,13 +166,10 @@ export default class LancarNotasScreen extends Component {
 
     render() {
         const alunosAndNotas = this.alunosAndNotas || [];
-        const savingText = 'Salvando Lancamentos...';
 
         return (
           <ScreenShell {...this.screenShellProps}>
-            <LoadingModal loading={this.isSaving} text={savingText}>
-              <View>{alunosAndNotas.map(this.renderStudentGrid, this)}</View>
-            </LoadingModal>
+            {alunosAndNotas.map(this.renderStudentGrid, this)}
           </ScreenShell>
         );
     }

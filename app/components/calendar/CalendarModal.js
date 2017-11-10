@@ -130,12 +130,7 @@ export default class CalendarModal extends Component {
         );
     }
 
-    renderButton(
-        label: string,
-        callback: any => any,
-        bordered: boolean = true,
-        options: any = {},
-    ) {
+    renderButton(label: string, callback: any => any, bordered: boolean = true, options: any = {}) {
         const stylesOptions = options.style || {};
 
         const props = {
@@ -167,7 +162,10 @@ export default class CalendarModal extends Component {
         const dateString =
             eventType === 'EXERCICIO' || eventType === 'TRABALHO' ? 'Entrega' : 'Data';
 
-        const data = `${this.event.fim}`.split('-').reverse().join('/');
+        const data = `${this.event.fim}`
+            .split('-')
+            .reverse()
+            .join('/');
         return (
           <LoadingModal loading={this.loading}>
             <ScrollView style={localStyles.modalContent}>
@@ -197,9 +195,10 @@ export default class CalendarModal extends Component {
     }
 
     fillEventInformation() {
-        eventoStore.selectedEventLancar = toJS(eventoStore.selectedEvent);
-        this.props.navigate('LancarNotasScreen', eventoStore.selectedEventLancar);
+        const evento = toJS(this.event);
+        const tarefa = toJS(this.tarefa);
         this.props.onClose();
+        this.props.navigate('LancarNotasScreen', { evento, tarefa });
     }
 
     renderFooter() {

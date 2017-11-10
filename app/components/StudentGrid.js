@@ -6,14 +6,13 @@ import { ListItem, Text, CheckBox, Input, Thumbnail, View } from 'native-base';
 import { observer } from 'mobx-react/native';
 
 import type Aluno from '../models/Aluno';
-import type Evento from '../models/Evento';
 import type Nota from '../models/Nota';
 
 @observer
 export default class tStudentGrid extends Component {
     props: {
         aluno: Aluno,
-        evento: Evento,
+        evento: any,
         taskType: string,
         nota: Nota,
     };
@@ -75,7 +74,7 @@ export default class tStudentGrid extends Component {
             }}
             >
               <Text type="number">
-                {`${aluno.nomeCompleto} (${evento.turma.ano.abreviacao} - ${evento.turma.titulo})`}
+                {`${aluno.nomeCompleto} (${evento.turma_e_ano})`}
               </Text>
             </View>
             {this.renderInput()}
