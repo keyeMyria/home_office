@@ -10,9 +10,11 @@ import {
     ListOcorrenciaScreen,
     NovaOcorrenciasScreen,
     EditarOcorrenciasScreen,
+    RepetirOcorrenciasScreen,
     LancarNotasScreen,
     SetDateForTarefa,
     TarefasScreen,
+    HorariosScreen,
 } from './screens';
 
 import { AlertScreen, CalendarScreen, FeedBackScreen, HelpScreen } from './../common_screens';
@@ -49,6 +51,7 @@ const OcorrenciasRouter = StackNavigator(
         ListOcorrenciaScreen: { screen: ListOcorrenciaScreen },
         NovaOcorrenciasScreen: { screen: NovaOcorrenciasScreen },
         EditarOcorrenciasScreen: { screen: EditarOcorrenciasScreen },
+        RepetirOcorrenciasScreen: { screen: RepetirOcorrenciasScreen },
     },
     {
         headerMode: 'none',
@@ -73,6 +76,7 @@ export default DrawerNavigator(
     {
         HomeRouter: { screen: HomeRouter },
         OcorrenciasRouter: { screen: OcorrenciasRouter },
+        HorariosScreen: { screen: HorariosScreen },
         ComunicadosScreen: { screen: ComunicadosScreen },
         FeedBackScreen: { screen: FeedBackScreen },
         HelpScreen: { screen: HelpScreen },
@@ -82,5 +86,6 @@ export default DrawerNavigator(
         headerMode: 'none',
         drawerWidth: Dimensions.get('window').width * 0.85,
         contentComponent: AppNavigator,
+        drawerPosition: 'left',
     },
 );

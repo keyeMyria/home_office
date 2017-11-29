@@ -21,11 +21,6 @@ export default class Ocorrencia extends models.Model {
     detalhes: string;
     alunos: Array<Aluno>;
 
-    static fromArray(data) {
-        console.warn('Ocorrencia Array', data[0]);
-        return super.fromArray(data);
-    }
-
     get tipoName(): string {
         return CONFIG.OCORRENCIAS.tipoNameMap[this.tipo] || '';
     }

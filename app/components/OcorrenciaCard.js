@@ -14,6 +14,7 @@ export default class OcorrenciaCard extends Component {
         ocorrencia: Ocorrencia,
         onDelete: Ocorrencia => void,
         onEdit: Ocorrencia => void,
+        onRepeat: Ocorrencia => void,
     };
 
     onEdit = () => {
@@ -24,6 +25,11 @@ export default class OcorrenciaCard extends Component {
     onDelete = () => {
         const { ocorrencia, onDelete } = this.props;
         onDelete(ocorrencia);
+    };
+
+    onRepeat = () => {
+        const { ocorrencia, onRepeat } = this.props;
+        onRepeat(ocorrencia);
     };
 
     renderDate() {
@@ -58,29 +64,29 @@ export default class OcorrenciaCard extends Component {
             <CardItem onPress={this.onCardPress} button>
               <Body>
                 {this.renderDate()}
-                <Text style={{ marginTop: 15, fontWeight: 'bold' }}>
+                <Text style={{ marginTop: 25, fontWeight: 'bold' }}>
                   {ocorrencia.tipoName}
                 </Text>
                 <Text note numberOfLines={3}>
                   {ocorrencia.detalhes}
                 </Text>
-                <Text style={{ fontWeight: 'bold', marginTop: 10 }}>Alunos:</Text>
+                <Text style={{ fontWeight: 'bold', marginTop: 10 }}>Alunos envolvidos:</Text>
                 <Text note>{alunos}</Text>
               </Body>
             </CardItem>
             {this.state.showButtons && (
             <CardItem>
               <Right style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                <Button
-                  small
-                  bordered
-                  style={{ marginRight: 10 }}
-                  onPress={this.onEdit}
-                >
+                <Button small bordered style={{ marginRight: 10 }} onPress={this.onEdit} >
                   <Text>Editar</Text>
                 </Button>
+
                 <Button small bordered onPress={this.onDelete}>
                   <Text>Excluir</Text>
+                </Button>
+
+                <Button small bordered style={{ marginLeft: 10 }} onPress={this.onRepeat}>
+                  <Text> Repetir </Text>
                 </Button>
               </Right>
             </CardItem>

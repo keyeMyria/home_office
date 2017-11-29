@@ -21,6 +21,20 @@ export default class Aula extends models.Model {
         return this.search({ dia, turma }, 'findByDiaAndTurma');
     }
 
+    static findByDiaAndHorarioAndTurma(
+        dia: number,
+        horario: number,
+        turma: number,
+    ): Promise<Array<this>> {
+        return this.search({ dia, horario, turma }, 'findByDiaAndHorarioAndTurma');
+    }
+    static findByTurma(turma: number): Promise<Array<this>> {
+        return this.search({ turma }, 'findByTurma');
+    }
+    static findByProfessor(professor: number): Promise<Array<this>> {
+        return this.search({ professor }, 'findByProfessor');
+    }
+
     toString(): string {
         return `${this.disciplina.titulo} (${this.horario.inicio} - ${this.horario.fim})`;
     }

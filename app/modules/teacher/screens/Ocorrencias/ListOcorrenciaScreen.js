@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
+import { Container } from 'native-base';
 import { observer } from 'mobx-react/native';
 import ActionButton from 'react-native-action-button';
 
@@ -9,7 +10,7 @@ import { Ocorrencia } from './../../../../models';
 import logger from './../../../../lib/logger';
 import dialog from './../../../../lib/dialog';
 
-import ScreenShell from './../../../../components/ScreenShell';
+import Header from './../../../../components/Header';
 import OcorrenciaCard from './../../../../components/OcorrenciaCard';
 
 @observer
@@ -46,6 +47,10 @@ export default class OcorrenciaScreen extends Component {
         this.props.navigation.navigate('EditarOcorrenciasScreen', { ocorrencia });
     };
 
+    onRepeat = (ocorrencia: Ocorrencia) => {
+        this.props.navigation.navigate('RepetirOcorrenciasScreen', { ocorrencia });
+    };
+
     onDelete = async (ocorrencia: Ocorrencia) => {
         const confirm = await dialog.confirm(
             'Tem certeza?',
@@ -63,34 +68,42 @@ export default class OcorrenciaScreen extends Component {
             .catch(err => console.error(err));
     };
 
-    get screenShellProps(): any {
-        const { navigate } = this.props.navigation;
-        return {
-            navigate,
-            title: 'Ocorrências',
-            loading: this.state.loading,
-            padder: false,
-            refreshControl: {
-                refreshing: this.state.reloading,
-                onRefresh: this.onReload,
-            },
-            fab: Fab,
-        };
-    }
+    leftPress = () => {
+        this.props.navigation.navigate('DrawerOpen');
+    };
 
     render() {
+        const { navigate } = this.props.navigation;
         return (
-          <ScreenShell {...this.screenShellProps}>
-            {this.state.ocorrencias.map(o => (
-              <OcorrenciaCard
-                onDelete={this.onDelete}
-                onEdit={this.onEdit}
-                key={o.pk}
-                ocorrencia={o}
-              />
-                ))}
-            <View style={{ marginBottom: 25 }} />
-          </ScreenShell>
+          <Container>
+            <Header
+              title="Ocorrências"
+              leftIcon="menu"
+              leftPress={this.leftPress}
+              rightIcon="refresh"
+              rightPress={this.onReload}
+            />
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.reloading}
+                  onRefresh={this.onReload}
+                />
+                    }
+            >
+              {this.state.ocorrencias.map(o => (
+                <OcorrenciaCard
+                  onDelete={this.onDelete}
+                  onEdit={this.onEdit}
+                  onRepeat={this.onRepeat}
+                  key={o.pk}
+                  ocorrencia={o}
+                />
+                    ))}
+              <View style={{ marginBottom: 25 }} />
+            </ScrollView>
+            <Fab navigate={navigate} />
+          </Container>
         );
     }
 }

@@ -38,7 +38,7 @@ const StudentItem: React$Component<{ aluno: Aluno }, *, *> = observer((props: { 
           <CheckBox
             checked={!!aluno._selected}
             style={{ marginRight: 20 }}
-            onPress={onPress}
+            onPress={this.onPress}
           />
         </Right>
       </ListItem>

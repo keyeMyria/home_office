@@ -7,6 +7,7 @@ export default class AppNavigator extends Component {
         return [
             { title: 'Agenda', icon: 'home', route: 'HomeRouter' },
             { title: 'Faltas', icon: 'assignment-turned-in', route: 'FaltasScreen' },
+            { title: 'Horários', icon: 'assignment-turned-in', route: 'HorariosScreen' },
             { title: 'Ocorrências', icon: 'highlight-off', route: 'OcorrenciasRouter' },
             { title: 'Comunicados', icon: 'note', route: 'ComunicadosScreen' },
             // { title: 'Enviar feedback', icon: 'announcement', route: 'FeedBackScreen' },

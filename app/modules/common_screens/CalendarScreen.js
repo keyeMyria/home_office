@@ -43,10 +43,10 @@ export default class CalendarScreen extends Component {
           <Container style={{ backgroundColor: 'rgb(242, 242, 242)' }}>
             <Header
               title="Agenda"
-              leftIcon="menu"
-              leftPress={this.leftPress}
               rightIcon="refresh"
               rightPress={this.refresh}
+              leftIcon="menu"
+              leftPress={this.leftPress}
             />
             <BubbleMenu />
             <CalendarModal navigate={this.props.navigation.navigate} onClose={this.hideModal} />

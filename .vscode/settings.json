@@ -21,5 +21,6 @@
         "android/gradle": true,
         "*.map": true,
         "*.ttf": true
-    }
+    },
+    "files.eol": "\n"
 }
