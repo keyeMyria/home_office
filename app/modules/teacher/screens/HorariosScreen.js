@@ -9,36 +9,29 @@ import logger from './../../../lib/logger';
 
 import { Aula } from './../../../models';
 
-// import professorStore from '../../../stores/ProfessorStore';
+import professorStore from '../../../stores/ProfessorStore';
+import userStore from '../../../stores/UserStore';
 
 import ScreenShell from '../../../components/ScreenShell';
 import type { ScreenShellProps } from '../../../components/ScreenShell';
 
 @observer
 export default class HorariosScreen extends Component {
-    @observable
-    store = {
-        aula: [],
-    };
 
     @observable pesquisa: any;
-
-    @observable aulas: Array<Aula>;
 
     constructor(props: *) {
         super(props);
 
-        this.store.aula = ['Teste 1', 'Teste 2', 'Teste 3'];
-
-        this.aulas = this.fetchAulas();
-
-        logger.warn(this.aulas[1].disciplina);
+        this.fetchAulas();
     }
 
-    async fetchAulas() {
-        await Aula
-            .findByProfessor(83)
-            .then(aulas => Aula.fromArray(aulas))
+    fetchAulas() {
+        Aula.findByProfessor(professorStore.id)
+            .then((aulas) => {
+                this.pesquisa = Aula.fromArray(aulas);
+                logger.warn(this.pesquisa);
+            })
             .catch(() => logger.warn('fetchAulas error'));
     }
 
@@ -47,23 +40,13 @@ export default class HorariosScreen extends Component {
         return {
             navigate,
             title: 'Horários',
-            // leftIcon: 'arrow-back',
-            // leftPress: this.navigate.goBack(),
         };
-    }
-
-    renderTest(item: any) {
-        return (
-          <ListItem>
-            <Text>{item}</Text>
-          </ListItem>
-        );
     }
 
     renderItems(item: any) {
         return (
-          <ListItem>
-            <Text>{item.disciplina}</Text>
+          <ListItem key={item.id}>
+            <Text>{String(item.disciplina)} {String(item.horario.inicio)} {' - '} {String(item.horario.fim)}</Text>
           </ListItem>
         );
     }
@@ -71,14 +54,13 @@ export default class HorariosScreen extends Component {
     render() {
         return (
           <ScreenShell {...this.screenShellProps}>
-            <Text>
+            <Text style={{ padding: 8, paddingHorizontal: 16, justifyContent: 'center', flex: 1 }}>
               {' '}
-                    Teste{'\n'}
+              {'Professor(a) '}{userStore.nomeCompleto}{'\n'}
               {'\n'}{' '}
             </Text>
 
-            <List>{this.store.aula.map(this.renderTest)}</List>
-
+            <List>{this.pesquisa.map(this.renderItems)}</List>
           </ScreenShell>
         );
     }
